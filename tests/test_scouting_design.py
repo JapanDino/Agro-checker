@@ -34,13 +34,14 @@ class DesignRoutesTest(unittest.TestCase):
 
     def test_reload_and_about_support_both_designs(self):
         for path in ('/','/scouting','/scouting/about'):
-            for design in ('atlas','hightech'):
+            for design in ('pulse','atlas','hightech'):
                 with self.subTest(path=path,design=design):
                     status,body,mime=self.status(path+'?design='+design)
                     self.assertEqual(status,200)
                     self.assertEqual(mime,'text/html')
                     self.assertIn(b'data-design-sheet="atlas"',body)
-                    self.assertIn(b'data-design-sheet="hightech"',body)
+                    self.assertIn(b'data-design-sheet="hightech pulse"',body)
+                    self.assertIn(b'data-design-sheet="pulse"',body)
 
     def test_invalid_repeated_and_extra_parameters_stay_rejected(self):
         for query in ('design=unknown','design=','design=atlas&design=hightech','design=atlas&extra=1'):
@@ -51,7 +52,9 @@ class DesignRoutesTest(unittest.TestCase):
                 self.assertEqual(self.status(path+'?design=atlas')[0],400)
 
     def test_design_assets_have_explicit_types_and_no_journal_side_effects(self):
-        for file,mime in (('design.js','text/javascript'),('hightech.css','text/css'),('design-controls.css','text/css')):
+        for file,mime in (('design.js','text/javascript'),('hightech.css','text/css'),('design-controls.css','text/css'),
+                          ('pulse.css','text/css'),('pulse-screens.css','text/css'),('pulse.js','text/javascript'),
+                          ('assets/fonts/manrope-cyrillic-wght-normal.woff2','font/woff2'),('assets/fonts/manrope-OFL.txt','text/plain')):
             status,body,actual=self.status('/scouting/'+file)
             self.assertEqual(status,200)
             self.assertTrue(body)

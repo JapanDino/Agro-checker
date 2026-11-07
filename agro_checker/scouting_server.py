@@ -19,11 +19,11 @@ def make_server(directory, port=8771):
     static={'/':('index.html','text/html; charset=utf-8'),
             '/scouting':('index.html','text/html; charset=utf-8'),
             '/scouting/about':('about.html','text/html; charset=utf-8')}
-    for f in ['app.js','map.js','plans.js','styles.css','workspace.css','theme.css','interior.css','experience.css','experience-interior.css','drafts.js','hightech.css','design.js','design-controls.css']:
+    for f in ['app.js','map.js','plans.js','styles.css','workspace.css','theme.css','interior.css','experience.css','experience-interior.css','drafts.js','hightech.css','design.js','design-controls.css','pulse.css','pulse-screens.css','pulse.js']:
         static['/scouting/'+f]=(f,'text/javascript; charset=utf-8' if f.endswith('.js') else 'text/css; charset=utf-8')
     for f,mime in [('leaflet.js','text/javascript'),('leaflet.css','text/css'),('LEAFLET-LICENSE.txt','text/plain'),
                    ('public-context.json','application/json'),('basemap.jpg','image/jpeg'),('wide-basemap.jpg','image/jpeg'),
-                   ('terrain.png','image/png'),('clay.png','image/png'),('ph.png','image/png')]:
+                   ('terrain.png','image/png'),('clay.png','image/png'),('ph.png','image/png')]+[('fonts/'+f,'font/woff2') for f in ['manrope-cyrillic-wght-normal.woff2', 'manrope-latin-wght-normal.woff2']]+[('fonts/'+f,'text/plain') for f in ['manrope-OFL.txt']]:
         static['/scouting/assets/'+f]=('assets/'+f,mime)
 
     class Handler(BaseHTTPRequestHandler):
@@ -55,7 +55,7 @@ def make_server(directory, port=8771):
                     return {k:v[0] for k,v in q.items()}
                 if path in static:
                     if q and path in ('/','/scouting','/scouting/about'):
-                        if query(['design'])['design'] not in ('atlas','hightech'):raise ValueError('Неизвестный дизайн')
+                        if query(['design'])['design'] not in ('pulse','atlas','hightech'):raise ValueError('Неизвестный дизайн')
                     else:query([])
                     f,mime=static[path];return self.reply(200,(ROOT/'web/scouting'/f).read_bytes(),mime)
                 if path=='/api/scouting/state':
