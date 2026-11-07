@@ -277,3 +277,91 @@ body[data-stage="1"] .loading{position:absolute;inset:0;min-height:0;background:
 @keyframes pulse-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.pulse-boot *{opacity:1!important}.pulse-ready *,.pulse-stage-enter{animation:none!important}}
 .about-product h1 .accent{color:var(--green)}
+
+/* ── Capability showcase: what the prototype already does ── */
+.capabilities-trigger{border:0;border-radius:var(--radius-sm);background:var(--green);color:#fff;font:700 13px/1 var(--sans);padding:11px 16px;min-height:42px}
+.capabilities-trigger:hover{background:var(--green-hover)}
+.atlas-caption{display:none}
+.capability-card{position:absolute;left:20px;bottom:84px;z-index:450;width:380px;padding:22px 22px 18px;background:var(--paper);border-radius:24px;box-shadow:var(--shadow-float)}
+.map-list-open .capability-card{display:none}
+.capability-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.capability-card h2{font:800 21px/1.15 var(--sans);letter-spacing:-.02em}
+.cap-status{display:inline-flex;align-items:center;gap:7px;flex-shrink:0;font:700 12px/1 var(--sans);color:var(--green-press);background:var(--green-soft);border-radius:999px;padding:7px 11px}
+.cap-status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green)}
+.cap-status.muted-status{color:var(--ink-2);background:var(--soft-2)}
+.cap-status.muted-status::before{background:#9AA59F}
+.capability-card ul{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:9px}
+.capability-card li{display:flex;align-items:center;gap:11px;font:700 14px/1.3 var(--sans);color:var(--ink)}
+.cap-check{display:grid;place-items:center;flex-shrink:0;width:24px;height:24px;border-radius:8px;background:var(--green-soft);color:var(--green)}
+.cap-check svg{width:15px;height:15px;stroke-width:2.6}
+.capability-card-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:14px}
+.capability-card-actions .primary{min-height:44px;padding:12px 16px;font-size:13px}
+.capability-card-actions .text-button{font-size:13px;min-height:44px}
+#capabilities-dialog{width:min(1120px,94vw);padding:32px 36px 30px}
+#capabilities-dialog .dialog-heading{border-bottom:0;margin-bottom:20px;padding-bottom:0}
+#capabilities-dialog .dialog-heading h2{font:800 34px/1.1 var(--sans);letter-spacing:-.03em}
+.cap-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 18px}
+.cap-facts>div{background:var(--soft);border-radius:var(--radius-md);padding:16px 18px}
+.cap-facts dt{font:700 12px/1.3 var(--sans);color:var(--muted)}
+.cap-facts dd{margin:6px 0 0;font:800 34px/1 var(--sans);letter-spacing:-.03em;color:var(--ink)}
+.cap-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.cap-tile{position:relative;display:flex;flex-direction:column;align-items:flex-start;background:var(--soft);border-radius:20px;padding:22px 22px 18px;transition:background .2s}
+.cap-tile:hover{background:var(--green-soft)}
+.cap-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:var(--green);color:#fff;margin-bottom:16px}
+.cap-icon svg{width:24px;height:24px;stroke-width:1.8}
+.cap-tile h3{font:800 17px/1.25 var(--sans);margin:0 0 8px}
+.cap-tile p{font-size:13.5px;line-height:1.55;color:var(--ink-2);margin:0 0 14px;flex:1}
+.cap-action{display:inline-flex;align-items:center;gap:6px;font:700 13px/1 var(--sans);color:var(--green);background:var(--paper);border-radius:10px;padding:10px 13px;min-height:38px}
+.cap-action:hover{color:#fff;background:var(--green)}
+.cap-footer{display:flex;align-items:center;gap:20px;margin-top:22px}
+.cap-footer p{margin:0;font-size:12.5px;color:var(--muted);max-width:520px}
+@media(max-width:1200px){.capability-card{width:340px}.cap-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.pipe{grid-template-columns:repeat(2,minmax(0,1fr))}.pipe-step:not(:last-child)::after{display:none}}
+@media(max-width:1000px){.capability-card{display:none}.cap-facts{grid-template-columns:repeat(2,1fr)}.cap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){
+  .demo-trigger{display:none}
+  .capabilities-trigger{font-size:11.5px;padding:8px 11px;min-height:36px}
+  #capabilities-dialog{padding:22px 18px}
+  #capabilities-dialog .dialog-heading h2{font-size:24px}
+  .cap-facts dd{font-size:26px}
+  .cap-grid,.pipe{grid-template-columns:1fr}
+  .cap-section-head{flex-direction:column;align-items:flex-start}
+  .cap-footer{flex-direction:column;align-items:flex-start}
+  .cap-footer .primary{width:100%}
+}
+
+/* Presentation scheme with honest per-step status */
+.cap-status.partial{color:#7A4B07;background:#FDF0DA}
+.cap-status.partial::before{background:var(--amber)}
+.cap-status.planned{color:var(--ink-2);background:var(--soft-2)}
+.cap-status.planned::before{background:#9AA59F}
+.cap-section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:26px 0 14px}
+.cap-section-head h3{font:800 20px/1.2 var(--sans);margin:0}
+.cap-legend{display:flex;flex-wrap:wrap;gap:8px}
+.pipe{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.pipe-step{position:relative;display:flex;flex-direction:column;background:var(--paper);border:1.5px solid var(--line);border-radius:20px;padding:20px 20px 18px}
+.pipe-step:not(:last-child)::after{content:"→";position:absolute;right:-13px;top:34px;z-index:1;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--paper);border:1.5px solid var(--line);font:800 12px/1 var(--sans);color:var(--muted)}
+.pipe-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.pipe-top .cap-icon{margin:0}
+.pipe-step:has(.partial) .cap-icon{background:var(--amber)}
+.pipe-step:has(.planned) .cap-icon{background:#9AA59F}
+.pipe-kicker{font:700 11.5px/1.3 var(--sans);color:var(--muted);margin:0 0 4px}
+.pipe-step h3{font:800 17px/1.25 var(--sans);margin:0 0 14px}
+.pipe-label{font:800 11.5px/1.3 var(--sans);color:var(--ink);margin:0 0 6px}
+.pipe-have,.pipe-lack{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:6px}
+.pipe-have li,.pipe-lack li{position:relative;padding-left:20px;font-size:13px;line-height:1.45;color:var(--ink-2)}
+.pipe-have li::before{content:"✓";position:absolute;left:0;top:0;font-weight:800;color:var(--green)}
+.pipe-lack li{color:var(--muted)}
+.pipe-lack li::before{content:"○";position:absolute;left:1px;top:0;font-weight:800;color:#9AA59F}
+.pipe-step .cap-action{margin-top:auto;background:var(--soft)}
+.pipe-step .cap-action:hover{background:var(--green);color:#fff}
+.cap-tile{padding:18px}
+.cap-tile .cap-icon{width:40px;height:40px;border-radius:12px;margin-bottom:12px}
+.cap-tile h3{font-size:15.5px}
+.cap-tile p{font-size:12.5px}
+.capability-card li.cap-planned{color:var(--muted);font-weight:600}
+.capability-card li.cap-planned .cap-check{background:var(--soft-2);color:#7E8A84}
+.capability-card{width:400px}
+.capability-card-actions .primary{white-space:nowrap}
+.capability-card-actions .text-button{white-space:nowrap}
+@media(max-width:1200px){.capability-card{width:360px}.pipe{grid-template-columns:repeat(2,minmax(0,1fr))}.pipe-step:not(:last-child)::after{display:none}}
+@media(max-width:760px){.pipe{grid-template-columns:1fr}.pipe-step{padding:18px}}

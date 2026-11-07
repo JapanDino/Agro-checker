@@ -181,6 +181,7 @@ def make_server(directory, port=8770):
                          "/scouting/pulse.css": (ROOT/"web/scouting/pulse.css", "text/css; charset=utf-8"),
                          "/scouting/pulse-screens.css": (ROOT/"web/scouting/pulse-screens.css", "text/css; charset=utf-8"),
                          "/scouting/pulse.js": (ROOT/"web/scouting/pulse.js", "text/javascript; charset=utf-8"),
+                         "/scouting/showcase.js": (ROOT/"web/scouting/showcase.js", "text/javascript; charset=utf-8"),
                          "/scouting/assets/fonts/manrope-cyrillic-wght-normal.woff2": (ROOT/"web/scouting/assets/fonts/manrope-cyrillic-wght-normal.woff2", "font/woff2"),
                          "/scouting/assets/fonts/manrope-latin-wght-normal.woff2": (ROOT/"web/scouting/assets/fonts/manrope-latin-wght-normal.woff2", "font/woff2"),
                          "/scouting/assets/fonts/manrope-OFL.txt": (ROOT/"web/scouting/assets/fonts/manrope-OFL.txt", "text/plain; charset=utf-8"),

@@ -53,7 +53,7 @@ class DesignRoutesTest(unittest.TestCase):
 
     def test_design_assets_have_explicit_types_and_no_journal_side_effects(self):
         for file,mime in (('design.js','text/javascript'),('hightech.css','text/css'),('design-controls.css','text/css'),
-                          ('pulse.css','text/css'),('pulse-screens.css','text/css'),('pulse.js','text/javascript'),
+                          ('pulse.css','text/css'),('pulse-screens.css','text/css'),('pulse.js','text/javascript'),('showcase.js','text/javascript'),
                           ('assets/fonts/manrope-cyrillic-wght-normal.woff2','font/woff2'),('assets/fonts/manrope-OFL.txt','text/plain')):
             status,body,actual=self.status('/scouting/'+file)
             self.assertEqual(status,200)
