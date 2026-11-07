@@ -9,7 +9,7 @@ window.ScoutingToday={create({api,getData,onNotice,onChange,onOpenArea}){
   const day=v=>v?new Date(v+'T12:00:00Z').toLocaleDateString('ru-RU',{day:'numeric',month:'long'}):'—';
   const fullDay=v=>v?new Date(v+'T12:00:00Z').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'}):'—';
   const STATUS={risk:'Риск',check:'Проверить',normal:'Норма',no_rules:'Нет правил',no_data:'Нет данных учёта'};
-  const DEMO_DATE='2024-05-15';
+  const DEMO_DATE='2024-05-20';
   let source='example',date=DEMO_DATE,result=null,run=0,decided=false,recordsRequest=uid(),markRequest=uid(),markFid='',preview=null;
 
   const pressSource=()=>{for(const b of document.querySelectorAll('[data-today-source]'))b.setAttribute('aria-pressed',String(b.dataset.todaySource===source));};
@@ -34,7 +34,7 @@ window.ScoutingToday={create({api,getData,onNotice,onChange,onOpenArea}){
     const box=$('today-source');box.replaceChildren();box.className='today-source '+(result.source.kind==='example'?'is-example':result.source.kind==='journal'?'is-journal':'is-none');
     const title=result.source.kind==='example'?'Демонстрационный пример — не данные хозяйства':result.source.kind==='journal'?'Данные учёта хозяйства':'Данных учёта пока нет';
     el('strong',title,box);
-    const parts=[result.source.label];if(result.source.filename)parts.push(result.source.filename);if(result.source.imported_at)parts.push('загружено '+new Date(result.source.imported_at).toLocaleString('ru-RU',{timeZone:'Europe/Moscow',dateStyle:'medium',timeStyle:'short'}));
+    const parts=[result.source.label];if(result.source.filename&&!String(result.source.label||'').includes(result.source.filename))parts.push(result.source.filename);if(result.source.imported_at)parts.push('загружено '+new Date(result.source.imported_at).toLocaleString('ru-RU',{timeZone:'Europe/Moscow',dateStyle:'medium',timeStyle:'short'}));
     el('span',parts.filter(Boolean).join(' · '),box);
     if(result.source.kind==='none'){const b=el('button','Загрузить выгрузку учёта →',box,'text-button');b.type='button';b.addEventListener('click',openRecords);}
   }

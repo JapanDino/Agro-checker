@@ -14,6 +14,8 @@
       map:()=>{close();nav(1);},
       history:()=>{close();nav(4);},
       plan:()=>{close();nav(5);},
+      today:()=>{close();nav(6);},
+      records:()=>{close();nav(6);$('open-records')?.click();},
       // Sensor-site candidates: switch the map layer through its own control and show the tab.
       sensors:()=>{close();nav(1);const layer=$('map-layer');if(layer&&layer.value!=='sensors'){layer.value='sensors';layer.dispatchEvent(new Event('change',{bubbles:true}));}
         $('focus-map')?.click(); // zooms in and collapses the card, so expand it afterwards
