@@ -16,7 +16,9 @@
       plan:()=>{close();nav(5);},
       // Sensor-site candidates: switch the map layer through its own control and show the tab.
       sensors:()=>{close();nav(1);const layer=$('map-layer');if(layer&&layer.value!=='sensors'){layer.value='sensors';layer.dispatchEvent(new Event('change',{bubbles:true}));}
-        document.querySelector('[data-aside="sensors"]')?.click();$('focus-map')?.click();},
+        $('focus-map')?.click(); // zooms in and collapses the card, so expand it afterwards
+        const details=$('toggle-details');if(details?.getAttribute('aria-expanded')==='false')details.click();
+        document.querySelector('[data-aside="sensors"]')?.click();},
       // The archive example lives in the demo dialog; reuse its button so app.js keeps control.
       demo:()=>{close();const start=$('start-demo');if(start&&!start.disabled)start.click();else $('open-demo')?.click();},
     };
