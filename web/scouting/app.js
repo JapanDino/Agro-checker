@@ -23,6 +23,7 @@
     if(location.hash!==hash)history[replace?'replaceState':'pushState'](null,'',hash);
   }
   function context(){
+    if(S.data)document.title=`${S.fid} · ${$('page-title').textContent} · AgroPulse`;
     if($('period-mobile'))$('period-mobile').value=$('period').value;
     $('context-area').textContent=S.fid;$('focus-label').textContent=S.fid;
     $('context-period').textContent=S.data?.periods.find(p=>p.id===$('period').value)?.label.replace('Последние 90 дней 2026','Июль–октябрь 2026')||'Архив';
@@ -190,6 +191,7 @@
   $('zoom-out').addEventListener('click',()=>S.explorer?.zoom(-1));
   $('reset-map').addEventListener('click',()=>{collapseInspector();S.explorer?.fitAll();});
   window.addEventListener('resize',()=>{if(S.step===1&&S.data){renderAreaList();S.explorer?.resize();}});
+  window.addEventListener('scouting-design-change',()=>{if(S.step===1&&S.data)requestAnimationFrame(()=>S.explorer?.showAll());});
   function selectArea(fid,focus=false){document.body.classList.remove('map-list-open');$('toggle-area-list').setAttribute('aria-expanded','false');++routeRun;saveDraft();S.fid=fid;S.relative=null;S.selectedLocation=null;S.task=null;S.series=null;draftKey='';highlightMap();renderAreaList();journalCounts();context();if(focus)focusMap();writeRoute(true);loadDetail();}
   $('area-search').addEventListener('input',renderAreaList);
   $('period').addEventListener('change',()=>{saveDraft();loadCommon();});

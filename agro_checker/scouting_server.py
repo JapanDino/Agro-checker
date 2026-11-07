@@ -19,7 +19,7 @@ def make_server(directory, port=8771):
     static={'/':('index.html','text/html; charset=utf-8'),
             '/scouting':('index.html','text/html; charset=utf-8'),
             '/scouting/about':('about.html','text/html; charset=utf-8')}
-    for f in ['app.js','map.js','plans.js','styles.css','workspace.css','theme.css','interior.css','experience.css','experience-interior.css','drafts.js']:
+    for f in ['app.js','map.js','plans.js','styles.css','workspace.css','theme.css','interior.css','experience.css','experience-interior.css','drafts.js','hightech.css','design.js','design-controls.css']:
         static['/scouting/'+f]=(f,'text/javascript; charset=utf-8' if f.endswith('.js') else 'text/css; charset=utf-8')
     for f,mime in [('leaflet.js','text/javascript'),('leaflet.css','text/css'),('LEAFLET-LICENSE.txt','text/plain'),
                    ('public-context.json','application/json'),('basemap.jpg','image/jpeg'),('wide-basemap.jpg','image/jpeg'),
@@ -54,7 +54,10 @@ def make_server(directory, port=8771):
                     if set(q)!=set(keys) or any(len(v)!=1 or len(v[0])>120 for v in q.values()):raise ValueError('Некорректный запрос')
                     return {k:v[0] for k,v in q.items()}
                 if path in static:
-                    query([]);f,mime=static[path];return self.reply(200,(ROOT/'web/scouting'/f).read_bytes(),mime)
+                    if q and path in ('/','/scouting','/scouting/about'):
+                        if query(['design'])['design'] not in ('atlas','hightech'):raise ValueError('Неизвестный дизайн')
+                    else:query([])
+                    f,mime=static[path];return self.reply(200,(ROOT/'web/scouting'/f).read_bytes(),mime)
                 if path=='/api/scouting/state':
                     query([]);return self.reply(200,{**scout.overview(),**scout.listing(store),'plans':workspace.plans(store),'token':token})
                 if path=='/api/scouting/export':
