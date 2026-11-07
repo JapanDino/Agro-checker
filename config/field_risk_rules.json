@@ -1,0 +1,33 @@
+{
+  "version": "draft-2026-11-08",
+  "status": "draft_unvalidated",
+  "note": "Черновые пороги команды для обсуждения с агрономом и проверки на пилоте 2027. Это не проверенная модель болезней и не порог повреждения: правило отмечает погодные условия, при которых стоит осмотреть поле. Решение об осмотре и обработке остаётся за агрономом.",
+  "crops": ["озимая пшеница", "озимый ячмень"],
+  "phases": ["кущение", "выход в трубку", "флаговый лист", "колошение", "цветение", "налив"],
+  "lookback_days": 10,
+  "partial_fraction": 0.5,
+  "wet_hour": {
+    "era5": {"relative_humidity_min_pct": 90, "precipitation_min_mm": 0.2,
+             "label": "Час считается влажным, если относительная влажность воздуха ERA5 ≥ 90 % или осадки ≥ 0,2 мм. Это косвенная оценка, не измерение влажности листа."},
+    "sensor": {"label": "Час считается влажным, если датчик листа показывал влагу не меньше половины часа."},
+    "sensor_min_hours_per_day": 20
+  },
+  "protection": {
+    "kinds": ["фунгицид"],
+    "days": 14,
+    "washoff_rain_mm": 10,
+    "washoff_window_hours": 24,
+    "assumed_treatment_hour_local": 12,
+    "ending_soon_days": 3
+  },
+  "focus": {"memory_days": 365, "inspect_after_days": 7},
+  "marks": {"signal_window_days": 14},
+  "diseases": [
+    {"id": "brown_rust", "name": "Бурая ржавчина", "genitive": "бурой ржавчины",
+     "wet_hours": 6, "temp_min": 15, "temp_max": 25,
+     "susceptible_from": "выход в трубку", "inspect_after_days": 10},
+    {"id": "septoria", "name": "Септориоз листьев", "genitive": "септориоза",
+     "wet_hours": 12, "temp_min": 10, "temp_max": 25,
+     "susceptible_from": "выход в трубку", "inspect_after_days": 14}
+  ]
+}

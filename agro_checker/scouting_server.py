@@ -9,6 +9,8 @@ from urllib.parse import parse_qs, urlparse
 
 from . import farm_scouting as scout
 from . import farm_workspace as workspace
+from . import field_risk as risk
+from . import sensor_siting as siting
 from .field_store import FieldStore, encoded
 from .pipeline import ROOT
 
@@ -19,7 +21,7 @@ def make_server(directory, port=8771):
     static={'/':('index.html','text/html; charset=utf-8'),
             '/scouting':('index.html','text/html; charset=utf-8'),
             '/scouting/about':('about.html','text/html; charset=utf-8')}
-    for f in ['app.js','map.js','plans.js','styles.css','workspace.css','theme.css','interior.css','experience.css','experience-interior.css','drafts.js','hightech.css','design.js','design-controls.css','pulse.css','pulse-screens.css','pulse.js','showcase.js']:
+    for f in ['app.js','map.js','plans.js','styles.css','workspace.css','theme.css','interior.css','experience.css','experience-interior.css','drafts.js','hightech.css','design.js','design-controls.css','pulse.css','pulse-screens.css','pulse.js','showcase.js','today.js']:
         static['/scouting/'+f]=(f,'text/javascript; charset=utf-8' if f.endswith('.js') else 'text/css; charset=utf-8')
     for f,mime in [('leaflet.js','text/javascript'),('leaflet.css','text/css'),('LEAFLET-LICENSE.txt','text/plain'),
                    ('public-context.json','application/json'),('basemap.jpg','image/jpeg'),('wide-basemap.jpg','image/jpeg'),
@@ -77,6 +79,12 @@ def make_server(directory, port=8771):
                     if not d['pair']:raise ValueError('Для места нет пригодной пары')
                     loc=scout.location(v['fid'],relative=relative,crop=d['pair']['crop'])
                     return self.reply(200,{'location':loc,'comparison':scout.window_comparison(loc['id'],v['before'],v['after'])})
+                if path=='/api/scouting/risk':
+                    return self.reply(200,risk.risk_view(store,**query(['date','source'])))
+                if path in ('/api/scouting/records/template','/api/scouting/records/example'):
+                    query([]);return self.reply(200,risk.records_template() if path.endswith('template') else risk.records_example(),'text/csv; charset=utf-8')
+                if path=='/api/scouting/siting':
+                    return self.reply(200,siting.siting(store,query(['fid'])['fid']))
                 if path=='/api/scouting/plans/export':
                     return self.reply(200,workspace.plan_export(store,query(['id'])['id']))
                 match=re.fullmatch(r'/api/scouting/visits/([a-f0-9]{32})/photos/([a-f0-9]{64})',path)
@@ -90,10 +98,12 @@ def make_server(directory, port=8771):
             if not self.allowed(True):return
             try:
                 url=urlparse(self.path);path=url.path
-                actions={'/api/scouting/tasks':scout.save_task,'/api/scouting/visits':scout.save_visit,'/api/scouting/plans':workspace.save_plan}
+                actions={'/api/scouting/tasks':scout.save_task,'/api/scouting/visits':scout.save_visit,'/api/scouting/plans':workspace.save_plan,
+                         '/api/scouting/records/preview':risk.records_preview,'/api/scouting/records':risk.save_records,
+                         '/api/scouting/marks':risk.save_mark,'/api/scouting/sensor-series':risk.save_sensor_series}
                 if path not in actions:return self.reply(404,{'error':'Действие не найдено'})
                 if url.query:raise ValueError('Параметры URL для сохранения не поддерживаются')
-                limit=21_000_000 if path.endswith('/visits') else 100_000
+                limit=21_000_000 if path.endswith('/visits') else 3_000_000 if path.startswith(('/api/scouting/records','/api/scouting/sensor-series')) else 100_000
                 length=int(self.headers.get('Content-Length','0'))
                 if not 0<length<=limit:raise ValueError('Превышен размер запроса')
                 body=json.loads(self.rfile.read(length).decode('utf-8'))

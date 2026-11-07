@@ -78,6 +78,15 @@ def make_server(directory, port=8770):
                         d=scout.detail(**values)
                         loc=scout.location(values['fid'],relative=relative,crop=d['pair']['crop'])
                         return self.reply(200,{'location':loc,'comparison':scout.window_comparison(loc['id'],values['before'],values['after'])})
+                    if path == '/api/scouting/risk':
+                        from .field_risk import risk_view
+                        return self.reply(200, risk_view(store,**query(['date','source'])))
+                    if path in ('/api/scouting/records/template','/api/scouting/records/example'):
+                        from .field_risk import records_template,records_example
+                        query([]);return self.reply(200,(records_template() if path.endswith('template') else records_example()),'text/csv; charset=utf-8')
+                    if path == '/api/scouting/siting':
+                        from .sensor_siting import siting
+                        return self.reply(200, siting(store,query(['fid'])['fid']))
                     match = re.fullmatch(r'/api/scouting/visits/([a-f0-9]{32})/photos/([a-f0-9]{64})',path)
                     if match:
                         query([]);content,mime = scout.saved_photo(store,match[1],match[2])
@@ -182,6 +191,7 @@ def make_server(directory, port=8770):
                          "/scouting/pulse-screens.css": (ROOT/"web/scouting/pulse-screens.css", "text/css; charset=utf-8"),
                          "/scouting/pulse.js": (ROOT/"web/scouting/pulse.js", "text/javascript; charset=utf-8"),
                          "/scouting/showcase.js": (ROOT/"web/scouting/showcase.js", "text/javascript; charset=utf-8"),
+                         "/scouting/today.js": (ROOT/"web/scouting/today.js", "text/javascript; charset=utf-8"),
                          "/scouting/assets/fonts/manrope-cyrillic-wght-normal.woff2": (ROOT/"web/scouting/assets/fonts/manrope-cyrillic-wght-normal.woff2", "font/woff2"),
                          "/scouting/assets/fonts/manrope-latin-wght-normal.woff2": (ROOT/"web/scouting/assets/fonts/manrope-latin-wght-normal.woff2", "font/woff2"),
                          "/scouting/assets/fonts/manrope-OFL.txt": (ROOT/"web/scouting/assets/fonts/manrope-OFL.txt", "text/plain; charset=utf-8"),
@@ -256,6 +266,10 @@ def make_server(directory, port=8770):
                 if path == '/api/scouting/plans':
                     from .farm_workspace import save_plan
                     result=save_plan(store,body)
+                elif path in ['/api/scouting/records/preview','/api/scouting/records','/api/scouting/marks','/api/scouting/sensor-series']:
+                    from . import field_risk
+                    result={'/api/scouting/records/preview':field_risk.records_preview,'/api/scouting/records':field_risk.save_records,
+                            '/api/scouting/marks':field_risk.save_mark,'/api/scouting/sensor-series':field_risk.save_sensor_series}[path](store,body)
                 elif path in ['/api/scouting/tasks','/api/scouting/visits']:
                     from .farm_scouting import save_task,save_visit
                     result = save_task(store,body) if path.endswith('/tasks') else save_visit(store,body)
