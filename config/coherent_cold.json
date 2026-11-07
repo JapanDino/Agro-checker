@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "final_train_years": [2022, 2023],
+  "evaluation_years": [2025, 2026],
+  "weather_thresholds_c": [-3, -2, -1, 0],
+  "decision_thresholds": [0.1, 0.25, 0.5, 0.75],
+  "date_blocks": 6,
+  "analog_neighbors": [32, 64],
+  "ordinal_inputs": ["gfs", "score", "joint"],
+  "ordinal_penalties": [0.1, 1.0, 10.0],
+  "minimum_calibration_nights": 50,
+  "minimum_calibration_events": 5,
+  "shared_platt_c": 1.0,
+  "selection": "Eligible only when validation misses <= legacy, false alarms <= legacy, Brier at 0 <= legacy; order by Brier, false alarms, misses, registry order. Diagnostic minimizes Brier without detection gates. No field promotion.",
+  "scope": "Minimum-temperature CDF, not damage probability. Ordinal likelihood for observed minimum intervals; one increasing CDF for all thresholds. Original point/detector/timing unchanged. Station only; no new geographic generalization claim.",
+  "status": "2025/2026 already viewed; excluded from every training, calibration and setting decision. This is a new frozen protocol, not a new blind test. No changes to previous experiments."
+}

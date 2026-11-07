@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "reference": {"latitude": 45.024106, "longitude": 37.911914},
+  "orchard_boundary_known": false,
+  "catalogue": "https://earth-search.aws.element84.com/v1/search",
+  "collection": "sentinel-2-c1-l2a",
+  "lookback_days": 90,
+  "maximum_pages": 10,
+  "window_cells": 100,
+  "common_cell_m": 20,
+  "point_window_cells": 3,
+  "minimum_valid_point_cells": 5,
+  "accepted_scl": [4, 5],
+  "mask_erosion_cells": 1,
+  "minimum_processing_baseline": 5,
+  "rejected_processing_baselines": ["05.09"],
+  "policy": "Acquisition-bounded rolling window. All catalogue scenes retained, including clouds and extraction errors. No tile cloud filtering, interpolation, crop diagnosis or orchard boundary. Scale/offset checked against raster headers. Immutable versions and atomic published snapshots. Manual refresh only. Not a forecast training source."
+}

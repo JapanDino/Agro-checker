@@ -1,0 +1,1895 @@
+{
+  "protocol_sha256": "1d40f1824467c79c3afcb4cf01907525fd43ee1a55c92d587d67efa4d205b5dc",
+  "source_sha256": {
+    "product_data.py": "828e41d9ad36e122437ad0de832defd58e5ca2fc2501ba6f8f6190fe4bca140b",
+    "product_risk.py": "2cefa839ba8a57a07090632f42926ec7ffdc85882967a2e413291c513c98e8c0",
+    "product_risk_study.py": "3857a03a93e07d8aa69ad6664f15267c3030bde0d6ee63ab2509bbdef3d3a2b5",
+    "scenario_study.py": "0b94631ad28902154250308902996016ee3cdaa55f4e514e4482887a9427d627",
+    "frost_study.py": "0161683092e817a4ff943378ededf42c50dc31c5ecfb867a3b444046d6056ab1",
+    "model_study.py": "c21234dcca6ab7a5d1cd8fd10e0fcf28c58dabd31c033e13ed295c5ed2a70323",
+    "hourly_study.py": "c8f6653ae3f64f11fdb13c42c25ecf625ccb2fe74f20800fce335c8180642c37",
+    "single_run.py": "9b199eb2790f6573e2343fe9ee1cead455fa4a79b81fa480901b861bcf25bac1",
+    "minimum_model.py": "dee4e650d0cd1b390e748c4521c2aa70242a7128e52bb08fa7e18a6f10a0be7d",
+    "cold_interval_study.py": "14711ed4114afd80ce7f8d4a823d5167abe0e42567f32844e66963bc6da446b8"
+  },
+  "parent_hashes": {
+    "point_model": "b273ad32caf00e21303f9fe11b0b2aef630eef03336bd63f2d3033d341ec9954",
+    "point_selection": "ea6ab05a32ed1ab4d823e022a94719d3266b10322c681e1c8561f75bcc8432a3",
+    "detector": "fba66530ceca0a4baee688eeb96df88b98b5b3c36150fef3575d96c03828eab8",
+    "detector_selection": "55a377c51df66208136938a01d348a3c60c763481bfdd7bf1fdf98617a729e69"
+  },
+  "regional_data": {
+    "sha256": "ba7e7c6d12f389701ec1e3cb63c988e255574db36d344389dde5d3cc0fac632b",
+    "audit_sha256": "be3486a962613f04ef0289b5ecc0a89f52b2f9fbfe7e6f6a9648f1dd742154d4",
+    "manifest_sha256": "28d70591229877c044bc47cc9b9f3bdd15f8b86cc72dc86a383fb6f57369c01b",
+    "source_sha256": "828e41d9ad36e122437ad0de832defd58e5ca2fc2501ba6f8f6190fe4bca140b",
+    "records": 828,
+    "sites": 3,
+    "years": [
+      2022,
+      2023,
+      2024
+    ],
+    "no_imputation": true
+  },
+  "primary_provenance": {
+    "temperature": {
+      "sha256": "56d887828fca75a82a70981c847e765e74385e73314837b3f942ae83403fd054",
+      "decoder": "eccodes-2.49.0",
+      "manifest_sha256": "9627d26da72cbb754acdf1a5236540ecb61ebf664b8572b69c13d53dd0f02cc5"
+    },
+    "covariates": {
+      "sha256": "c9d79b4ff1cce1f0ecff356271e35bb1ad073732b1147e64f6cb7b698a4bb1fc",
+      "manifest_sha256": "c5bcf552f2c2b42c7963e0bdfa407427d76b5d0deb9ef998cb34a638a4247bd0",
+      "decoder": "eccodes"
+    },
+    "humidity": {
+      "sha256": "69b3f396d92ae125bb519871f902b08973533a1ff3dd828209dece60c4bfefe5",
+      "manifest_sha256": "19dd14b9769430e340383a64608cd347a6ddfddc0d73aaea2d8e6f5f0fc0ee9c",
+      "decoder": "eccodes"
+    },
+    "observations": {
+      "2022": {
+        "url": "https://data.meteostat.net/hourly/2022/34929.csv.gz",
+        "sha256": "316ccc650a1f2107a502b873c27e9950a291e20b01b96772a564c7489f87f595",
+        "retrieved_at_utc": "2026-10-12T09:56:24.738802+00:00",
+        "bytes": 72009,
+        "content_type": "application/x-gzip"
+      },
+      "2023": {
+        "url": "https://data.meteostat.net/hourly/2023/34929.csv.gz",
+        "sha256": "c302798573f4ae7e8553394b4ed5fe4551ca2ec4703aef3e6dd82edebaa2271f",
+        "retrieved_at_utc": "2026-10-12T09:56:26.032553+00:00",
+        "bytes": 76648,
+        "content_type": "application/x-gzip"
+      },
+      "2024": {
+        "url": "https://data.meteostat.net/hourly/2024/34929.csv.gz",
+        "sha256": "b5412a30c55c88e0850ea151cd5237bb68ccc1364142c79656fdd3fbf76a1e01",
+        "retrieved_at_utc": "2026-10-12T09:56:28.208852+00:00",
+        "bytes": 76330,
+        "content_type": "application/x-gzip"
+      }
+    },
+    "annual_wind_audit": {
+      "2022": {
+        "accepted": 8756,
+        "missing_or_excluded_source": 4
+      },
+      "2023": {
+        "accepted": 8756,
+        "missing_or_excluded_source": 4
+      },
+      "2024": {
+        "accepted": 8768,
+        "missing_or_excluded_source": 16
+      }
+    }
+  },
+  "reference_config_sha256": {
+    "frost_study.json": "e5445ee1d4276d2aec67c856e719f8bb749e2d3d7251dd4232146b6f5a9b6b58",
+    "model_study.json": "f2239359fdfa83be0c42804cb9cb7aa34497da07bf52a44e1b0d31d4bb7aaa5d",
+    "single_run.json": "9da4f1d484c10a3183795dda9570b99dc008143fd90a326a01485eb2f25328aa"
+  },
+  "protocol": {
+    "schema_version": 1,
+    "train_years": [
+      2022,
+      2023
+    ],
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      }
+    ],
+    "evaluation_years": [
+      2025,
+      2026
+    ],
+    "weather_thresholds_c": [
+      -3,
+      -2,
+      -1,
+      0
+    ],
+    "neighbors": [
+      16,
+      32,
+      64
+    ],
+    "windows": [
+      "station",
+      "regional"
+    ],
+    "decision_thresholds": [
+      0.1,
+      0.25,
+      0.5
+    ],
+    "crossfit_date_blocks": 6,
+    "calibration_c": 1.0,
+    "minimum_calibration_nights": 50,
+    "minimum_calibration_events": 5,
+    "duration_quantiles": [
+      0.1,
+      0.9
+    ],
+    "preparation_hours_for_research_score": 2,
+    "selection": "Preserve legacy detection: validation misses<=legacy and false_alarms<=legacy; then Brier at0, cold onset/duration balanced error; registry tie order. Diagnostic best Brier frozen before controls. No field promotion.",
+    "scope": "Joint whole-night temperature scenarios; calibration on excluded whole-date blocks only; no crop-damage probabilities. Original point and detector immutable controls. All probabilities research-only.",
+    "source": "One GFS06UTC run,14 hours19–09MSK, original station plus audited primary ISD-Lite development sites; no spatial/time interpolation of truth",
+    "status": "2025–2026 previously viewed and never used for fitting/calibration/choice; heldout data not a new blind test"
+  },
+  "winner": "legacy",
+  "diagnostic": "station_32@0.1",
+  "matched_station": "station_32@0.1",
+  "models": {
+    "station_32@0.1": {
+      "model": "station_32-0.1-model.json",
+      "calibration": "station_32-0.1-calibration.json"
+    }
+  },
+  "artifact_sha256": {
+    "station_32-0.1-model.json": "6467cab400cc7030cf3d402264943cad4b85eca719d62535484a4ab5fbb40295",
+    "station_32-0.1-calibration.json": "afaf73f51f8e5a2a4f7d7455c7bcf07e87828903bbd6e71b7bd975f78aae01c2"
+  },
+  "validation": {
+    "legacy": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 5,
+      "misses": 2,
+      "false_alarms": 1,
+      "correct_negatives": 175,
+      "brier": 0.01595128495475051,
+      "cold_brier": 0.2742147088470364,
+      "warm_brier": 0.005679444231761869,
+      "cold_duration_mae_h": 3.857142857142857,
+      "early_onset_edge_mae_h": 4.4,
+      "onset_pairs": 5,
+      "late_edge_fraction": 0.8,
+      "range_coverage": null,
+      "mean_range_width_c": null,
+      "cold_range_width_c": null,
+      "cold_interval_score": null,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 170,
+          "events": 0,
+          "mean_probability": 0.010986861998282374,
+          "event_frequency": 0.0
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 7,
+          "events": 2,
+          "mean_probability": 0.13401649141931715,
+          "event_frequency": 0.2857142857142857
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 1,
+          "events": 1,
+          "mean_probability": 0.46718457529032503,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 1,
+          "events": 1,
+          "mean_probability": 0.6229312799739563,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 4,
+          "events": 3,
+          "mean_probability": 0.9302940482933876,
+          "event_frequency": 0.75
+        }
+      ]
+    },
+    "station_16@0.1": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 6,
+      "misses": 1,
+      "false_alarms": 9,
+      "correct_negatives": 167,
+      "brier": 0.020262939163717738,
+      "cold_brier": 0.37946289626645596,
+      "warm_brier": 0.005976577233495192,
+      "cold_duration_mae_h": 3.7142857142857144,
+      "early_onset_edge_mae_h": 4.0,
+      "onset_pairs": 6,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.8469945355191257,
+      "mean_range_width_c": 5.842013319672123,
+      "cold_range_width_c": 5.634881417410717,
+      "cold_interval_score": 18.282467912946483,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 168,
+          "events": 1,
+          "mean_probability": 0.0023842026949135544,
+          "event_frequency": 0.005952380952380952
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 8,
+          "events": 1,
+          "mean_probability": 0.1556842493434949,
+          "event_frequency": 0.125
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 2,
+          "events": 1,
+          "mean_probability": 0.29949620747013006,
+          "event_frequency": 0.5
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.5643742111099574,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.9409250534360828,
+          "event_frequency": 0.6666666666666666
+        }
+      ]
+    },
+    "station_16@0.25": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 5,
+      "misses": 2,
+      "false_alarms": 2,
+      "correct_negatives": 174,
+      "brier": 0.020262939163717738,
+      "cold_brier": 0.37946289626645596,
+      "warm_brier": 0.005976577233495192,
+      "cold_duration_mae_h": 3.2857142857142856,
+      "early_onset_edge_mae_h": 2.8,
+      "onset_pairs": 5,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.8469945355191257,
+      "mean_range_width_c": 5.842013319672123,
+      "cold_range_width_c": 5.634881417410717,
+      "cold_interval_score": 18.282467912946483,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 168,
+          "events": 1,
+          "mean_probability": 0.0023842026949135544,
+          "event_frequency": 0.005952380952380952
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 8,
+          "events": 1,
+          "mean_probability": 0.1556842493434949,
+          "event_frequency": 0.125
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 2,
+          "events": 1,
+          "mean_probability": 0.29949620747013006,
+          "event_frequency": 0.5
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.5643742111099574,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.9409250534360828,
+          "event_frequency": 0.6666666666666666
+        }
+      ]
+    },
+    "station_16@0.5": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 4,
+      "misses": 3,
+      "false_alarms": 1,
+      "correct_negatives": 175,
+      "brier": 0.020262939163717738,
+      "cold_brier": 0.37946289626645596,
+      "warm_brier": 0.005976577233495192,
+      "cold_duration_mae_h": 3.5714285714285716,
+      "early_onset_edge_mae_h": 3.25,
+      "onset_pairs": 4,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.8469945355191257,
+      "mean_range_width_c": 5.842013319672123,
+      "cold_range_width_c": 5.634881417410717,
+      "cold_interval_score": 18.282467912946483,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 168,
+          "events": 1,
+          "mean_probability": 0.0023842026949135544,
+          "event_frequency": 0.005952380952380952
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 8,
+          "events": 1,
+          "mean_probability": 0.1556842493434949,
+          "event_frequency": 0.125
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 2,
+          "events": 1,
+          "mean_probability": 0.29949620747013006,
+          "event_frequency": 0.5
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.5643742111099574,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.9409250534360828,
+          "event_frequency": 0.6666666666666666
+        }
+      ]
+    },
+    "station_32@0.1": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 5,
+      "misses": 2,
+      "false_alarms": 9,
+      "correct_negatives": 167,
+      "brier": 0.01981993390134786,
+      "cold_brier": 0.372444883061806,
+      "warm_brier": 0.005795077968829637,
+      "cold_duration_mae_h": 3.2857142857142856,
+      "early_onset_edge_mae_h": 1.8,
+      "onset_pairs": 5,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.7868852459016393,
+      "mean_range_width_c": 5.242490714651631,
+      "cold_range_width_c": 5.719078543526791,
+      "cold_interval_score": 14.518353097098311,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 169,
+          "events": 2,
+          "mean_probability": 0.0026545180998452473,
+          "event_frequency": 0.011834319526627219
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 7,
+          "events": 0,
+          "mean_probability": 0.16707416784577642,
+          "event_frequency": 0.0
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 2,
+          "events": 1,
+          "mean_probability": 0.29393122892120477,
+          "event_frequency": 0.5
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.5715679609870824,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.9015939151722917,
+          "event_frequency": 0.6666666666666666
+        }
+      ]
+    },
+    "station_32@0.25": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 5,
+      "misses": 2,
+      "false_alarms": 2,
+      "correct_negatives": 174,
+      "brier": 0.01981993390134786,
+      "cold_brier": 0.372444883061806,
+      "warm_brier": 0.005795077968829637,
+      "cold_duration_mae_h": 3.2857142857142856,
+      "early_onset_edge_mae_h": 1.8,
+      "onset_pairs": 5,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.7868852459016393,
+      "mean_range_width_c": 5.242490714651631,
+      "cold_range_width_c": 5.719078543526791,
+      "cold_interval_score": 14.518353097098311,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 169,
+          "events": 2,
+          "mean_probability": 0.0026545180998452473,
+          "event_frequency": 0.011834319526627219
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 7,
+          "events": 0,
+          "mean_probability": 0.16707416784577642,
+          "event_frequency": 0.0
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 2,
+          "events": 1,
+          "mean_probability": 0.29393122892120477,
+          "event_frequency": 0.5
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.5715679609870824,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.9015939151722917,
+          "event_frequency": 0.6666666666666666
+        }
+      ]
+    },
+    "station_32@0.5": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 4,
+      "misses": 3,
+      "false_alarms": 1,
+      "correct_negatives": 175,
+      "brier": 0.01981993390134786,
+      "cold_brier": 0.372444883061806,
+      "warm_brier": 0.005795077968829637,
+      "cold_duration_mae_h": 3.5714285714285716,
+      "early_onset_edge_mae_h": 2.0,
+      "onset_pairs": 4,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.7868852459016393,
+      "mean_range_width_c": 5.242490714651631,
+      "cold_range_width_c": 5.719078543526791,
+      "cold_interval_score": 14.518353097098311,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 169,
+          "events": 2,
+          "mean_probability": 0.0026545180998452473,
+          "event_frequency": 0.011834319526627219
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 7,
+          "events": 0,
+          "mean_probability": 0.16707416784577642,
+          "event_frequency": 0.0
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 2,
+          "events": 1,
+          "mean_probability": 0.29393122892120477,
+          "event_frequency": 0.5
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.5715679609870824,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.9015939151722917,
+          "event_frequency": 0.6666666666666666
+        }
+      ]
+    },
+    "station_64@0.1": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 5,
+      "misses": 2,
+      "false_alarms": 9,
+      "correct_negatives": 167,
+      "brier": 0.021027981543201926,
+      "cold_brier": 0.3844522717714808,
+      "warm_brier": 0.006573606363668105,
+      "cold_duration_mae_h": 3.7142857142857144,
+      "early_onset_edge_mae_h": 1.6,
+      "onset_pairs": 5,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.7704918032786885,
+      "mean_range_width_c": 5.026192780374825,
+      "cold_range_width_c": 5.339107840401782,
+      "cold_interval_score": 20.191716657366197,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 169,
+          "events": 2,
+          "mean_probability": 0.0025818372145801132,
+          "event_frequency": 0.011834319526627219
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 6,
+          "events": 1,
+          "mean_probability": 0.19258642689350067,
+          "event_frequency": 0.16666666666666666
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 3,
+          "events": 0,
+          "mean_probability": 0.31001671574308426,
+          "event_frequency": 0.0
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.6025855037344983,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.8899211138471315,
+          "event_frequency": 0.6666666666666666
+        }
+      ]
+    },
+    "station_64@0.25": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 4,
+      "misses": 3,
+      "false_alarms": 4,
+      "correct_negatives": 172,
+      "brier": 0.021027981543201926,
+      "cold_brier": 0.3844522717714808,
+      "warm_brier": 0.006573606363668105,
+      "cold_duration_mae_h": 4.0,
+      "early_onset_edge_mae_h": 1.75,
+      "onset_pairs": 4,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.7704918032786885,
+      "mean_range_width_c": 5.026192780374825,
+      "cold_range_width_c": 5.339107840401782,
+      "cold_interval_score": 20.191716657366197,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 169,
+          "events": 2,
+          "mean_probability": 0.0025818372145801132,
+          "event_frequency": 0.011834319526627219
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 6,
+          "events": 1,
+          "mean_probability": 0.19258642689350067,
+          "event_frequency": 0.16666666666666666
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 3,
+          "events": 0,
+          "mean_probability": 0.31001671574308426,
+          "event_frequency": 0.0
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.6025855037344983,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.8899211138471315,
+          "event_frequency": 0.6666666666666666
+        }
+      ]
+    },
+    "station_64@0.5": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 4,
+      "misses": 3,
+      "false_alarms": 1,
+      "correct_negatives": 175,
+      "brier": 0.021027981543201926,
+      "cold_brier": 0.3844522717714808,
+      "warm_brier": 0.006573606363668105,
+      "cold_duration_mae_h": 4.0,
+      "early_onset_edge_mae_h": 1.75,
+      "onset_pairs": 4,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.7704918032786885,
+      "mean_range_width_c": 5.026192780374825,
+      "cold_range_width_c": 5.339107840401782,
+      "cold_interval_score": 20.191716657366197,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 169,
+          "events": 2,
+          "mean_probability": 0.0025818372145801132,
+          "event_frequency": 0.011834319526627219
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 6,
+          "events": 1,
+          "mean_probability": 0.19258642689350067,
+          "event_frequency": 0.16666666666666666
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 3,
+          "events": 0,
+          "mean_probability": 0.31001671574308426,
+          "event_frequency": 0.0
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.6025855037344983,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.8899211138471315,
+          "event_frequency": 0.6666666666666666
+        }
+      ]
+    },
+    "regional_16@0.1": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 4,
+      "misses": 3,
+      "false_alarms": 4,
+      "correct_negatives": 172,
+      "brier": 0.023775102839218087,
+      "cold_brier": 0.5936937610503764,
+      "warm_brier": 0.0011078834785470165,
+      "cold_duration_mae_h": 3.142857142857143,
+      "early_onset_edge_mae_h": 2.75,
+      "onset_pairs": 4,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.8688524590163934,
+      "mean_range_width_c": 6.121179119172639,
+      "cold_range_width_c": 5.845078124999994,
+      "cold_interval_score": 28.579494977678603,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 175,
+          "events": 3,
+          "mean_probability": 0.004676214258485864,
+          "event_frequency": 0.017142857142857144
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 4,
+          "events": 1,
+          "mean_probability": 0.12699142031799254,
+          "event_frequency": 0.25
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 2,
+          "events": 1,
+          "mean_probability": 0.3163565672582991,
+          "event_frequency": 0.5
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.655381194414598,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        }
+      ]
+    },
+    "regional_16@0.25": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 3,
+      "misses": 4,
+      "false_alarms": 1,
+      "correct_negatives": 175,
+      "brier": 0.023775102839218087,
+      "cold_brier": 0.5936937610503764,
+      "warm_brier": 0.0011078834785470165,
+      "cold_duration_mae_h": 3.7142857142857144,
+      "early_onset_edge_mae_h": 2.3333333333333335,
+      "onset_pairs": 3,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.8688524590163934,
+      "mean_range_width_c": 6.121179119172639,
+      "cold_range_width_c": 5.845078124999994,
+      "cold_interval_score": 28.579494977678603,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 175,
+          "events": 3,
+          "mean_probability": 0.004676214258485864,
+          "event_frequency": 0.017142857142857144
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 4,
+          "events": 1,
+          "mean_probability": 0.12699142031799254,
+          "event_frequency": 0.25
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 2,
+          "events": 1,
+          "mean_probability": 0.3163565672582991,
+          "event_frequency": 0.5
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.655381194414598,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        }
+      ]
+    },
+    "regional_16@0.5": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 2,
+      "misses": 5,
+      "false_alarms": 0,
+      "correct_negatives": 176,
+      "brier": 0.023775102839218087,
+      "cold_brier": 0.5936937610503764,
+      "warm_brier": 0.0011078834785470165,
+      "cold_duration_mae_h": 4.571428571428571,
+      "early_onset_edge_mae_h": 2.5,
+      "onset_pairs": 2,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.8688524590163934,
+      "mean_range_width_c": 6.121179119172639,
+      "cold_range_width_c": 5.845078124999994,
+      "cold_interval_score": 28.579494977678603,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 175,
+          "events": 3,
+          "mean_probability": 0.004676214258485864,
+          "event_frequency": 0.017142857142857144
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 4,
+          "events": 1,
+          "mean_probability": 0.12699142031799254,
+          "event_frequency": 0.25
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 2,
+          "events": 1,
+          "mean_probability": 0.3163565672582991,
+          "event_frequency": 0.5
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 2,
+          "events": 2,
+          "mean_probability": 0.655381194414598,
+          "event_frequency": 1.0
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        }
+      ]
+    },
+    "regional_32@0.1": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 5,
+      "misses": 2,
+      "false_alarms": 3,
+      "correct_negatives": 173,
+      "brier": 0.02564640764799368,
+      "cold_brier": 0.6459849913142389,
+      "warm_brier": 0.0009738503430861978,
+      "cold_duration_mae_h": 3.4285714285714284,
+      "early_onset_edge_mae_h": 1.8,
+      "onset_pairs": 5,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.8469945355191257,
+      "mean_range_width_c": 5.734318260651465,
+      "cold_range_width_c": 5.933374023437482,
+      "cold_interval_score": 28.523803710937734,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 175,
+          "events": 2,
+          "mean_probability": 0.004975741295482996,
+          "event_frequency": 0.011428571428571429
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 5,
+          "events": 3,
+          "mean_probability": 0.15228840766394705,
+          "event_frequency": 0.6
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.4110789333544187,
+          "event_frequency": 0.6666666666666666
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        }
+      ]
+    },
+    "regional_32@0.25": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 2,
+      "misses": 5,
+      "false_alarms": 1,
+      "correct_negatives": 175,
+      "brier": 0.02564640764799368,
+      "cold_brier": 0.6459849913142389,
+      "warm_brier": 0.0009738503430861978,
+      "cold_duration_mae_h": 5.0,
+      "early_onset_edge_mae_h": 3.5,
+      "onset_pairs": 2,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.8469945355191257,
+      "mean_range_width_c": 5.734318260651465,
+      "cold_range_width_c": 5.933374023437482,
+      "cold_interval_score": 28.523803710937734,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 175,
+          "events": 2,
+          "mean_probability": 0.004975741295482996,
+          "event_frequency": 0.011428571428571429
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 5,
+          "events": 3,
+          "mean_probability": 0.15228840766394705,
+          "event_frequency": 0.6
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.4110789333544187,
+          "event_frequency": 0.6666666666666666
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        }
+      ]
+    },
+    "regional_32@0.5": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 0,
+      "misses": 7,
+      "false_alarms": 0,
+      "correct_negatives": 176,
+      "brier": 0.02564640764799368,
+      "cold_brier": 0.6459849913142389,
+      "warm_brier": 0.0009738503430861978,
+      "cold_duration_mae_h": 5.857142857142857,
+      "early_onset_edge_mae_h": null,
+      "onset_pairs": 0,
+      "late_edge_fraction": null,
+      "range_coverage": 0.8469945355191257,
+      "mean_range_width_c": 5.734318260651465,
+      "cold_range_width_c": 5.933374023437482,
+      "cold_interval_score": 28.523803710937734,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 175,
+          "events": 2,
+          "mean_probability": 0.004975741295482996,
+          "event_frequency": 0.011428571428571429
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 5,
+          "events": 3,
+          "mean_probability": 0.15228840766394705,
+          "event_frequency": 0.6
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 3,
+          "events": 2,
+          "mean_probability": 0.4110789333544187,
+          "event_frequency": 0.6666666666666666
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        }
+      ]
+    },
+    "regional_64@0.1": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 5,
+      "misses": 2,
+      "false_alarms": 6,
+      "correct_negatives": 170,
+      "brier": 0.024406988549184796,
+      "cold_brier": 0.6087992920085384,
+      "warm_brier": 0.0011641128434150506,
+      "cold_duration_mae_h": 2.2857142857142856,
+      "early_onset_edge_mae_h": 2.8,
+      "onset_pairs": 5,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.8524590163934426,
+      "mean_range_width_c": 5.785235188802081,
+      "cold_range_width_c": 6.632769949776771,
+      "cold_interval_score": 24.82884974888401,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 172,
+          "events": 2,
+          "mean_probability": 0.004724273762619753,
+          "event_frequency": 0.011627906976744186
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 7,
+          "events": 2,
+          "mean_probability": 0.13699896939834758,
+          "event_frequency": 0.2857142857142857
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 4,
+          "events": 3,
+          "mean_probability": 0.3717290872056023,
+          "event_frequency": 0.75
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        }
+      ]
+    },
+    "regional_64@0.25": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 3,
+      "misses": 4,
+      "false_alarms": 1,
+      "correct_negatives": 175,
+      "brier": 0.024406988549184796,
+      "cold_brier": 0.6087992920085384,
+      "warm_brier": 0.0011641128434150506,
+      "cold_duration_mae_h": 3.4285714285714284,
+      "early_onset_edge_mae_h": 3.6666666666666665,
+      "onset_pairs": 3,
+      "late_edge_fraction": 0.0,
+      "range_coverage": 0.8524590163934426,
+      "mean_range_width_c": 5.785235188802081,
+      "cold_range_width_c": 6.632769949776771,
+      "cold_interval_score": 24.82884974888401,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 172,
+          "events": 2,
+          "mean_probability": 0.004724273762619753,
+          "event_frequency": 0.011627906976744186
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 7,
+          "events": 2,
+          "mean_probability": 0.13699896939834758,
+          "event_frequency": 0.2857142857142857
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 4,
+          "events": 3,
+          "mean_probability": 0.3717290872056023,
+          "event_frequency": 0.75
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        }
+      ]
+    },
+    "regional_64@0.5": {
+      "complete_nights": 183,
+      "excluded_nights": 1,
+      "hits": 0,
+      "misses": 7,
+      "false_alarms": 0,
+      "correct_negatives": 176,
+      "brier": 0.024406988549184796,
+      "cold_brier": 0.6087992920085384,
+      "warm_brier": 0.0011641128434150506,
+      "cold_duration_mae_h": 5.857142857142857,
+      "early_onset_edge_mae_h": null,
+      "onset_pairs": 0,
+      "late_edge_fraction": null,
+      "range_coverage": 0.8524590163934426,
+      "mean_range_width_c": 5.785235188802081,
+      "cold_range_width_c": 6.632769949776771,
+      "cold_interval_score": 24.82884974888401,
+      "reliability": [
+        {
+          "lower": 0,
+          "upper": 0.1,
+          "nights": 172,
+          "events": 2,
+          "mean_probability": 0.004724273762619753,
+          "event_frequency": 0.011627906976744186
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.25,
+          "nights": 7,
+          "events": 2,
+          "mean_probability": 0.13699896939834758,
+          "event_frequency": 0.2857142857142857
+        },
+        {
+          "lower": 0.25,
+          "upper": 0.5,
+          "nights": 4,
+          "events": 3,
+          "mean_probability": 0.3717290872056023,
+          "event_frequency": 0.75
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.75,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        },
+        {
+          "lower": 0.75,
+          "upper": 1,
+          "nights": 0,
+          "events": 0,
+          "mean_probability": null,
+          "event_frequency": null
+        }
+      ]
+    }
+  },
+  "gates": {
+    "legacy": {
+      "misses_not_more": true,
+      "false_alarms_not_more": true,
+      "brier_not_worse": true
+    },
+    "station_16@0.1": {
+      "misses_not_more": true,
+      "false_alarms_not_more": false,
+      "brier_not_worse": false
+    },
+    "station_16@0.25": {
+      "misses_not_more": true,
+      "false_alarms_not_more": false,
+      "brier_not_worse": false
+    },
+    "station_16@0.5": {
+      "misses_not_more": false,
+      "false_alarms_not_more": true,
+      "brier_not_worse": false
+    },
+    "station_32@0.1": {
+      "misses_not_more": true,
+      "false_alarms_not_more": false,
+      "brier_not_worse": false
+    },
+    "station_32@0.25": {
+      "misses_not_more": true,
+      "false_alarms_not_more": false,
+      "brier_not_worse": false
+    },
+    "station_32@0.5": {
+      "misses_not_more": false,
+      "false_alarms_not_more": true,
+      "brier_not_worse": false
+    },
+    "station_64@0.1": {
+      "misses_not_more": true,
+      "false_alarms_not_more": false,
+      "brier_not_worse": false
+    },
+    "station_64@0.25": {
+      "misses_not_more": false,
+      "false_alarms_not_more": false,
+      "brier_not_worse": false
+    },
+    "station_64@0.5": {
+      "misses_not_more": false,
+      "false_alarms_not_more": true,
+      "brier_not_worse": false
+    },
+    "regional_16@0.1": {
+      "misses_not_more": false,
+      "false_alarms_not_more": false,
+      "brier_not_worse": false
+    },
+    "regional_16@0.25": {
+      "misses_not_more": false,
+      "false_alarms_not_more": true,
+      "brier_not_worse": false
+    },
+    "regional_16@0.5": {
+      "misses_not_more": false,
+      "false_alarms_not_more": true,
+      "brier_not_worse": false
+    },
+    "regional_32@0.1": {
+      "misses_not_more": true,
+      "false_alarms_not_more": false,
+      "brier_not_worse": false
+    },
+    "regional_32@0.25": {
+      "misses_not_more": false,
+      "false_alarms_not_more": true,
+      "brier_not_worse": false
+    },
+    "regional_32@0.5": {
+      "misses_not_more": false,
+      "false_alarms_not_more": true,
+      "brier_not_worse": false
+    },
+    "regional_64@0.1": {
+      "misses_not_more": true,
+      "false_alarms_not_more": false,
+      "brier_not_worse": false
+    },
+    "regional_64@0.25": {
+      "misses_not_more": false,
+      "false_alarms_not_more": true,
+      "brier_not_worse": false
+    },
+    "regional_64@0.5": {
+      "misses_not_more": false,
+      "false_alarms_not_more": true,
+      "brier_not_worse": false
+    }
+  },
+  "training_counts": [
+    {
+      "fold": {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      "spec": "station_16",
+      "nights": 92,
+      "cold_nights": 18,
+      "cold_dates": 18,
+      "sites": [
+        "349290-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 8,
+          "nights": 92
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 10,
+          "nights": 92
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 15,
+          "nights": 92
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 18,
+          "nights": 92
+        }
+      }
+    },
+    {
+      "fold": {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      "spec": "station_32",
+      "nights": 92,
+      "cold_nights": 18,
+      "cold_dates": 18,
+      "sites": [
+        "349290-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 8,
+          "nights": 92
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 10,
+          "nights": 92
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 15,
+          "nights": 92
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 18,
+          "nights": 92
+        }
+      }
+    },
+    {
+      "fold": {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      "spec": "station_64",
+      "nights": 92,
+      "cold_nights": 18,
+      "cold_dates": 18,
+      "sites": [
+        "349290-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 8,
+          "nights": 92
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 10,
+          "nights": 92
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 15,
+          "nights": 92
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 18,
+          "nights": 92
+        }
+      }
+    },
+    {
+      "fold": {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      "spec": "regional_16",
+      "nights": 265,
+      "cold_nights": 36,
+      "cold_dates": 18,
+      "sites": [
+        "349290-99999",
+        "370010-99999",
+        "371710-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 18,
+          "nights": 265
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 23,
+          "nights": 265
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 30,
+          "nights": 265
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 36,
+          "nights": 265
+        }
+      }
+    },
+    {
+      "fold": {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      "spec": "regional_32",
+      "nights": 265,
+      "cold_nights": 36,
+      "cold_dates": 18,
+      "sites": [
+        "349290-99999",
+        "370010-99999",
+        "371710-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 18,
+          "nights": 265
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 23,
+          "nights": 265
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 30,
+          "nights": 265
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 36,
+          "nights": 265
+        }
+      }
+    },
+    {
+      "fold": {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      "spec": "regional_64",
+      "nights": 265,
+      "cold_nights": 36,
+      "cold_dates": 18,
+      "sites": [
+        "349290-99999",
+        "370010-99999",
+        "371710-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 18,
+          "nights": 265
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 23,
+          "nights": 265
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 30,
+          "nights": 265
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 36,
+          "nights": 265
+        }
+      }
+    },
+    {
+      "fold": {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      },
+      "spec": "station_16",
+      "nights": 184,
+      "cold_nights": 21,
+      "cold_dates": 21,
+      "sites": [
+        "349290-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 9,
+          "nights": 184
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 11,
+          "nights": 184
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 16,
+          "nights": 184
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 21,
+          "nights": 184
+        }
+      }
+    },
+    {
+      "fold": {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      },
+      "spec": "station_32",
+      "nights": 184,
+      "cold_nights": 21,
+      "cold_dates": 21,
+      "sites": [
+        "349290-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 9,
+          "nights": 184
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 11,
+          "nights": 184
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 16,
+          "nights": 184
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 21,
+          "nights": 184
+        }
+      }
+    },
+    {
+      "fold": {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      },
+      "spec": "station_64",
+      "nights": 184,
+      "cold_nights": 21,
+      "cold_dates": 21,
+      "sites": [
+        "349290-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 9,
+          "nights": 184
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 11,
+          "nights": 184
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 16,
+          "nights": 184
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 21,
+          "nights": 184
+        }
+      }
+    },
+    {
+      "fold": {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      },
+      "spec": "regional_16",
+      "nights": 527,
+      "cold_nights": 41,
+      "cold_dates": 22,
+      "sites": [
+        "349290-99999",
+        "370010-99999",
+        "371710-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 20,
+          "nights": 527
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 25,
+          "nights": 527
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 32,
+          "nights": 527
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 41,
+          "nights": 527
+        }
+      }
+    },
+    {
+      "fold": {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      },
+      "spec": "regional_32",
+      "nights": 527,
+      "cold_nights": 41,
+      "cold_dates": 22,
+      "sites": [
+        "349290-99999",
+        "370010-99999",
+        "371710-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 20,
+          "nights": 527
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 25,
+          "nights": 527
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 32,
+          "nights": 527
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 41,
+          "nights": 527
+        }
+      }
+    },
+    {
+      "fold": {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      },
+      "spec": "regional_64",
+      "nights": 527,
+      "cold_nights": 41,
+      "cold_dates": 22,
+      "sites": [
+        "349290-99999",
+        "370010-99999",
+        "371710-99999"
+      ],
+      "calibration": {
+        "-3": {
+          "status": "fitted_oof",
+          "events": 20,
+          "nights": 527
+        },
+        "-2": {
+          "status": "fitted_oof",
+          "events": 25,
+          "nights": 527
+        },
+        "-1": {
+          "status": "fitted_oof",
+          "events": 32,
+          "nights": 527
+        },
+        "0": {
+          "status": "fitted_oof",
+          "events": 41,
+          "nights": 527
+        }
+      }
+    }
+  ],
+  "selection_saved_at_utc": "2026-10-13T22:24:08.342241+00:00",
+  "observations_loaded_years": [
+    2022,
+    2023,
+    2024
+  ],
+  "scope": "research comparison only; no orchard validated; original point/detector preserved"
+}

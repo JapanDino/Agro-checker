@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "created_at_utc": "2026-10-19T21:54:27.711045+00:00",
+  "source_2024_sha256": "b111d6234a863b7fe38aadd608ad7459138a4cd3cc1b1f0282b4be866448ccbe",
+  "legacy_sha256": "b518c04fc57182e5c31abb6db72286c178a6d4d0a6b06a6ef15c75acd65790dc",
+  "holdout_ids": [
+    "R23",
+    "R24",
+    "R25",
+    "R26",
+    "R27"
+  ],
+  "point": "Legacy temporal_ridge_100 and both indices untouched. NDVI interval untouched. Legacy point-derived spectral detector untouched.",
+  "residual_archive": "2024 only. Before/at legacy fit_max_target: causal issue-date OOF of same point algorithm, target<issue. After fit_max_target: exact frozen legacy point, never trained on these targets. No in-sample point errors.",
+  "outer_starts": [
+    "2024-08-01",
+    "2024-09-01",
+    "2024-10-01"
+  ],
+  "outer_policy": "Fixed legacy point, issue in month and target before next month. Residual-fit/calibration strictly before outer start.",
+  "meta_split": "Last 8 known issue dates for calibration; residual-fit target < first calibration issue. OOF transfer before July is approximate, not exact conditional coverage.",
+  "candidates": [
+    {
+      "id": "legacy",
+      "kind": "legacy"
+    },
+    {
+      "id": "event_q05_pad000",
+      "kind": "event_envelope",
+      "q": 0.05,
+      "pad": 0
+    },
+    {
+      "id": "event_q05_pad025",
+      "kind": "event_envelope",
+      "q": 0.05,
+      "pad": 0.025
+    },
+    {
+      "id": "event_q05_pad050",
+      "kind": "event_envelope",
+      "q": 0.05,
+      "pad": 0.05
+    },
+    {
+      "id": "event_q10_pad000",
+      "kind": "event_envelope",
+      "q": 0.1,
+      "pad": 0
+    },
+    {
+      "id": "event_q10_pad025",
+      "kind": "event_envelope",
+      "q": 0.1,
+      "pad": 0.025
+    },
+    {
+      "id": "event_q10_pad050",
+      "kind": "event_envelope",
+      "q": 0.1,
+      "pad": 0.05
+    },
+    {
+      "id": "event_date_min",
+      "kind": "event_date_min"
+    },
+    {
+      "id": "conditional_weight3",
+      "kind": "conditional",
+      "weight": 3
+    },
+    {
+      "id": "scenario_lower",
+      "kind": "scenario"
+    }
+  ],
+  "tail_hyperparameters": {
+    "iterations": 120,
+    "depth": 2,
+    "learning_rate": 0.05,
+    "l2_leaf_reg": 5,
+    "random_seed": 202410,
+    "thread_count": 2
+  },
+  "features": "Current and previous features only: legacy x[:7], absolute slopes, 7-day momentum. No future event/target/residual/phase.",
+  "tails": "Event-envelope lower residual quantile .05/.10 with fixed pad0/.025/.05; upper overall .95. Date-min lower is minimum event residual. Conditional uses .05/.95 with eventweight3. Scenario lower uses .10 fitted on actual declines only, upper overall .95 constant.",
+  "calibration": "Expand lower by max(0, weighted95th overall deficit, weighted90th event deficit); for <3 event dates use event maximum. Expand upper by weighted95th overall deficit. Never narrow on calibration.",
+  "coverage_floor": 0.9,
+  "decline_floor": 0.9,
+  "width_limit": 1.1,
+  "selection": "Only 2024: require pooled and every supported outer fold overall>=.90 and decline>=.90, mean width<=110% legacy. Minimize date-balanced 90% interval score with eventweight3; tie follows candidate order. Legacy fallback if no new candidate passes.",
+  "original_comparator": "Legacy radius was itself calibrated on 2024; its 2024 coverage is optimistic and not independent. Fixed radius supplies product width budget, not a blind validation claim.",
+  "test_constraints": "NDMI decline coverage improves vs legacy on all2026 and spatial2026, overall>=.90 and width<=110% legacy. Report mean/tail widths, event counts and exact legacy point/alarm identity.",
+  "test": "One frozen choice only; 2026 already studied, not pristine blind. No 2025 data or post-test fitting. No production promotion.",
+  "event": "NDMI future-current<=-0.10, spectral proxy not moisture, crop damage, disease or inspection utility",
+  "archive": "Clear-sky fixed original cohort only. Reprocessed acquisition-date archive is not proven historical live availability."
+}

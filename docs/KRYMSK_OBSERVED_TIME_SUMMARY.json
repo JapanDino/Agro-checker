@@ -1,0 +1,1173 @@
+{
+  "experiment": {
+    "protocol": {
+      "schema": 1,
+      "station_id": "37002",
+      "station_latitude": 44.9109,
+      "station_longitude": 38.0053,
+      "development_years": [
+        2022,
+        2023,
+        2024
+      ],
+      "validation_years": [
+        2023,
+        2024
+      ],
+      "run_hour_utc": 6,
+      "scenario_issue_hour_utc": 15,
+      "observation_hours_utc": [
+        18,
+        21,
+        0,
+        3
+      ],
+      "forecast_leads": [
+        12,
+        15,
+        18,
+        21
+      ],
+      "target": "2m air temperature at exact archived observation time; not continuous night minimum",
+      "candidates": [
+        "gfs",
+        "bias",
+        "slot_bias",
+        "ridge_temperature_10",
+        "ridge_weather_10",
+        "ridge_weather_100",
+        "ridge_weather_1000"
+      ],
+      "selection": "Expanding-year validation: train2022->2023; train2022-2023->2024. Equal-year MAE; candidate requires >=5% reduction in both years, cold-slot MAE no worse in either year, and no additional false-cold complete sampled nights in either year. Otherwise retain GFS. Ties by registry order.",
+      "cold_threshold_c": 0,
+      "bootstrap": {
+        "unit": "7-night calendar blocks within each validation year",
+        "replicates": 2000,
+        "seed": 37002
+      },
+      "controls": "2025-2026 targets forbidden in preparation, fit and selection; no controls downloaded by this experiment",
+      "production_admission": false,
+      "detector": "Existing detector, probability, threshold, mask, timing and routing unchanged. Zero-crossings below are temperature diagnostics only."
+    },
+    "science_sha256": "ba8d0f6f56a44fe3cae227fced22e0bc8fb8383d5e4ed2fa95b833294a7377a3",
+    "dataset_meta_sha256": "03c0844fcc8a0ae2f4440b95b14aa3bcdb46bb34e6f3c00ada584edc57f735ed",
+    "dataset": {
+      "protocol_sha256": "374e63dcba172084fd233ebad542fd80a05cc84ffd2eb012bd37902fa01fdc1d",
+      "source_sha256": "2ff6d8cdeb99d085f7157936cedca23af2620288e4c03f5b214a6416899e5019",
+      "parents": {
+        "data\\working-zone-01\\research\\krymsk-three-hour-observations.json": "adb164fecd0384275ce98474f07792508721ee281eb8576269525aeda2e9cf5f",
+        "data\\working-zone-01\\research\\data-audit.json": "a44eb8cad3e556c988a0eecf23cb46b0a68860354b7fc02bd27527ba69eb6ff4",
+        "agro_checker\\farm_data_research.py": "1165938297b9e6c969ff598a3ddbb19d57edc78062f1ae8926f2cac0faa715bc",
+        "agro_checker\\regional_data.py": "ccd00515f3e4a7a6318c2e35e6efa8745536c423901b9aef38bbcb8bbe70c2e6",
+        "agro_checker\\product_data.py": "828e41d9ad36e122437ad0de832defd58e5ca2fc2501ba6f8f6190fe4bca140b",
+        "agro_checker\\pipeline.py": "ca9df01005727d08f5d26ddae16e4cbe4ccadec906f121193fbef776fffb267d",
+        "data\\working-zone-01\\research\\raw\\krymsk-2022-03.html": "6c69a0e60419edbd0efff607667ce614aa0631df82f5ae1bd55731fc47d9da2d",
+        "data\\working-zone-01\\research\\raw\\krymsk-2022-04.html": "d039c31b64d3cf363b287614e5e1d30cf65a1e1e898f428f63326d741f8f9d99",
+        "data\\working-zone-01\\research\\raw\\krymsk-2022-05.html": "c40b7f6c28153b36012ddd6a3e4f839ae1d308915c6e476a825a79365cb9d693",
+        "data\\working-zone-01\\research\\raw\\krymsk-2022-06-01.html": "e944828e61d52901077662db4546644374d1b9470f4a45455a90852cc6e6230c",
+        "data\\working-zone-01\\research\\raw\\krymsk-2023-03.html": "7091384ba8b3d260a509f6426f728c54d887dab9094cc1de6ea788c1dcbb34d7",
+        "data\\working-zone-01\\research\\raw\\krymsk-2023-04.html": "1effba75e26387b3fba2b41feac8453e0961789746b08484de632903f0955c93",
+        "data\\working-zone-01\\research\\raw\\krymsk-2023-05.html": "1b61c6a63a2fc8503043f8b677ee6c72136645ede5784835037c5d8165efa34b",
+        "data\\working-zone-01\\research\\raw\\krymsk-2023-06-01.html": "3d058c3ec9ea8e3728c3b1d8e8411b76db308c3e82eb23d1570ff1ade91219f1",
+        "data\\working-zone-01\\research\\raw\\krymsk-march2024-bot2.html": "08aff796fb92f9b0f692642573cc0c099aad285d9ecec91ad426fd33652b550b",
+        "data\\working-zone-01\\research\\raw\\krymsk-2024-04.html": "18e79a64132ce2092b93b500b72d3e1676b61f7e2c1d6b0134479686ac6a2e3f",
+        "data\\working-zone-01\\research\\raw\\krymsk-2024-05.html": "652454d8249a3327b547f697f4e1bd9e4cb98bfdab577a17a99c087d6641d41c",
+        "data\\working-zone-01\\research\\raw\\krymsk-2024-06-01.html": "62f1c1b722fd78ada1a1682e5175e1022492295af34c7167587b0b41461b4fc0"
+      },
+      "dataset_sha256": "48fee62bed4205699a0a326becc0c8b8a0fc801c1e89c021ba4c197afcd83a4f",
+      "manifest_sha256": "9a47f6715e2d50186dbdf3a26d77ec11fffc5d5149df157b92f1370a556e5a94",
+      "station": {
+        "id": "37002",
+        "latitude": 44.9109,
+        "longitude": 38.0053
+      },
+      "max_grid_distance_km": 9.91659806327391,
+      "expected_slots": 1104,
+      "accepted_slots": 1102,
+      "target": "2m air temperature at exact archived observation time; not continuous night minimum",
+      "is_orchard_truth": false,
+      "production_admitted": false,
+      "availability": "Archive Last-Modified+10min<=15UTC proxy; first historical publication not proven",
+      "created_at_utc": "2026-10-16T23:23:00.486913+00:00"
+    },
+    "selected": "ridge_weather_10",
+    "gates": {
+      "bias": {
+        "eligible": false,
+        "reasons": [
+          "2023: MAE reduction below5%",
+          "2023: cold-slot MAE worsened",
+          "2024: MAE reduction below5%",
+          "2024: cold-slot MAE worsened"
+        ]
+      },
+      "slot_bias": {
+        "eligible": false,
+        "reasons": [
+          "2023: MAE reduction below5%",
+          "2023: cold-slot MAE worsened"
+        ]
+      },
+      "ridge_temperature_10": {
+        "eligible": true,
+        "reasons": []
+      },
+      "ridge_weather_10": {
+        "eligible": true,
+        "reasons": []
+      },
+      "ridge_weather_100": {
+        "eligible": true,
+        "reasons": []
+      },
+      "ridge_weather_1000": {
+        "eligible": false,
+        "reasons": [
+          "2023: cold-slot MAE worsened"
+        ]
+      }
+    },
+    "validation": {
+      "gfs": {
+        "2023": {
+          "expected_slots": 368,
+          "missing_slots": 2,
+          "all_slots": {
+            "n": 366,
+            "mae_c": 1.4259497203722624,
+            "bias_c": -0.01869040567363512,
+            "p90_absolute_error_c": 2.980502929687537
+          },
+          "cold_slots": {
+            "n": 9,
+            "mae_c": 3.7712060546875312,
+            "bias_c": 3.7712060546875312,
+            "p90_absolute_error_c": 5.208820312500029
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 7,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.5775063158118063,
+              "bias_c": -0.8509834090522774,
+              "p90_absolute_error_c": 3.0707470703124766
+            },
+            "15": {
+              "n": 91,
+              "mae_c": 1.3202340530563093,
+              "bias_c": -0.08257377876026828,
+              "p90_absolute_error_c": 2.9306884765625227
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.3953379490064588,
+              "bias_c": 0.37326928180200525,
+              "p90_absolute_error_c": 2.6116186523437954
+            },
+            "21": {
+              "n": 91,
+              "mae_c": 1.4093914996136656,
+              "bias_c": 0.49036511096328533,
+              "p90_absolute_error_c": 3.1721923828125456
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 91,
+            "cold_nights": 3,
+            "hits": 1,
+            "misses": 2,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 91,
+              "mae_c": 1.376640893286405,
+              "bias_c": 0.5329931640625304,
+              "p90_absolute_error_c": 2.9531249999999662
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        },
+        "2024": {
+          "expected_slots": 368,
+          "missing_slots": 0,
+          "all_slots": {
+            "n": 368,
+            "mae_c": 1.7940411045240336,
+            "bias_c": 0.2720041490638079,
+            "p90_absolute_error_c": 3.8216723632812255
+          },
+          "cold_slots": {
+            "n": 10,
+            "mae_c": 3.5784916992187825,
+            "bias_c": 3.5784916992187825,
+            "p90_absolute_error_c": 4.668181640625041
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 10,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.7133374023437336,
+              "bias_c": -1.2299224588145052,
+              "p90_absolute_error_c": 3.5367773437499577
+            },
+            "15": {
+              "n": 92,
+              "mae_c": 1.5486022949218765,
+              "bias_c": 0.10336038340696586,
+              "p90_absolute_error_c": 3.238487548828161
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.9557420282778637,
+              "bias_c": 0.892430366847858,
+              "p90_absolute_error_c": 4.057288818359421
+            },
+            "21": {
+              "n": 92,
+              "mae_c": 1.958482692552661,
+              "bias_c": 1.3221483048149132,
+              "p90_absolute_error_c": 4.153231445312524
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 92,
+            "cold_nights": 4,
+            "hits": 0,
+            "misses": 4,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 92,
+              "mae_c": 1.90744817319125,
+              "bias_c": 1.3122382122537695,
+              "p90_absolute_error_c": 4.050371582031261
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        }
+      },
+      "bias": {
+        "2023": {
+          "expected_slots": 368,
+          "missing_slots": 2,
+          "all_slots": {
+            "n": 366,
+            "mae_c": 1.416107956480033,
+            "bias_c": 0.29770643031690647,
+            "p90_absolute_error_c": 3.002096298881206
+          },
+          "cold_slots": {
+            "n": 9,
+            "mae_c": 4.087602890678072,
+            "bias_c": 4.087602890678072,
+            "p90_absolute_error_c": 5.52521714849057
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 8,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.4764015484757573,
+              "bias_c": -0.5345865730617357,
+              "p90_absolute_error_c": 3.059035996146805
+            },
+            "15": {
+              "n": 91,
+              "mae_c": 1.2868082082778476,
+              "bias_c": 0.23382305723027338,
+              "p90_absolute_error_c": 2.7197366797405476
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.4449083303008068,
+              "bias_c": 0.6896661177925466,
+              "p90_absolute_error_c": 2.818063828178095
+            },
+            "21": {
+              "n": 91,
+              "mae_c": 1.4553346842963089,
+              "bias_c": 0.8067619469538269,
+              "p90_absolute_error_c": 3.4885892188030865
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 91,
+            "cold_nights": 3,
+            "hits": 1,
+            "misses": 2,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 91,
+              "mae_c": 1.4649852567145056,
+              "bias_c": 0.8493900000530717,
+              "p90_absolute_error_c": 3.0303372656780865
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        },
+        "2024": {
+          "expected_slots": 368,
+          "missing_slots": 0,
+          "all_slots": {
+            "n": 368,
+            "mae_c": 1.8146607833625494,
+            "bias_c": 0.439953364487608,
+            "p90_absolute_error_c": 3.8080144056273357
+          },
+          "cold_slots": {
+            "n": 10,
+            "mae_c": 3.7464409146425823,
+            "bias_c": 3.7464409146425823,
+            "p90_absolute_error_c": 4.836130856048841
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 10,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.643967074233903,
+              "bias_c": -1.0619732433907054,
+              "p90_absolute_error_c": 3.455402341089053
+            },
+            "15": {
+              "n": 92,
+              "mae_c": 1.5652279525339285,
+              "bias_c": 0.27130959883076583,
+              "p90_absolute_error_c": 3.4064367642519615
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 2.0105080767856243,
+              "bias_c": 1.0603795822716582,
+              "p90_absolute_error_c": 4.204989010345728
+            },
+            "21": {
+              "n": 92,
+              "mae_c": 2.0389400298967417,
+              "bias_c": 1.4900975202387132,
+              "p90_absolute_error_c": 4.321180660736324
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 92,
+            "cold_nights": 4,
+            "hits": 0,
+            "misses": 4,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 92,
+              "mae_c": 1.9768185013010806,
+              "bias_c": 1.4801874276775693,
+              "p90_absolute_error_c": 4.218320797455061
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        }
+      },
+      "slot_bias": {
+        "2023": {
+          "expected_slots": 368,
+          "missing_slots": 2,
+          "all_slots": {
+            "n": 366,
+            "mae_c": 1.3861426386671167,
+            "bias_c": 0.2991263729502393,
+            "p90_absolute_error_c": 2.880679055918834
+          },
+          "cold_slots": {
+            "n": 9,
+            "mae_c": 4.093097634430666,
+            "bias_c": 4.093097634430666,
+            "p90_absolute_error_c": 5.1267394064198335
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 7,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.450913013249125,
+              "bias_c": 0.3409216839334234,
+              "p90_absolute_error_c": 3.1390803859544842
+            },
+            "15": {
+              "n": 91,
+              "mae_c": 1.2900339589344483,
+              "bias_c": 0.28327575100362407,
+              "p90_absolute_error_c": 2.740068279763915
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.3901971989363047,
+              "bias_c": 0.33385686459749025,
+              "p90_absolute_error_c": 2.5722062351392805
+            },
+            "21": {
+              "n": 91,
+              "mae_c": 1.4126700655831919,
+              "bias_c": 0.23761024938037067,
+              "p90_absolute_error_c": 2.9896445100203692
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 91,
+            "cold_nights": 3,
+            "hits": 1,
+            "misses": 2,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 91,
+              "mae_c": 1.3321888977138245,
+              "bias_c": 0.4175937722211109,
+              "p90_absolute_error_c": 2.9032509977921306
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        },
+        "2024": {
+          "expected_slots": 368,
+          "missing_slots": 0,
+          "all_slots": {
+            "n": 368,
+            "mae_c": 1.6805049716111278,
+            "bias_c": 0.4392987128883353,
+            "p90_absolute_error_c": 3.542312739652512
+          },
+          "cold_slots": {
+            "n": 10,
+            "mae_c": 3.3925881745856623,
+            "bias_c": 3.3925881745856623,
+            "p90_absolute_error_c": 4.313727855527402
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 10,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.412842184546314,
+              "bias_c": -0.20847820779551648,
+              "p90_absolute_error_c": 2.8161729364809576
+            },
+            "15": {
+              "n": 92,
+              "mae_c": 1.574958491743421,
+              "bias_c": 0.3283460151308053,
+              "p90_absolute_error_c": 3.463473180552
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.9025951554238911,
+              "bias_c": 0.6860895173445983,
+              "p90_absolute_error_c": 3.9115363477624125
+            },
+            "21": {
+              "n": 92,
+              "mae_c": 1.8316240547308855,
+              "bias_c": 0.951237526873454,
+              "p90_absolute_error_c": 3.7823206673710654
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 92,
+            "cold_nights": 4,
+            "hits": 0,
+            "misses": 4,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 92,
+              "mae_c": 1.7598214287678906,
+              "bias_c": 1.0413797767402186,
+              "p90_absolute_error_c": 3.7491839486210936
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        }
+      },
+      "ridge_temperature_10": {
+        "2023": {
+          "expected_slots": 368,
+          "missing_slots": 2,
+          "all_slots": {
+            "n": 366,
+            "mae_c": 1.3386152515815528,
+            "bias_c": 0.38069985118620103,
+            "p90_absolute_error_c": 2.835609226391978
+          },
+          "cold_slots": {
+            "n": 9,
+            "mae_c": 3.687456088579307,
+            "bias_c": 3.687456088579307,
+            "p90_absolute_error_c": 4.632044315864256
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 7,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.4215405313906355,
+              "bias_c": 0.4263327852600053,
+              "p90_absolute_error_c": 2.9818609262695
+            },
+            "15": {
+              "n": 91,
+              "mae_c": 1.2297860803049216,
+              "bias_c": 0.3731446009216257,
+              "p90_absolute_error_c": 2.5995673727286643
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.334808077387929,
+              "bias_c": 0.40765890892404166,
+              "p90_absolute_error_c": 2.6679624886240267
+            },
+            "21": {
+              "n": 91,
+              "mae_c": 1.367456887510688,
+              "bias_c": 0.3148653954433992,
+              "p90_absolute_error_c": 2.9479547502121752
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 91,
+            "cold_nights": 3,
+            "hits": 1,
+            "misses": 2,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 91,
+              "mae_c": 1.2853614707077403,
+              "bias_c": 0.4721757418630362,
+              "p90_absolute_error_c": 2.827687202657408
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        },
+        "2024": {
+          "expected_slots": 368,
+          "missing_slots": 0,
+          "all_slots": {
+            "n": 368,
+            "mae_c": 1.550420931872148,
+            "bias_c": 0.42796047881148025,
+            "p90_absolute_error_c": 3.149156027483158
+          },
+          "cold_slots": {
+            "n": 10,
+            "mae_c": 2.438102212832735,
+            "bias_c": 2.438102212832735,
+            "p90_absolute_error_c": 3.404506850691253
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 6,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.2785372961862602,
+              "bias_c": -0.18959759152501549,
+              "p90_absolute_error_c": 2.4749003002452166
+            },
+            "15": {
+              "n": 92,
+              "mae_c": 1.4401026949675457,
+              "bias_c": 0.3195347916917449,
+              "p90_absolute_error_c": 3.1389834011952304
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.7814159030611065,
+              "bias_c": 0.6648074906568544,
+              "p90_absolute_error_c": 3.3730730963725524
+            },
+            "21": {
+              "n": 92,
+              "mae_c": 1.7016278332736792,
+              "bias_c": 0.917097224422337,
+              "p90_absolute_error_c": 3.643246758913776
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 92,
+            "cold_nights": 4,
+            "hits": 3,
+            "misses": 1,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 92,
+              "mae_c": 1.6133879168497371,
+              "bias_c": 0.9832124949889949,
+              "p90_absolute_error_c": 3.360309934826169
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        }
+      },
+      "ridge_weather_10": {
+        "2023": {
+          "expected_slots": 368,
+          "missing_slots": 2,
+          "all_slots": {
+            "n": 366,
+            "mae_c": 1.2895142336571104,
+            "bias_c": 0.19155207000316618,
+            "p90_absolute_error_c": 2.65457005594054
+          },
+          "cold_slots": {
+            "n": 9,
+            "mae_c": 3.3832574123188985,
+            "bias_c": 3.3832574123188985,
+            "p90_absolute_error_c": 4.1665497916049
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 7,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.3746028992349784,
+              "bias_c": 0.19606150771394346,
+              "p90_absolute_error_c": 2.7863850149850977
+            },
+            "15": {
+              "n": 91,
+              "mae_c": 1.17934062479885,
+              "bias_c": 0.198050070955131,
+              "p90_absolute_error_c": 2.5852595106268303
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.2764045031833775,
+              "bias_c": 0.23658990015058218,
+              "p90_absolute_error_c": 2.4741631904953016
+            },
+            "21": {
+              "n": 91,
+              "mae_c": 1.3269179301023981,
+              "bias_c": 0.13496232572203903,
+              "p90_absolute_error_c": 2.8704980838941614
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 91,
+            "cold_nights": 3,
+            "hits": 1,
+            "misses": 2,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 91,
+              "mae_c": 1.2223377327179612,
+              "bias_c": 0.2959120308182118,
+              "p90_absolute_error_c": 2.4149384460356753
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        },
+        "2024": {
+          "expected_slots": 368,
+          "missing_slots": 0,
+          "all_slots": {
+            "n": 368,
+            "mae_c": 1.444177399319345,
+            "bias_c": 0.2475430822087125,
+            "p90_absolute_error_c": 2.950668745949635
+          },
+          "cold_slots": {
+            "n": 10,
+            "mae_c": 2.231504569311918,
+            "bias_c": 2.231504569311918,
+            "p90_absolute_error_c": 2.9853273221235836
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 7,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.2827068170249165,
+              "bias_c": -0.3906531507102141,
+              "p90_absolute_error_c": 2.5956431104965048
+            },
+            "15": {
+              "n": 92,
+              "mae_c": 1.3333606329602734,
+              "bias_c": 0.13003614538816557,
+              "p90_absolute_error_c": 2.573032270516504
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.607518783848052,
+              "bias_c": 0.5054265292371118,
+              "p90_absolute_error_c": 3.190264680243113
+            },
+            "21": {
+              "n": 92,
+              "mae_c": 1.553123363444137,
+              "bias_c": 0.7453628049197867,
+              "p90_absolute_error_c": 3.1780305948397105
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 92,
+            "cold_nights": 4,
+            "hits": 2,
+            "misses": 2,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 92,
+              "mae_c": 1.4571551007591537,
+              "bias_c": 0.8367627233306925,
+              "p90_absolute_error_c": 2.9714113331536343
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        }
+      },
+      "ridge_weather_100": {
+        "2023": {
+          "expected_slots": 368,
+          "missing_slots": 2,
+          "all_slots": {
+            "n": 366,
+            "mae_c": 1.3046117666776023,
+            "bias_c": 0.22314730284081968,
+            "p90_absolute_error_c": 2.6769105955464108
+          },
+          "cold_slots": {
+            "n": 9,
+            "mae_c": 3.551390187849707,
+            "bias_c": 3.551390187849707,
+            "p90_absolute_error_c": 4.4209751618730015
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 7,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.397820398322676,
+              "bias_c": 0.12283299519794282,
+              "p90_absolute_error_c": 2.8913535830412767
+            },
+            "15": {
+              "n": 91,
+              "mae_c": 1.196530234548565,
+              "bias_c": 0.21970994184125836,
+              "p90_absolute_error_c": 2.5618930454954114
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.2976335278597368,
+              "bias_c": 0.30822975048809725,
+              "p90_absolute_error_c": 2.4847030613942955
+            },
+            "21": {
+              "n": 91,
+              "mae_c": 1.3255153192450664,
+              "bias_c": 0.24198390691285468,
+              "p90_absolute_error_c": 2.955433035854961
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 91,
+            "cold_nights": 3,
+            "hits": 1,
+            "misses": 2,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 91,
+              "mae_c": 1.248738407097782,
+              "bias_c": 0.38339509535535815,
+              "p90_absolute_error_c": 2.6462787096603924
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        },
+        "2024": {
+          "expected_slots": 368,
+          "missing_slots": 0,
+          "all_slots": {
+            "n": 368,
+            "mae_c": 1.4669439267446989,
+            "bias_c": 0.2736615885549531,
+            "p90_absolute_error_c": 3.074140924605325
+          },
+          "cold_slots": {
+            "n": 10,
+            "mae_c": 2.370815313138,
+            "bias_c": 2.370815313138,
+            "p90_absolute_error_c": 3.256205040017162
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 6,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.2923769786115762,
+              "bias_c": -0.42055277602398794,
+              "p90_absolute_error_c": 2.5792319875431575
+            },
+            "15": {
+              "n": 92,
+              "mae_c": 1.3453283224143444,
+              "bias_c": 0.14515473721058839,
+              "p90_absolute_error_c": 2.7306065083096085
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.6425210354992708,
+              "bias_c": 0.5526574145082456,
+              "p90_absolute_error_c": 3.2888121664919816
+            },
+            "21": {
+              "n": 92,
+              "mae_c": 1.5875493704536041,
+              "bias_c": 0.8173869785249664,
+              "p90_absolute_error_c": 3.2351386335118275
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 92,
+            "cold_nights": 4,
+            "hits": 3,
+            "misses": 1,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 92,
+              "mae_c": 1.5079089756049437,
+              "bias_c": 0.8962087849006809,
+              "p90_absolute_error_c": 3.225698411875339
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        }
+      },
+      "ridge_weather_1000": {
+        "2023": {
+          "expected_slots": 368,
+          "missing_slots": 2,
+          "all_slots": {
+            "n": 366,
+            "mae_c": 1.3465012112878765,
+            "bias_c": 0.25447100990112737,
+            "p90_absolute_error_c": 2.7711138566009383
+          },
+          "cold_slots": {
+            "n": 9,
+            "mae_c": 3.896958779638797,
+            "bias_c": 3.896958779638797,
+            "p90_absolute_error_c": 5.10724680287088
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 7,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.405015367764662,
+              "bias_c": -0.2715394141516849,
+              "p90_absolute_error_c": 2.874617417160854
+            },
+            "15": {
+              "n": 91,
+              "mae_c": 1.2274035572498805,
+              "bias_c": 0.21860067627474195,
+              "p90_absolute_error_c": 2.5962561331102627
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.3717010320815974,
+              "bias_c": 0.5166909095384291,
+              "p90_absolute_error_c": 2.698046187153914
+            },
+            "21": {
+              "n": 91,
+              "mae_c": 1.3809649542392066,
+              "bias_c": 0.5570306649146224,
+              "p90_absolute_error_c": 3.114997294587428
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 91,
+            "cold_nights": 3,
+            "hits": 1,
+            "misses": 2,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 91,
+              "mae_c": 1.3509463929210965,
+              "bias_c": 0.6504211248214499,
+              "p90_absolute_error_c": 2.7793284643308027
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        },
+        "2024": {
+          "expected_slots": 368,
+          "missing_slots": 0,
+          "all_slots": {
+            "n": 368,
+            "mae_c": 1.5929282401500833,
+            "bias_c": 0.40034910435235754,
+            "p90_absolute_error_c": 3.4158967352641767
+          },
+          "cold_slots": {
+            "n": 10,
+            "mae_c": 2.9406887955160093,
+            "bias_c": 2.9406887955160093,
+            "p90_absolute_error_c": 4.007958566457575
+          },
+          "cold_slot_false_positive": 0,
+          "cold_slot_false_negative": 9,
+          "by_lead": {
+            "12": {
+              "n": 92,
+              "mae_c": 1.3584885276030862,
+              "bias_c": -0.6360157678455651,
+              "p90_absolute_error_c": 2.8560605685084655
+            },
+            "15": {
+              "n": 92,
+              "mae_c": 1.4237868152285034,
+              "bias_c": 0.25789633515200255,
+              "p90_absolute_error_c": 3.077485947690869
+            },
+            "18": {
+              "n": 92,
+              "mae_c": 1.8101987066928296,
+              "bias_c": 0.8209969029810688,
+              "p90_absolute_error_c": 3.7262162293659755
+            },
+            "21": {
+              "n": 92,
+              "mae_c": 1.7792389110759137,
+              "bias_c": 1.1585189471219244,
+              "p90_absolute_error_c": 3.8896694100887386
+            }
+          },
+          "sampled_night": {
+            "complete_nights": 92,
+            "cold_nights": 4,
+            "hits": 1,
+            "misses": 3,
+            "false_cold": 0,
+            "correct_warm": 88,
+            "sampled_minimum": {
+              "n": 92,
+              "mae_c": 1.704323840293461,
+              "bias_c": 1.2014371087967437,
+              "p90_absolute_error_c": 3.5223566286462757
+            },
+            "continuous_minimum_validated": false,
+            "is_original_detector_score": false
+          }
+        }
+      }
+    },
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023,
+        "train_slots": 368,
+        "validation_slots": 368
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024,
+        "train_slots": 734,
+        "validation_slots": 368
+      }
+    ],
+    "paired_mae": {
+      "gfs": {
+        "metric": "candidate minus GFS MAE; negative better; equal-year",
+        "calendar_week_blocks": 28,
+        "descriptive_95_c": [
+          0.0,
+          0.0
+        ],
+        "independent_confirmation": false,
+        "caution": "Same prior seasons used for selection; no post-selection confidence guarantee"
+      },
+      "bias": {
+        "metric": "candidate minus GFS MAE; negative better; equal-year",
+        "calendar_week_blocks": 28,
+        "descriptive_95_c": [
+          -0.03220979485450217,
+          0.04536674827235542
+        ],
+        "independent_confirmation": false,
+        "caution": "Same prior seasons used for selection; no post-selection confidence guarantee"
+      },
+      "slot_bias": {
+        "metric": "candidate minus GFS MAE; negative better; equal-year",
+        "calendar_week_blocks": 28,
+        "descriptive_95_c": [
+          -0.14497845048037494,
+          -0.006461208214570771
+        ],
+        "independent_confirmation": false,
+        "caution": "Same prior seasons used for selection; no post-selection confidence guarantee"
+      },
+      "ridge_temperature_10": {
+        "metric": "candidate minus GFS MAE; negative better; equal-year",
+        "calendar_week_blocks": 28,
+        "descriptive_95_c": [
+          -0.2366195851236227,
+          -0.09479909945509216
+        ],
+        "independent_confirmation": false,
+        "caution": "Same prior seasons used for selection; no post-selection confidence guarantee"
+      },
+      "ridge_weather_10": {
+        "metric": "candidate minus GFS MAE; negative better; equal-year",
+        "calendar_week_blocks": 28,
+        "descriptive_95_c": [
+          -0.31399491462972795,
+          -0.1746661410753678
+        ],
+        "independent_confirmation": false,
+        "caution": "Same prior seasons used for selection; no post-selection confidence guarantee"
+      },
+      "ridge_weather_100": {
+        "metric": "candidate minus GFS MAE; negative better; equal-year",
+        "calendar_week_blocks": 28,
+        "descriptive_95_c": [
+          -0.28296041075037026,
+          -0.1672848726770148
+        ],
+        "independent_confirmation": false,
+        "caution": "Same prior seasons used for selection; no post-selection confidence guarantee"
+      },
+      "ridge_weather_1000": {
+        "metric": "candidate minus GFS MAE; negative better; equal-year",
+        "calendar_week_blocks": 28,
+        "descriptive_95_c": [
+          -0.17762459792469873,
+          -0.10297307614468067
+        ],
+        "independent_confirmation": false,
+        "caution": "Same prior seasons used for selection; no post-selection confidence guarantee"
+      }
+    },
+    "artifact_sha256": {
+      "research-model.json": "3f40d95874e702d941af66fd9eb2c74c1b3b97822266ba380caccb2a327d8146",
+      "validation-predictions.json": "dc062fccb8964cdeff4407d8d2aa0986f23e387179621b5b55c2cf9e8973fdb1",
+      "protocol-before-fit.json": "855a2a07bdc741892cf84ccf64e5c7f39e786429e94599fa4f069b00b63df395"
+    },
+    "preserved_sha256": {
+      "models/research-minimum/huber_1.json": "b273ad32caf00e21303f9fe11b0b2aef630eef03336bd63f2d3033d341ec9954",
+      "models/research-frost/event_duration_weather/model.json": "fba66530ceca0a4baee688eeb96df88b98b5b3c36150fef3575d96c03828eab8",
+      "models\\research-cold-reliability\\calibration-banks.json": "a26051e2361066b15f5795486d5b56d8a51ac416e885398415a0a66b9d938b52",
+      "models\\research-cold-reliability\\protocol-lock.json": "add9dc06d729d2ad9cae217f88ce7299aa4092acde3a82601ffdf00729b6d663",
+      "models\\research-cold-reliability\\selection-before-controls.json": "7729494739c662761973c31fd16feaf187f8c3f5d21d40f0b7aa9ca4c6930e7a"
+    },
+    "controls_downloaded": false,
+    "control_targets_read": false,
+    "production_admitted": false,
+    "new_detector_fitted": false,
+    "orchard_quality_validated": false,
+    "software": {
+      "numpy": "2.5.4",
+      "scikit-learn": "1.9.1"
+    },
+    "selected_at_utc": "2026-10-16T23:23:13.710568+00:00"
+  },
+  "selection_sha256": "48cb8ed9288f8648af78fe9059fac284b9a891670802146eb8cbfc22b3631daa",
+  "provenance": {
+    "snapshots": {
+      "provider-about.html": {
+        "url": "https://www.pogodaiklimat.ru/about.php",
+        "sha256": "363e1fd2ebabe3c70ad2c609d5d5fb669ee01b55769882e5e7334aa4e4992bd6",
+        "retrieved_at_utc": "2026-10-16T23:20:01.961373+00:00",
+        "bytes": 33262,
+        "content_type": "text/html; charset=UTF-8"
+      },
+      "provider-faq.html": {
+        "url": "https://www.pogodaiklimat.ru/faq.php",
+        "sha256": "92d8b6deb08b37b4feb1dc67d119292f7abe8a53e66045d21e6f2488215a126d",
+        "retrieved_at_utc": "2026-10-16T23:20:02.150668+00:00",
+        "bytes": 36396,
+        "content_type": "text/html; charset=UTF-8"
+      },
+      "provider-agreement.html": {
+        "url": "https://www.pogodaiklimat.ru/agreement.php",
+        "sha256": "cb06abd92fbec23f489664e0cb3cd110820c5320f0abb356e3af2c23cb6ec1dc",
+        "retrieved_at_utc": "2026-10-16T23:20:02.391861+00:00",
+        "bytes": 43083,
+        "content_type": "text/html; charset=UTF-8"
+      },
+      "provider-station.html": {
+        "url": "https://www.pogodaiklimat.ru/station/37002.htm",
+        "sha256": "b88b38af33f354d002e735be48854abd4bd2918bfe838db3edc29744dd79ee18",
+        "retrieved_at_utc": "2026-10-16T23:20:02.725320+00:00",
+        "bytes": 35053,
+        "content_type": "text/html; charset=UTF-8"
+      }
+    },
+    "official_station_metadata_source": "https://www.meteorf.gov.ru/upload/iblock/58b/%D0%9F%D0%B0%D1%81%D0%BF%D0%BE%D1%80%D1%82%20%D0%93%D0%9C%D0%91%20%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80%D1%81%D0%BA%D0%BE%D0%B3%D0%BE%20%D0%BA%D1%80%D0%B0%D1%8F.pdf",
+    "station_identity": "Roshydromet2017 passport confirms Krymsk37002, coarse44.90/38.00,35m; not a current instrument/relocation certificate",
+    "provider_coordinates": [
+      44.9109,
+      38.0053
+    ],
+    "archive_origin_claim": "Provider About: weather archives use international SYNOP and US METAR; no per-record transport/source lineage supplied",
+    "processing_claim": "Provider FAQ describes KN-01 encoding, Washington data centre, decoding, automated temperature QC and some manual corrections; general description, not independently verified per Krymsk record",
+    "measurement_definition": "Archive legend: air temperature at2m, UTC timestamps. Exact nominal observation time, not instrument acquisition-second precision",
+    "original_synop_bulletins_verified": false,
+    "original_per_record_qc_verified": false,
+    "station_relocation_and_instrument_history_verified": false,
+    "published_tmin_window_verified": false,
+    "historical_revision_times_verified": false,
+    "independent_same_time_temperature_match_available": false,
+    "commercial_permission_obtained": false,
+    "production_admitted": false,
+    "access": "Only existing local2022-2024 observation cache used. No new archive cycles, account access, anti-bot bypass or messages to data holders.",
+    "terms": {
+      "url": "https://www.pogodaiklimat.ru/agreement.php",
+      "summary": "3.1 personal noncommercial;3.5 prior written permission for commercial use;3.7 source attribution;3.3 not an official source for actions involving risk of material loss"
+    },
+    "official_export_status": "EIP catalogue lists station-term data. This session direct HTTPS failed certificate validation and web fetch timed out; no official Krymsk observation export acquired. This does not prove absence.",
+    "next_source_acceptance": [
+      "Official/permitted export with station identity, UTC times, units, original QC and revision history",
+      "Paired comparison against cached temperatures, disagreements quarantined rather than averaged",
+      "Confirm extrema windows separately before any minimum/duration target",
+      "Local orchard2m sensor observations required before field-quality claims"
+    ],
+    "reviewed_at_utc": "2026-10-16T23:25:12.990536+00:00"
+  },
+  "missing_exact_times_utc": [
+    "2023-04-16T21:00:00+00:00",
+    "2023-04-17T03:00:00+00:00"
+  ],
+  "year_counts": {
+    "2022": 368,
+    "2023": 368,
+    "2024": 368
+  },
+  "production_routing_modified": false
+}

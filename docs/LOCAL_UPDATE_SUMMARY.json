@@ -1,0 +1,281 @@
+{
+  "selection": {
+    "state": {
+      "source_sha256": {
+        "local_update_study.py": "a72ea0011d6ecd933f070ca054aad3602ae8ce1a8770d1d5fb9d6bc9b998fd27",
+        "product_advice.py": "a67530aea8a860b3b467dcb4c826de8c03bde54bb5d707650bdb9fdcf8bbb691",
+        "product_risk_study.py": "3857a03a93e07d8aa69ad6664f15267c3030bde0d6ee63ab2509bbdef3d3a2b5",
+        "scenario_study.py": "0b94631ad28902154250308902996016ee3cdaa55f4e514e4482887a9427d627"
+      },
+      "registry": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "validation_years": [
+        2023,
+        2024
+      ],
+      "observation_delay_minutes": 15,
+      "asof_index": 2,
+      "prediction_hours": 6,
+      "provenance": {
+        "temperature": {
+          "sha256": "56d887828fca75a82a70981c847e765e74385e73314837b3f942ae83403fd054",
+          "decoder": "eccodes-2.49.0",
+          "manifest_sha256": "9627d26da72cbb754acdf1a5236540ecb61ebf664b8572b69c13d53dd0f02cc5"
+        },
+        "covariates": {
+          "sha256": "c9d79b4ff1cce1f0ecff356271e35bb1ad073732b1147e64f6cb7b698a4bb1fc",
+          "manifest_sha256": "c5bcf552f2c2b42c7963e0bdfa407427d76b5d0deb9ef998cb34a638a4247bd0",
+          "decoder": "eccodes"
+        },
+        "humidity": {
+          "sha256": "69b3f396d92ae125bb519871f902b08973533a1ff3dd828209dece60c4bfefe5",
+          "manifest_sha256": "19dd14b9769430e340383a64608cd347a6ddfddc0d73aaea2d8e6f5f0fc0ee9c",
+          "decoder": "eccodes"
+        },
+        "observations": {
+          "2023": {
+            "url": "https://data.meteostat.net/hourly/2023/34929.csv.gz",
+            "sha256": "c302798573f4ae7e8553394b4ed5fe4551ca2ec4703aef3e6dd82edebaa2271f",
+            "retrieved_at_utc": "2026-10-12T09:56:26.032553+00:00",
+            "bytes": 76648,
+            "content_type": "application/x-gzip"
+          },
+          "2024": {
+            "url": "https://data.meteostat.net/hourly/2024/34929.csv.gz",
+            "sha256": "b5412a30c55c88e0850ea151cd5237bb68ccc1364142c79656fdd3fbf76a1e01",
+            "retrieved_at_utc": "2026-10-12T09:56:28.208852+00:00",
+            "bytes": 76330,
+            "content_type": "application/x-gzip"
+          }
+        },
+        "annual_wind_audit": {
+          "2023": {
+            "accepted": 8756,
+            "missing_or_excluded_source": 4
+          },
+          "2024": {
+            "accepted": 8768,
+            "missing_or_excluded_source": 16
+          }
+        }
+      }
+    },
+    "selected_decay_cap": [
+      6,
+      3
+    ],
+    "validation": {
+      "[1, 1]": {
+        "nights": 176,
+        "hours": 1056,
+        "mae_c": 1.3373572663490152,
+        "cold_mae_c": 3.5117766916521815,
+        "warm_mae_c": 1.2996505711125441,
+        "hits": 1,
+        "misses": 2,
+        "false_alarms": 0
+      },
+      "[1, 3]": {
+        "nights": 176,
+        "hours": 1056,
+        "mae_c": 1.3077137396633998,
+        "cold_mae_c": 3.366445561356687,
+        "warm_mae_c": 1.2720131878421288,
+        "hits": 1,
+        "misses": 2,
+        "false_alarms": 0
+      },
+      "[3, 1]": {
+        "nights": 176,
+        "hours": 1056,
+        "mae_c": 1.2866063706689275,
+        "cold_mae_c": 3.24008403735792,
+        "warm_mae_c": 1.2527310354084247,
+        "hits": 1,
+        "misses": 2,
+        "false_alarms": 0
+      },
+      "[3, 3]": {
+        "nights": 176,
+        "hours": 1056,
+        "mae_c": 1.2216644669878631,
+        "cold_mae_c": 2.776929104174443,
+        "warm_mae_c": 1.1946945599846277,
+        "hits": 1,
+        "misses": 2,
+        "false_alarms": 0
+      },
+      "[6, 1]": {
+        "nights": 176,
+        "hours": 1056,
+        "mae_c": 1.265539615530849,
+        "cold_mae_c": 3.0303912742350243,
+        "warm_mae_c": 1.234935251507077,
+        "hits": 1,
+        "misses": 2,
+        "false_alarms": 0
+      },
+      "[6, 3]": {
+        "nights": 176,
+        "hours": 1056,
+        "mae_c": 1.2065227637368574,
+        "cold_mae_c": 2.3219394941900706,
+        "warm_mae_c": 1.1871802770815993,
+        "hits": 1,
+        "misses": 2,
+        "false_alarms": 0
+      }
+    },
+    "baseline": {
+      "nights": 176,
+      "hours": 1056,
+      "mae_c": 1.3783836179791096,
+      "cold_mae_c": 3.636013454861149,
+      "warm_mae_c": 1.339233967628554,
+      "hits": 1,
+      "misses": 2,
+      "false_alarms": 0
+    },
+    "common_nights": 176,
+    "saved_at_utc": "2026-10-13T22:24:09.435476+00:00",
+    "status": "historical simulation only; never field validated; original GFS/point/detector unchanged"
+  },
+  "selection_sha256": "c3d91dc6f8dd44efa25a28d342a6a528e1f573cca768db00a3128373473fff4f",
+  "seasons": {
+    "2025": {
+      "baseline": {
+        "nights": 89,
+        "hours": 534,
+        "mae_c": 1.222153868943116,
+        "cold_mae_c": 1.5682183837890615,
+        "warm_mae_c": 1.2058684800091892,
+        "hits": 3,
+        "misses": 1,
+        "false_alarms": 0
+      },
+      "updated": {
+        "nights": 89,
+        "hours": 534,
+        "mae_c": 1.1951458482773551,
+        "cold_mae_c": 1.3503019174494302,
+        "warm_mae_c": 1.1878443861986692,
+        "hits": 3,
+        "misses": 1,
+        "false_alarms": 1
+      },
+      "excluded_nights": 3,
+      "provenance": {
+        "temperature": {
+          "sha256": "56d887828fca75a82a70981c847e765e74385e73314837b3f942ae83403fd054",
+          "decoder": "eccodes-2.49.0",
+          "manifest_sha256": "9627d26da72cbb754acdf1a5236540ecb61ebf664b8572b69c13d53dd0f02cc5"
+        },
+        "covariates": {
+          "sha256": "c9d79b4ff1cce1f0ecff356271e35bb1ad073732b1147e64f6cb7b698a4bb1fc",
+          "manifest_sha256": "c5bcf552f2c2b42c7963e0bdfa407427d76b5d0deb9ef998cb34a638a4247bd0",
+          "decoder": "eccodes"
+        },
+        "humidity": {
+          "sha256": "69b3f396d92ae125bb519871f902b08973533a1ff3dd828209dece60c4bfefe5",
+          "manifest_sha256": "19dd14b9769430e340383a64608cd347a6ddfddc0d73aaea2d8e6f5f0fc0ee9c",
+          "decoder": "eccodes"
+        },
+        "observations": {
+          "2025": {
+            "url": "https://data.meteostat.net/hourly/2025/34929.csv.gz",
+            "sha256": "ebaab70f1e72dc5bd2fe5914fc12e8da7d09da6b66419573f574e0ab37231e40",
+            "retrieved_at_utc": "2026-10-12T09:56:30.548229+00:00",
+            "bytes": 75781,
+            "content_type": "application/x-gzip"
+          }
+        },
+        "annual_wind_audit": {
+          "2025": {
+            "accepted": 8756,
+            "missing_or_excluded_source": 4
+          }
+        }
+      }
+    },
+    "2026": {
+      "baseline": {
+        "nights": 84,
+        "hours": 504,
+        "mae_c": 1.1815485394190228,
+        "cold_mae_c": 2.5224555121528045,
+        "warm_mae_c": 1.1318853182066604,
+        "hits": 0,
+        "misses": 3,
+        "false_alarms": 0
+      },
+      "updated": {
+        "nights": 84,
+        "hours": 504,
+        "mae_c": 1.067735320414589,
+        "cold_mae_c": 2.1161591435767106,
+        "warm_mae_c": 1.0289048084456216,
+        "hits": 1,
+        "misses": 2,
+        "false_alarms": 0
+      },
+      "excluded_nights": 8,
+      "provenance": {
+        "temperature": {
+          "sha256": "7cb2ec81ccffa5a6d7ef7f5302371235500fe236cac357defa23642c3048624d",
+          "decoder": "eccodes-2.49.0",
+          "manifest_sha256": "39296b934cdcdebe6adc36b5c75247b473ff830de3be3b73b87e680e9ce14f80"
+        },
+        "covariates": {
+          "sha256": "230adc2aec579ab614fb3746d8bb684207ed5879e1ad60fc4dff48c764b5b0b4",
+          "manifest_sha256": "f7f9061d86d8139d843a66d0c9595e4c157527c12f4809a6808e82a3f905d84e",
+          "decoder": "eccodes"
+        },
+        "humidity": {
+          "sha256": "a425d9553660691799e3613fb10421477fa8f935059cc030305a32a35943d1a4",
+          "manifest_sha256": "d31458e305ae035999ce2ad618c8e794aca4941e9c67c4133c47fdb528ed1f5d",
+          "decoder": "eccodes"
+        },
+        "observations": {
+          "2026": {
+            "url": "https://data.meteostat.net/hourly/2026/34929.csv.gz",
+            "sha256": "450bd4c4ccd2433e3ab3fa4c48c2d467985737c260a0dbc93ad7b82e4951e3eb",
+            "retrieved_at_utc": "2026-10-12T21:11:11.159006+00:00",
+            "bytes": 62926,
+            "content_type": "application/x-gzip"
+          }
+        },
+        "annual_wind_audit": {
+          "2026": {
+            "accepted": 6659,
+            "missing_or_excluded_source": 407
+          }
+        }
+      }
+    }
+  },
+  "forecast_sha256": "e3a1ff975c5f53e08357fb9abe9d78a1060828931560694e557abce96b7246c5"
+}

@@ -10,10 +10,58 @@ __pycache__/
 
 # Re-downloadable datasets and local outputs
 data/raw/
-data/processed/
-models/
+data/field/
+data/field-demo/
+data/user-tests/
+data/scenario-2026/
+data/working-zone-01/
 tmp/
 node_modules/
 dist/
 .DS_Store
 Thumbs.db
+
+# Re-downloadable raster bytes for unconfirmed screenshot-area research.
+# Source manifests, catalogue snapshots, summaries and hashes remain reviewable.
+data/farm-research/area-context/dem/*.tif
+data/farm-research/area-context/soil/*.tif
+data/farm-research/area-context/sentinel/*/*.tif
+data/farm-research/area-context/sentinel/*/*.npz
+data/farm-research/field-index-model/sentinel/*/*.tif
+data/farm-research/field-index-model/sentinel/*/*.npz
+data/farm-research/crop-season-model/context-*/sentinel/*/*.tif
+data/farm-research/crop-season-model/context-*/sentinel/*/*.npz
+data/farm-research/early-season-decline/archive/sentinel/*/*.tif
+data/farm-research/early-season-decline/archive/sentinel/*/*.npz
+
+# Re-downloadable public crop-source bundles; provenance/hashes stay reviewable.
+data/farm-research/open-crop-context/sources/*.zip
+data/farm-research/open-crop-context/sources/*.pdf
+
+# Additional 2024 target evidence; keep catalogue, manifests and hashes.
+data/farm-research/triage-outcomes-2024/sentinel/*/*.tif
+data/farm-research/triage-outcomes-2024/sentinel/*/*.npz
+
+# Historical bulk download cache (source configuration is retained).
+/data/archive-2021/raw/
+
+# The archive product needs these frozen index crops after a fresh clone.
+!data/farm-research/area-context/sentinel/*/indices.npz
+
+# Human journals and local deployment state never belong in a public checkout.
+/data/commission-journal/
+/data/review-journal/
+/review-journal/
+/data/*journal*/
+.review-venv/
+
+# Transfer helpers, signed URLs and workstation-specific material.
+/speech_sources/
+
+# Keep curated presentation materials, not duplicate install bundles/backups.
+/outputs/*
+!/outputs/defense-materials-2026-10-22/
+!/outputs/agropulse-design-2026-11-06/
+!/outputs/agropulse-ux-polish-2026-11-06/
+!/outputs/agropulse-ux-polish-2026-11-06.zip
+!/outputs/agropulse-design-2026-11-06.zip

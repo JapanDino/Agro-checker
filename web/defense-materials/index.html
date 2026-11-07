@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Onlyfarms — материалы к защите</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#evidence">К материалам</a>
+  <div class="page">
+    <header class="masthead">
+      <a class="wordmark" href="#top" aria-label="Onlyfarms, начало страницы">onlyfarms</a>
+      <span>Прототип для агронома</span>
+      <time datetime="2026-10-22">22 октября 2026</time>
+    </header>
+    <main id="top">
+      <div class="intro">
+        <div><h1>Материалы к защите</h1><p>Реальное изменение R11, проверка границ и сценарий осмотра.</p></div>
+        <nav aria-label="Разделы"><a href="#evidence">R11</a><a href="#screens">Интерфейс</a><a href="appendix/index.html">Приложение</a></nav>
+      </div>
+
+      <section id="evidence" aria-labelledby="evidence-title">
+        <div class="section-heading"><h2 id="evidence-title">Основные материалы</h2><span>3 изображения · 16:9</span></div>
+        <p class="section-note">Пример работы с наблюдаемым изменением поверхности. Причину, необходимость действий и пользу осмотра ещё предстоит проверить с агрономом.</p>
+        <figure class="chart">
+          <a class="chart-image" href="main/01-r11-observed-change.png"><img src="main/01-r11-observed-change.png" width="3200" height="1800" alt="R11: NDMI на снимках 21 сентября и 14 октября 2026 и карта его изменения. Медиана разности −0,119, общее покрытие 92,5%."></a>
+          <figcaption><div><h3>01. Реальное изменение R11</h3><p>Та же пара съёмок, которую показывает интерфейс. Даты разделяют 23 дня. Шахматная заливка обозначает пропуски. Это архивное наблюдение, причина изменения не установлена.</p></div><div class="file-links"><a download href="main/01-r11-observed-change.png">PNG</a><a download href="main/01-r11-observed-change.svg">SVG</a></div></figcaption>
+        </figure>
+        <figure class="chart">
+          <a class="chart-image" href="main/02-r11-boundary-sensitivity.png"><img loading="lazy" src="main/02-r11-boundary-sensitivity.png" width="3200" height="1800" alt="В 11 вариантах контура изменение NDMI остаётся отрицательным: от −0,129 до −0,098. Сдвиги по восьми направлениям, ядро и расширение на 50 метров."></a>
+          <figcaption><div><h3>02. Чувствительность к границам</h3><p>Знак сохраняется во всех проверенных вариантах. В расширенной обводке снижение меньше 0,10. Эти сценарии не подтверждают границы и не дают вероятностной гарантии.</p></div><div class="file-links"><a download href="main/02-r11-boundary-sensitivity.png">PNG</a><a download href="main/02-r11-boundary-sensitivity.svg">SVG</a></div></figcaption>
+        </figure>
+        <figure class="chart">
+          <a class="chart-image" href="main/03-scouting-workflow.png"><img loading="lazy" src="main/03-scouting-workflow.png" width="3200" height="1800" alt="Сценарий прототипа: карта, снимки, задача, запись результата, история места. Формы пустые, реальных посещений пока нет."></a>
+          <figcaption><div><h3>03. От снимка к проверке на месте</h3><p>На схеме отделены доступные архивные данные от возможностей будущего осмотра. Ниже — оригинальные скриншоты всех этапов.</p></div><div class="file-links"><a download href="main/03-scouting-workflow.png">PNG</a><a download href="main/03-scouting-workflow.svg">SVG</a></div></figcaption>
+        </figure>
+      </section>
+
+      <section id="screens" aria-labelledby="screens-title">
+        <div class="section-heading"><h2 id="screens-title">От снимка к осмотру</h2><span>5 экранов</span></div>
+        <p class="section-note">Реальные архивные снимки. Контуры восстановлены приблизительно; результаты осмотров ещё не собраны.</p>
+        {{PRIMARY_SCREENS}}
+        <div class="secondary-screens">{{SECONDARY_SCREENS}}</div>
+      </section>
+
+      <section aria-labelledby="appendix-title">
+        <div class="section-heading"><h2 id="appendix-title">Приложение: прогнозная модель</h2></div>
+        <p class="section-note">Прогнозная часть остаётся исследовательской. Она пропускает большинство снижений, а улучшение рейтинга не подтвердилось при выборе по прошлым месяцам. Эти результаты не доказывают готовность прогноза или пользу выездов.</p>
+        <a href="appendix/index.html">Открыть два графика, метрики и пояснения</a>
+      </section>
+
+      <section id="files" class="files" aria-labelledby="files-title">
+        <div class="section-heading"><h2 id="files-title">Файлы и подписи</h2></div>
+        <a class="file-row" href="CAPTIONS_AND_NOTES.txt"><span>Подписи к экранам и текст показа</span><span>TXT ↗</span></a>
+        <a class="file-row" download href="main/R11-boundary-scenarios.csv"><span>R11: значения и покрытие 11 сценариев</span><span>CSV ↓</span></a>
+        <a class="file-row" href="main/R11-evidence.json"><span>R11: даты, методика и источники</span><span>JSON ↗</span></a>
+        <a class="file-row" href="manifest.json"><span>Источники и контрольные суммы</span><span>JSON ↗</span></a>
+        <p class="small-note">Графики подготовлены в PNG 3200 × 1800 и SVG. Скриншоты — в исходных пропорциях, без ретуши. Формы на экранах пустые.</p>
+      </section>
+    </main>
+    <footer><span>Onlyfarms</span><span>Материалы рабочего прототипа</span></footer>
+  </div>
+</body>
+</html>

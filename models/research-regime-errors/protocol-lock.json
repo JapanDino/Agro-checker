@@ -1,0 +1,377 @@
+{
+  "protocol": {
+    "schema_version": 1,
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      }
+    ],
+    "extra_years": [
+      2021
+    ],
+    "evaluation_years": [
+      2025,
+      2026
+    ],
+    "final_calibration_year": 2024,
+    "crossfit_blocks": 6,
+    "coverage": 0.9,
+    "minimum_calibration_nights": 30,
+    "scale_floor_c": 0.5,
+    "scale_ceiling_c": 9.0,
+    "warm_width_ratio_limit": 1.05,
+    "overall_width_ratio_limit": 1.05,
+    "version_registry": [
+      {
+        "name": "pre_v16",
+        "from": "2021-01-01T00:00:00+00:00",
+        "until": "2021-03-22T12:00:00+00:00"
+      },
+      {
+        "name": "v16_before_2022_update",
+        "from": "2021-03-22T12:00:00+00:00",
+        "until": "2022-11-29T12:00:00+00:00"
+      },
+      {
+        "name": "after_2022_update",
+        "from": "2022-11-29T12:00:00+00:00",
+        "until": "2026-06-01T00:00:00+00:00"
+      }
+    ],
+    "version_resolution": "coarse documented update regimes, not every operational patch; known registry limited to archive window, no future version assumption",
+    "policies": [
+      {
+        "name": "uniform",
+        "half_life_seasons": null,
+        "version_weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "version_offsets": false
+      },
+      {
+        "name": "age_1",
+        "half_life_seasons": 1.0,
+        "version_weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "version_offsets": false
+      },
+      {
+        "name": "age_2",
+        "half_life_seasons": 2.0,
+        "version_weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "version_offsets": false
+      },
+      {
+        "name": "version_discount",
+        "half_life_seasons": null,
+        "version_weights": [
+          0.25,
+          0.5,
+          1.0
+        ],
+        "version_offsets": false
+      },
+      {
+        "name": "age_version_1",
+        "half_life_seasons": 1.0,
+        "version_weights": [
+          0.25,
+          0.5,
+          1.0
+        ],
+        "version_offsets": false
+      },
+      {
+        "name": "version_offsets",
+        "half_life_seasons": null,
+        "version_weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "version_offsets": true
+      },
+      {
+        "name": "age_version_offsets_2",
+        "half_life_seasons": 2.0,
+        "version_weights": [
+          0.25,
+          0.5,
+          1.0
+        ],
+        "version_offsets": true
+      }
+    ],
+    "families": [
+      {
+        "name": "scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0
+      },
+      {
+        "name": "tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0
+      },
+      {
+        "name": "quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013
+      }
+    ],
+    "baselines": [
+      {
+        "name": "legacy_symmetric",
+        "mode": "legacy"
+      },
+      {
+        "name": "risk_5_lower_95",
+        "mode": "lower",
+        "risk_threshold_c": 5.0,
+        "quantile": 0.95
+      }
+    ],
+    "weighting": "forecast date/known regime only; 2^(-(anchor_training_year-year)/half_life)*version_weight; positive weights normalized to mean1 on each fit, weighted scaler/Huber/residual head; anchor fixed to training cutoff, never control year",
+    "point_family": "Huber alpha1 on13 no-cloud aggregates; offset policies add two historical-regime indicators, modern regime reference; same policy for point and OOF residual heads",
+    "calibration": "unweighted held-season90, whole-night LOO on validation2023/2024, final2024; no weighted quantile guarantee claimed; retrospective tuning, not independent coverage",
+    "selection": "coverage>=legacy, pointMAE<=originalHuber, warm width<=1.05*legacy, overall width<=1.05*previous cold; lexicographic cold uncovered rate, balanced cold/warm interval score90, overall width, registry order",
+    "diagnostic": "best eligible nonuniform candidate by same prior criterion; if none, best nonuniform candidate diagnostic-only with gate failures; freeze same-family uniform comparator before controls; never promote on2025/2026",
+    "detector": "frozen event_duration_weather@0.25; assert every14-hour mask and timing against previous snapshots; no retraining",
+    "guards": "site34929, original06UTC lead10–23, March–May; missing fields/unknown registry date/extrapolation/unseen fitted regime => no guarded corrected prediction",
+    "deployment": "station research only; field GFS and original models unchanged; no chosen orchard, no crop-damage probability",
+    "status": "fixed registry before new validation/control results; previously viewed2025/2026 remain excluded from all selection and calibration, not blind controls",
+    "candidates": [
+      {
+        "name": "legacy_symmetric",
+        "mode": "legacy"
+      },
+      {
+        "name": "risk_5_lower_95",
+        "mode": "lower",
+        "risk_threshold_c": 5.0,
+        "quantile": 0.95
+      },
+      {
+        "name": "uniform__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "uniform"
+      },
+      {
+        "name": "uniform__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "uniform"
+      },
+      {
+        "name": "uniform__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "uniform"
+      },
+      {
+        "name": "age_1__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "age_1"
+      },
+      {
+        "name": "age_1__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "age_1"
+      },
+      {
+        "name": "age_1__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "age_1"
+      },
+      {
+        "name": "age_2__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "age_2"
+      },
+      {
+        "name": "age_2__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "age_2"
+      },
+      {
+        "name": "age_2__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "age_2"
+      },
+      {
+        "name": "version_discount__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "version_discount"
+      },
+      {
+        "name": "version_discount__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "version_discount"
+      },
+      {
+        "name": "version_discount__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "version_discount"
+      },
+      {
+        "name": "age_version_1__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "age_version_1"
+      },
+      {
+        "name": "age_version_1__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "age_version_1"
+      },
+      {
+        "name": "age_version_1__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "age_version_1"
+      },
+      {
+        "name": "version_offsets__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "version_offsets"
+      },
+      {
+        "name": "version_offsets__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "version_offsets"
+      },
+      {
+        "name": "version_offsets__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "version_offsets"
+      },
+      {
+        "name": "age_version_offsets_2__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "age_version_offsets_2"
+      },
+      {
+        "name": "age_version_offsets_2__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "age_version_offsets_2"
+      },
+      {
+        "name": "age_version_offsets_2__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "age_version_offsets_2"
+      }
+    ]
+  },
+  "protocol_sha256": "1bd228b5283a6d19040450c6ccba1c845c4b0c9df4dd03d482cbf677703f5e81",
+  "source_sha256": {
+    "regime_error.py": "5ee629cd7fb123d0a71df9a13fc3bfaf031eb13e6f9b133613b8becce3faed4a",
+    "regime_error_study.py": "fa75d309e7556a4db231af41b88b7090afbe780cf7f29f8a2a60d7ab08b0351e",
+    "no_cloud_error.py": "567fd80ab510edbaa2eea2d914a2b57c465fbae6ed08ece4e981e36d3a5a0d98",
+    "extended_error.py": "cb790b07ea270dfbfad6b026a2d169424d61ec026c9eb9488b55ee1e3c2e1b63",
+    "extended_error_study.py": "aff63b89b60a097053623e5de6703ae32d13f4079b04931617209cebb12dc533",
+    "extended_archive.py": "856b365ff23c61212e249bdc25d5c9675e276d6486fd08545317b6358be294c2",
+    "early_cold_archive.py": "b844efc76d6592e134cd58dbb88b56ca15152f8c163abb4cfd9af1f8fe341c71",
+    "conditional_error.py": "9e90c52166367c9b6e18348eed6e6b1a02371b23aa54f73a4dda4f72df56824e",
+    "conditional_error_study.py": "de26639e88ea759100f730d7d56e9cbf6e90f3c24f06fcd868c4e3b48e5fe5d9",
+    "minimum_model.py": "dee4e650d0cd1b390e748c4521c2aa70242a7128e52bb08fa7e18a6f10a0be7d",
+    "cold_interval.py": "5123f7591df1350abf12471d07a12c42ff3c87d52e41b8147365a795e8baad2b",
+    "cold_interval_study.py": "14711ed4114afd80ce7f8d4a823d5167abe0e42567f32844e66963bc6da446b8",
+    "scenario_study.py": "0b94631ad28902154250308902996016ee3cdaa55f4e514e4482887a9427d627",
+    "single_run.py": "9b199eb2790f6573e2343fe9ee1cead455fa4a79b81fa480901b861bcf25bac1",
+    "gfs_archive.py": "0768edb2c92d37aafe9c5f75da031ebd6323fe14d69f3dfed7a530316e5de2c2",
+    "gfs_covariates.py": "c393ab3614cdc82c3f366f9328fed13f7bfeb8fb64ff10c3b9cae312d57a3025",
+    "humidity_archive.py": "7d350e4893fa962ed5883b52ba0129cc47198379cda9a6b7d64e98d7684377a3",
+    "hourly_study.py": "c8f6653ae3f64f11fdb13c42c25ecf625ccb2fe74f20800fce335c8180642c37",
+    "frost_study.py": "0161683092e817a4ff943378ededf42c50dc31c5ecfb867a3b444046d6056ab1"
+  },
+  "saved_at_utc": "2026-10-13T20:37:45.202445+00:00"
+}

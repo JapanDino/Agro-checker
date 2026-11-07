@@ -1,0 +1,71 @@
+{
+  "protocol": {
+    "schema_version": 1,
+    "source_config": "single_run.json",
+    "base_model_protocol": "model_study.json",
+    "episode_protocol": "episode_study.json",
+    "detector_protocol": "frost_study.json",
+    "fixed_detector": {
+      "name": "event_duration_weather@0.25",
+      "family": "event_duration_weather",
+      "threshold": 0.25
+    },
+    "source_joint_candidate": {
+      "name": "joint_l2_10_minimum_expected_loss",
+      "kind": "joint",
+      "regularization": 10.0,
+      "decoder": "minimum_expected_loss"
+    },
+    "max_episodes": [
+      1,
+      2
+    ],
+    "gap_penalties": [
+      0.0,
+      2.0,
+      5.0
+    ],
+    "short_gap_cost": {
+      "internal_warm_gap_1h": 1.0,
+      "internal_warm_gap_2h": 0.5,
+      "other_gaps": 0.0
+    },
+    "constraint_policy": "hard_max_episodes_in_posterior_support_and_decision_space; subtract_penalty_times_short_gap_cost_from_log_energy; no_posthoc_gap_filling",
+    "training_policy": "unchanged_full_support_joint_CRF_recipe_l2_10; train_2022_then_2022_2023_for_folds; preserve_all_observed_cold_targets_including_multi_episode_nights",
+    "decoder": "minimum_expected_loss",
+    "decoder_loss_weights": {
+      "hour_mask_fraction": 1.0,
+      "duration_absolute_over_14": 1.0,
+      "first_sample_absolute_over_13": 1.0,
+      "episode_count_absolute_over_7": 0.25
+    },
+    "selection_weights": {
+      "miss_rate": 0.25,
+      "false_alarm_rate": 0.15,
+      "cold_duration_mae_over_14": 0.2,
+      "warm_duration_mae_over_14": 0.1,
+      "cold_mask_mismatch_over_14": 0.15,
+      "cold_first_sample_error_with_miss_penalty_over_14": 0.15
+    },
+    "selection": "pooled_2023_2024_episode_loss; references_previous_detector_duration_and_unlimited_joint; cap1_gap_penalty_is_identically_zero_so_one_variant; four_limited_variants_plus_two_references",
+    "fit_missing_policy": "all_14_observed_temperatures_required; no_imputation; forecast_without_observations",
+    "weather_threshold_c": 0.0,
+    "time_definition": "hourly_cold_bins_19_to_09_MSK; first_negative_sample; censored_window_edges; not_continuous_duration",
+    "historical_status": "2025_already_viewed; new_protocol_fixed_before_validation; no_fit_or_selection_on_2025",
+    "deployment": "research_only; preserve_pilot",
+    "report_examples": [
+      "2025-03-02",
+      "2025-03-03",
+      "2025-03-07",
+      "2025-03-19",
+      "2025-03-20"
+    ]
+  },
+  "protocol_sha256": "258ca3be9a132611b97b4643ac6b06ac607bfcd0be1cd626b34bec8eda550030",
+  "written_at_utc": "2026-10-12T17:58:28.610055+00:00",
+  "observations_loaded_years": [
+    2022,
+    2023,
+    2024
+  ]
+}

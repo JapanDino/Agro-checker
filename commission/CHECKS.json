@@ -1,0 +1,99 @@
+{
+  "date": "2026-11-06",
+  "engineering_checks_not_agronomic_validation": true,
+  "repository_tests": {
+    "unique_tests": 43,
+    "result": "passed",
+    "modules": [
+      "test_farm_workspace",
+      "test_farm_scouting",
+      "test_land_inspections",
+      "test_land_place_history"
+    ]
+  },
+  "clean_extracted_bundle_tests": {
+    "tests": 7,
+    "result": "passed",
+    "new_environment": true,
+    "dependency_installation": "--no-index with included wheels",
+    "platform": "Windows x64, Python 3.13.5",
+    "date": "2026-10-25",
+    "note": "Earlier platform verification; current design bundle verification recorded below when complete."
+  },
+  "browser_checks": [
+    "390x844: expanded inspector -> search -> R08 collapses and focuses correctly",
+    "mobile period synchronized; spring 13/27 and missing values disabled",
+    "768/1000/1001/1280 widths: no horizontal overflow or dock/inspector overlap",
+    "task and sensor-survey plan saved only in separate temporary store",
+    "working history empty; result preview disabled and notes blank",
+    "about page reviewed",
+    "viewport override reset; final live map no console errors"
+  ],
+  "comparisons": {
+    "recent2026": {
+      "before": "S2A_T37TDK_20260926T082748_L2A",
+      "after": "S2C_T37TDK_20261011T082615_L2A",
+      "available_areas": 27,
+      "total_areas": 27
+    },
+    "spring2024": {
+      "before": "S2B_T37TDK_20240512T083516_L2A",
+      "after": "S2A_T37TDK_20240527T083202_L2A",
+      "available_areas": 13,
+      "total_areas": 27
+    }
+  },
+  "protected_data_and_model_sources_unchanged": {
+    "data/farm-research/continuation-shape/report.json": "8c7d3cc2c4d1be878b55e93742ed5ad6ac0253b38891f748dd9d09f1e6733173",
+    "data/farm-research/continuation-shape/frozen-selection.json": "3ceb897b49ae089703361eda57931106dd59e43bfc965fdf058a4c69aa0a26ac",
+    "data/farm-research/ndmi-turn-guard-2024/selection-table.json": "59878107eec76973419204bd51fe526a93c02325bd1a44c01189117e0fd005c0",
+    "data/farm-research/ndmi-turn-guard-2024/forward-check.json": "f07b71ba6b27b57f73f7355db20bed04c69aa671921b5b79572cf41337e1a29e",
+    "data/farm-research/ndmi-turn-guard-2024/frozen-selection.json": "1be87ad6d83b64126103a91ba4bbc32860e65c8f0c1b6d09e2e72634b5ab72bb",
+    "data/farm-research/reconstruction/approximate-areas.geojson": "6fcf4a180f2a8860ed8f09456389943296f2947b1b95b98a81d63cb2c75ae521",
+    "data/farm-research/area-context/protocol.json": "3ec27d530188004a78dc369c8f16ee73facfc7204baa5844e06350e0e131a65f",
+    "data/farm-research/area-context/summary.json": "5c6efb4b2255afb77d4c77c3c933cb2194248b9b6bc30ae6e5d70c4b6b878bf5",
+    "data/farm-research/area-context/satellite.json": "f7f06d926213b04dff8126f8bde482ad4ae221f4b8dbd46e1374b71444244118",
+    "data/farm-research/area-context/sentinel/S2C_T37TDK_20260921T082016_L2A/indices.npz": "7300ee82e29d8206f9e7d0a6b7dd0b259f1e30b19254bf10990a5b648101327a",
+    "data/farm-research/area-context/sentinel/S2C_T37TDK_20261014T083251_L2A/indices.npz": "87dbde1b188c2618cb6f671e3354ed815b002e4143eebee04910d0f2a3098198",
+    "agro_checker/farm_context_analysis.py": "6d392bc3fb5397b160607cfd0d06f873278602a44c0bb9c91f93a608a86172d4"
+  },
+  "intentional_metadata_fix": {
+    "file": "agro_checker/farm_scouting.py",
+    "before_sha256": "d23ded07aeb8f930f360e678fdd1dea5f928dbc492fad705fe2baed6737529ed",
+    "after_sha256": "a28ca565b36034611c2b9ecbf02b803732950b203234f85535d435058245a567",
+    "reason": "Describe pinned scene IDs truthfully for manually selected pairs. Numerical comparison code, data and prediction models unchanged."
+  },
+  "working_journal_sha256": "6adbabd368bb4731e1419b83b69d140c3d66e350fbd2c377dbfbff630f7c1d00",
+  "working_tasks": 0,
+  "working_visits": 0,
+  "working_plans": 0,
+  "models_retrained": false,
+  "automatic_diagnoses": false,
+  "test_records_location": "separate temporary stores only; not delivered",
+  "design_revision": 5,
+  "design_team": [
+    "visual direction review",
+    "UX/accessibility review",
+    "interior implementation",
+    "root integration and browser QA"
+  ],
+  "numerical_data_models_and_journal_unchanged": true,
+  "design_changed_files": [
+    "web/scouting/index.html",
+    "web/scouting/about.html",
+    "web/scouting/theme.css",
+    "web/scouting/interior.css",
+    "web/scouting/app.js",
+    "web/scouting/map.js"
+  ],
+  "current_bundle_verification": {
+    "date": "2026-11-06",
+    "status": "passed",
+    "tests": 7,
+    "new_environment": true,
+    "installation": "included wheels --no-index",
+    "new_styles_scripts_match_source": true,
+    "shared_pair_available_areas": 27,
+    "empty_tasks_visits_plans": true
+  }
+}

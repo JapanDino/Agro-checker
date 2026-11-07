@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "final_train_years": [2022, 2023],
+  "evaluation_years": [2025, 2026],
+  "expert_policy": "diagnostic family of frozen climate prior selection; no control or heldout choice",
+  "weights": [0.25, 0.5, 1],
+  "routing": "if approved anchor minimum <0, blend with standalone climate expert; otherwise retain anchor exactly; no clipping or forced sign",
+  "anchors": {"reference": "legacy minimum", "other_stations": "GFS"},
+  "selection": "same each-year primary vs legacy/regional vs GFS all,cold MAE and crossing FA/misses gates; rank primary cold MAE then all MAE; fallback anchors",
+  "limits": "cannot discover cold missed by anchor; original detector separate and unchanged; research minimum only"
+}

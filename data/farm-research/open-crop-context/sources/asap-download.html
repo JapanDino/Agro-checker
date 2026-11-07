@@ -1,0 +1,997 @@
+
+
+<script>
+  var config = {
+    geoserver: {
+      url: '/',
+      workspace: 'asap9'
+    }
+  };
+
+  var debug = false;
+
+  if (debug) {
+    console.info('geoserver url: ', config.geoserver.url, ' workspace: ', config.geoserver.workspace);
+  }
+</script>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+	<head>
+	<link link="" rel="shortcut icon" type="image/ico" href="favicon.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>ASAP - Download</title>
+	<meta name="description" content="Download data sets, indicators and yield forecasts produced or used by the ASAP agricultural production hotspots system, including FPAR and ECMWF data.">
+	<link rel="canonical" href="https://agricultural-production-hotspots.ec.europa.eu/download.php">
+
+	<!-- Open Graph Meta Tags -->
+	<meta property="og:title" content="ASAP - Download">
+	<meta property="og:description" content="Download data sets, indicators and yield forecasts produced or used by the ASAP agricultural production hotspots system, including FPAR and ECMWF data.">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://agricultural-production-hotspots.ec.europa.eu/download.php">
+	<meta property="og:image" content="https://agricultural-production-hotspots.ec.europa.eu/wms?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetMap&amp;FORMAT=image%2Fpng&amp;TRANSPARENT=false&amp;LAYERS=public%3Awarning_gaul1_crop%2Casap8%3Acountries&amp;bgcolor=0xaad3df&amp;SRS=EPSG%3A3857&amp;WIDTH=1200&amp;HEIGHT=630&amp;BBOX=-3381454%2C-2670468%2C9323430%2C3999596">
+	<meta property="og:image:type" content="image/png">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="Current ASAP sub-national crop warning map">
+	<meta property="og:site_name" content="ASAP">
+	<meta property="og:locale" content="en_GB">
+
+	<!-- Twitter Card Meta Tags -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="ASAP - Download">
+	<meta name="twitter:description" content="Download data sets, indicators and yield forecasts produced or used by the ASAP agricultural production hotspots system, including FPAR and ECMWF data.">
+	<meta name="twitter:image" content="https://agricultural-production-hotspots.ec.europa.eu/wms?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetMap&amp;FORMAT=image%2Fpng&amp;TRANSPARENT=false&amp;LAYERS=public%3Awarning_gaul1_crop%2Casap8%3Acountries&amp;bgcolor=0xaad3df&amp;SRS=EPSG%3A3857&amp;WIDTH=1200&amp;HEIGHT=630&amp;BBOX=-3381454%2C-2670468%2C9323430%2C3999596">
+	<meta name="twitter:image:alt" content="Current ASAP sub-national crop warning map">
+	<meta content="en" http-equiv="Content-Language">
+	<meta content="EUROPA/JRC" name="reference">
+	<meta content="DG5/MARS" name="creator">
+	<meta content="06/07/2022" name="date">
+	<meta content="01100" name="classification">
+	<meta content="Agricultural Production,Hot Spots, European Comission, European Union, EU" name="keywords">
+
+	<!--RESPONSIVE-->
+	<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	<!--JQUERY-->
+	<script src="js/jquery.min.js"></script>
+
+	<!-- ECL -->
+	<script>
+      var cl = document.querySelector('html').classList;
+      cl.remove('no-js');
+      cl.add('has-js');
+    </script>
+	<script type="text/javascript" src="js/moment.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.3.3/ec/styles/ecl-ec.css"
+      integrity=""sha256-+qgi0wVs2uDe4MZbVyewYwhI3hifS5Ms0DisaIz0HTU=",
+    "sha384-mpKSzb31K+se5ty8qB5yrPzht7uEo9sp35VeoSg2uXLD7yJ3oSBdEHIamP2UuDD3",
+    "sha512-svSd6YROVFQh3ao8Fh6avqDERzNU5VpW8SmkeUVGf9hYJHU4J1sTCqkn0Q72YkaYL4/JUr3SF05vU3sun03z3Q==""
+      crossorigin="anonymous"
+      media="screen"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.3.3/ec/styles/ecl-ec-print.css"
+      integrity=""sha256-lBX5HeFt1/ohlg1xRxGBuOw6jLan6pawRxvdfswsSvA=",
+    "sha384-bHxjbcrC/F+ioaWiUH7mWEPFbAZstJ7taINv/HdjT1OiibN10j5iJ2RYOwl7nwyv",
+    "sha512-TRVQEmKTafXEg0VjviExdIqlbFQj5ELVoLek9pee3qKgbdtwe/E0yMNlJ0PZx9j9Ieh+YWtK8bXHP7Eq1yR7Mw==""
+      crossorigin="anonymous"
+      media="print"
+    />
+
+	<!--EC ADDITIONAL TOOLS-->
+	<script defer src="https://webtools.europa.eu/load.js" type="text/javascript"></script>
+	<script defer src="js/svg4everybody.min.js"></script>
+		<!-- NAVIGATION -->
+
+	<script defer type="text/javascript" src="js/getData.js"></script> <!-- 2 -->
+	<script defer src="js/easy-autocomplete.js"></script> <!-- 3 -->
+	<script defer src="js/navigation.js"></script>
+
+	<link href="css/loader.css" media="all" rel="stylesheet" type="text/css">
+	<link href="css/navigation.css" media="all" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/easy-autocomplete.css">
+	<link rel="stylesheet" href="jqwidgets/styles/jqx.base.css" type="text/css"/>
+	<link rel="stylesheet" href="jqwidgets/styles/jqx.summer.css" type="text/css"/>
+
+	<!--LOCAL STYLESHEETS & SCRIPTS [ GENERAL ] -->
+	<link href="css/ionicons.css" rel="stylesheet" type="text/css">
+	<link href="css/download.css" media="all" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="js/download.js"></script> <!-- 2 -->
+	<script defer type="text/javascript" src="jqwidgets/jqxcore.js"></script>
+
+	<!--LOCAL STYLESHEETS & SCRIPTS [ FONT ]-->
+	<link rel="stylesheet" href="fontawesome/css/all.css">
+
+	<!-- COOKIE BANNER -->
+	<script type="application/json">
+		{
+			"utility" : "cck"
+		}
+	</script>
+</head>
+<body class="euShortContent">
+	<div class="layout" id="layout">
+		<!--HEADER-->
+		<div id="headerContainer"></div>
+		<!--NAV-->
+		<div id="mainMenuContainer" class="menu-container nav-container">
+		<div class="menu">
+<nav class="ecl-menu ecl-menu--group1" data-ecl-menu="" data-ecl-auto-init="Menu" aria-expanded="false">
+  <div class="ecl-menu__overlay" data-ecl-menu-overlay=""></div>
+  <div class="ecl-container ecl-menu__container"><a class="ecl-link ecl-link--standalone ecl-menu__open"
+      href="#" data-ecl-menu-open=""><svg class="ecl-icon ecl-icon--s" focusable="false"
+        aria-hidden="true">
+        <use xlink:href="dist/media/icons.svg#general--hamburger"></use>
+      </svg>Menu</a>
+    <section class="ecl-menu__inner" data-ecl-menu-inner="">
+      <header class="ecl-menu__inner-header"><button class="ecl-menu__close ecl-button ecl-button--text" type="submit"
+          data-ecl-menu-close=""><span class="ecl-menu__close-container ecl-button__container"><svg
+              class="ecl-icon ecl-icon--s ecl-button__icon ecl-button__icon--before" focusable="false"
+              aria-hidden="true" data-ecl-icon="">
+              <use xlink:href="dist/media/icons.svg#ui--close"></use>
+            </svg><span class="ecl-button__label" data-ecl-label="true">Close</span></span></button>
+        <div class="ecl-menu__title">Menu</div><button data-ecl-menu-back="" type="submit"
+          class="ecl-menu__back ecl-button ecl-button--text"><span class="ecl-button__container"><svg
+              class="ecl-icon ecl-icon--xs ecl-icon--rotate-270 ecl-button__icon ecl-button__icon--before"
+              focusable="false" aria-hidden="true" data-ecl-icon="">
+              <use xlink:href="dist/media/icons.svg#ui--corner-arrow"></use>
+            </svg><span class="ecl-button__label" data-ecl-label="">Back</span></span></button>
+      </header>
+      <ul class="ecl-menu__list">
+			<li class="ecl-menu__item" data-ecl-menu-item=""><a href="index.php" class="ecl-menu__link" data-ecl-menu-link="">Home</a>		</li>
+        
+		  
+	    <li class="ecl-menu__item ecl-menu__item--has-children" data-ecl-menu-item="" data-ecl-has-children="" aria-haspopup="" aria-expanded="false"><a href="#" class="ecl-menu__link" data-ecl-menu-link="">Countries</a>			
+			<div class="ecl-menu__mega" data-ecl-menu-mega="">
+				<ul id="countryAssList" class="ecl-menu__sublist">
+					<div id="countryListTitle" ></div>
+					<li class="ecl-menu__subitem" data-ecl-menu-subitem=""> <input id="basics2" aria-label="Target country" style="border-color: #565656 !important;" placeholder="Type name of target Country"/>
+				  
+					</li>             
+				</ul>
+			</div>
+        </li>
+		
+		
+		<li class="ecl-menu__item" data-ecl-menu-item="">
+		
+			<a id="wexplorer_button" href="wexplorer/" target="_blank" class="ecl-menu__link" data-ecl-menu-link="">Warning Explorer</a>
+			
+		</li>
+		
+		<li class="ecl-menu__item  ecl-menu__item--has-children" data-ecl-menu-item="" data-ecl-has-children="" aria-haspopup="" aria-expanded="false">		
+			<a href="hresolution/?region=0" id="highres_button" target="_blank" class="ecl-menu__link" data-ecl-menu-link="">High Resolution Viewer</a>
+			
+			<div class="ecl-menu__mega" data-ecl-menu-mega="">
+				<a id="hiddenLink" href="#" target="_blank" style="display: none;">Hidden Link</a>
+				<ul id="regionList" class="ecl-menu__sublist">
+				  <div id="regionListTitle" ></div>
+				  <li class="ecl-menu__subitem" data-ecl-menu-subitem=""> 
+					<input id="basics" aria-label="Target region" style="border-color: #565656 !important;" placeholder="Type name of target Region"/>
+					
+					  
+				  </li>             
+				</ul>
+			</div>
+		</li>
+
+		<li class="ecl-menu__item ecl-menu__item--has-children" data-ecl-menu-item="" data-ecl-has-children="" aria-haspopup="" aria-expanded="false"><a href="seasonal_forecast.php?sfreg=africa" class="ecl-menu__link" data-ecl-menu-link="">Seasonal Forecast</a><div class="ecl-menu__mega" data-ecl-menu-mega=""><ul id="infoDataSub" class="ecl-menu__sublist"><li class="ecl-menu__subitem seasonalDataItem" data-ecl-menu-subitem=""><a href="seasonal_forecast.php?sfreg=africa" class="ecl-menu__sublink">Africa</a></li><li class="ecl-menu__subitem seasonalDataItem" data-ecl-menu-subitem=""><a href="seasonal_forecast.php?sfreg=asia" class="ecl-menu__sublink">Asia</a></li><li class="ecl-menu__subitem seasonalDataItem" data-ecl-menu-subitem=""><a href="seasonal_forecast.php?sfreg=europe" class="ecl-menu__sublink">Europe</a></li><li class="ecl-menu__subitem seasonalDataItem" data-ecl-menu-subitem=""><a href="seasonal_forecast.php?sfreg=north_america" class="ecl-menu__sublink">North America</a></li><li class="ecl-menu__subitem seasonalDataItem" data-ecl-menu-subitem=""><a href="seasonal_forecast.php?sfreg=south_america" class="ecl-menu__sublink">South America</a></li><li class="ecl-menu__subitem seasonalDataItem" data-ecl-menu-subitem=""><a href="seasonal_forecast.php?sfreg=oceania" class="ecl-menu__sublink">Oceania</a></li>	<li class="ecl-menu__subitem seasonalDataItem" data-ecl-menu-subitem=""><a href="seasonal_forecast.php?sfreg=world" class="ecl-menu__sublink">Global</a></li>	</ul></div>	
+		</li>
+
+		<!-- <li class="ecl-menu__item" data-ecl-menu-item=""><a href="national_yield_forecast" class="ecl-menu__link" data-ecl-menu-link="">Yield Forecast</a>		</li> -->
+
+
+		<li class="ecl-menu__item ecl-menu__item--current" data-ecl-menu-item=""><a href="download.php" class="ecl-menu__link ecl-menu__link--current" data-ecl-menu-link="">Download</a>		</li>
+		
+        
+        <li class="ecl-menu__item ecl-menu__item--has-children" data-ecl-menu-item="" data-ecl-has-children=""
+          aria-haspopup="" aria-expanded="false"><a href="#" class="ecl-menu__link"
+            data-ecl-menu-link="">Info</a>
+          <div class="ecl-menu__mega" data-ecl-menu-mega="">
+            <ul id="infoDataSub" class="ecl-menu__sublist">
+              <li class="ecl-menu__subitem infoDataItem" data-ecl-menu-subitem=""><a href="news.php"
+                  class="ecl-menu__sublink">News</a></li>
+              <li class="ecl-menu__subitem infoDataItem" data-ecl-menu-subitem=""><a href="documentation.php"
+                  class="ecl-menu__sublink">Documentation</a></li>
+              <li class="ecl-menu__subitem infoDataItem" data-ecl-menu-subitem=""><a href="changelog.php"
+                  class="ecl-menu__sublink">Change Log</a></li>
+			  <li class="ecl-menu__subitem infoDataItem" data-ecl-menu-subitem=""><a href="about.php"
+                  class="ecl-menu__sublink">About us</a></li>
+              
+            </ul>
+          </div>
+        </li>
+        
+        
+      </ul>
+    </section>
+  </div>
+</nav>
+ </div>
+	</div>
+		<div id="headerPage"></div>
+		<div id="main">
+			<!--BODY-->
+			<div id="mainContainer" class="layout-body wrapper">
+				<div class="grid download_body_content">
+					<!--<div class="col-100">
+						<div class="block gutter map">
+							Hotspots
+						</div>
+					</div>-->
+					<div class="col-100">
+						<div id="page-top"><img alt="Icon" src="images/download-top.jpg" alt="Download" width="100%"></div>
+					</div>
+					<div class="col-100">
+						<div class="block gutter">
+							<h2><img alt="Icon" src="images/ico-download.png" alt="Download" valign="middle" width="50px"> <span>Data Download</span></h2>
+							<div style="color: #3f3c3c; margin-top:10px;" class="accordion-body__contents"><p>This section provides downloadable data sets used or generated by the ASAP system. FPAR and gridded ECMWF data are made available by the <a class="ecl-link" aria-label="Link" href="https://agri4cast.jrc.ec.europa.eu/" target="_blank">JRC - AGRI4CAST</a> team within the framework of the MARSOP project. Additional AGRI4CAST data for Europe can be found on the <a class="ecl-link" aria-label="Link" href="https://agri4cast.jrc.ec.europa.eu/dataportal" target="_blank">AGRI4CAST Resources Portal</a>.<br>In addition to the data available for download on this page, background information on the ASAP system and its methodologies can be found on <a class="ecl-link" aria-label="Link" href="documentation.php">About ASAP</a> page. For access to other data sets that are part of the ASAP system, or for additional information on the data listed below, please <a class="ecl-link" aria-label="Email" href="mailto:jrc-asap@ec.europa.eu" target="_top"> contact us</a>. When using data downloaded from this webpage, please cite the source or other sources possibly indicated in the data description.</p><br>
+						</div></div>
+					</div>
+					<div class="col-100">
+						<div class="block gutter">
+							<div class="accordion js-accordion">
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header" tabindex="0">HOTSPOTS AND WARNINGS</div>
+									<div class="accordion-body js-accordion-body">
+										<div class="accordion-body__contents">
+											<h3>ASAP Hotspots</h3>
+											<p class="download_descr">Monthly identification of agricultural production hotspot countries and summary narratives for agriculture and food security analysts. The historical hotspot time series is available in .csv format. To visualize the information in a GIS environment, use the field <i>asap0_id</i> and join with the spatial layer gaul0_asap (see section Administrative Boundaries).
+										The latest ASAP hotspot layer can also be downloaded as shapefile directly from the ASAP homepage and is available as WFS/WMS</p>
+
+											<p class="download_files">
+											<a class="ecl-link" aria-label="Download file" href="files/hotspots_ts.zip" aria-label="Download file">hotspots_ts.zip</a> &nbsp; <a class="ecl-link" aria-label="Download file" aria-label="Download file" href="files/hotspots_ts.zip"><img alt="Download" src="images/download.png"></a><br>
+											<i>Historical data set in .csv format with the time series of all ASAP hotspot assessments since October 2016 (to date)</i></p>
+
+											<p class="download_files">
+											<a class="ecl-link" aria-label="Download file" href="files/hotspots_html_ts.zip" aria-label="Download file">hotspots_html_ts.zip</a> &nbsp; <a class="ecl-link" aria-label="Download file" aria-label="Download file" href="files/hotspots_html_ts.zip"><img alt="Download" src="images/download.png"></a><br>
+											<i>Historical data set in .csv format with the time series of all ASAP hotspot assessments since October 2016 (to date), with "comment" column as HTML</i></p>
+
+										  <h3>ASAP Warnings</h3>
+											<p class="download_descr">10-day automatic warning about crops and rangelands conditions, at the 1st and 2nd sub-national level. The historical time series is available in .csv format. To visualize the information in a GIS environment, use the field <i>asap1_id</i> or <i>asap2_id</i> and join with the spatial layer gaul1_asap or gaul2_asap (see section Administrative Boundaries).
+										The latest ASAP warning layer can also be downloaded as a shapefile directly from the ASAP Warning Explorer page and is available as WFS/WMS</p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/warnings_ts.zip" aria-label="Download file">warnings_ts.zip</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/warnings_ts.zip" aria-label="Download file"><img alt="Icon" src="images/download.png" /></a><br>
+											<i>Historical data set in .csv format with the complete time series of ASAP warnings (crop and rangeland) at 1st sub-national level since last dekad of May 2001 (to date)</i></p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/warnings_l2_ts.zip" aria-label="Download file">warnings_l2_ts.zip</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/warnings_l2_ts.zip" aria-label="Download file"><img alt="Icon" src="images/download.png" /></a><br>
+											<i>Historical data set in .csv format with the complete time series of ASAP warnings (crop and rangeland) at 2nd sub-national level since last dekad of May 2001 (to date)</i></p>
+
+											<p class="download_files">HOW TO CITE: Rembold, Felix (2018): Ten-daily automatic warnings about agricultural vegetation anomalies. European Commission, Joint Research Centre (JRC) [Dataset] PID: <a aria-label="Download file" class="ecl-link" aria-label="Download file" target="_blank" href="http://data.europa.eu/89h/jrc-10112-10001">http://data.europa.eu/89h/jrc-10112-10001</a></p>
+										  <h3>WFS and WMS</h3>
+											<p class="download_descr">The latest ASAP warnings and hotspots can be visualized directly in a GIS desktop environment (e.g. QGIS or even, with some limitations for WFS, ESRI ArcGIS) as <a class="ecl-link" aria-label="Download file" target="_blank" href="https://en.wikipedia.org/wiki/Web_Feature_Service"> WFS</a> and <a class="ecl-link" aria-label="Download file" target="_blank" href="https://en.wikipedia.org/wiki/Web_Map_Service"> WMS</a>, using the following URL:</p>
+
+											<p><a class="ecl-link" aria-label="Download file" target="_blank" href=https://agricultural-production-hotspots.ec.europa.eu/public/ows?>https://agricultural-production-hotspots.ec.europa.eu/public/ows?</a></p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/wfs_hotspots_notes.txt">wfs_hotspots_notes.txt</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/wfs_hotspots_notes.txt"><img alt="Download" src="images/download.png"></a><br>
+											<i>Description of the fields in the WFS layer HOTSPOTS</i></p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/wfs_warnings_crop_notes.txt">wfs_warnings_crop_notes.txt</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/wfs_warnings_crop_notes.txt"><img alt="Download" src="images/download.png"></a><br>
+											<i>Description of the fields in the WFS layer WARNING_CROP</i></p>
+
+											<p class="download_files"><a class="ecl-link" aria-label="Download file" href="files/wfs_warnings_rangeland_notes.txt">wfs_warnings_rangeland_notes.txt</a> &nbsp; <a class="ecl-link" aria-label="Download file" class="ecl-link" aria-label="Download file" href="files/wfs_warnings_rangeland_notes.txt"><img alt="Download" src="images/download.png"></a><br>
+											<i>Description of the fields in the WFS layer WARNING_RANGELAND</i></p>
+
+										  <h3>Historical ASAP warning frequency</h3>
+											<p class="download_descr">The 2 maps show the historical frequency of ASAP warnings of level 2 or higher at the sub-national level and can be interpreted as sensitivity to "agricultural drought conditions". The color intensity is proportional to the frequency of ASAP warnings, i.e. the percentage of dekads with a warning, out of the total number of active dekads in the period 2003-2022.<p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/frequency_crop_v08_1.png">frequency_crop_v08_1.png</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/frequency_crop_v08_1.png"><img alt="Download" src="images/download.png"></a><br>
+											<i>Frequency of crop warnings</i></p>
+
+
+											<p class="download_files" style="margin-bottom:10px;"><a class="ecl-link" aria-label="Download file" href="files/frequency_rangeland_v08_1.png">frequency_rangeland_v08_1.png</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/frequency_rangeland_v08_1.png"><img alt="Download" src="images/download.png"></a><br>
+											<i>Frequency of rangeland warnings</i></p>
+										</div>
+									</div>
+								</div><!-- end of accordion body -->
+							</div><!-- end of accordion item -->
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="col-100">
+						<div class="block gutter">
+							<div class="accordion js-accordion">
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header" tabindex="0">REFERENCE DATA</div>
+									<div class="accordion-body js-accordion-body">
+										<div class="accordion-body__contents">
+											<h3>Administrative Boundaries</h3>
+											 <p class="download_descr">ASAP information is provided at two spatial levels: national (Gaul0) and sub-national (Gaul1). In particular, hotspots are related to national units while warnings to sub-national units. An additional more detailed sub-national level (Gaul2) is available for a set of selected countries of interest, for which we provide aggregated statistics (see "Indicator Statistics" sub section). The reference spatial layers (gaul0_asap, gaul1_asap, gaul2_asap) are derived from the The Global Administrative Unit Layers (GAUL) dataset, implemented by FAO within the CountrySTAT and Agricultural Market Information System (AMIS) projects. The original data sets were adapted to match the specific ASAP requirements (e.g. in some countries, the sub-national units were aggregated, in others they were split in smaller units) and the geometry was simplified (e.g. the number of vertex reduced and small islands removed). The geographic and thematic information contained does not imply a policy position of the European Commission. Here you can download the three layers as shapefiles. These layers can be used to visualize the historical time series of Hotspots, Warnings and Indicator statistics (see related sections below). The key fields are asap0_id, asap1_id and asap2_id. Please note that these layers are intended for visualization at a broad scale and due to the simplification of the geometries, the original topology is not always preserved.</p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/gaul0_asap_v06.zip">gaul0_asap_v06.zip</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/gaul0_asap_v06.zip"><img alt="Download" src="images/download.png"></a><br>
+											<i>ASAP national units (shapefile)</i></p>
+											<p><a class="ecl-link" aria-label="Download file" href="files/gaul1_asap_v06.zip">gaul1_asap_v06.zip</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/gaul1_asap_v06.zip"><img alt="Download" src="images/download.png"></a><br>
+											<i>ASAP sub-national units - level 1 (shapefile)</i></p>
+											<p class="download_files"><a class="ecl-link" aria-label="Download file" href="files/gaul2_asap_v06.zip">gaul2_asap_v06.zip</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/gaul2_asap_v06.zip"><img alt="Download" src="images/download.png"></a><br>
+											<i>ASAP sub-national units - level 2 (shapefile)</i></p>
+
+										  <h3>Land Cover Masks</h3>
+											<p class="download_descr">Global crop and rangeland masks at 0.004464285715 deg resolution (about 1/4 square kilometer). Each pixel represents the area fraction of the specific cover (i.e. percentage of the pixel with crops/rangeland). Data ranges between 1 and 100 showing the % value. These layers were  generated for ASAP, combining existing data sets (Fritz, S., Lesiv, M., Perez Guzman, K., See, L., Meroni, M., Collivignarelli, F. and Rembold, F., Development of a new cropland and rangeland Area Fraction Image at 500 m for the ASAP system, Publications Office of the European Union, Luxembourg, 2024, doi:10.2760/32935, JRC137153. <a class="ecl-link" aria-label="Download file" href="https://dx.doi.org/10.2760/32935">doi:10.2760/32935)</a>. The data sets were last updated on 01-12-2023 (version 04).</p>
+
+											<p class="download_files"><a class="ecl-link" aria-label="Download file" href="files/asap_mask_crop_v04.tif">asap_mask_crop_v04.tif</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/asap_mask_crop_v04.tif" aria-label="Download file"><img alt="Download Icon" src="images/download.png"></a><br>
+											<i>ASAP crop mask (area fraction)</i></p>
+
+											<p class="download_files"><a class="ecl-link" aria-label="Download file" href="files/asap_mask_rangeland_v04.tif">asap_mask_rangeland_v04.tif</a> &nbsp; <a class="ecl-link" aria-label="Download file" aria-label="Download file" href="files/asap_mask_rangeland_v04.tif"><img alt="Download Icon" src="images/download.png"></a><br>
+											<i>ASAP rangeland mask (area fraction)</i></p>
+
+										  <h3>Phenology</h3>
+											<p class="download_descr">The mean growing season period is defined by a satellite-derived phenology computed on the long-term average of 10-day MODIS/VIIRS FPAR data. Data preprocessing was done with an improved version of the filtering algorithm of Klisch and Atzberger (2016) starting from MCD15A3H (MODIS), VNP15A2H (Suomi-NPP satellite) and VJ115A2H (NOAA-20 satellite) global data at 500 m spatial resolution. <br>
+											The following key parameters are retrieved for each pixel: number of growing seasons per year (i.e. one or two); start of season (SOS, occurring at the time at which FPAR reaches 25% of the ascending amplitude of the seasonal profile); time of maximum FPAR (TOM); start of senescence period (SEN, when FPAR drops below 75% of the descending amplitude); and end of the season (EOS, when FPAR drops below 35%).<br>
+											Phenology timings: the value V in the image is expressed over a 3 years period, from dekads (i.e. ten-day periods) 1 to 108. This is done in order to treat the circular variable "dekad" as an ordinal variable (the mean of SOS cam be computed as the usual average). Example for a season crossing the calendar year:<br>
+											phenos1 = 30, last dekad of October, phenoe1 = 46, first dekad of April -> T = 46 - 36 = 10<br>
+											Therefore, to get the timing T in the 1-36 dekad units (calendar year), one can use:<br>
+											IF V <= 36 THEN T = V<br>
+											IF 36 < V <= 72 THEN T = V -36<br>
+											IF V > 72 THEN T = V - 72<br></p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/phenos1_v05.tif">phenos1_v05.tif</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/phenos1_v05.tif"><img alt="Download" src="images/download.png"></a><br>
+											<i>Phenology: start of the season, first season</i></p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/phenos2_v05.tif">phenos2_v05.tif</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/phenos2_v05.tif"><img alt="Download" src="images/download.png"></a><br>
+											<i>Phenology: start of the season, second season</i></p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/phenom1_v05.tif">phenom1_v05.tif</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/phenom1_v05.tif"><img alt="Download" src="images/download.png"></a><br>
+											<i>Phenology: max of the season, first season</i></p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/phenom2_v05.tif">phenom2_v05.tif</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/phenom2_v05.tif"><img alt="Download" src="images/download.png"></a><br>
+											<i>Phenology: max of the season, second season</i></p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/phenoe1_v05.tif">phenoe1_v05.tif</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/phenoe1_v05.tif"><img alt="Download" src="images/download.png"></a><br>
+											<i>Phenology: end of the season, first season</i></p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/phenoe2_v05.tif">phenoe2_v05.tif</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/phenoe2_v05.tif"><img alt="Download" src="images/download.png"></a><br>
+											<i>Phenology: end of the season, second season</i></p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/phenosen1_v05.tif">phenosen1_v05.tif</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/phenosen1_v05.tif"><img alt="Download" src="images/download.png"></a><br>
+											<i>Phenology: start of senescence, first season</i></p>
+
+											<p><a class="ecl-link" aria-label="Download file" href="files/phenosen2_v05.tif">phenosen2_v05.tif</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/phenosen2_v05.tif"><img alt="Download" src="images/download.png"></a><br>
+											<i>Phenology: start of senescence, second season</i></p>
+
+											<p class="download_files"><a class="ecl-link" aria-label="Download file" href="files/phenonseasons_v05.tif">phenonseasons_v05.tif</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/phenonseasons_v05.tif"><img alt="Download" src="images/download.png"></a><br>
+											<i>Phenology: number of seasons (1 or 2)</i></p>
+
+										  <h3>Crop Calendars</h3>
+											<p>The national and sub-national crop calendars are based on FAO data and include only crops for which the original calendars match with the ASAP remote sensing based phenology. The file includes the start and end dekad (over the 36 dekads in a year) of the planting period (sos_s and sos_e), the start and end dekad of the growth period (sos_e and eos_s), and the start and end dekad of the harvest period (eos_s and eos_e). The rest of the year is considered out of season. To visualize the information in a GIS environment, use the field <i>asap1_id</i> and join with the spatial layer gaul0_asap (see section Administrative Boundaries).<p>
+
+											<p ><a class="ecl-link" aria-label="Download file" href="files/crop_calendar_gaul0.zip">crop_calendar_gaul0.zip</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/crop_calendar_gaul0.zip"><img alt="Download" src="images/download.png"></a><br>
+											<i>Crop calendar at national level</i></p>
+
+											<p style="margin-bottom:25px;"><a class="ecl-link" aria-label="Download file" href="files/crop_calendar_gaul1.zip">crop_calendar_gaul1.zip</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/crop_calendar_gaul1.zip"><img alt="Download" src="images/download.png"></a><br>
+											<i>Crop calendar at national level</i></p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="col-100">
+						<div class="block gutter">
+							<div class="accordion js-accordion">
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header" tabindex="0">INDICATOR STATISTICS</div>
+									<div class="accordion-body js-accordion-body">
+										<div class="accordion-body__contents">
+											<div id="form-download" class="opener-container closed">
+
+												ASAP calculates every 10 days average values of all key indicators for each ASAP Gaul 1 unit. These data are used by the ASAP warning classification and can be downloaded with the tool below. You can select a country, an indicator and the land use (crop or rangeland) to get a csv with the complete time series of the 10-day values. This file can be imported directly into the CST tool, in order to use ASAP indicators for yield forecasting. A selected set of countries is also available at Gaul 2 level. In the sub section "Reference Data - Administrative Boundaries" you can download the administrative boundaries as shapefile. You can plot values of indicator on a map by joining the csv files downloaded before with the shapefile of the spatial units (key fields: asap1_is and asap2_id).
+												<p>&nbsp;</p>
+												<form>
+												<div>
+													<label for="gaul_level">Level:</label>
+													<select id="gaul_level">
+														<option value="1" selected="selected">gaul1</option>
+														<option value="2">gaul2</option>
+													</select>
+													<div class="tooltip"><img alt="Info" src="images/ico_info.png" ></img>
+														<span class="tooltiptext">ASAP indicator statistics are available at sub-national level (GAUL1, adapted by ASAP) for all the countries. A number of countries are also available at the second sub-national level (GAUL2, adapted by ASAP). If you select 'GAUL2', the list of available countries in the next box will be limited.</span>
+													</div>
+
+												</div>
+												</form>
+											<div id="form_gaul1">
+											<form action="export/rum/export.php">
+												<input type="hidden" name="gaul_level" value="1"></input>
+												<div>
+													<label for="country_id">Country:</label>
+													<select id="country_id" name="country_id">
+													</select>
+													<div class="tooltip"><img alt="Info" src="images/ico_info.png" ></img>
+														<span class="tooltiptext">The complete time series of  statistics are made available for all the units of a single country and a single indicator at a time. Here you select the country of interest. If you need to get statistics for multiple countries/indicators you can contact us.</span>
+													</div>
+												</div>
+												<div>
+													<label for="variable_name">Variable:</label>
+													<select id="variable_name" name="variable_name"></select>
+
+												<div class="tooltip"><img alt="Info" src="images/ico_info.png" ></img>
+														<span class="tooltiptext">
+															List of available ASAP indicators. Each indicator is calculated every 10 days. The indicators list includes meteorological and vegetation conditions variables derived from remote sensing, atmospheric circulation models, and a water balance model. The indicator selected determines the options available in the 'Class' drop-down list. Here is a brief description of each indicator. You can read the ASAP documentation for a more complete description.
+															<ul>
+																<li>
+																	FPAR - Fraction of Photosynthetically Active Radiation. FPAR is defined as the fraction of incident photosynthetically active radiation (PAR, spectral region between 400 and 700 nm used by plants to make photosynthesis) absorbed by the green elements of a vegetation canopy. It is closely linked to canopy functioning processes and it is a key biophysical variable for vegetation productivity estimation, terrestrial carbon and vegetation growth condition monitoring. Range = [0 %,100 %].
+																</li>
+																<li>
+																	Rainfall 10-days - Cumulative rainfall during the 10-day period selected.
+																</li>
+																<li>
+																	FPAR Cumulated - zscore (zFPARc) - [Anomaly] Standardized score (Z-score) of the cumulative FPAR over the growing season period (FPARc) between the start of season and the date selected. It indicates how many standard deviations the FPARc is away from its mean value calculated over the same period for all available years (historical average). Note that the growing season may start at different times for different pixels.
+																</li>
+																<li>
+																	SPI 3 month - [Anomaly] Standardized precipitation Index computed with 3-months time scale.
+																</li>
+																<li>
+																	FPAR - zscore (FPARz) - [Anomaly] Standardized score (Z-score) of FPAR at the selected date.
+																</li>
+																<li>
+																	Temperature - Average air temperature.
+																</li>
+																<li>
+																	Water Satisfaction Index (WSI) (zWSI) - [Anomaly] Z-score of the Water Satisfaction Index for crops/rangeland (see ASAP Water Satisfaction Index report in the Documentation section of the ASAP website).
+																</li>
+																<li>
+																	Global radiation (RAD) - ten-daily sum of incoming solar radiation (mainly composed of wavelengths between 0.3 μm and 3 μm) that reaches the earth surface.
+																</li>
+																<li>
+																	Soil Moisture (gapfilled historical time series) - Estimate of volumetric soil moisture. Content of liquid water in a surface soil layer of 2 to 5 cm depth expressed as m<sup>3</sup> water per m<sup>3</sup> soil, unit m<sup>3</sup>m<sup>-3</sup>. Combined means a combination of Soil Moisture and Gapfilled Soil Moisture. SM is gapfilled using seasonal decomposition and Gaussian process to estimate residuals. Gapfilled datasets are up to dekad 2023-12-21, after that dekad regular soil moisture continues up to date.
+																</li>
+															</ul>
+
+													</span>
+													</div>
+												</div>
+												<div>
+													<label for="class_name">Class:</label>
+													<select id="class_name" name="class_name"></select>
+													<!--<img id="area_toolt" alt="Info" src="images/ico_info.png" textToDispl="<div style='text-align:left;'>Here you select on which area the statistics are extracted. The options depend on parameters selected in the previous drop-down lists. All areas with crop (or rangeland) can be considered, or only those areas with crop (or rangeland) that are 'active' (i.e. inside the growing cycle) so to exclude agricultural areas when no vegetation is growing.</div>"></img>-->
+													<div class="tooltip"><img alt="Info" src="images/ico_info.png" ></img>
+														<span class="tooltiptext">Here you select on which area the statistics are extracted. The options depend on parameters selected in the previous drop-down lists. All areas with crop (or rangeland) can be considered, or only those areas with crop (or rangeland) that are 'active' (i.e. inside the growing cycle) so to exclude agricultural areas when no vegetation is growing.</span>
+													</div>
+												</div>
+												<div>
+												<input type="hidden" id="variable_id" name="variable_id">
+												<input type="hidden" id="class_id" name="class_id">
+												<input type="hidden" id="classesset_id" name="classesset_id">
+												<input type="hidden" id="sensor_id" name="sensor_id">
+													<input type="submit" value="DOWNLOAD">
+												</div>
+											</form>
+											</div>
+											<div id="form_gaul2" style="display: none">
+											<form action="export/rum/export.php">
+												<input type="hidden" name="gaul_level" value="2"></input>
+												<div>
+													<label for="country_id_l2">Country:</label>
+													<select id="country_id_l2" name="country_id">
+													</select>
+													<div class="tooltip"><img alt="Info" src="images/ico_info.png" ></img>
+														<span class="tooltiptext">The complete time series of  statistics are made available for all the units of a single country and a single indicator at a time. Here you select the country of interest. If you need to get statistics for multiple countries/indicators you can contact us.</span>
+													</div>
+												</div>
+												<div>
+													<label for="variable_name_l2">Variable:</label>
+													<select id="variable_name_l2"></select>
+													<div class="tooltip"><img alt="Info" src="images/ico_info.png" ></img>
+														<span class="tooltiptext">List of available ASAP indicators. Each indicator is calculated every 10 days. The indicators list includes meteorological and vegetation conditions variables derived from remote sensing, atmospheric circulation models, and a water balance model. The indicator selected determines the options available in the 'Class' drop-down list. Here is a brief description of each indicator. You can read the ASAP documentation for a more complete description.
+															<ul>
+																<li>
+																	FPAR - Fraction of Photosynthetically Active Radiation. FPAR is defined as the fraction of incident photosynthetically active radiation (PAR, spectral region between 400 and 700 nm used by plants to make photosynthesis) absorbed by the green elements of a vegetation canopy. It is closely linked to canopy functioning processes and it is a key biophysical variable for vegetation productivity estimation, terrestrial carbon and vegetation growth condition monitoring. Range = [0 %,100 %].
+																</li>
+																<li>
+																	Rainfall 10-days - Cumulative rainfall during the 10-day period selected.
+																</li>
+																<li>
+																	FPAR Cumulated - zscore (zFPARc) - [Anomaly] Standardized score (Z-score) of the cumulative FPAR over the growing season period (FPARc) between the start of season and the date selected. It indicates how many standard deviations the FPARc is away from its mean value calculated over the same period for all available years (historical average). Note that the growing season may start at different times for different pixels.
+																</li>
+																<li>
+																	SPI 3 month - [Anomaly] Standardized precipitation Index computed with 3-months time scale.
+																</li>
+																<li>
+																	FPAR - zscore (FPARz) - [Anomaly] Standardized score (Z-score) of FPAR at the selected date.
+																</li>
+																<li>
+																	Temperature - Average air temperature.
+																</li>
+																<li>
+																	Water Satisfaction Index (WSI) (zWSI) - [Anomaly] Z-score of the Water Satisfaction Index for crops/rangeland (see ASAP Water Satisfaction Index report in the Documentation section of the ASAP website).
+																</li>
+																<li>
+																	Global radiation (RAD) - ten-daily sum of incoming solar radiation (mainly composed of wavelengths between 0.3 μm and 3 μm) that reaches the earth surface.
+																</li>
+																<li>
+																	Soil Moisture (gapfilled historical time series) - Estimate of volumetric soil moisture. Content of liquid water in a surface soil layer of 2 to 5 cm depth expressed as m<sup>3</sup> water per m<sup>3</sup> soil, unit m<sup>3</sup>m<sup>-3</sup>. Combined means a combination of Soil Moisture and Gapfilled Soil Moisture. SM is gapfilled using seasonal decomposition and Gaussian process to estimate residuals. Gapfilled datasets are up to dekad 2023-12-21, after that dekad regular soil moisture continues up to date.
+																</li>
+															</ul>
+														</span>
+													</div>
+												</div>
+												<div>
+													<label for="class_name_l2">Class:</label>
+													<select id="class_name_l2"></select>
+													<div class="tooltip"><img alt="Info" src="images/ico_info.png" ></img>
+														<span class="tooltiptext">Here you select on which area the statistics are extracted. The options depend on parameters selected in the previous drop-down lists. All areas with crop (or rangeland) can be considered or only those areas with crop (or rangeland) that are 'active' (i.e. inside the growing cycle) so to exclude agricultural areas when no vegetation is growing.</span>
+													</div>
+												</div>
+												<div>
+												<input type="hidden" id="variable_id_l2" name="variable_id">
+												<input type="hidden" id="class_id_l2" name="class_id">
+												<input type="hidden" id="classesset_id_l2" name="classesset_id">
+												<input type="hidden" id="sensor_id_l2" name="sensor_id">
+													<input type="submit" value="DOWNLOAD">
+												</div>
+											</form>
+											</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="col-100">
+						<div class="block gutter">
+							<div class="accordion js-accordion">
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header" tabindex="0">RASTER INDICATORS</div>
+									<div class="accordion-body js-accordion-body">
+										<div class="accordion-body__contents">
+											<div id="form-download" class="opener-container closed">
+
+												<p class="download_descr">Every 10 days, the ASAP system downloads earth observation and agrometeorological data from various sources and uses this data in various combinations with the historic time series, phenology and crop/pasture masks to produce ASAP specific raster indicators. Below is a list of raster idicators available for download with the link to the their download location and their download filename patterns:
+												</p>
+
+												<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/fpar/">fpar_yyyymmdd.tif</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/fpar/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>FPAR indicator</i>
+													</p>
+													<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/mfpard/">mfpard_yyyymmdd.tif</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/mfpard/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>mFPARd indicator</i>
+													</p>
+													<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/zfparc/">zfparc_yyyymmdd.tif</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/zfparc/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>zFPARc indicator</i>
+													</p>
+													<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/zfpar/">zfpar_yyyymmdd.tif</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/zfpar/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>zFPAR indicator</i>
+													</p>
+													<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/fpard/">fpard_yyyymmdd.tif</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/fpard/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>FPARd indicator</i>
+													</p>
+													<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/rfparc/">rfparc_yyyymmdd.tif</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_fpar/rfparc/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>rFPARc indicator</i>
+													</p>
+													<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_rain/rain/">rain_yyyymmdd.img</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_rain/rain/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>Rainfall 10-days indicator</i>
+													</p>
+													<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_rain/spi1/">spi1_yyyymmdd.img</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_rain/spi1/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>SPI 1 month indicator</i>
+													</p>
+													<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_rain/spi3/">spi3_yyyymmdd.img</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_rain/spi3/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>SPI 3 month indicator</i>
+													</p>
+													<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_wsi/wsi_hp/">wsi_hp_crop_yyyymmdd.tif</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_wsi/wsi_hp/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>zWSI crop indicator</i>
+													</p>
+													<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_wsi/wsi_hp/">wsi_hp_pasture_yyyymmdd.tif</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_wsi/wsi_hp/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>zWSI rangeland indicator</i>
+													</p>
+													<p>
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_sm/sm_combined/">sm_combined_yyyymmdd.tif</a> &nbsp;
+														<a class="ecl-link" aria-label="Open directory" href="/data/indicators_sm/sm_combined/">
+															<img alt="Download" src="images/download.png">
+														</a><br>
+														<i>Soil Moisture (gapfilled historical time series) </i>
+													</p>
+
+
+
+												<h3>Indicator info Web Service</h3>
+													<p class="download_descr">For a more automated, machine to machine, download there is a web service implemented providing more detailed information on available raster indicators, like the download location, resolution and the level of completion (<a class="ecl-link" aria-label="Download file" href="getIndicatorsInfo.php">getIndicatorsInfo</a>).
+													</p>
+													<p><a class="ecl-link" aria-label="Download file" href="files/Indicator_info_service_2025_01_16.pdf">Indicator info service manual</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/Indicator_info_service_2025_01_16.pdf"><img alt="Download" src="images/download.png"></a><br>
+													<i>Document describing the usage of the webservice</i></p>
+
+												<h3>Indicators description</h3>
+													<p class="download_descr">Below is a description of ASAP indicators available for download:
+
+													<ul>
+														<li><strong>FPAR</strong> - Fraction of Photosynthetically Active Radiation. FPAR is defined as the fraction of incident photosynthetically active radiation (PAR, spectral region between 400 and 700 nm used by plants to make photosynthesis) absorbed by the green elements of a vegetation canopy. It is closely linked to canopy functioning processes and it is a key biophysical variable for vegetation productivity estimation, terrestrial carbon  and vegetation growth condition monitoring. Range = [0 %,100 %] </li>
+														<li><strong>mFPARd</strong> -  [Anomaly] Mean FPAR difference with historical average over the growing season period between the start of sason and the date selected. Note that the mean growing season may start at different time for different pixels</li>
+														<li><strong>zFPARc</strong> - [Anomaly] Standardized score (Z-score) of the cumulative FPAR over the growing season period (FPARc) between the start of season  and the date selected. It indicates how many standard deviations the FPARc is away from its mean value calculated over the same period for all available years (historical average). Note that the growing season may start at different time for different pixels</li>
+														<li><strong>zFPAR</strong> - [Anomaly] Standardized score (Z-score) of FPAR at the selected date</li>
+														<li><strong>FPARd</strong> - [Anomaly] FPAR difference with historical average at the selected date</li>
+														<li><strong>rFPARc</strong> - [Anomaly] Relative difference of the cumulative FPAR over the growing season period (FPARc) with respect to its historical average, expressed in percentage (%).</li>
+														<li><strong>Rainfall 10-days</strong> - Cumulative rainfall during the 10-day period selected</li>
+														<!-- <li><strong>Rainfall 10-days difference</strong> - [Anomaly] Difference of cumulative rainfall between the 10-day period selected and the historical average</li>
+														<li><strong>Rainfall 30-days difference</strong> - [Anomaly] Difference of cumulative rainfall between the last three 10-day periods and the historical average</li>
+														<li><strong>Rainfall 90-days % difference</strong> - [Anomaly] Relative difference (as percentage) of cumulative rainfall between the last nine 10-day periods and the historical average</li>
+														<li><strong>Rainfall 10-days forecast</strong> - Forecast of the cumulative rainfall during the 10-days period following the last available 10-days period in ASAP (updated every ten days when a new ten-days period is published)</li>
+														<li><strong>Rainfall 10-days forecast difference</strong> - [Anomaly] Difference of cumulative rainfall forecast between the 10-day period selected and the historical average</li> -->
+														<li><strong>SPI 1 month</strong> - [Anomaly] Standardized precipitation Index computed with 1-month time scale. The SPI is a probability index that expresses the observed cumulative precipitation for a given timescale (i.e., the period during which precipitation is summed) as the standardized departure from the rainfall probability distribution function</li>
+														<li><strong>SPI 3 month</strong> - [Anomaly] Standardized precipitation Index computed with 3-months time scale</li>
+														<li><strong>zWSI crop</strong> - [Anomaly] Z-score of the Water Satisfaction Index for crops (see <i>ASAP Water Satisfaction Index</i> report in the <i>Documentation</i> section of the ASAP website)</li>
+														<li><strong>zWSI rangeland</strong> - [Anomaly] Z-score of the Water Satisfaction Index for rangeland (see <i>ASAP Water Satisfaction Index</i> report in the <i>Documentation</i> section of the ASAP website)</li>
+														<!-- <li><strong>Temperature diff</strong> - [Anomaly] Air temperature difference with historical average for the selected date</li> -->
+														<li><strong>Soil Moisture (gapfilled historical time series)</strong> - Soil moisture value from C3S, “soil moisture gridded data from 1978 to present” (v202312). Data refers to volumetric soil moisture (m<sup>3</sup> m<sup>-3</sup>), i.e. the content of liquid water in a surface soil layer of 2 to 5 cm depth expressed as m<sup>3</sup> water per m<sup>3</sup> soil, derived from active and passive satellite sensors combined. Global data at a 0.25° spatial grid and 10-day temporal resolution are made available by C3S with a latency of about 10 days, occasionally larger. Combined means a combination of Soil Moisture and Gapfilled Soil Moisture. SM is gapfilled using seasonal decomposition and Gaussian process to estimate residuals. Gapfilled datasets are up to dekad 2023-12-21, after that dekad regular soil moisture continues up to date.</li>
+													</ul>
+												</p>
+
+												<p class="download_descr">For more datails please refer to the <a class="ecl-link" aria-label="Download file" href="files/asap_warning_classification_v_8_0.pdf">ASAP warning classification scheme v 8.0</a>.</p>
+
+												<h3>Using ASAP data: Credits and license information</h3>
+												<h4>Citation</h4>
+													<p class="download_descr">European Commission: Joint Research Centre, Meroni, M., Rembold, F., Vojnovic, P., Collivignarelli, F., Kerdiles, H., Urbano, F., Garrido Martin, J., Agudo Bravo, L., Dimou, M., Bande, A. and Veiga Lopez-Pena, J.M., The warning classification scheme of ASAP – Anomaly hot Spots of Agricultural Production, v8.0, Publications Office of the European Union, Luxembourg, 2025, <a class="ecl-link" aria-label="Open document" href="https://data.europa.eu/doi/10.2760/6814458">https://data.europa.eu/doi/10.2760/6814458</a>, JRC140585.</p>
+
+												<h4>License</h4>
+													<p class="download_descr">Reuse is authorised, provided the source is acknowledged. The reuse policy of the European Commission is implemented by a <a class="ecl-link" aria-label="Open page" href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32011D0833">Decision of 12 December 2011</a></p>
+
+												<h4>Disclaimer</h4>
+													<p class="download_descr">Unless the following would not be permitted or valid under applicable law, the following applies to the data/information provided by the JRC:
+														<ol>
+														<li>The JRC data are provided "as is" and "as available" without warranty of any kind, either express or implied, including, but not limited to, any implied warranty against infringement of third parties' property rights, or merchantability, integration, absence of latent or other defects, satisfactory quality and fitness for a particular purpose. The JRC data do not constitute professional or legal advice (if you need specific advice, you should always consult a suitably qualified professional).</li>
+														<li>The JRC has no obligation to provide technical support or remedies for the data. The JRC does not represent or warrant that the data will be error free or uninterrupted, or that all non-conformities can or will be corrected, or that any data are accurate or complete, or that they are of a satisfactory technical or scientific quality.</li>
+														<li>The JRC or as the case may be the European Commission shall not be held liable for any direct or indirect, incidental, consequential or other damages, including but not limited to the loss of data, loss of profits, or any other financial loss arising from the use of the JRC data, or inability to use them, even if the JRC is notified of the possibility of such damages.</li>
+														</ol>
+													</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="col-100">
+						<div class="block gutter">
+							<div class="accordion js-accordion">
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header">YIELD FORECAST</div>
+									<div class="accordion-body js-accordion-body">
+										<div class="accordion-body__contents" >
+											<h3>Pre-operational Country-level Yield Forecasting with Machine Learning Algorithms and Agrometeorological Data</h3>
+											 <p class="download_descr">Country-level yield forecasts are computed for 77 food insecure countries using machine learning algorithms and agrometeorological data. The system is currently in testing phase and utilizes over 20 years of FAOSTAT yield data and ASAP agrometeorological data to provide in-season prediction of crop yields. Remote sensing and meteorological data are used to extract important information about crop development, including maximum NDVI, average temperature, and the sum of radiation and rainfall. Similar countries are grouped together based on their crop development characteristics to improve the accuracy of the models. Finally, only models that achieved Rcv2 > 0.3 were considered suitable for operational forecasts and retained. If no valid model is retained for a given crop-country, no forecast is available.</p>
+
+											 <p class="download_files">Forecast model outputs are provided as pdf and csv files and they report: The forecasted yield for the current season, average yield based on the last five years and the percentage difference between the forecasted and the 5 years average yield, input feature combination (RSTR or TR) and the best pooling approach (All, Main or Individual), root mean square error (RMSE) and the coefficient of determination (R2) in prediction from the hindcasting experiments. PDF files also contain plots of observed and predicted yield values (since 2006) as well as the benchmark model (average of last 5 years). Additional information on the methodology can be found in the <a class="ecl-link" href="files/technical_note_on_large_scale_yield_forecasting_v1.0.pdf" aria-label="Download file" target="_blank">Methodology summary</a>.</p>
+											 The latest yield forecast can be downloaded from the <a class="ecl-link" href="data/yield-forecast/" aria-label="Data download" target="_blank">yield forecast data download page</a> and they are issued 7 days after the forecast is triggered according to calendar below.</p>
+												<img alt="Icon" src="images/forecast_calendar.png" style="width: 800px; height: 560px;">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="col-100">
+						<div class="">
+							<h2><img alt="Icon" src="images/ico-download-tool.png" alt="Software Download" valign="middle" width="50px"> Software Download</h2>
+								<div style="color: #3f3c3c; margin-top:10px;" class="accordion-body__contents"><p>As part of its agricultural monitoring for food security activities, the JRC, in collaboration with external partners, has developed several open access desktop applications. In this section, you can download the image time series processing tool SPIRITS (Software for Processing and Interpretation of Raster Image Time Series)  and the yield forecasting tool CST (CGMS Statistical Tool). SPIRITS is used for producing some of the anomaly indicators behind the ASAP warnings, whereas selected ASAP indicators can be used as yield proxies by the CST tool.</p><br>
+								</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="col-100">
+						<div class="block gutter">
+							<div class="accordion js-accordion">
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header" tabindex="0">SPIRITS</div>
+									<div class="accordion-body js-accordion-body">
+										<div class="accordion-body__contents">
+											<div id="box5" class="opener-container closed">
+
+											 <h3>Description</h3>
+											 <p class="download_descr">SPIRITS (Software for the Processing and Interpretation of Remotely Sensed Image Time Series) was developed by VITO for the Food Security unit of the Joint Research Centre. It is a software environment for analyzing satellite derived image time series for crop and vegetation monitoring in an integrated and flexible analysis environment and with a user-friendly graphical interface. With this toolbox, you can process and examine time series of low and medium resolution sensors. It can be used to perform and to automatize many spatial and temporal processing steps on time series and to extract spatially aggregated statistics. Vegetation indices and their anomalies can be rapidly mapped and statistics can be plotted in seasonal graphs to be shared with analysts and decision makers. This <a class="ecl-link" aria-label="Download file" href="files/SPIRITS_Introduction.pdf">presentation</a> introduces the main features available in SPIRITS. These two papers: <a class="ecl-link" aria-label="Download file" href="http://authors.elsevier.com/sd/article/S1364815213002648">Image time series processing for agriculture monitoring</a> and <a class="ecl-link" aria-label="Download file" href="http://journal.frontiersin.org/article/10.3389/fenvs.2015.00046/full">Remote sensing time series analysis for crop monitoring with the SPIRITS software: new functionalities and use examples</a> describe the tool with more details. For additional information, you can read the <a class="ecl-link" aria-label="Download file" href="files/SpiritsManual.pdf">SPIRITS manual</a>.</p>
+
+											 <h3>Download</h3>
+												<p class="download_descr"><a class="ecl-link" aria-label="Download file" href="files/SpiritsExtract_152.zip">SPIRITS Software</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/SpiritsExtract_152.zip"><img alt="Download" src="images/download.png"></a><br>
+												<i>Version 1.5.2, February 2018. <br>Important note: SPIRITS requires a Java virtual machine (JVM) to run. If not already installed, users can download Java version 1.7 or higher.</i></p>
+
+												<p><a class="ecl-link" aria-label="Download file" href="files/SpiritsManual.pdf">SPIRITS Manual</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/SpiritsManual.pdf"><img alt="Download" src="images/download.png"></a><br>
+												<i>User Manual that contains general information on image formats and general concepts on SPIRITS processing. All SPIRITS functionalities are described in detail.</i></p>
+												<p><a class="ecl-link" aria-label="Download file" href="files/SpiritsTutorial.pdf">SPIRITS Tutorial</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/SpiritsTutorial.pdf"><img alt="Download" src="images/download.png"></a><br>
+												<i>Version 1.1, June 2013. A set of exercises that guides the user step by step to perform the most typical image processing chains for agriculture monitoring.</i></p>
+												<p class="download_files"><a class="ecl-link" aria-label="Download file" href="files/testDataset.zip">Tutorial Sample Data Set</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/testDataset.zip"><img alt="Download" src="images/download.png"></a><br>
+												<i>A sample training data set needed to replicate the exercises illustrated in the SPIRITS Tutorial.</i></p>
+
+											 <h3>Ownership and distribution</h3>
+											<p class="download_files">The European Union is the owner of the copyright and other intellectual and industrial property rights, trade secrets, and know-how related to the Software over which is has the power of disposal regardless geographical or other limitations. Subject to compliance with the terms of this licence, the European Union grants the User a personal, non-exclusive and royalty-free licence to Use the Software and Software Package. See the end-user <a href="files/EULA_spirits.pdf">licence agreement</a> for more details.</p>
+
+											 <h3>Acknowledgments</h3>
+											<p style="margin-bottom:10px;">SPIRITS was programmed by Dominique Haesen and Herman Eerens from VITO. From the side of JRC-MARS the developments were guided by Felix Rembold. In addition, the software further benefited from contributions from various JRC-MARS and VITO researchers, who used the software in their own work or for training sessions in Africa and abroad.
+											The Food and Agriculture Organization (FAO) of the United Nations financially supported the development of a number of additional modules which were specifically developed in the frame of FAO’s Agricultural Stress Index System (ASIS).</p>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="col-100">
+						<div class="block gutter">
+							<div class="accordion js-accordion">
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header" tabindex="0">CST</div>
+									<div class="accordion-body js-accordion-body">
+										<div class="accordion-body__contents">
+											<div id="box6" class="opener-container closed">
+											 <h3>Description</h3>
+											<p class="download_files">CST software is designed to support the development and selection of crop yield forecast models to facilitate national and sub national crop yield forecasting. Time trend analysis of yield statistics is followed by regression or scenario analysis using biophysical indicators to explain yield statistics and search for similar years. Constructed models are used to predict yield of the current growing season.<br>
+											The CGMS statistical tool has been developed for the MARS unit of JRC in the framework of several MARS related projects (MARSOP, ASEMARS, E-Agri, AGRICAB and SIGMA). These projects contributed to development of the initial version and a number of subsequent updates. The original objective was to support the national crop yield forecasting activities of the MARS Crop Yield Forecasting System (MCYFS). Later, through EU research project like E-Agri, AGRICAB and SIGMA the CGMS statistical tool has been introduced to other (non)-governmental organizations having a mandate in monitoring and forecasting crop production.<br>
+											CST can be used in connection with SPIRITS to combine image processing with statistical crop yield forecast modelling. A selection of ASAP indicators available in the data download page, can also be used as yield proxies in CST</p>
+
+											 <h3>Download</h3>
+												<p><a class="ecl-link" aria-label="Download file" href="files/CgmsStatTool3_5_3.msi">CST Software</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/CgmsStatTool3_5_3.msi"><img alt="Download" src="images/download.png"></a><br>
+												<i>Version 3.5.3, October 2019</i></p>
+
+												<p class="download_files"><a class="ecl-link" aria-label="Download file" href="files/CGMS-Statistical-Tool-V_3_5_3.pdf">CST Manual</a> &nbsp; <a class="ecl-link" aria-label="Download file" href="files/CGMS-Statistical-Tool-V_3_5_3.pdf"><img alt="Download" src="images/download.png"></a><br>
+												<i>User Manual</i></p>
+
+											 <h3>Ownership and distribution</h3>
+											<p style="margin-bottom:10px;">The European Union is the owner of the copyright and other intellectual and industrial property rights, trade secrets, and know-how related to the Software over which is has the power of disposal regardless geographical or other limitations. Subject to compliance with the terms of this licence, the European Union grants the User a personal, non-exclusive and royalty-free licence to Use the Software and Software Package. The licence is granted for non-commercial purposes only. See the end-user <a href="files/CgmsStatToolEULA.pdf">licence agreement</a> for more details.</p>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+
+<div style="margin-bottom:18px; border-bottom: 1px solid #0164a5; margin-top:1px;" class="clear"></div>
+<div class="col-100 footer_logos_area">
+	<p style="margin-left: 8px; font-size: 13px; color: #000000; font: normal normal 400 .8rem / 1.5rem arial, sans-serif;">For additional information related to agriculture and drougth monitoring visit also:</p>
+	<div class="col-25">
+		<div class="block gutter footer_block" >
+			<a href="http://emm.newsbrief.eu/NewsBrief/alertedition/en/FoodSecurityFoodAid.html" target="_blank">
+				<img alt="emm logo" width="270" height="110" class="img-buttons-footer" src="images/emm_logo.webp">
+			</a>
+		</div>
+	</div>
+	<div class="col-25">
+		<div class="block gutter footer_block" >
+			<a href="https://ec.europa.eu/jrc/en/mars/bulletins" target="_blank">
+				<img alt="bulletins logo" width="270" height="110" class="img-buttons-footer" src="images/bulletins_logo.webp">
+			</a>
+		</div>
+	</div>
+	<div class="col-25">
+		
+		<div class="block gutter footer_block">
+			<a href="https://drought.emergency.copernicus.eu/" target="_blank">
+				<img alt="copernicus logo" width="220" height="110" class="img-buttons-footer" src="images/copernicus_CEMS_logo.webp">
+			</a>
+		</div>
+	</div>
+	<div class="col-25">
+		<div class="block gutter footer_block partners_logos" >
+			<a href="https://agriculturehotspots.icpac.net/" target="_blank">
+				<img alt="icpac logo" width="91" height="110" class="img-buttons-footer" src="images/icpac_logo.webp">
+			</a>
+
+			<a href="http://guetcrop.oss-online.org" target="_blank">
+				<img alt="gmes logo" width="126" height="110" class="img-buttons-footer" src="images/gmes.webp">
+			</a>
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+
+    </div>
+	<!--FOOTER-->
+		<footer class="ecl-site-footer"></footer>
+		<script
+			src="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.3.3/ec/scripts/ecl-ec.js" integrity="sha256-lHyQhdolsccRXRUM7QD3uhWpbhAhB5k0t3l/9SrdxjM=", "sha384-MMeVW20aRMI8eTWNS57uBdixaP3wtA8g0Gx7szcYmyWW9B8io1N0igLdXGnRVltV", "sha512-0ixxR510NhsWAjgFvZQe+7ps8IIBi2PeKITeMqN5CdhIAzcoI/PzR7NYg5cCR32UGNTVV6cNKNB3nVN1X/r4ig=="
+			crossorigin="anonymous" >
+		</script>
+		<script defer src="js/initTempl.js?ver=1.3"></script>
+		<!-- TRACKING -->
+		<script type="application/json">{"utility":"analytics","siteID":"4415ed1b-c268-415c-a85c-58fc026b1612","sitePath":["agricultural-production-hotspots.ec.europa.eu"],"instance":"ec"}</script>
+		<script>
+		document.body.addEventListener('keydown', function(e) {
+		  // Check if the key pressed is 'Tab'
+		  if (e.key === 'Tab') {
+			// Add class when keyboard is used for navigation
+			document.body.classList.add('using-keyboard');
+		  }
+		});
+
+		document.body.addEventListener('mousedown', function() {
+		  // Remove class when mouse is used
+		  document.body.classList.remove('using-keyboard');
+		});
+	</script>
+	</body>
+</html>
+<script type="text/javascript">
+$(document).ready(function() {
+
+	// Call the function to insert the notification
+	insertNotification();
+	$('.wt-cck-btn-add').on( "click", function() {
+		starttracks();
+	});
+	getCompleteCountryList();
+	//MEGAMENU
+	/*for (b=0;b<completeCountryList.length;b++) {
+		$('<li>').append('<a href="country.php?cntry='+completeCountryList[b].adm0_code+'">'+completeCountryList[b].adm0_name_short+'</a>').appendTo($('#countryList'));
+	}*/
+
+	//ACCORDION
+	var accordion = (function(){
+	var $accordion = $('.js-accordion');
+	var $accordion_header = $accordion.find('.js-accordion-header');
+	var $accordion_item = $('.js-accordion-item');
+
+	// default settings
+	var settings = {
+		// animation speed
+		speed: 400,
+
+		// close all other accordion items if true
+		oneOpen: false
+	};
+	return {
+		// pass configurable object literal
+		init: function($settings) {
+			$accordion_header.on('click', function() {
+				accordion.toggle($(this));
+			}).attr('tabindex', '0') // Make it focusable
+			.on('keydown', function(e) {
+			  // Check if the key pressed is Enter or Space
+			  if (e.which === 13 || e.which === 32) {
+				e.preventDefault(); // Prevent the default action
+				accordion.toggle($(this));
+				setImagesInTab($(this).attr('id').split('_')[2]);
+			  }
+			});
+
+			$.extend(settings, $settings);
+
+			// ensure only one accordion is active if oneOpen is true
+			if(settings.oneOpen && $('.js-accordion-item.active').length > 1) {
+				$('.js-accordion-item.active:not(:first)').removeClass('active');
+			}
+
+			// reveal the active accordion bodies
+			$('.js-accordion-item.active').find('> .js-accordion-body').show();
+		},
+		toggle: function($this) {
+
+			if(settings.oneOpen && $this[0] != $this.closest('.js-accordion').find('> .js-accordion-item.active > .js-accordion-header')[0]) {
+				$this.closest('.js-accordion')
+					//.find('> .js-accordion-item')
+					.find('.js-accordion-item')
+					.removeClass('active')
+					.find('.js-accordion-body')
+					.slideUp()
+			}
+
+			// show/hide the clicked accordion item
+			$this.closest('.js-accordion-item').toggleClass('active');
+			$this.next().stop().slideToggle(settings.speed);
+		}
+	}
+	})();
+	accordion.init({ speed: 300, oneOpen: true });
+	// ??
+	$('.popup-btn').click(function(e) {
+		$('.popup-wrap').fadeIn(500);
+		$('.popup-box').removeClass('transform-out').addClass('transform-in');
+		e.preventDefault();
+	});
+	$('.popup-close').click(function(e) {
+		$('.popup-wrap').fadeOut(500);
+		$('.popup-box').removeClass('transform-in').addClass('transform-out');
+
+		e.preventDefault();
+	});
+	//AUTOCOMPLETE
+	var options = {
+		data: regionList,
+		getValue: function(element) {
+			return element.adm1_name;
+		},
+		list: {
+			match: {
+				enabled: true
+			},
+			onChooseEvent: function() {
+				var value = $("#basics").getSelectedItemData().asap1_id;
+				// Set the href attribute of the hidden link and trigger a click event
+				$('#hiddenLink').attr('href', "hresolution/?region=" + parseInt(value));
+				$('#hiddenLink')[0].click();
+				$('#basics').val('');
+				$('#hiddenLink').attr('href', "");
+			}
+		}
+	};
+	$("#basics").easyAutocomplete(options);
+
+	var options2 = {
+		data: countryList,
+		getValue: function(element) {
+			var elem = element.adm0_name_short;
+			return elem;
+		},
+		list: {
+			match: {
+				enabled: true
+			},
+			onClickEvent: function() {
+				var value = $("#basics2").getSelectedItemData().adm0_code;
+				window.open("country.php?cntry="+parseInt(value)+"","_self");
+				$('#basics2').val('');
+			},
+			onKeyEnterEvent: function() {
+				var value = $("#basics2").getSelectedItemData().adm0_code;
+				window.open("country.php?cntry="+parseInt(value)+"","_self");
+				$('#basics2').val('');
+			},
+			onChooseEvent: function() {
+				var value = $("#basics2").getSelectedItemData().adm0_code;
+				window.open("country.php?cntry="+parseInt(value)+"","_self");
+				$('#basics2').val('');
+			}
+		}
+
+
+	};
+	$("#basics2").easyAutocomplete(options2);
+});
+</script>

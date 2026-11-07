@@ -1,0 +1,101 @@
+{
+  "protocol": {
+    "schema_version": 1,
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      }
+    ],
+    "final_calibration_year": 2024,
+    "evaluation_years": [
+      2025,
+      2026
+    ],
+    "crossfit_blocks": 6,
+    "coverage": 0.9,
+    "minimum_calibration_nights": 30,
+    "scale_floor_c": 0.5,
+    "scale_ceiling_c": 9.0,
+    "warm_width_ratio_limit": 1.05,
+    "overall_width_ratio_limit": 1.05,
+    "candidates": [
+      {
+        "name": "legacy_symmetric",
+        "mode": "legacy"
+      },
+      {
+        "name": "risk_5_lower_95",
+        "mode": "lower",
+        "risk_threshold_c": 5.0,
+        "quantile": 0.95
+      },
+      {
+        "name": "scale_ridge_10",
+        "mode": "scale",
+        "alpha": 10.0
+      },
+      {
+        "name": "scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0
+      },
+      {
+        "name": "tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0
+      },
+      {
+        "name": "tails_ridge_100",
+        "mode": "asymmetric",
+        "alpha": 100.0
+      },
+      {
+        "name": "quantile_linear_005",
+        "mode": "quantile",
+        "alpha": 0.05
+      },
+      {
+        "name": "quantile_linear_02",
+        "mode": "quantile",
+        "alpha": 0.2
+      },
+      {
+        "name": "quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013
+      }
+    ],
+    "selection": "eligible: coverage >= legacy, warm width <= 1.05*legacy, overall width <= 1.05*previous risk envelope; lexicographic cold uncovered rate, balanced cold/warm interval score90, overall width, registry order; legacy fallback if no eligible candidate",
+    "residual_training": "six contiguous whole-night blocks within prior training years; point fit excludes held block; all residual-head fit dates precede validation year; forecast-only 15 minimum_model features",
+    "calibration": "held validation season leave-one-night-out score calibration; final 2024; retrospective diagnostics, not prospective or independent coverage; nonnegative CQR correction",
+    "point_and_detector": "frozen huber_1 and event_duration_weather@0.25, all point values, cold masks and timing unchanged",
+    "uncertainty": "empirical station coverage; dependent weather, only seven prior-validation cold nights; no conditional guarantee",
+    "deployment": "station research only; unknown orchard and field GFS unchanged",
+    "status": "fixed registry and gates before new control evaluation; 2025/2026 previously viewed, never used for fitting, selection or calibration"
+  },
+  "protocol_sha256": "d6451d0b1faacee0afca7078bfad0e7c0d4bbb7ef3332683ac92221ad9565895",
+  "source_sha256": {
+    "conditional_error.py": "9e90c52166367c9b6e18348eed6e6b1a02371b23aa54f73a4dda4f72df56824e",
+    "conditional_error_study.py": "de26639e88ea759100f730d7d56e9cbf6e90f3c24f06fcd868c4e3b48e5fe5d9",
+    "minimum_model.py": "dee4e650d0cd1b390e748c4521c2aa70242a7128e52bb08fa7e18a6f10a0be7d",
+    "cold_interval.py": "5123f7591df1350abf12471d07a12c42ff3c87d52e41b8147365a795e8baad2b",
+    "cold_interval_study.py": "14711ed4114afd80ce7f8d4a823d5167abe0e42567f32844e66963bc6da446b8",
+    "scenario_study.py": "0b94631ad28902154250308902996016ee3cdaa55f4e514e4482887a9427d627",
+    "frost_study.py": "0161683092e817a4ff943378ededf42c50dc31c5ecfb867a3b444046d6056ab1"
+  },
+  "saved_at_utc": "2026-10-13T18:42:31.402470+00:00"
+}

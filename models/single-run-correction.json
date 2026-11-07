@@ -1,0 +1,267 @@
+{
+  "config": {
+    "site_id": "krasnodar-34929",
+    "station_id": "34929",
+    "latitude": 45.0333,
+    "longitude": 39.15,
+    "elevation_m": 33,
+    "crop": "apple",
+    "phase": null,
+    "timezone": "Europe/Moscow",
+    "utc_offset_hours": 3,
+    "years": [
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "season_start": "03-01",
+    "season_end": "05-31",
+    "night_start_hour": 19,
+    "night_end_hour_exclusive": 9,
+    "warning_hour_local": 18,
+    "run_hour_utc": 6,
+    "archive_availability_buffer_minutes": 10,
+    "weather_threshold_c": 0.0,
+    "observation_sources": [
+      "isd_lite",
+      "metar"
+    ],
+    "development_years": [
+      2022,
+      2023
+    ],
+    "validation_years": [
+      2024
+    ],
+    "test_years": [
+      2025
+    ],
+    "source": "NOAA GFS operational 0.25 degree GRIB2 on AWS",
+    "interpolation": "nearest_grid_point_no_elevation_adjustment",
+    "correction_candidates": [
+      "identity",
+      "night_min_median",
+      "lead_hour_median"
+    ],
+    "selection_metric": "validation_night_min_mae_c"
+  },
+  "models": [
+    {
+      "name": "identity",
+      "trained_nights": 184,
+      "trained_hours": 2576,
+      "training_last_valid_at_utc": "2023-06-01T05:00:00+00:00",
+      "offset_c": 0.0
+    },
+    {
+      "name": "night_min_median",
+      "trained_nights": 184,
+      "trained_hours": 2576,
+      "training_last_valid_at_utc": "2023-06-01T05:00:00+00:00",
+      "offset_c": -0.7828662109375273
+    },
+    {
+      "name": "lead_hour_median",
+      "trained_nights": 184,
+      "trained_hours": 2576,
+      "training_last_valid_at_utc": "2023-06-01T05:00:00+00:00",
+      "offset_by_lead_c": {
+        "10": 1.2344726562499488,
+        "11": 0.886486816406233,
+        "12": 0.5240661621093352,
+        "13": 0.10853271484373295,
+        "14": 0.10045166015621021,
+        "15": -0.014062500000051159,
+        "16": 0.03158935546872499,
+        "17": -0.3144409179687955,
+        "18": -0.15177246093753638,
+        "19": -0.09341430664065342,
+        "20": -0.3799499511719091,
+        "21": -0.14555664062504547,
+        "22": 0.14999999999997726,
+        "23": 0.5137402343749784
+      }
+    }
+  ],
+  "selected_model": {
+    "name": "night_min_median",
+    "trained_nights": 184,
+    "trained_hours": 2576,
+    "training_last_valid_at_utc": "2023-06-01T05:00:00+00:00",
+    "offset_c": -0.7828662109375273
+  },
+  "selection_target": "night_minimum_temperature_only",
+  "operational_status": "experimental; no demonstrated improvement in frost detection",
+  "selection_rule": "Minimum validation night-minimum MAE (rounded to 4 decimals); ties: identity, global, by-lead. No test fitting or refitting.",
+  "scores": {
+    "identity": {
+      "development": {
+        "expected_nights": 184,
+        "complete_observation_nights": 184,
+        "paired_nights": 184,
+        "excluded_nights": 0,
+        "observed_cold_nights": 21,
+        "paired_cold_nights": 21,
+        "cold_night_sequences": 7,
+        "night_min_mae_c": 1.5349,
+        "night_min_bias_c": 1.0115,
+        "cold_night_min_mae_c": 2.5999,
+        "hourly_pairs": 2576,
+        "hourly_mae_c": 1.3362,
+        "hits": 14,
+        "misses": 7,
+        "false_alarms": 0,
+        "correct_negatives": 163
+      },
+      "validation": {
+        "expected_nights": 92,
+        "complete_observation_nights": 91,
+        "paired_nights": 91,
+        "excluded_nights": 1,
+        "observed_cold_nights": 4,
+        "paired_cold_nights": 4,
+        "cold_night_sequences": 3,
+        "night_min_mae_c": 2.1586,
+        "night_min_bias_c": 1.8469,
+        "cold_night_min_mae_c": 4.8493,
+        "hourly_pairs": 1274,
+        "hourly_mae_c": 1.5657,
+        "hits": 0,
+        "misses": 4,
+        "false_alarms": 0,
+        "correct_negatives": 87
+      },
+      "test": {
+        "expected_nights": 92,
+        "complete_observation_nights": 91,
+        "paired_nights": 91,
+        "excluded_nights": 1,
+        "observed_cold_nights": 6,
+        "paired_cold_nights": 6,
+        "cold_night_sequences": 3,
+        "night_min_mae_c": 1.562,
+        "night_min_bias_c": 1.0968,
+        "cold_night_min_mae_c": 2.7898,
+        "hourly_pairs": 1274,
+        "hourly_mae_c": 1.3276,
+        "hits": 4,
+        "misses": 2,
+        "false_alarms": 0,
+        "correct_negatives": 85
+      }
+    },
+    "night_min_median": {
+      "development": {
+        "expected_nights": 184,
+        "complete_observation_nights": 184,
+        "paired_nights": 184,
+        "excluded_nights": 0,
+        "observed_cold_nights": 21,
+        "paired_cold_nights": 21,
+        "cold_night_sequences": 7,
+        "night_min_mae_c": 1.3833,
+        "night_min_bias_c": 0.2286,
+        "cold_night_min_mae_c": 1.8868,
+        "hourly_pairs": 2576,
+        "hourly_mae_c": 1.5603,
+        "hits": 18,
+        "misses": 3,
+        "false_alarms": 1,
+        "correct_negatives": 162
+      },
+      "validation": {
+        "expected_nights": 92,
+        "complete_observation_nights": 91,
+        "paired_nights": 91,
+        "excluded_nights": 1,
+        "observed_cold_nights": 4,
+        "paired_cold_nights": 4,
+        "cold_night_sequences": 3,
+        "night_min_mae_c": 1.8045,
+        "night_min_bias_c": 1.064,
+        "cold_night_min_mae_c": 4.0664,
+        "hourly_pairs": 1274,
+        "hourly_mae_c": 1.568,
+        "hits": 0,
+        "misses": 4,
+        "false_alarms": 0,
+        "correct_negatives": 87
+      },
+      "test": {
+        "expected_nights": 92,
+        "complete_observation_nights": 91,
+        "paired_nights": 91,
+        "excluded_nights": 1,
+        "observed_cold_nights": 6,
+        "paired_cold_nights": 6,
+        "cold_night_sequences": 3,
+        "night_min_mae_c": 1.4132,
+        "night_min_bias_c": 0.314,
+        "cold_night_min_mae_c": 2.5289,
+        "hourly_pairs": 1274,
+        "hourly_mae_c": 1.5821,
+        "hits": 4,
+        "misses": 2,
+        "false_alarms": 1,
+        "correct_negatives": 84
+      }
+    },
+    "lead_hour_median": {
+      "development": {
+        "expected_nights": 184,
+        "complete_observation_nights": 184,
+        "paired_nights": 184,
+        "excluded_nights": 0,
+        "observed_cold_nights": 21,
+        "paired_cold_nights": 21,
+        "cold_night_sequences": 7,
+        "night_min_mae_c": 1.4503,
+        "night_min_bias_c": 0.8219,
+        "cold_night_min_mae_c": 2.458,
+        "hourly_pairs": 2576,
+        "hourly_mae_c": 1.2777,
+        "hits": 16,
+        "misses": 5,
+        "false_alarms": 0,
+        "correct_negatives": 163
+      },
+      "validation": {
+        "expected_nights": 92,
+        "complete_observation_nights": 91,
+        "paired_nights": 91,
+        "excluded_nights": 1,
+        "observed_cold_nights": 4,
+        "paired_cold_nights": 4,
+        "cold_night_sequences": 3,
+        "night_min_mae_c": 2.035,
+        "night_min_bias_c": 1.6123,
+        "cold_night_min_mae_c": 4.806,
+        "hourly_pairs": 1274,
+        "hourly_mae_c": 1.5487,
+        "hits": 0,
+        "misses": 4,
+        "false_alarms": 0,
+        "correct_negatives": 87
+      },
+      "test": {
+        "expected_nights": 92,
+        "complete_observation_nights": 91,
+        "paired_nights": 91,
+        "excluded_nights": 1,
+        "observed_cold_nights": 6,
+        "paired_cold_nights": 6,
+        "cold_night_sequences": 3,
+        "night_min_mae_c": 1.4534,
+        "night_min_bias_c": 0.8935,
+        "cold_night_min_mae_c": 2.6893,
+        "hourly_pairs": 1274,
+        "hourly_mae_c": 1.2563,
+        "hits": 4,
+        "misses": 2,
+        "false_alarms": 0,
+        "correct_negatives": 85
+      }
+    }
+  }
+}

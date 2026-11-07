@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "created_at_utc": "2026-10-20T17:12:32.754733+00:00",
+  "source_2024_sha256": "b111d6234a863b7fe38aadd608ad7459138a4cd3cc1b1f0282b4be866448ccbe",
+  "legacy_sha256": "b518c04fc57182e5c31abb6db72286c178a6d4d0a6b06a6ef15c75acd65790dc",
+  "locations_sha256": "26f96c6b5e4ade2f37b6d64bb64a3a866439727c6fb1255f02f96294294aa2f9",
+  "weather_2024_summary_sha256": "ca3645f3d3647e844e7f3a6d310b09447bb70d5835562828e9b69edfe0e7559e",
+  "point": "Legacy point coefficients, both spectral detectors and NDVI bounds unchanged. No future-weather target inputs.",
+  "weather": "Open-Meteo historical gfs_global, explicit source. precipitation mm and modeled soil moisture0-10cm m3/m3. Not sensors, ECMWF or ERA5. Stitched first hours of successive forecasts; not single run.",
+  "timing": "Inputs timestamp < issue day00UTC minus48h. Proxy, not verified historical first delivery. No forecast-window weather or target-day information.",
+  "feature_names": {
+    "rain": [
+      "rain_3d_mm",
+      "rain_7d_mm",
+      "rain_14d_mm",
+      "wet_days_14d"
+    ],
+    "soil": [
+      "soil_24h_m3m3",
+      "soil_7d_m3m3",
+      "soil_change_7d_m3m3",
+      "soil_min_14d_m3m3"
+    ]
+  },
+  "residuals": "Same causal reference OOF before July and exact frozen out-of-fit point residuals after2024-07-21 as NDMI-only study. No in-sample errors.",
+  "families": [
+    "none",
+    "rain",
+    "soil",
+    "both"
+  ],
+  "styles": [
+    "envelope",
+    "quantile",
+    "scenario"
+  ],
+  "outer_starts": [
+    "2024-08-01",
+    "2024-09-01",
+    "2024-10-01"
+  ],
+  "split": "Residual-fit target<first calibration issue; latest8 known issue dates calibrate, all targets<outer month; month validation targets before next month. R23-R27 outside all fit/select/calibration.",
+  "tail_hyperparameters": {
+    "iterations": 120,
+    "depth": 2,
+    "learning_rate": 0.05,
+    "l2_leaf_reg": 5,
+    "random_seed": 202410,
+    "thread_count": 2
+  },
+  "models": "For each family: causal refitted event-envelopeq.05 pad.05 and upperallq.95; quantile.05/.95 weighted3 on events; scenario lower.10 onlyevents and upperallq.95. Envelope has no weather and is identically available to all families.",
+  "calibration": "Expand by overall95th one-sided deficits, plus lower90th event deficit (eventmaximum if<3dates). No narrowing.",
+  "missing": "Keep every scored pair. Fit learned models only on complete required weather; missing inference uses fitted global envelope and remains in metrics. Never null rain=>0.",
+  "selection": "For each family require overall/decline coverage>=90% pooled and every supported 2024 fold; width<=110% legacy. Best weighted90% interval score. If no family candidate passes, freeze best score diagnostic with failed flag. Primary=min score among all passing; ties prefer none and listed order. Only primary can pass final study guard.",
+  "coverage_floor": 0.9,
+  "decline_floor": 0.9,
+  "width_limit": 1.1,
+  "preregistered_test": "Four per-family choices and primary frozen before collecting2026 weather; evaluate all four as declared ablations, never choose by2026. Primary must use weather and improve NDMI decline coverage vs legacy on all2026/spatial2026, overall>=90%, width<=110%.",
+  "comparisons": "Report same fixed499pair cohort with missing kept, baseline radius, no-weather equal architecture, prior NDMI-only range. Preserve alarms exactly; lower bound not an alarm.",
+  "caveats": "2024 selection reuse optimistic, few event dates, legacy radius calibrated on2024. 2026 already studied, not blind. Weather-grid background not field-scale measurements. No automatic promotion."
+}

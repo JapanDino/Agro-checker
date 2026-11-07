@@ -1,0 +1,279 @@
+{
+  "protocol": {
+    "schema_version": 1,
+    "source_config": "single_run.json",
+    "base_model_protocol": "model_study.json",
+    "field_keys": [
+      "u10",
+      "v10",
+      "dewpoint",
+      "cloud"
+    ],
+    "field_step_type": "instant",
+    "feature_groups": [
+      "temperature",
+      "temperature_wind",
+      "temperature_dewpoint",
+      "temperature_cloud",
+      "temperature_all"
+    ],
+    "algorithms": [
+      "ridge",
+      "catboost"
+    ],
+    "baselines": [
+      "identity",
+      "night_min_median",
+      "lead_hour_median"
+    ],
+    "selection_metric": "pooled_validation_night_min_mae",
+    "weather_threshold_c": 0.0,
+    "missing_policy": "complete_nights_all_fields_no_imputation",
+    "status": "fixed_before_covariate_model_evaluation; historical 2025 already seen, excluded from selection",
+    "features": {
+      "wind": [
+        "wind_mean_ms",
+        "wind_min_ms",
+        "wind_at_gfs_min_ms"
+      ],
+      "dewpoint": [
+        "dewpoint_mean_c",
+        "dewpoint_min_c",
+        "dewpoint_at_gfs_min_c",
+        "dewpoint_spread_mean_c",
+        "dewpoint_spread_at_gfs_min_c"
+      ],
+      "cloud": [
+        "cloud_mean_pct",
+        "cloud_min_pct",
+        "cloud_at_gfs_min_pct"
+      ]
+    },
+    "frost_assessment": "strict prediction <0, actual <0; report hits/misses/false alarms and consecutive cold sequences; no threshold tuning",
+    "freeze_rule": "evaluate all 2023/2024 folds and persist selection plus protocol/input/model hashes before evaluating 2025"
+  },
+  "model_protocol": {
+    "schema_version": 1,
+    "candidates": [
+      "identity",
+      "night_min_median",
+      "lead_hour_median",
+      "ridge_min",
+      "catboost_min",
+      "ridge_hourly"
+    ],
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      }
+    ],
+    "final_train_years": [
+      2022,
+      2023
+    ],
+    "historical_check_year": 2025,
+    "selection_metric": "pooled_validation_night_min_mae",
+    "ridge_alpha": 10.0,
+    "catboost": {
+      "iterations": 200,
+      "depth": 3,
+      "learning_rate": 0.03,
+      "l2_leaf_reg": 10.0,
+      "loss_function": "MAE",
+      "random_seed": 20261012,
+      "thread_count": 2,
+      "allow_writing_files": false,
+      "verbose": false
+    },
+    "bootstrap": {
+      "replicates": 5000,
+      "block_days": [
+        3,
+        7,
+        14
+      ],
+      "seed": 20261012
+    },
+    "warning_margins_c": [
+      0.0,
+      1.0,
+      2.0,
+      3.0
+    ],
+    "event_thresholds_c": [
+      -2.0,
+      0.0,
+      1.0
+    ],
+    "diagnostic_ridge_feature_groups": {
+      "gfs_min_only": [
+        "gfs_min"
+      ],
+      "calendar_only": [
+        "season_sin",
+        "season_cos"
+      ],
+      "profile_without_calendar": [
+        "gfs_min",
+        "gfs_max",
+        "gfs_mean",
+        "gfs_range",
+        "evening_temperature",
+        "morning_temperature",
+        "overnight_change",
+        "early_cooling",
+        "late_warming",
+        "min_hour_index"
+      ],
+      "full_profile_and_calendar": [
+        "gfs_min",
+        "gfs_max",
+        "gfs_mean",
+        "gfs_range",
+        "evening_temperature",
+        "morning_temperature",
+        "overnight_change",
+        "early_cooling",
+        "late_warming",
+        "min_hour_index",
+        "season_sin",
+        "season_cos"
+      ]
+    },
+    "status": "retrospective_exploration; 2025 outcomes already known from earlier reports and demos"
+  },
+  "source_config": {
+    "site_id": "krasnodar-34929",
+    "station_id": "34929",
+    "latitude": 45.0333,
+    "longitude": 39.15,
+    "elevation_m": 33,
+    "crop": "apple",
+    "phase": null,
+    "timezone": "Europe/Moscow",
+    "utc_offset_hours": 3,
+    "years": [
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "season_start": "03-01",
+    "season_end": "05-31",
+    "night_start_hour": 19,
+    "night_end_hour_exclusive": 9,
+    "warning_hour_local": 18,
+    "run_hour_utc": 6,
+    "archive_availability_buffer_minutes": 10,
+    "weather_threshold_c": 0.0,
+    "observation_sources": [
+      "isd_lite",
+      "metar"
+    ],
+    "development_years": [
+      2022,
+      2023
+    ],
+    "validation_years": [
+      2024
+    ],
+    "test_years": [
+      2025
+    ],
+    "source": "NOAA GFS operational 0.25 degree GRIB2 on AWS",
+    "interpolation": "nearest_grid_point_no_elevation_adjustment",
+    "correction_candidates": [
+      "identity",
+      "night_min_median",
+      "lead_hour_median"
+    ],
+    "selection_metric": "validation_night_min_mae_c"
+  },
+  "protocol_saved_at_utc": "2026-10-12T16:30:40.130372+00:00",
+  "protocol_sha256": "a73a68ab09574dfd7486b6ad4fa5cf241fa0c8862e6eb27b1407ff014241dccf",
+  "model_protocol_sha256": "f2239359fdfa83be0c42804cb9cb7aa34497da07bf52a44e1b0d31d4bb7aaa5d",
+  "source_sha256": {
+    "gfs_covariates.py": "febeafaf9201ebe4995a9d799d1ceda479c2f5c0963ada49fd8bd00776be19f7",
+    "covariate_study.py": "c23cf97058e18b0179fa9d410326374760cad61673bae8cf68b9ababf47aa55a",
+    "model_study.py": "c21234dcca6ab7a5d1cd8fd10e0fcf28c58dabd31c033e13ed295c5ed2a70323",
+    "single_run.py": "9b199eb2790f6573e2343fe9ee1cead455fa4a79b81fa480901b861bcf25bac1",
+    "gfs_archive.py": "0768edb2c92d37aafe9c5f75da031ebd6323fe14d69f3dfed7a530316e5de2c2",
+    "pipeline.py": "db6ce96d0940c35704148f1239d16f8ee3ed1b018d7aadb3efb26607a83f35ea"
+  },
+  "temperature_cache": {
+    "sha256": "56d887828fca75a82a70981c847e765e74385e73314837b3f942ae83403fd054",
+    "decoder": "eccodes-2.49.0",
+    "manifest_sha256": "9627d26da72cbb754acdf1a5236540ecb61ebf664b8572b69c13d53dd0f02cc5"
+  },
+  "covariate_cache": {
+    "sha256": "c9d79b4ff1cce1f0ecff356271e35bb1ad073732b1147e64f6cb7b698a4bb1fc",
+    "manifest_sha256": "c5bcf552f2c2b42c7963e0bdfa407427d76b5d0deb9ef998cb34a638a4247bd0",
+    "decoder": "eccodes"
+  },
+  "observation_provenance": [
+    {
+      "url": "https://data.meteostat.net/hourly/2022/34929.csv.gz",
+      "sha256": "316ccc650a1f2107a502b873c27e9950a291e20b01b96772a564c7489f87f595",
+      "retrieved_at_utc": "2026-10-12T09:56:24.738802+00:00",
+      "bytes": 72009,
+      "content_type": "application/x-gzip"
+    },
+    {
+      "url": "https://data.meteostat.net/hourly/2023/34929.csv.gz",
+      "sha256": "c302798573f4ae7e8553394b4ed5fe4551ca2ec4703aef3e6dd82edebaa2271f",
+      "retrieved_at_utc": "2026-10-12T09:56:26.032553+00:00",
+      "bytes": 76648,
+      "content_type": "application/x-gzip"
+    },
+    {
+      "url": "https://data.meteostat.net/hourly/2024/34929.csv.gz",
+      "sha256": "b5412a30c55c88e0850ea151cd5237bb68ccc1364142c79656fdd3fbf76a1e01",
+      "retrieved_at_utc": "2026-10-12T09:56:28.208852+00:00",
+      "bytes": 76330,
+      "content_type": "application/x-gzip"
+    },
+    {
+      "url": "https://data.meteostat.net/hourly/2025/34929.csv.gz",
+      "sha256": "ebaab70f1e72dc5bd2fe5914fc12e8da7d09da6b66419573f574e0ab37231e40",
+      "retrieved_at_utc": "2026-10-12T09:56:30.548229+00:00",
+      "bytes": 75781,
+      "content_type": "application/x-gzip"
+    }
+  ],
+  "feature_names": [
+    "gfs_min",
+    "gfs_max",
+    "gfs_mean",
+    "gfs_range",
+    "evening_temperature",
+    "morning_temperature",
+    "overnight_change",
+    "early_cooling",
+    "late_warming",
+    "min_hour_index",
+    "season_sin",
+    "season_cos",
+    "wind_mean_ms",
+    "wind_min_ms",
+    "wind_at_gfs_min_ms",
+    "dewpoint_mean_c",
+    "dewpoint_min_c",
+    "dewpoint_at_gfs_min_c",
+    "dewpoint_spread_mean_c",
+    "dewpoint_spread_at_gfs_min_c",
+    "cloud_mean_pct",
+    "cloud_min_pct",
+    "cloud_at_gfs_min_pct"
+  ],
+  "covariate_excluded_nights": []
+}

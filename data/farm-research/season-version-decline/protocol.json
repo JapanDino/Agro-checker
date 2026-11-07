@@ -1,0 +1,173 @@
+{
+  "schema": 1,
+  "created_at_utc": "2026-10-20T21:08:44.405615+00:00",
+  "algorithms": [
+    {
+      "id": "history_season_extra_10",
+      "family": "extra",
+      "features": "history_season",
+      "leaf": 10
+    },
+    {
+      "id": "basic_logit_1.0",
+      "family": "logit",
+      "features": "basic",
+      "c": 1.0
+    }
+  ],
+  "fixed_hyperparameters": {
+    "extra_trees": 256,
+    "extra_max_depth": 4,
+    "cat_iterations": 160,
+    "cat_depth": 2,
+    "cat_learning_rate": 0.04,
+    "cat_l2": 10,
+    "seed": 20241020,
+    "threads": 2
+  },
+  "candidates": [
+    {
+      "id": "2024_only",
+      "source": false,
+      "balanced": false,
+      "season": false,
+      "version": false
+    },
+    {
+      "id": "raw_pool",
+      "source": true,
+      "balanced": false,
+      "season": false,
+      "version": false
+    },
+    {
+      "id": "pool_fixed_mass",
+      "source": true,
+      "balanced": false,
+      "season": false,
+      "version": false,
+      "fixed_mass": true
+    },
+    {
+      "id": "balanced25",
+      "source": true,
+      "balanced": true,
+      "season": false,
+      "version": false
+    },
+    {
+      "id": "season25",
+      "source": true,
+      "balanced": true,
+      "season": true,
+      "version": false
+    },
+    {
+      "id": "version25",
+      "source": true,
+      "balanced": true,
+      "season": false,
+      "version": true
+    },
+    {
+      "id": "season_version25",
+      "source": true,
+      "balanced": true,
+      "season": true,
+      "version": true
+    },
+    {
+      "id": "overlap_season_version25",
+      "source": true,
+      "balanced": true,
+      "season": true,
+      "version": true,
+      "overlap": true
+    },
+    {
+      "id": "consensus_season_version25",
+      "source": true,
+      "balanced": true,
+      "season": true,
+      "version": true,
+      "consensus": true
+    }
+  ],
+  "regimes": [
+    "2024_only",
+    "raw_pool",
+    "pool_fixed_mass",
+    "balanced25",
+    "season25",
+    "version25",
+    "season_version25",
+    "overlap_season_version25",
+    "consensus_season_version25"
+  ],
+  "gates": [
+    "none",
+    "joint_momentum"
+  ],
+  "thresholds": [
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.85,
+    0.9,
+    0.925,
+    0.95,
+    0.975,
+    0.99,
+    1.01
+  ],
+  "folds": [
+    "2024-06-01",
+    "2024-07-01",
+    "2024-08-01",
+    "2024-09-01",
+    "2024-10-01"
+  ],
+  "holdout_ids": [
+    "R23",
+    "R24",
+    "R25",
+    "R26",
+    "R27"
+  ],
+  "input_hashes": {
+    "data/farm-research/early-season-decline/data-early.json": "ddcef643c3e85d7a600801d83c9af3615a5d6965cd4e0210ee978b9c9c998995",
+    "data/farm-research/crop-season-model/data-2024.json": "d54e9a2e527bcf7e1dfdb811a35777b3a050076d04033656c57fb5ea5b56c329",
+    "data/farm-research/field-index-model/frozen-model.json": "b518c04fc57182e5c31abb6db72286c178a6d4d0a6b06a6ef15c75acd65790dc",
+    "data/farm-research/early-season-decline/frozen-selection.json": "fb02f013d3c2fc95fa66c65f7a78acf938ee18ad190b0899d3388ddb6c359e4f",
+    "data/farm-research/early-season-decline/oof-predictions.json": "6639d76842f256535dc325246835a2e8dcb4f4b6be5b7f48fbccdedbd4de4b30"
+  },
+  "goal": "More true spectral-decline alerts without increasing false-positive pairs or dates",
+  "target": "UNCHANGED core median decline <= -0.10 through6-8 days, same baseline within each pair",
+  "diagnosis": "2019-2021 and2024 nonreserved only; descriptive differences, not causal attribution",
+  "source_cap": 0.25,
+  "source_cap_policy": "For balanced models source dates together get25% total weight, known2024 dates75%. No source labels or densities from validation.",
+  "effective_mass": "Balanced and pool_fixed_mass total training weight equals count of2024 training pairs; controls preserve original weight normalization.",
+  "season_features": "Past-observed range and relative slopes/drawdown with support flags, amplitude floor0.05. No true crop or future seasonal maximum.",
+  "baseline_features": [
+    "05.00",
+    "05.10",
+    "05.11"
+  ],
+  "version_policy": "Append categorical PB, never add an index/radiance offset. In this archive baseline and year/season cannot be separated causally.",
+  "unknown_version": "For version-aware models average predictions over supported2024 PBs using their fit-date-balanced weights. This is a frozen statistical fallback, not verified sensor harmonization. Count unseen versions explicitly.",
+  "overlap": "Logistic domain classifier C0.1 on seven past-only inputs; balance source/target domain weights; source importance odds clipped[0.1,10]; then enforce25% source cap. Fit domains on training rows only.",
+  "consensus": "Minimum of2024-only score and season_version25 score, both fitted only on fold training rows",
+  "selection": "Same274 purged monthly2024 OOF pairs; zeroFP pairs/dates, >=2TP on>=2 issue dates; maximize date-balanced recall then TP dates/count; ties prefer candidate order, ungated, higher threshold.",
+  "fitted_choices": "Freeze primary, best eligible adaptation (excluding2024_only/raw_pool), and both controls BEFORE test. Other candidates are2024-only diagnostics, not evaluated on2026.",
+  "test": "Existing499 pairs2026 after freeze; reserved2024 also reported. Previously examined2026 is not new blind test.2025 absent.",
+  "acceptance": "Per index: strictly moreTP than original Ridge, no growth ofFP pairs/dates versus BOTH Ridge and zero-alarm persistence, on all2026 and reserved spatial2026.",
+  "preservation": "Original point forecasts, detectors, bounds, UI and journal are immutable; no production promotion",
+  "limitations": [
+    "2024 repeatedly used for selection; optimistic selection scores.",
+    "Unknown crops/operations, nearby fragments and overlapping windows are dependent.",
+    "Source weighting assumes transferable relationships; conditional-label drift may remain.",
+    "Archive availability at historical issue time and live delivery latency not established."
+  ],
+  "official_source": "https://sentiwiki.copernicus.eu/web/s2-processing"
+}

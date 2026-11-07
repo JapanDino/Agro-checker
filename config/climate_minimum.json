@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "final_train_years": [2022, 2023],
+  "evaluation_years": [2025, 2026],
+  "families": ["geo_huber", "climate_huber", "climate_ridge", "matched3_weather", "matched5_weather", "matched3_climate"],
+  "cold_weights": [1, 2],
+  "blend_weights": [0.25, 0.5, 1],
+  "alpha_huber": 1,
+  "alpha_ridge": 10,
+  "matching_scales": {"elevation_m": 500, "mean_gfs_min_c": 3, "p10_gfs_min_c": 3, "mean_gfs_wind_ms": 2, "mean_gfs_rh_pct": 15, "mean_gfs_cloud_pct": 25},
+  "climate_policy": "forecast-only typical spring background of training years; not long-term climate normals; no observed temperature,cold labels,validation or control seasons in descriptors",
+  "terrain_policy": "GFS HGT surface f010 from same object/version/grid as nightly temperature, each night; no assumed universal lapse rate",
+  "selection": "each prior year: primary all/cold MAE,point crossing FA/misses <= legacy; regional macro site all/cold MAE,point crossing FA/misses <= GFS; rank primary cold MAE then all MAE; fallback legacy",
+  "spatial_policy": "previously viewed two heldout sites; no labels in selection/fit/profiles; their training-year forecast-only background permitted only after choice for transfer test",
+  "detector_policy": "original point and detector artifacts/masks/timing kept; no new operational alerts or field forecast",
+  "unknown_site_policy": "requires verified metadata and prior forecast-only context; matched models blend trained experts by fixed context distance, no fitting on unknown site observations"
+}

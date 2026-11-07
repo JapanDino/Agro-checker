@@ -1,0 +1,530 @@
+{
+  "generated_at_utc": "2026-10-12T10:01:45.961798+00:00",
+  "config": {
+    "site_id": "krasnodar-34929",
+    "station_id": "34929",
+    "latitude": 45.0333,
+    "longitude": 39.15,
+    "elevation_m": 33,
+    "crop": "apple",
+    "risk": "frost",
+    "phase": null,
+    "phase_status": "scenario_required",
+    "timezone": "Europe/Moscow",
+    "utc_offset_hours": 3,
+    "years": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "season_start": "03-01",
+    "season_end": "05-31",
+    "night_start_hour": 19,
+    "night_end_hour_exclusive": 9,
+    "weather_threshold_c": 0.0,
+    "observation_sources": [
+      "isd_lite",
+      "metar"
+    ],
+    "forecast_model": "gfs_global",
+    "forecast_variable": "temperature_2m_previous_day1",
+    "forecast_mode": "fixed_lead_24h_diagnostic",
+    "development_years": [
+      2021,
+      2022,
+      2023
+    ],
+    "validation_years": [
+      2024
+    ],
+    "test_years": [
+      2025
+    ]
+  },
+  "method": "Fixed 24-hour lead GFS diagnostic; no common evening issuance time",
+  "audits": [
+    {
+      "year": 2021,
+      "annual_rows": 8760,
+      "night_rows_present": 1288,
+      "night_source_counts": {
+        "isd_lite": 1286,
+        "dwd_mosmix": 1,
+        "metar": 1
+      },
+      "night_unusable_temperature_rows": 1,
+      "missing_observation_timestamps": 0,
+      "excluded_nights": [
+        {
+          "night_date_local": "2021-03-01",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-02",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-03",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-04",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-05",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-06",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-07",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-08",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-09",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-10",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-11",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-12",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-13",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-14",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-15",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-16",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-17",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-18",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-19",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-20",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-21",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-22",
+          "observed_hours": 14,
+          "forecast_hours": 0
+        },
+        {
+          "night_date_local": "2021-03-23",
+          "observed_hours": 14,
+          "forecast_hours": 6
+        },
+        {
+          "night_date_local": "2021-04-05",
+          "observed_hours": 13,
+          "forecast_hours": 14
+        }
+      ],
+      "paired_cold_nights_by_month": {},
+      "grid": {
+        "latitude": 45.04393,
+        "longitude": 39.140625,
+        "elevation": 33.0,
+        "timezone": "GMT",
+        "utc_offset_seconds": 0
+      },
+      "metrics": {
+        "expected_nights": 92,
+        "complete_observation_nights": 91,
+        "paired_nights": 68,
+        "excluded_nights": 24,
+        "observed_cold_nights": 9,
+        "paired_cold_nights": 0,
+        "cold_night_sequences": 5,
+        "night_min_mae_c": 1.2647,
+        "night_min_bias_c": 0.4441,
+        "cold_night_min_mae_c": null,
+        "hourly_pairs": 971,
+        "hourly_mae_c": 1.2006,
+        "hits": 0,
+        "misses": 0,
+        "false_alarms": 0,
+        "correct_negatives": 68
+      }
+    },
+    {
+      "year": 2022,
+      "annual_rows": 8760,
+      "night_rows_present": 1288,
+      "night_source_counts": {
+        "isd_lite": 1282,
+        "metar": 6
+      },
+      "night_unusable_temperature_rows": 0,
+      "missing_observation_timestamps": 0,
+      "excluded_nights": [],
+      "paired_cold_nights_by_month": {
+        "03": 18
+      },
+      "grid": {
+        "latitude": 45.04393,
+        "longitude": 39.140625,
+        "elevation": 33.0,
+        "timezone": "GMT",
+        "utc_offset_seconds": 0
+      },
+      "metrics": {
+        "expected_nights": 92,
+        "complete_observation_nights": 92,
+        "paired_nights": 92,
+        "excluded_nights": 0,
+        "observed_cold_nights": 18,
+        "paired_cold_nights": 18,
+        "cold_night_sequences": 5,
+        "night_min_mae_c": 1.6163,
+        "night_min_bias_c": 1.0663,
+        "cold_night_min_mae_c": 1.9889,
+        "hourly_pairs": 1288,
+        "hourly_mae_c": 1.3026,
+        "hits": 15,
+        "misses": 3,
+        "false_alarms": 0,
+        "correct_negatives": 74
+      }
+    },
+    {
+      "year": 2023,
+      "annual_rows": 8760,
+      "night_rows_present": 1288,
+      "night_source_counts": {
+        "isd_lite": 1268,
+        "metar": 20
+      },
+      "night_unusable_temperature_rows": 0,
+      "missing_observation_timestamps": 0,
+      "excluded_nights": [],
+      "paired_cold_nights_by_month": {
+        "03": 2,
+        "04": 1
+      },
+      "grid": {
+        "latitude": 45.04393,
+        "longitude": 39.140625,
+        "elevation": 33.0,
+        "timezone": "GMT",
+        "utc_offset_seconds": 0
+      },
+      "metrics": {
+        "expected_nights": 92,
+        "complete_observation_nights": 92,
+        "paired_nights": 92,
+        "excluded_nights": 0,
+        "observed_cold_nights": 3,
+        "paired_cold_nights": 3,
+        "cold_night_sequences": 2,
+        "night_min_mae_c": 1.4707,
+        "night_min_bias_c": 0.7076,
+        "cold_night_min_mae_c": 4.6,
+        "hourly_pairs": 1288,
+        "hourly_mae_c": 1.388,
+        "hits": 0,
+        "misses": 3,
+        "false_alarms": 0,
+        "correct_negatives": 89
+      }
+    },
+    {
+      "year": 2024,
+      "annual_rows": 8784,
+      "night_rows_present": 1288,
+      "night_source_counts": {
+        "isd_lite": 1181,
+        "metar": 104,
+        "dwd_mosmix": 3
+      },
+      "night_unusable_temperature_rows": 3,
+      "missing_observation_timestamps": 0,
+      "excluded_nights": [
+        {
+          "night_date_local": "2024-03-26",
+          "observed_hours": 11,
+          "forecast_hours": 14
+        }
+      ],
+      "paired_cold_nights_by_month": {
+        "03": 4
+      },
+      "grid": {
+        "latitude": 45.04393,
+        "longitude": 39.140625,
+        "elevation": 33.0,
+        "timezone": "GMT",
+        "utc_offset_seconds": 0
+      },
+      "metrics": {
+        "expected_nights": 92,
+        "complete_observation_nights": 91,
+        "paired_nights": 91,
+        "excluded_nights": 1,
+        "observed_cold_nights": 4,
+        "paired_cold_nights": 4,
+        "cold_night_sequences": 3,
+        "night_min_mae_c": 2.0495,
+        "night_min_bias_c": 1.6385,
+        "cold_night_min_mae_c": 4.55,
+        "hourly_pairs": 1285,
+        "hourly_mae_c": 1.6104,
+        "hits": 0,
+        "misses": 4,
+        "false_alarms": 0,
+        "correct_negatives": 87
+      }
+    },
+    {
+      "year": 2025,
+      "annual_rows": 8760,
+      "night_rows_present": 1288,
+      "night_source_counts": {
+        "isd_lite": 1271,
+        "metar": 16,
+        "dwd_mosmix": 1
+      },
+      "night_unusable_temperature_rows": 1,
+      "missing_observation_timestamps": 0,
+      "excluded_nights": [
+        {
+          "night_date_local": "2025-03-12",
+          "observed_hours": 13,
+          "forecast_hours": 14
+        }
+      ],
+      "paired_cold_nights_by_month": {
+        "03": 6
+      },
+      "grid": {
+        "latitude": 45.04393,
+        "longitude": 39.140625,
+        "elevation": 33.0,
+        "timezone": "GMT",
+        "utc_offset_seconds": 0
+      },
+      "metrics": {
+        "expected_nights": 92,
+        "complete_observation_nights": 91,
+        "paired_nights": 91,
+        "excluded_nights": 1,
+        "observed_cold_nights": 6,
+        "paired_cold_nights": 6,
+        "cold_night_sequences": 3,
+        "night_min_mae_c": 1.8758,
+        "night_min_bias_c": 1.2429,
+        "cold_night_min_mae_c": 3.0167,
+        "hourly_pairs": 1287,
+        "hourly_mae_c": 1.4747,
+        "hits": 3,
+        "misses": 3,
+        "false_alarms": 0,
+        "correct_negatives": 85
+      }
+    }
+  ],
+  "splits": {
+    "development": {
+      "expected_nights": 276,
+      "complete_observation_nights": 275,
+      "paired_nights": 252,
+      "excluded_nights": 24,
+      "observed_cold_nights": 30,
+      "paired_cold_nights": 21,
+      "cold_night_sequences": 12,
+      "night_min_mae_c": 1.4683,
+      "night_min_bias_c": 0.7675,
+      "cold_night_min_mae_c": 2.3619,
+      "hourly_pairs": 3547,
+      "hourly_mae_c": 1.3057,
+      "hits": 15,
+      "misses": 6,
+      "false_alarms": 0,
+      "correct_negatives": 231
+    },
+    "validation": {
+      "expected_nights": 92,
+      "complete_observation_nights": 91,
+      "paired_nights": 91,
+      "excluded_nights": 1,
+      "observed_cold_nights": 4,
+      "paired_cold_nights": 4,
+      "cold_night_sequences": 3,
+      "night_min_mae_c": 2.0495,
+      "night_min_bias_c": 1.6385,
+      "cold_night_min_mae_c": 4.55,
+      "hourly_pairs": 1285,
+      "hourly_mae_c": 1.6104,
+      "hits": 0,
+      "misses": 4,
+      "false_alarms": 0,
+      "correct_negatives": 87
+    },
+    "test": {
+      "expected_nights": 92,
+      "complete_observation_nights": 91,
+      "paired_nights": 91,
+      "excluded_nights": 1,
+      "observed_cold_nights": 6,
+      "paired_cold_nights": 6,
+      "cold_night_sequences": 3,
+      "night_min_mae_c": 1.8758,
+      "night_min_bias_c": 1.2429,
+      "cold_night_min_mae_c": 3.0167,
+      "hourly_pairs": 1287,
+      "hourly_mae_c": 1.4747,
+      "hits": 3,
+      "misses": 3,
+      "false_alarms": 0,
+      "correct_negatives": 85
+    }
+  },
+  "total": {
+    "expected_nights": 460,
+    "complete_observation_nights": 457,
+    "paired_nights": 434,
+    "excluded_nights": 26,
+    "observed_cold_nights": 40,
+    "paired_cold_nights": 31,
+    "cold_night_sequences": 18,
+    "night_min_mae_c": 1.6756,
+    "night_min_bias_c": 1.0498,
+    "cold_night_min_mae_c": 2.771,
+    "hourly_pairs": 6119,
+    "hourly_mae_c": 1.4052,
+    "hits": 18,
+    "misses": 13,
+    "false_alarms": 0,
+    "correct_negatives": 403
+  },
+  "downloads": [
+    {
+      "url": "https://data.meteostat.net/hourly/2021/34929.csv.gz",
+      "sha256": "f2c56341421d1b839be2c5314bd46afc4bcb0cb140a39f5753a37a5f1d162174",
+      "retrieved_at_utc": "2026-10-12T09:56:23.245019+00:00",
+      "bytes": 69267,
+      "content_type": "application/x-gzip"
+    },
+    {
+      "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=45.0333&longitude=39.15&elevation=33&start_date=2021-03-01&end_date=2021-06-01&timezone=GMT&models=gfs_global&hourly=temperature_2m_previous_day1&temperature_unit=celsius",
+      "sha256": "003a04f78f20977cac396c5274bac604fa08043b27bf7e06f2a0fa24b83334f0",
+      "retrieved_at_utc": "2026-10-12T09:56:24.083531+00:00",
+      "bytes": 53285,
+      "content_type": "application/json; charset=utf-8"
+    },
+    {
+      "url": "https://data.meteostat.net/hourly/2022/34929.csv.gz",
+      "sha256": "316ccc650a1f2107a502b873c27e9950a291e20b01b96772a564c7489f87f595",
+      "retrieved_at_utc": "2026-10-12T09:56:24.738802+00:00",
+      "bytes": 72009,
+      "content_type": "application/x-gzip"
+    },
+    {
+      "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=45.0333&longitude=39.15&elevation=33&start_date=2022-03-01&end_date=2022-06-01&timezone=GMT&models=gfs_global&hourly=temperature_2m_previous_day1&temperature_unit=celsius",
+      "sha256": "aa17228e37b2c3d71fe0dbe9cdda6bb3ad8668d1f37643ee2813af5df7d0264b",
+      "retrieved_at_utc": "2026-10-12T09:56:25.383030+00:00",
+      "bytes": 52973,
+      "content_type": "application/json; charset=utf-8"
+    },
+    {
+      "url": "https://data.meteostat.net/hourly/2023/34929.csv.gz",
+      "sha256": "c302798573f4ae7e8553394b4ed5fe4551ca2ec4703aef3e6dd82edebaa2271f",
+      "retrieved_at_utc": "2026-10-12T09:56:26.032553+00:00",
+      "bytes": 76648,
+      "content_type": "application/x-gzip"
+    },
+    {
+      "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=45.0333&longitude=39.15&elevation=33&start_date=2023-03-01&end_date=2023-06-01&timezone=GMT&models=gfs_global&hourly=temperature_2m_previous_day1&temperature_unit=celsius",
+      "sha256": "f6208f0e2819aa41b2329637d4240a06be4b01a7a0cb5a6deaafa76852ee6031",
+      "retrieved_at_utc": "2026-10-12T09:56:27.604751+00:00",
+      "bytes": 53198,
+      "content_type": "application/json; charset=utf-8"
+    },
+    {
+      "url": "https://data.meteostat.net/hourly/2024/34929.csv.gz",
+      "sha256": "b5412a30c55c88e0850ea151cd5237bb68ccc1364142c79656fdd3fbf76a1e01",
+      "retrieved_at_utc": "2026-10-12T09:56:28.208852+00:00",
+      "bytes": 76330,
+      "content_type": "application/x-gzip"
+    },
+    {
+      "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=45.0333&longitude=39.15&elevation=33&start_date=2024-03-01&end_date=2024-06-01&timezone=GMT&models=gfs_global&hourly=temperature_2m_previous_day1&temperature_unit=celsius",
+      "sha256": "809931d7da8a8b44c40835b37d279870beae443031507f8046bd024b106919bb",
+      "retrieved_at_utc": "2026-10-12T09:56:29.866263+00:00",
+      "bytes": 53237,
+      "content_type": "application/json; charset=utf-8"
+    },
+    {
+      "url": "https://data.meteostat.net/hourly/2025/34929.csv.gz",
+      "sha256": "ebaab70f1e72dc5bd2fe5914fc12e8da7d09da6b66419573f574e0ab37231e40",
+      "retrieved_at_utc": "2026-10-12T09:56:30.548229+00:00",
+      "bytes": 75781,
+      "content_type": "application/x-gzip"
+    },
+    {
+      "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=45.0333&longitude=39.15&elevation=33&start_date=2025-03-01&end_date=2025-06-01&timezone=GMT&models=gfs_global&hourly=temperature_2m_previous_day1&temperature_unit=celsius",
+      "sha256": "d966336ff85670883665de48eac94b88ca80ec4ec971ea91ca239e42306ade27",
+      "retrieved_at_utc": "2026-10-12T09:56:32.043291+00:00",
+      "bytes": 53274,
+      "content_type": "application/json; charset=utf-8"
+    }
+  ]
+}

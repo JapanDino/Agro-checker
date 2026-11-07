@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "years": [2022, 2023, 2024],
+  "sites": [
+    {"id": "345600-99999", "name_ru": "Гумрак", "role": "development"},
+    {"id": "348610-99999", "name_ru": "Элиста", "role": "development"},
+    {"id": "372120-99999", "name_ru": "Нальчик", "role": "development"},
+    {"id": "349490-99999", "name_ru": "Шпаковское", "role": "spatial_check"},
+    {"id": "370540-99999", "name_ru": "Минеральные Воды", "role": "spatial_check"}
+  ],
+  "site_choice": "Existing regional stations with at least30 complete nights per prior year, outside Anapa/Vityazevo, with varied latitude/elevation. Three previous development IDs for selection; two old spatial-check IDs kept outside choice. Site history already inspected in earlier experiments; NOT new blind stations.",
+  "position_policy": "Full ISD annual files, exact lat/lon/elevation split. Select one dominant spring physical tuple by total report count across2022-2024 within0.01degree and2m of inventory; no cold/error-based choice and no position pooling. Forecast reuse only if actual and inventory position have the same unambiguous nearest0.25degree GFS cell. Unknown/other positions retained separately.",
+  "observation_policy": "NOAA temperature QC1/5 only; preserve raw value, QC, source row, report type, exact UTC. Same-position conflicting duplicates unavailable; no rounding, interpolation or filling. Complete14 exact hours for nightly minimum/crossing scores; all available exact terms for hourly scores.",
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "candidates": ["gfs", "airport_transfer", "pooled_100", "pooled_1000", "pooled_geo_1000", "local_bias_20", "local_ridge_100", "local_ridge_1000", "local_blend_25", "local_blend_50"],
+  "features": "Frozen hourly weather features (lead,season,temperature,night minimum/cooling,T-Td,wind,u/v,RH,cloud,interactions). Geo candidate adds verified site elevation, GFS surface-height mismatch and interactions with wind/clear sky. No validation targets or detector features.",
+  "weighting": "Equal total mass per training site and per night within site. Train-only scaling; alpha100/1000 fixed. Local models use previous seasons of the target site, >=20 distinct training nights; local bias shrinks exact-lead mean observed-minus-GFS by n/(n+20). Local blends are25%/50% local ridge1000 plus GFS.",
+  "development_prediction": "Zero-shot pooled/geo excludes the entire predicted development site from fit (LOSO), in each forward-year fold. Airport baseline uses frozen airport fold models. Local adaptation uses only previous years of the predicted site. Thus zero-shot and local-history modes are reported separately.",
+  "selection": "Two independent research choices: zero-shot family(gfs,pooled100,pooled1000,pooledgeo1000), local-history family(gfs,localbias20,localridge100,localridge1000,localblend25,localblend50). Each candidate must improve equal-site hourly MAE>=5% EACHyear; not worsen equal-site cold-slot MAE, complete-night minimum MAE or aggregate cold-night misses; add NO false-cold full nights at ANY individual development site/year; cold full-night support required at each development site/year. Rank eligible by equal-site/equal-year hourly MAE, registry tie order, else GFS. All sites/nights retained, including no-cold sites; no cold-only filtering.",
+  "spatial_check": "Save both choices and source/protocol/data/model hashes BEFORE scoring the two spatial sites. Pooled models fitted on only three development sites, prior years; local models may use ONLY spatial site's previous-year labels and are explicitly few-shot, NOT unseen-site training. No spatial-site errors in choice, no switching afterwards.",
+  "bootstrap": {"replicates": 2000, "seed": 349491, "block_nights": 7},
+  "protected": "Original detector/threshold/probabilities/masks/timing and original point/range, Krymsk,Vityazevo,Anapa-transfer choices immutable. Temperature crossings are separate diagnostics, not detector alarms. No service change.",
+  "controls": "No2025-2026 opening, download, fit, selection or evaluation in this experiment",
+  "production_admitted": false
+}

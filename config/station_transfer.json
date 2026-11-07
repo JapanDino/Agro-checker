@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "years": [2022, 2023, 2024],
+  "reference_site": "vityazevo_airport",
+  "target_site": "anapa_synoptic",
+  "reference_candidate": "ridge_weather_100",
+  "candidates": ["gfs", "naive_reference", "identity_gfs", "local_bias_5", "local_bias_20", "paired_delta_5", "paired_delta_20", "residual_bias_5", "residual_bias_20"],
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "minimum_distinct_nights_per_lead": 3,
+  "support": "Only exact forecast leads represented by at least3 distinct prior nights and GFS temperature inside their closed prior range. Otherwise return GFS with an explicit unvalidated-site reason. No current-night measurements or interpolation. Cold outside this support is never claimed calibrated.",
+  "adaptation": "Reference metadata identity retains frozen reference prediction. Different positions use GFS unless supported prior local calibration is present. Local bias fits target minus GFS; paired delta fits target minus simultaneously observed reference; residual bias fits target minus prior-fit reference prediction. Shrinkage n/(n+5) or n/(n+20), per exact lead; local calibration uses only previous seasons. No geography-to-temperature law inferred from two sites.",
+  "selection": "Baselines gfs/naive_reference are diagnostics. identity_gfs is the default safe transfer policy. Local candidates must improve target-site MAE versus identity_gfs by at least5% in EACH validation year, add no observed-term false-cold predictions or cold misses, and preserve reference predictions exactly. Rank eligible by equal-site/equal-year MAE; tie registry order. If none, retain identity_gfs. No cold-support or production claim inferred from zero observed cold.",
+  "bootstrap": {"replicates": 2000, "seed": 370011, "block_nights": 7},
+  "status": "Anapa already inspected and now a development site. These are season-forward development folds, NOT unseen-station validation. Candidate registry saved before candidate scoring. No post-result expansion.",
+  "protected": "Original detector/point/interval, previous Krymsk and Vityazevo choices remain immutable. No detector execution or new alarm threshold. Reference output unchanged bit-for-bit.",
+  "controls": "No2025-2026 download, opening, fit, selection or evaluation",
+  "production_admitted": false
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "train_years": [2022, 2023],
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "evaluation_years": [2025, 2026],
+  "weather_thresholds_c": [-3, -2, -1, 0],
+  "neighbors": [16, 32, 64],
+  "windows": ["station", "regional"],
+  "decision_thresholds": [0.1, 0.25, 0.5],
+  "crossfit_date_blocks": 6,
+  "calibration_c": 1.0,
+  "minimum_calibration_nights": 50,
+  "minimum_calibration_events": 5,
+  "duration_quantiles": [0.1, 0.9],
+  "preparation_hours_for_research_score": 2,
+  "selection": "Preserve legacy detection: validation misses<=legacy and false_alarms<=legacy; then Brier at0, cold onset/duration balanced error; registry tie order. Diagnostic best Brier frozen before controls. No field promotion.",
+  "scope": "Joint whole-night temperature scenarios; calibration on excluded whole-date blocks only; no crop-damage probabilities. Original point and detector immutable controls. All probabilities research-only.",
+  "source": "One GFS06UTC run,14 hours19–09MSK, original station plus audited primary ISD-Lite development sites; no spatial/time interpolation of truth",
+  "status": "2025–2026 previously viewed and never used for fitting/calibration/choice; heldout data not a new blind test"
+}

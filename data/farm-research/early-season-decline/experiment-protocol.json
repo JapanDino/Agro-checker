@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "created_at_utc": "2026-10-20T20:45:36.429986+00:00",
+  "archive_protocol_sha256": "0585fef55060b095c518be5569f657175217b4cd5752d6e782fca90d430fc4b5",
+  "source_2024_sha256": "d54e9a2e527bcf7e1dfdb811a35777b3a050076d04033656c57fb5ea5b56c329",
+  "previous_freeze_sha256": "90c486a8e9ac6082e674e6cc2c468bf24483c0eccb5ea1703663a39927afcd4b",
+  "legacy_sha256": "b518c04fc57182e5c31abb6db72286c178a6d4d0a6b06a6ef15c75acd65790dc",
+  "hypothesis": "Do additional earlier seasons improve future spectral-decline detection without increasing false alarms?",
+  "algorithms": [
+    {
+      "id": "history_season_extra_10",
+      "family": "extra",
+      "features": "history_season",
+      "leaf": 10
+    },
+    {
+      "id": "basic_logit_1.0",
+      "family": "logit",
+      "features": "basic",
+      "c": 1.0
+    }
+  ],
+  "fixed_hyperparameters": {
+    "extra_trees": 256,
+    "extra_max_depth": 4,
+    "cat_iterations": 160,
+    "cat_depth": 2,
+    "cat_learning_rate": 0.04,
+    "cat_l2": 10,
+    "seed": 20241020,
+    "threads": 2
+  },
+  "algorithm_policy": "Keep each index algorithm chosen by previous 2024-only OOF. No new model/feature/hyperparameter search. Isolate extra training years and recency weights.",
+  "regimes": [
+    "2024_only",
+    "nearest_early_plus_2024",
+    "all_early_plus_2024",
+    "all_early_decay2_plus_2024"
+  ],
+  "nearest_rule": "Latest earlier year with any eligible nonreserved pairs, chosen from availability, not event counts or quality",
+  "weights": "Equal total weight per issue date; normalize mean row weight to1. decay2 multiplies by2**((year-2024)/2); all others no age weighting.",
+  "folds": [
+    "2024-06-01",
+    "2024-07-01",
+    "2024-08-01",
+    "2024-09-01",
+    "2024-10-01"
+  ],
+  "gates": [
+    "none",
+    "joint_momentum"
+  ],
+  "thresholds": [
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.85,
+    0.9,
+    0.925,
+    0.95,
+    0.975,
+    0.99,
+    1.01
+  ],
+  "fitting": "Only2019-2024; no reserved IDs. Full earlier years, plus2024 targets strictly before validation month. Final all eligible2024 plus same earlier set.",
+  "validation": "Identical274 monthly2024 OOF pairs; June-October; crossing windows purged; do not select on earlier year metrics",
+  "selection": "For each index/regime:0FP pairs/0FP dates,>=2TP on>=2 dates. Maximize date-balanced recall, TP dates, TP count; simpler gate then higher threshold. Primary best eligible regime by same ranking, ties prefer listed regime order.",
+  "ablation": "Freeze ALL four regime operating points/models before2026. Evaluate each as predeclared ablation, primary cannot be replaced using test outcomes.",
+  "acceptance": "Primary must improveTP and not growFP pairs orFP dates vs BOTH persistence and original Ridge, on all2026 and spatial2026; also report reserved2024. No production promotion without local validation.",
+  "target": "Unchanged core median drop>=0.10 through6-8days; same processing baseline within each pair; not disease/damage labels",
+  "holdout_ids": [
+    "R23",
+    "R24",
+    "R25",
+    "R26",
+    "R27"
+  ],
+  "source_policy": "Original2024/2026 pairs remain fixed; oldC1 PB05.00 vs later PB handled as transfer limitation, not guessed offsets; original processing policy unchanged.",
+  "features": "Same past-only seven/forty inputs; history never uses future observations; culture and operations unknown",
+  "test": "Existing2026 after freeze only; already examined previously, not pristine blind. No2025 in original evaluation archive; not fabricated.",
+  "historical_live_backtest": false,
+  "operational": false,
+  "caveats": [
+    "Repeated2024 selection across prior studies is optimistic.",
+    "Zero empirical false alarms is not a future guarantee.",
+    "Fragments/dates/windows correlated; reserved fragments are not external farms."
+  ]
+}

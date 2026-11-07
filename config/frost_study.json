@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source_config": "single_run.json",
+  "base_model_protocol": "model_study.json",
+  "families": ["gfs", "cold_hour_logistic", "event_duration_weather"],
+  "decision_thresholds": [0.25, 0.5, 0.75],
+  "logistic_c": 1.0,
+  "duration_ridge_alpha": 10.0,
+  "selection": "pooled_balanced_event_duration_loss",
+  "loss_weights": {"miss_rate": 0.25, "false_alarm_rate": 0.25, "cold_duration_mae_over_14": 0.25, "warm_duration_mae_over_14": 0.25},
+  "weather_threshold_c": 0.0,
+  "missing_policy": "all_14_temperature_targets_required_for_fit_and_score; forecast_all_complete_GFS_nights; no_imputation",
+  "feature_policy": "same_run_GFS_only; no_observations_as_features; no_corrected_temperature; no_calendar",
+  "hour_classifier": "unweighted_binary_logistic_of_T_lt_0; standard_scaler_train_only",
+  "structured_model": "night_event_logistic; conditional_cold_duration_ridge; select_rounded_bounded_duration_hours_by_hour_classifier_rank; no_forced_contiguity",
+  "onset": "first_cold_sample; conditional_common_hit_cohorts; boundary_censoring; not_selection_metric",
+  "time_resolution": "hourly_cold_bins_in_19_to_09_MSK_window; not_continuous_duration",
+  "historical_status": "2025_already_viewed; excluded_from_fit_and_selection; protocol_written_before_new_validation",
+  "deployment": "research_only; do_not_replace_pilot",
+  "report_examples": ["2025-03-03", "2025-03-19", "2025-03-07", "2025-03-04"]
+}

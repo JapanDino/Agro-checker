@@ -1,0 +1,259 @@
+{
+  "protocol": {
+    "schema_version": 1,
+    "additional_years": [
+      2021
+    ],
+    "additional_season_start": "03-01",
+    "additional_season_end": "05-31",
+    "training_windows": [
+      "recent",
+      "extended"
+    ],
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      }
+    ],
+    "final_calibration_year": 2024,
+    "evaluation_years": [
+      2025,
+      2026
+    ],
+    "crossfit_blocks": 6,
+    "coverage": 0.9,
+    "minimum_calibration_nights": 30,
+    "scale_floor_c": 0.5,
+    "scale_ceiling_c": 9.0,
+    "warm_width_ratio_limit": 1.05,
+    "overall_width_ratio_limit": 1.05,
+    "point_mae_gate": "validation pooled point MAE <= original Huber",
+    "feature_family": "13 forecast aggregates: temperature8 + RH/dewpoint/dewpoint-spread/wind means + minimum wind; no cloud read or imputation",
+    "baseline_candidates": [
+      {
+        "name": "legacy_symmetric",
+        "mode": "legacy"
+      },
+      {
+        "name": "risk_5_lower_95",
+        "mode": "lower",
+        "risk_threshold_c": 5.0,
+        "quantile": 0.95
+      }
+    ],
+    "conditional_families": [
+      {
+        "name": "global_90",
+        "mode": "constant"
+      },
+      {
+        "name": "scale_ridge_10",
+        "mode": "scale",
+        "alpha": 10.0
+      },
+      {
+        "name": "scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0
+      },
+      {
+        "name": "tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0
+      },
+      {
+        "name": "tails_ridge_100",
+        "mode": "asymmetric",
+        "alpha": 100.0
+      },
+      {
+        "name": "quantile_linear_005",
+        "mode": "quantile",
+        "alpha": 0.05
+      },
+      {
+        "name": "quantile_linear_02",
+        "mode": "quantile",
+        "alpha": 0.2
+      },
+      {
+        "name": "quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013
+      }
+    ],
+    "selection": "same coverage/width gates and lexicographic cold uncovered/balanced interval score90/width criterion as conditional_error, plus point MAE not worse than original Huber; baseline fallback; settings and training window chosen only on2023/2024",
+    "diagnostic": "nominate best eligible extended candidate by same prior-year criterion; if none eligible, best extended candidate is diagnostic only with failed gates disclosed; freeze matched recent-family comparator before controls; never promote a diagnostic using2025/2026",
+    "point_and_detector": "original huber_1 remains immutable comparator; new research point Huber alpha1 without cloud is trained by the same recent/extended window as residual head; detector event_duration_weather@0.25 unchanged including every14-hour mask and timing; field GFS unchanged",
+    "residual_training": "six contiguous whole-night OOF blocks for each window; new no-cloud point fit excludes held block; recent2022[/2023], extended2021+2022[/2023]; all point/head fit dates before validation year; retrospective block fitting, not historical prospective predictions",
+    "calibration": "validation-season leave-one-night-out, final2024, no2025/2026 calibration; retrospective tuning, not independent coverage",
+    "archive_compatibility": "GFS0.25 original06UTC lead10–23, five instantaneous fields excluding cloud, same grid/object version per hour and availability proxy; no-cloud family makes full2021 compatible; version changedMarch22, disclose nonstationarity; older NCAR3-hour forecasts not interpolated into this task",
+    "deployment": "station34929 research only; field GFS unchanged; no selected orchard or damage probability",
+    "status": "registry fixed before new validation/control comparison; controls already viewed previously, not a blind test",
+    "candidates": [
+      {
+        "name": "legacy_symmetric",
+        "mode": "legacy"
+      },
+      {
+        "name": "risk_5_lower_95",
+        "mode": "lower",
+        "risk_threshold_c": 5.0,
+        "quantile": 0.95
+      },
+      {
+        "name": "recent__global_90",
+        "mode": "constant",
+        "family": "global_90",
+        "window": "recent"
+      },
+      {
+        "name": "recent__scale_ridge_10",
+        "mode": "scale",
+        "alpha": 10.0,
+        "family": "scale_ridge_10",
+        "window": "recent"
+      },
+      {
+        "name": "recent__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "window": "recent"
+      },
+      {
+        "name": "recent__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "window": "recent"
+      },
+      {
+        "name": "recent__tails_ridge_100",
+        "mode": "asymmetric",
+        "alpha": 100.0,
+        "family": "tails_ridge_100",
+        "window": "recent"
+      },
+      {
+        "name": "recent__quantile_linear_005",
+        "mode": "quantile",
+        "alpha": 0.05,
+        "family": "quantile_linear_005",
+        "window": "recent"
+      },
+      {
+        "name": "recent__quantile_linear_02",
+        "mode": "quantile",
+        "alpha": 0.2,
+        "family": "quantile_linear_02",
+        "window": "recent"
+      },
+      {
+        "name": "recent__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "window": "recent"
+      },
+      {
+        "name": "extended__global_90",
+        "mode": "constant",
+        "family": "global_90",
+        "window": "extended"
+      },
+      {
+        "name": "extended__scale_ridge_10",
+        "mode": "scale",
+        "alpha": 10.0,
+        "family": "scale_ridge_10",
+        "window": "extended"
+      },
+      {
+        "name": "extended__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "window": "extended"
+      },
+      {
+        "name": "extended__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "window": "extended"
+      },
+      {
+        "name": "extended__tails_ridge_100",
+        "mode": "asymmetric",
+        "alpha": 100.0,
+        "family": "tails_ridge_100",
+        "window": "extended"
+      },
+      {
+        "name": "extended__quantile_linear_005",
+        "mode": "quantile",
+        "alpha": 0.05,
+        "family": "quantile_linear_005",
+        "window": "extended"
+      },
+      {
+        "name": "extended__quantile_linear_02",
+        "mode": "quantile",
+        "alpha": 0.2,
+        "family": "quantile_linear_02",
+        "window": "extended"
+      },
+      {
+        "name": "extended__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "window": "extended"
+      }
+    ]
+  },
+  "protocol_sha256": "54bf88c12cee0f384f7b1ed3f3c216ed75c1eadc4184bbfa9113d70047265109",
+  "source_sha256": {
+    "extended_error.py": "cb790b07ea270dfbfad6b026a2d169424d61ec026c9eb9488b55ee1e3c2e1b63",
+    "extended_error_study.py": "aff63b89b60a097053623e5de6703ae32d13f4079b04931617209cebb12dc533",
+    "extended_archive.py": "856b365ff23c61212e249bdc25d5c9675e276d6486fd08545317b6358be294c2",
+    "early_cold_archive.py": "b844efc76d6592e134cd58dbb88b56ca15152f8c163abb4cfd9af1f8fe341c71",
+    "no_cloud_error.py": "567fd80ab510edbaa2eea2d914a2b57c465fbae6ed08ece4e981e36d3a5a0d98",
+    "conditional_error.py": "9e90c52166367c9b6e18348eed6e6b1a02371b23aa54f73a4dda4f72df56824e",
+    "conditional_error_study.py": "de26639e88ea759100f730d7d56e9cbf6e90f3c24f06fcd868c4e3b48e5fe5d9",
+    "minimum_model.py": "dee4e650d0cd1b390e748c4521c2aa70242a7128e52bb08fa7e18a6f10a0be7d",
+    "cold_interval.py": "5123f7591df1350abf12471d07a12c42ff3c87d52e41b8147365a795e8baad2b",
+    "cold_interval_study.py": "14711ed4114afd80ce7f8d4a823d5167abe0e42567f32844e66963bc6da446b8",
+    "scenario_study.py": "0b94631ad28902154250308902996016ee3cdaa55f4e514e4482887a9427d627",
+    "single_run.py": "9b199eb2790f6573e2343fe9ee1cead455fa4a79b81fa480901b861bcf25bac1",
+    "gfs_archive.py": "0768edb2c92d37aafe9c5f75da031ebd6323fe14d69f3dfed7a530316e5de2c2",
+    "gfs_covariates.py": "c393ab3614cdc82c3f366f9328fed13f7bfeb8fb64ff10c3b9cae312d57a3025",
+    "humidity_archive.py": "7d350e4893fa962ed5883b52ba0129cc47198379cda9a6b7d64e98d7684377a3",
+    "hourly_study.py": "c8f6653ae3f64f11fdb13c42c25ecf625ccb2fe74f20800fce335c8180642c37",
+    "frost_study.py": "0161683092e817a4ff943378ededf42c50dc31c5ecfb867a3b444046d6056ab1"
+  },
+  "saved_at_utc": "2026-10-13T20:15:58.464208+00:00"
+}

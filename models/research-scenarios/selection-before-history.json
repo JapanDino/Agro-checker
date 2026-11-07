@@ -1,0 +1,2785 @@
+{
+  "protocol": {
+    "schema_version": 1,
+    "station_id": "34929",
+    "source_config": "single_run.json",
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      }
+    ],
+    "final_train_years": [
+      2022,
+      2023
+    ],
+    "historical_year": 2025,
+    "fresh_year": 2026,
+    "candidates": [
+      {
+        "name": "gfs",
+        "kind": "gfs"
+      },
+      {
+        "name": "previous_hourly",
+        "kind": "previous_hourly"
+      },
+      {
+        "name": "smooth_ridge_10",
+        "kind": "smooth",
+        "alpha": 10.0,
+        "near_zero_weight": 1.0
+      },
+      {
+        "name": "smooth_ridge_100",
+        "kind": "smooth",
+        "alpha": 100.0,
+        "near_zero_weight": 1.0
+      },
+      {
+        "name": "smooth_ridge_100_cold",
+        "kind": "smooth",
+        "alpha": 100.0,
+        "near_zero_weight": 4.0
+      },
+      {
+        "name": "analog_temperature_16",
+        "kind": "analog",
+        "feature_groups": [
+          "temperature"
+        ],
+        "neighbors": 16,
+        "event_threshold": 0.25
+      },
+      {
+        "name": "analog_weather_8",
+        "kind": "analog",
+        "feature_groups": [
+          "temperature",
+          "humidity",
+          "dewpoint_spread",
+          "wind",
+          "cloud"
+        ],
+        "neighbors": 8,
+        "event_threshold": 0.25
+      },
+      {
+        "name": "analog_weather_16",
+        "kind": "analog",
+        "feature_groups": [
+          "temperature",
+          "humidity",
+          "dewpoint_spread",
+          "wind",
+          "cloud"
+        ],
+        "neighbors": 16,
+        "event_threshold": 0.25
+      },
+      {
+        "name": "analog_weather_32",
+        "kind": "analog",
+        "feature_groups": [
+          "temperature",
+          "humidity",
+          "dewpoint_spread",
+          "wind",
+          "cloud"
+        ],
+        "neighbors": 32,
+        "event_threshold": 0.25
+      }
+    ],
+    "targets": [
+      "temperature",
+      "humidity",
+      "wind"
+    ],
+    "weather_threshold_c": 0.0,
+    "high_humidity_threshold_pct": 90.0,
+    "low_wind_threshold_ms": 2.0,
+    "selection_weights": {
+      "miss_rate": 0.25,
+      "false_alarm_rate": 0.1,
+      "cold_duration_mae_over_14": 0.15,
+      "balanced_cold_dose_mae_over_28": 0.1,
+      "cold_onset_error_with_miss_penalty_over_14": 0.1,
+      "temperature_mae_over_3": 0.1,
+      "humidity_mae_over_20": 0.1,
+      "wind_mae_over_5": 0.05,
+      "high_humidity_duration_mae_over_14": 0.05
+    },
+    "point_selection": "one fixed registry; choose T/RH/wind marginal point models separately by pooled available-hour validation MAE; decision scenario model chosen by balanced loss; no changes after either evaluation year",
+    "wind_target_valid_range_ms": [
+      0.0,
+      80.0
+    ],
+    "observation_sources": [
+      "isd_lite",
+      "metar"
+    ],
+    "wind_units": "Meteostat wspd km/h divided by 3.6; GFS 10m vector speed m/s; station sensor height not independently confirmed",
+    "analog_policy": "equal group mean squared standardized forecast distance; scaler trained only on prior seasons; joint complete-night T/RH/wind residual paths transported onto current GFS; RH clipped 0..100, wind clipped >=0",
+    "event_schedule_policy": "analog event = cold member fraction >=0.25; select one whole conditional cold/warm path minimizing average absolute duration/14 + first-sample/14 + cold-dose/28 + mask disagreement/14; point T/RH/wind are marginal medians and distinct from warning path",
+    "missing_policy": "fit scalar heads per available target; analog library requires complete T/RH/wind; score each target on available pairs; night aggregates require full relevant target; no imputation",
+    "new_targets": "wind speed, cold degree-hours below 0, high-RH hourly bins >=90%, low-wind hourly bins <2m/s, cold-and-high-RH joint bins; meteorological proxies, not tissue damage, leaf wetness, disease or yield",
+    "uncertainty": "empirical analog member frequencies and 10..90 percentile intervals; evaluate CRPS/Brier/coverage/reliability counts; no guaranteed coverage or calibrated crop probabilities",
+    "bootstrap": {
+      "replicates": 2000,
+      "block_days": [
+        3,
+        7,
+        14
+      ],
+      "seed": 20261012
+    },
+    "status": "fixed before validation; 2025 already viewed historical control, excluded from fitting/selection; attempt unseen completed spring 2026 only after choice frozen",
+    "deployment": "research only; keep field GFS and existing demonstrations unchanged"
+  },
+  "protocol_sha256": "34b8c2f3eb19ed99ec3bd9bf1f7c6e5961cd4ccc1fe38f31c301ff322ac8d6d9",
+  "selection_saved_at_utc": "2026-10-12T21:09:58.767467+00:00",
+  "observations_loaded_years": [
+    2022,
+    2023,
+    2024
+  ],
+  "selected_decision_model": "analog_weather_8",
+  "selected_point_models": {
+    "temperature": "smooth_ridge_10",
+    "humidity": "smooth_ridge_100",
+    "wind": "smooth_ridge_100"
+  },
+  "folds": [
+    {
+      "train_years": [
+        2022
+      ],
+      "validation_year": 2023,
+      "scores": {
+        "gfs": {
+          "complete_temperature_nights": 92,
+          "excluded_temperature_nights": 0,
+          "hits": 1,
+          "misses": 2,
+          "false_alarms": 0,
+          "correct_negatives": 89,
+          "cold_nights": 3,
+          "mae": {
+            "temperature": 1.2883960643318062,
+            "humidity": 6.707919254658385,
+            "wind": 1.3010046412941838
+          },
+          "paired_hours": {
+            "temperature": 1288,
+            "humidity": 1288,
+            "wind": 1287
+          },
+          "minimum_mae_c": 1.4154948093580249,
+          "cold_duration_mae_h": 3.3333333333333335,
+          "warm_duration_mae_h": 0.0,
+          "onset_mae_hits_h": 5.0,
+          "onset_pairs": 1,
+          "onset_with_miss_penalty_h": 11.0,
+          "cold_mask_mae_cold_h": 3.3333333333333335,
+          "cold_degree_hours_mae": 0.5994431470788059,
+          "cold_degree_hours_mae_cold": 18.38292317708338,
+          "cold_degree_hours_mae_warm": 0.0,
+          "high_humidity_hours_mae": 2.369565217391304,
+          "low_wind_hours_mae": 1.5384615384615385,
+          "cold_high_humidity_hours_mae": 0.03260869565217391,
+          "aggregate_pairs": {
+            "minimum": 92,
+            "cold_dose": 92,
+            "high_humidity": 92,
+            "low_wind": 91,
+            "cold_high_humidity": 92
+          },
+          "night_event_brier": 0.021739130434782608,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1288,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.288396064331808
+            },
+            "humidity": {
+              "paired_hours": 1288,
+              "coverage_80": 0.006211180124223602,
+              "mean_width": 0.0,
+              "crps": 6.707919254658394
+            },
+            "wind": {
+              "paired_hours": 1287,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.3010046412941834
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 91,
+              "forecast_sum": 0.0,
+              "events": 2
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 1,
+              "forecast_sum": 1.0,
+              "events": 1
+            }
+          ]
+        },
+        "previous_hourly": {
+          "complete_temperature_nights": 92,
+          "excluded_temperature_nights": 0,
+          "hits": 2,
+          "misses": 1,
+          "false_alarms": 1,
+          "correct_negatives": 88,
+          "cold_nights": 3,
+          "mae": {
+            "temperature": 1.1831200870780576,
+            "humidity": 6.018915708594987,
+            "wind": 1.3010046412941838
+          },
+          "paired_hours": {
+            "temperature": 1288,
+            "humidity": 1288,
+            "wind": 1287
+          },
+          "minimum_mae_c": 1.2820605592998826,
+          "cold_duration_mae_h": 2.0,
+          "warm_duration_mae_h": 0.07865168539325842,
+          "onset_mae_hits_h": 2.5,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 6.333333333333333,
+          "cold_mask_mae_cold_h": 2.0,
+          "cold_degree_hours_mae": 0.4997808832267919,
+          "cold_degree_hours_mae_cold": 14.276590907162765,
+          "cold_degree_hours_mae_warm": 0.03539402848737713,
+          "high_humidity_hours_mae": 2.130434782608696,
+          "low_wind_hours_mae": 1.5384615384615385,
+          "cold_high_humidity_hours_mae": 0.03260869565217391,
+          "aggregate_pairs": {
+            "minimum": 92,
+            "cold_dose": 92,
+            "high_humidity": 92,
+            "low_wind": 91,
+            "cold_high_humidity": 92
+          },
+          "night_event_brier": 0.021739130434782608,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1288,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.183120087078059
+            },
+            "humidity": {
+              "paired_hours": 1288,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 6.018915708594981
+            },
+            "wind": {
+              "paired_hours": 1287,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.3010046412941834
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 89,
+              "forecast_sum": 0.0,
+              "events": 1
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 3,
+              "forecast_sum": 3.0,
+              "events": 2
+            }
+          ]
+        },
+        "smooth_ridge_10": {
+          "complete_temperature_nights": 92,
+          "excluded_temperature_nights": 0,
+          "hits": 2,
+          "misses": 1,
+          "false_alarms": 1,
+          "correct_negatives": 88,
+          "cold_nights": 3,
+          "mae": {
+            "temperature": 1.1682922040059878,
+            "humidity": 6.345537324468393,
+            "wind": 1.059052704651224
+          },
+          "paired_hours": {
+            "temperature": 1288,
+            "humidity": 1288,
+            "wind": 1287
+          },
+          "minimum_mae_c": 1.2139999651109057,
+          "cold_duration_mae_h": 2.0,
+          "warm_duration_mae_h": 0.0898876404494382,
+          "onset_mae_hits_h": 2.0,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 6.0,
+          "cold_mask_mae_cold_h": 2.0,
+          "cold_degree_hours_mae": 0.4919541420599801,
+          "cold_degree_hours_mae_cold": 12.84558053834249,
+          "cold_degree_hours_mae_warm": 0.07553976915158081,
+          "high_humidity_hours_mae": 2.3369565217391304,
+          "low_wind_hours_mae": 1.6263736263736264,
+          "cold_high_humidity_hours_mae": 0.03260869565217391,
+          "aggregate_pairs": {
+            "minimum": 92,
+            "cold_dose": 92,
+            "high_humidity": 92,
+            "low_wind": 91,
+            "cold_high_humidity": 92
+          },
+          "night_event_brier": 0.021739130434782608,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1288,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.1682922040059869
+            },
+            "humidity": {
+              "paired_hours": 1288,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 6.345537324468398
+            },
+            "wind": {
+              "paired_hours": 1287,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.0590527046512244
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 89,
+              "forecast_sum": 0.0,
+              "events": 1
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 3,
+              "forecast_sum": 3.0,
+              "events": 2
+            }
+          ]
+        },
+        "smooth_ridge_100": {
+          "complete_temperature_nights": 92,
+          "excluded_temperature_nights": 0,
+          "hits": 2,
+          "misses": 1,
+          "false_alarms": 1,
+          "correct_negatives": 88,
+          "cold_nights": 3,
+          "mae": {
+            "temperature": 1.1651408596583468,
+            "humidity": 6.30610684663841,
+            "wind": 1.0565379878957495
+          },
+          "paired_hours": {
+            "temperature": 1288,
+            "humidity": 1288,
+            "wind": 1287
+          },
+          "minimum_mae_c": 1.2207959401125879,
+          "cold_duration_mae_h": 2.0,
+          "warm_duration_mae_h": 0.0898876404494382,
+          "onset_mae_hits_h": 2.0,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 6.0,
+          "cold_mask_mae_cold_h": 2.0,
+          "cold_degree_hours_mae": 0.48730942758576506,
+          "cold_degree_hours_mae_cold": 13.15015011398613,
+          "cold_degree_hours_mae_warm": 0.06047210107788757,
+          "high_humidity_hours_mae": 2.3369565217391304,
+          "low_wind_hours_mae": 1.6593406593406594,
+          "cold_high_humidity_hours_mae": 0.03260869565217391,
+          "aggregate_pairs": {
+            "minimum": 92,
+            "cold_dose": 92,
+            "high_humidity": 92,
+            "low_wind": 91,
+            "cold_high_humidity": 92
+          },
+          "night_event_brier": 0.021739130434782608,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1288,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.1651408596583483
+            },
+            "humidity": {
+              "paired_hours": 1288,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 6.306106846638409
+            },
+            "wind": {
+              "paired_hours": 1287,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.0565379878957466
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 89,
+              "forecast_sum": 0.0,
+              "events": 1
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 3,
+              "forecast_sum": 3.0,
+              "events": 2
+            }
+          ]
+        },
+        "smooth_ridge_100_cold": {
+          "complete_temperature_nights": 92,
+          "excluded_temperature_nights": 0,
+          "hits": 2,
+          "misses": 1,
+          "false_alarms": 1,
+          "correct_negatives": 88,
+          "cold_nights": 3,
+          "mae": {
+            "temperature": 1.1769014175728199,
+            "humidity": 6.447527091070328,
+            "wind": 1.0588056905693202
+          },
+          "paired_hours": {
+            "temperature": 1288,
+            "humidity": 1288,
+            "wind": 1287
+          },
+          "minimum_mae_c": 1.2378511932390872,
+          "cold_duration_mae_h": 2.0,
+          "warm_duration_mae_h": 0.0898876404494382,
+          "onset_mae_hits_h": 2.0,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 6.0,
+          "cold_mask_mae_cold_h": 2.0,
+          "cold_degree_hours_mae": 0.4907066063533499,
+          "cold_degree_hours_mae_cold": 13.815729285835866,
+          "cold_degree_hours_mae_warm": 0.04154853850562455,
+          "high_humidity_hours_mae": 2.467391304347826,
+          "low_wind_hours_mae": 1.6373626373626373,
+          "cold_high_humidity_hours_mae": 0.03260869565217391,
+          "aggregate_pairs": {
+            "minimum": 92,
+            "cold_dose": 92,
+            "high_humidity": 92,
+            "low_wind": 91,
+            "cold_high_humidity": 92
+          },
+          "night_event_brier": 0.021739130434782608,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1288,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.1769014175728185
+            },
+            "humidity": {
+              "paired_hours": 1288,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 6.447527091070328
+            },
+            "wind": {
+              "paired_hours": 1287,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.0588056905693204
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 89,
+              "forecast_sum": 0.0,
+              "events": 1
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 3,
+              "forecast_sum": 3.0,
+              "events": 2
+            }
+          ]
+        },
+        "analog_temperature_16": {
+          "complete_temperature_nights": 92,
+          "excluded_temperature_nights": 0,
+          "hits": 2,
+          "misses": 1,
+          "false_alarms": 4,
+          "correct_negatives": 85,
+          "cold_nights": 3,
+          "mae": {
+            "temperature": 1.2183677777592434,
+            "humidity": 6.37791149068323,
+            "wind": 1.2052287302408085
+          },
+          "paired_hours": {
+            "temperature": 1288,
+            "humidity": 1288,
+            "wind": 1287
+          },
+          "minimum_mae_c": 1.3949746173361064,
+          "cold_duration_mae_h": 2.6666666666666665,
+          "warm_duration_mae_h": 0.0898876404494382,
+          "onset_mae_hits_h": 3.0,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 6.666666666666667,
+          "cold_mask_mae_cold_h": 2.6666666666666665,
+          "cold_degree_hours_mae": 0.5186294157608665,
+          "cold_degree_hours_mae_cold": 15.459511718749932,
+          "cold_degree_hours_mae_warm": 0.015004169592695812,
+          "high_humidity_hours_mae": 2.1032608695652173,
+          "low_wind_hours_mae": 2.4945054945054945,
+          "cold_high_humidity_hours_mae": 0.03260869565217391,
+          "aggregate_pairs": {
+            "minimum": 92,
+            "cold_dose": 92,
+            "high_humidity": 92,
+            "low_wind": 91,
+            "cold_high_humidity": 92
+          },
+          "night_event_brier": 0.019743546195652172,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1288,
+              "coverage_80": 0.7538819875776398,
+              "mean_width": 3.7088714144688972,
+              "crps": 0.8813991395731161
+            },
+            "humidity": {
+              "paired_hours": 1288,
+              "coverage_80": 0.8152173913043478,
+              "mean_width": 20.04988354037263,
+              "crps": 4.5932841614906765
+            },
+            "wind": {
+              "paired_hours": 1287,
+              "coverage_80": 0.7226107226107226,
+              "mean_width": 3.175488910924186,
+              "crps": 0.873354435648474
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 86,
+              "forecast_sum": 0.75,
+              "events": 1
+            },
+            {
+              "count": 3,
+              "forecast_sum": 0.875,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 1,
+              "forecast_sum": 0.75,
+              "events": 0
+            },
+            {
+              "count": 2,
+              "forecast_sum": 1.9375,
+              "events": 2
+            }
+          ]
+        },
+        "analog_weather_8": {
+          "complete_temperature_nights": 92,
+          "excluded_temperature_nights": 0,
+          "hits": 2,
+          "misses": 1,
+          "false_alarms": 3,
+          "correct_negatives": 86,
+          "cold_nights": 3,
+          "mae": {
+            "temperature": 1.1969121556252431,
+            "humidity": 6.405240683229814,
+            "wind": 1.2178853126333808
+          },
+          "paired_hours": {
+            "temperature": 1288,
+            "humidity": 1288,
+            "wind": 1287
+          },
+          "minimum_mae_c": 1.2079774674125339,
+          "cold_duration_mae_h": 1.6666666666666667,
+          "warm_duration_mae_h": 0.12359550561797752,
+          "onset_mae_hits_h": 2.0,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 6.0,
+          "cold_mask_mae_cold_h": 1.6666666666666667,
+          "cold_degree_hours_mae": 0.5387357761548907,
+          "cold_degree_hours_mae_cold": 13.839862060546844,
+          "cold_degree_hours_mae_warm": 0.09038320477089225,
+          "high_humidity_hours_mae": 2.016304347826087,
+          "low_wind_hours_mae": 2.131868131868132,
+          "cold_high_humidity_hours_mae": 0.03804347826086957,
+          "aggregate_pairs": {
+            "minimum": 92,
+            "cold_dose": 92,
+            "high_humidity": 92,
+            "low_wind": 91,
+            "cold_high_humidity": 92
+          },
+          "night_event_brier": 0.026834239130434784,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1288,
+              "coverage_80": 0.6350931677018633,
+              "mean_width": 2.901196272761187,
+              "crps": 0.8925460274619355
+            },
+            "humidity": {
+              "paired_hours": 1288,
+              "coverage_80": 0.6801242236024845,
+              "mean_width": 16.20010093167702,
+              "crps": 4.7621663916925465
+            },
+            "wind": {
+              "paired_hours": 1287,
+              "coverage_80": 0.6184926184926185,
+              "mean_width": 2.6476067155498018,
+              "crps": 0.9081718133311657
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 87,
+              "forecast_sum": 0.5,
+              "events": 1
+            },
+            {
+              "count": 1,
+              "forecast_sum": 0.375,
+              "events": 0
+            },
+            {
+              "count": 1,
+              "forecast_sum": 0.5,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 3,
+              "forecast_sum": 2.875,
+              "events": 2
+            }
+          ]
+        },
+        "analog_weather_16": {
+          "complete_temperature_nights": 92,
+          "excluded_temperature_nights": 0,
+          "hits": 2,
+          "misses": 1,
+          "false_alarms": 3,
+          "correct_negatives": 86,
+          "cold_nights": 3,
+          "mae": {
+            "temperature": 1.1770812192170514,
+            "humidity": 6.225038819875777,
+            "wind": 1.1655459100388665
+          },
+          "paired_hours": {
+            "temperature": 1288,
+            "humidity": 1288,
+            "wind": 1287
+          },
+          "minimum_mae_c": 1.2140219248896083,
+          "cold_duration_mae_h": 2.0,
+          "warm_duration_mae_h": 0.1348314606741573,
+          "onset_mae_hits_h": 2.0,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 6.0,
+          "cold_mask_mae_cold_h": 2.0,
+          "cold_degree_hours_mae": 0.4683975750467035,
+          "cold_degree_hours_mae_cold": 12.99953694661454,
+          "cold_degree_hours_mae_warm": 0.04599961870172021,
+          "high_humidity_hours_mae": 1.940217391304348,
+          "low_wind_hours_mae": 2.1043956043956045,
+          "cold_high_humidity_hours_mae": 0.03260869565217391,
+          "aggregate_pairs": {
+            "minimum": 92,
+            "cold_dose": 92,
+            "high_humidity": 92,
+            "low_wind": 91,
+            "cold_high_humidity": 92
+          },
+          "night_event_brier": 0.020932404891304348,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1288,
+              "coverage_80": 0.7313664596273292,
+              "mean_width": 3.4655134174986633,
+              "crps": 0.8607040884479983
+            },
+            "humidity": {
+              "paired_hours": 1288,
+              "coverage_80": 0.7670807453416149,
+              "mean_width": 19.137150621117986,
+              "crps": 4.591052625194094
+            },
+            "wind": {
+              "paired_hours": 1287,
+              "coverage_80": 0.696969696969697,
+              "mean_width": 2.9153446011119177,
+              "crps": 0.8431723343419713
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 87,
+              "forecast_sum": 0.4375,
+              "events": 1
+            },
+            {
+              "count": 2,
+              "forecast_sum": 0.6875,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 3,
+              "forecast_sum": 2.8125,
+              "events": 2
+            }
+          ]
+        },
+        "analog_weather_32": {
+          "complete_temperature_nights": 92,
+          "excluded_temperature_nights": 0,
+          "hits": 2,
+          "misses": 1,
+          "false_alarms": 2,
+          "correct_negatives": 87,
+          "cold_nights": 3,
+          "mae": {
+            "temperature": 1.1669466035262404,
+            "humidity": 6.220846273291926,
+            "wind": 1.176938904720758
+          },
+          "paired_hours": {
+            "temperature": 1288,
+            "humidity": 1288,
+            "wind": 1287
+          },
+          "minimum_mae_c": 1.2389553965692937,
+          "cold_duration_mae_h": 2.6666666666666665,
+          "warm_duration_mae_h": 0.0898876404494382,
+          "onset_mae_hits_h": 3.0,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 6.666666666666667,
+          "cold_mask_mae_cold_h": 2.6666666666666665,
+          "cold_degree_hours_mae": 0.5239394345490811,
+          "cold_degree_hours_mae_cold": 14.668736572265592,
+          "cold_degree_hours_mae_warm": 0.047148519794591955,
+          "high_humidity_hours_mae": 1.858695652173913,
+          "low_wind_hours_mae": 2.032967032967033,
+          "cold_high_humidity_hours_mae": 0.03260869565217391,
+          "aggregate_pairs": {
+            "minimum": 92,
+            "cold_dose": 92,
+            "high_humidity": 92,
+            "low_wind": 91,
+            "cold_high_humidity": 92
+          },
+          "night_event_brier": 0.022376019021739132,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1288,
+              "coverage_80": 0.7849378881987578,
+              "mean_width": 3.8341014318999282,
+              "crps": 0.8415858295819032
+            },
+            "humidity": {
+              "paired_hours": 1288,
+              "coverage_80": 0.8051242236024845,
+              "mean_width": 20.568928571428557,
+              "crps": 4.465705141813861
+            },
+            "wind": {
+              "paired_hours": 1287,
+              "coverage_80": 0.7163947163947164,
+              "mean_width": 3.0861983819833236,
+              "crps": 0.8410909741845941
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 86,
+              "forecast_sum": 0.5,
+              "events": 1
+            },
+            {
+              "count": 3,
+              "forecast_sum": 0.78125,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 3,
+              "forecast_sum": 2.78125,
+              "events": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "train_years": [
+        2022,
+        2023
+      ],
+      "validation_year": 2024,
+      "scores": {
+        "gfs": {
+          "complete_temperature_nights": 91,
+          "excluded_temperature_nights": 1,
+          "hits": 0,
+          "misses": 4,
+          "false_alarms": 0,
+          "correct_negatives": 87,
+          "cold_nights": 4,
+          "mae": {
+            "temperature": 1.5594683320160567,
+            "humidity": 8.235408560311283,
+            "wind": 1.239415970765894
+          },
+          "paired_hours": {
+            "temperature": 1285,
+            "humidity": 1285,
+            "wind": 1281
+          },
+          "minimum_mae_c": 2.1585903159340836,
+          "cold_duration_mae_h": 6.25,
+          "warm_duration_mae_h": 0.0,
+          "onset_mae_hits_h": null,
+          "onset_pairs": 0,
+          "onset_with_miss_penalty_h": 14.0,
+          "cold_mask_mae_cold_h": 6.25,
+          "cold_degree_hours_mae": 0.6263736263736264,
+          "cold_degree_hours_mae_cold": 14.25,
+          "cold_degree_hours_mae_warm": 0.0,
+          "high_humidity_hours_mae": 2.10989010989011,
+          "low_wind_hours_mae": 1.4831460674157304,
+          "cold_high_humidity_hours_mae": 0.14285714285714285,
+          "aggregate_pairs": {
+            "minimum": 91,
+            "cold_dose": 91,
+            "high_humidity": 91,
+            "low_wind": 89,
+            "cold_high_humidity": 91
+          },
+          "night_event_brier": 0.04395604395604396,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1285,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.5594683320160543
+            },
+            "humidity": {
+              "paired_hours": 1285,
+              "coverage_80": 0.007782101167315175,
+              "mean_width": 0.0,
+              "crps": 8.235408560311276
+            },
+            "wind": {
+              "paired_hours": 1281,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.239415970765893
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 91,
+              "forecast_sum": 0.0,
+              "events": 4
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            }
+          ]
+        },
+        "previous_hourly": {
+          "complete_temperature_nights": 91,
+          "excluded_temperature_nights": 1,
+          "hits": 2,
+          "misses": 2,
+          "false_alarms": 0,
+          "correct_negatives": 87,
+          "cold_nights": 4,
+          "mae": {
+            "temperature": 1.480768789339488,
+            "humidity": 7.922977865188216,
+            "wind": 1.239415970765894
+          },
+          "paired_hours": {
+            "temperature": 1285,
+            "humidity": 1285,
+            "wind": 1281
+          },
+          "minimum_mae_c": 1.9025817619654402,
+          "cold_duration_mae_h": 4.0,
+          "warm_duration_mae_h": 0.0,
+          "onset_mae_hits_h": 3.5,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 8.75,
+          "cold_mask_mae_cold_h": 4.0,
+          "cold_degree_hours_mae": 0.5845607129329357,
+          "cold_degree_hours_mae_cold": 13.298756219224286,
+          "cold_degree_hours_mae_warm": 0.0,
+          "high_humidity_hours_mae": 1.8681318681318682,
+          "low_wind_hours_mae": 1.4831460674157304,
+          "cold_high_humidity_hours_mae": 0.14285714285714285,
+          "aggregate_pairs": {
+            "minimum": 91,
+            "cold_dose": 91,
+            "high_humidity": 91,
+            "low_wind": 89,
+            "cold_high_humidity": 91
+          },
+          "night_event_brier": 0.02197802197802198,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1285,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.480768789339486
+            },
+            "humidity": {
+              "paired_hours": 1285,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 7.922977865188223
+            },
+            "wind": {
+              "paired_hours": 1281,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.239415970765893
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 89,
+              "forecast_sum": 0.0,
+              "events": 2
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 2,
+              "forecast_sum": 2.0,
+              "events": 2
+            }
+          ]
+        },
+        "smooth_ridge_10": {
+          "complete_temperature_nights": 91,
+          "excluded_temperature_nights": 1,
+          "hits": 2,
+          "misses": 2,
+          "false_alarms": 0,
+          "correct_negatives": 87,
+          "cold_nights": 4,
+          "mae": {
+            "temperature": 1.4639824395824435,
+            "humidity": 7.372211205292817,
+            "wind": 0.8825593215630074
+          },
+          "paired_hours": {
+            "temperature": 1285,
+            "humidity": 1285,
+            "wind": 1281
+          },
+          "minimum_mae_c": 1.8724196647990583,
+          "cold_duration_mae_h": 4.0,
+          "warm_duration_mae_h": 0.0,
+          "onset_mae_hits_h": 3.5,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 8.75,
+          "cold_mask_mae_cold_h": 4.0,
+          "cold_degree_hours_mae": 0.5643998310089365,
+          "cold_degree_hours_mae_cold": 12.840096155453306,
+          "cold_degree_hours_mae_warm": 0.0,
+          "high_humidity_hours_mae": 2.032967032967033,
+          "low_wind_hours_mae": 1.2584269662921348,
+          "cold_high_humidity_hours_mae": 0.14285714285714285,
+          "aggregate_pairs": {
+            "minimum": 91,
+            "cold_dose": 91,
+            "high_humidity": 91,
+            "low_wind": 89,
+            "cold_high_humidity": 91
+          },
+          "night_event_brier": 0.02197802197802198,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1285,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.463982439582444
+            },
+            "humidity": {
+              "paired_hours": 1285,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 7.372211205292817
+            },
+            "wind": {
+              "paired_hours": 1281,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 0.8825593215630068
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 89,
+              "forecast_sum": 0.0,
+              "events": 2
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 2,
+              "forecast_sum": 2.0,
+              "events": 2
+            }
+          ]
+        },
+        "smooth_ridge_100": {
+          "complete_temperature_nights": 91,
+          "excluded_temperature_nights": 1,
+          "hits": 2,
+          "misses": 2,
+          "false_alarms": 0,
+          "correct_negatives": 87,
+          "cold_nights": 4,
+          "mae": {
+            "temperature": 1.475362069319325,
+            "humidity": 7.326986296884015,
+            "wind": 0.878784258857946
+          },
+          "paired_hours": {
+            "temperature": 1285,
+            "humidity": 1285,
+            "wind": 1281
+          },
+          "minimum_mae_c": 1.8740944115499028,
+          "cold_duration_mae_h": 4.0,
+          "warm_duration_mae_h": 0.0,
+          "onset_mae_hits_h": 3.5,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 8.75,
+          "cold_mask_mae_cold_h": 4.0,
+          "cold_degree_hours_mae": 0.5704929917677674,
+          "cold_degree_hours_mae_cold": 12.978715562716706,
+          "cold_degree_hours_mae_warm": 0.0,
+          "high_humidity_hours_mae": 1.978021978021978,
+          "low_wind_hours_mae": 1.3370786516853932,
+          "cold_high_humidity_hours_mae": 0.14285714285714285,
+          "aggregate_pairs": {
+            "minimum": 91,
+            "cold_dose": 91,
+            "high_humidity": 91,
+            "low_wind": 89,
+            "cold_high_humidity": 91
+          },
+          "night_event_brier": 0.02197802197802198,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1285,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.4753620693193228
+            },
+            "humidity": {
+              "paired_hours": 1285,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 7.326986296884021
+            },
+            "wind": {
+              "paired_hours": 1281,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 0.8787842588579465
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 89,
+              "forecast_sum": 0.0,
+              "events": 2
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 2,
+              "forecast_sum": 2.0,
+              "events": 2
+            }
+          ]
+        },
+        "smooth_ridge_100_cold": {
+          "complete_temperature_nights": 91,
+          "excluded_temperature_nights": 1,
+          "hits": 2,
+          "misses": 2,
+          "false_alarms": 0,
+          "correct_negatives": 87,
+          "cold_nights": 4,
+          "mae": {
+            "temperature": 1.4809774226747994,
+            "humidity": 7.387844608648379,
+            "wind": 0.8813479879628636
+          },
+          "paired_hours": {
+            "temperature": 1285,
+            "humidity": 1285,
+            "wind": 1281
+          },
+          "minimum_mae_c": 1.8859830271461377,
+          "cold_duration_mae_h": 4.0,
+          "warm_duration_mae_h": 0.0,
+          "onset_mae_hits_h": 3.5,
+          "onset_pairs": 2,
+          "onset_with_miss_penalty_h": 8.75,
+          "cold_mask_mae_cold_h": 4.0,
+          "cold_degree_hours_mae": 0.5663095101024381,
+          "cold_degree_hours_mae_cold": 12.883541354830466,
+          "cold_degree_hours_mae_warm": 0.0,
+          "high_humidity_hours_mae": 2.021978021978022,
+          "low_wind_hours_mae": 1.3707865168539326,
+          "cold_high_humidity_hours_mae": 0.14285714285714285,
+          "aggregate_pairs": {
+            "minimum": 91,
+            "cold_dose": 91,
+            "high_humidity": 91,
+            "low_wind": 89,
+            "cold_high_humidity": 91
+          },
+          "night_event_brier": 0.02197802197802198,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1285,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 1.4809774226747994
+            },
+            "humidity": {
+              "paired_hours": 1285,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 7.387844608648385
+            },
+            "wind": {
+              "paired_hours": 1281,
+              "coverage_80": 0.0,
+              "mean_width": 0.0,
+              "crps": 0.8813479879628642
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 89,
+              "forecast_sum": 0.0,
+              "events": 2
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 2,
+              "forecast_sum": 2.0,
+              "events": 2
+            }
+          ]
+        },
+        "analog_temperature_16": {
+          "complete_temperature_nights": 91,
+          "excluded_temperature_nights": 1,
+          "hits": 3,
+          "misses": 1,
+          "false_alarms": 1,
+          "correct_negatives": 86,
+          "cold_nights": 4,
+          "mae": {
+            "temperature": 1.5895392809916102,
+            "humidity": 8.357937743190663,
+            "wind": 1.1013438294390456
+          },
+          "paired_hours": {
+            "temperature": 1285,
+            "humidity": 1285,
+            "wind": 1281
+          },
+          "minimum_mae_c": 1.7388902601304894,
+          "cold_duration_mae_h": 4.25,
+          "warm_duration_mae_h": 0.011494252873563218,
+          "onset_mae_hits_h": 4.0,
+          "onset_pairs": 3,
+          "onset_with_miss_penalty_h": 6.5,
+          "cold_mask_mae_cold_h": 4.25,
+          "cold_degree_hours_mae": 0.6263736263736264,
+          "cold_degree_hours_mae_cold": 14.25,
+          "cold_degree_hours_mae_warm": 0.0,
+          "high_humidity_hours_mae": 2.0,
+          "low_wind_hours_mae": 1.702247191011236,
+          "cold_high_humidity_hours_mae": 0.14285714285714285,
+          "aggregate_pairs": {
+            "minimum": 91,
+            "cold_dose": 91,
+            "high_humidity": 91,
+            "low_wind": 89,
+            "cold_high_humidity": 91
+          },
+          "night_event_brier": 0.023179945054945056,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1285,
+              "coverage_80": 0.6568093385214008,
+              "mean_width": 3.5865785515336213,
+              "crps": 1.1379086485539904
+            },
+            "humidity": {
+              "paired_hours": 1285,
+              "coverage_80": 0.6583657587548638,
+              "mean_width": 18.984202334630364,
+              "crps": 6.0722710967898905
+            },
+            "wind": {
+              "paired_hours": 1281,
+              "coverage_80": 0.7330210772833724,
+              "mean_width": 3.0610611229385016,
+              "crps": 0.8087725979240247
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 87,
+              "forecast_sum": 1.3125,
+              "events": 1
+            },
+            {
+              "count": 2,
+              "forecast_sum": 0.5625,
+              "events": 1
+            },
+            {
+              "count": 2,
+              "forecast_sum": 0.875,
+              "events": 2
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            }
+          ]
+        },
+        "analog_weather_8": {
+          "complete_temperature_nights": 91,
+          "excluded_temperature_nights": 1,
+          "hits": 3,
+          "misses": 1,
+          "false_alarms": 1,
+          "correct_negatives": 86,
+          "cold_nights": 4,
+          "mae": {
+            "temperature": 1.51333273802286,
+            "humidity": 7.8405447470817125,
+            "wind": 1.0039638456493032
+          },
+          "paired_hours": {
+            "temperature": 1285,
+            "humidity": 1285,
+            "wind": 1281
+          },
+          "minimum_mae_c": 1.418621718857313,
+          "cold_duration_mae_h": 2.75,
+          "warm_duration_mae_h": 0.022988505747126436,
+          "onset_mae_hits_h": 1.3333333333333333,
+          "onset_pairs": 3,
+          "onset_with_miss_penalty_h": 4.5,
+          "cold_mask_mae_cold_h": 2.75,
+          "cold_degree_hours_mae": 0.5362845821171012,
+          "cold_degree_hours_mae_cold": 12.200474243164052,
+          "cold_degree_hours_mae_warm": 0.0,
+          "high_humidity_hours_mae": 1.89010989010989,
+          "low_wind_hours_mae": 1.6292134831460674,
+          "cold_high_humidity_hours_mae": 0.12087912087912088,
+          "aggregate_pairs": {
+            "minimum": 91,
+            "cold_dose": 91,
+            "high_humidity": 91,
+            "low_wind": 89,
+            "cold_high_humidity": 91
+          },
+          "night_event_brier": 0.016826923076923076,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1285,
+              "coverage_80": 0.6396887159533073,
+              "mean_width": 3.3879507274820657,
+              "crps": 1.114061860466745
+            },
+            "humidity": {
+              "paired_hours": 1285,
+              "coverage_80": 0.6575875486381323,
+              "mean_width": 18.789828793774326,
+              "crps": 5.9072872081712084
+            },
+            "wind": {
+              "paired_hours": 1281,
+              "coverage_80": 0.7096018735362998,
+              "mean_width": 2.7055400314817732,
+              "crps": 0.7431257424116315
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 87,
+              "forecast_sum": 0.375,
+              "events": 1
+            },
+            {
+              "count": 1,
+              "forecast_sum": 0.375,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 3,
+              "forecast_sum": 2.0,
+              "events": 3
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            }
+          ]
+        },
+        "analog_weather_16": {
+          "complete_temperature_nights": 91,
+          "excluded_temperature_nights": 1,
+          "hits": 3,
+          "misses": 1,
+          "false_alarms": 1,
+          "correct_negatives": 86,
+          "cold_nights": 4,
+          "mae": {
+            "temperature": 1.490975508040491,
+            "humidity": 7.5774708171206235,
+            "wind": 0.9841191588515878
+          },
+          "paired_hours": {
+            "temperature": 1285,
+            "humidity": 1285,
+            "wind": 1281
+          },
+          "minimum_mae_c": 1.4189810616629426,
+          "cold_duration_mae_h": 3.25,
+          "warm_duration_mae_h": 0.011494252873563218,
+          "onset_mae_hits_h": 1.3333333333333333,
+          "onset_pairs": 3,
+          "onset_with_miss_penalty_h": 4.5,
+          "cold_mask_mae_cold_h": 3.25,
+          "cold_degree_hours_mae": 0.538616004356971,
+          "cold_degree_hours_mae_cold": 12.253514099121091,
+          "cold_degree_hours_mae_warm": 0.0,
+          "high_humidity_hours_mae": 1.7252747252747254,
+          "low_wind_hours_mae": 1.5393258426966292,
+          "cold_high_humidity_hours_mae": 0.12087912087912088,
+          "aggregate_pairs": {
+            "minimum": 91,
+            "cold_dose": 91,
+            "high_humidity": 91,
+            "low_wind": 89,
+            "cold_high_humidity": 91
+          },
+          "night_event_brier": 0.012877747252747252,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1285,
+              "coverage_80": 0.6879377431906615,
+              "mean_width": 3.6956020669306233,
+              "crps": 1.0671758752444374
+            },
+            "humidity": {
+              "paired_hours": 1285,
+              "coverage_80": 0.7385214007782102,
+              "mean_width": 21.006264591439756,
+              "crps": 5.5639512402723685
+            },
+            "wind": {
+              "paired_hours": 1281,
+              "coverage_80": 0.7790788446526151,
+              "mean_width": 2.9930500495381507,
+              "crps": 0.7088944560374593
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 87,
+              "forecast_sum": 0.5625,
+              "events": 1
+            },
+            {
+              "count": 1,
+              "forecast_sum": 0.3125,
+              "events": 0
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 3,
+              "forecast_sum": 2.125,
+              "events": 3
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            }
+          ]
+        },
+        "analog_weather_32": {
+          "complete_temperature_nights": 91,
+          "excluded_temperature_nights": 1,
+          "hits": 3,
+          "misses": 1,
+          "false_alarms": 1,
+          "correct_negatives": 86,
+          "cold_nights": 4,
+          "mae": {
+            "temperature": 1.4982422216986868,
+            "humidity": 7.537120622568094,
+            "wind": 0.9882610610420131
+          },
+          "paired_hours": {
+            "temperature": 1285,
+            "humidity": 1285,
+            "wind": 1281
+          },
+          "minimum_mae_c": 1.559129155756353,
+          "cold_duration_mae_h": 3.25,
+          "warm_duration_mae_h": 0.011494252873563218,
+          "onset_mae_hits_h": 2.0,
+          "onset_pairs": 3,
+          "onset_with_miss_penalty_h": 5.0,
+          "cold_mask_mae_cold_h": 3.25,
+          "cold_degree_hours_mae": 0.6060834612165172,
+          "cold_degree_hours_mae_cold": 13.788398742675767,
+          "cold_degree_hours_mae_warm": 0.0,
+          "high_humidity_hours_mae": 1.7527472527472527,
+          "low_wind_hours_mae": 1.4550561797752808,
+          "cold_high_humidity_hours_mae": 0.13186813186813187,
+          "aggregate_pairs": {
+            "minimum": 91,
+            "cold_dose": 91,
+            "high_humidity": 91,
+            "low_wind": 89,
+            "cold_high_humidity": 91
+          },
+          "night_event_brier": 0.015088427197802198,
+          "intervals": {
+            "temperature": {
+              "paired_hours": 1285,
+              "coverage_80": 0.7089494163424125,
+              "mean_width": 3.952572278354516,
+              "crps": 1.0736489326369454
+            },
+            "humidity": {
+              "paired_hours": 1285,
+              "coverage_80": 0.757976653696498,
+              "mean_width": 22.13743190661475,
+              "crps": 5.466095421935797
+            },
+            "wind": {
+              "paired_hours": 1281,
+              "coverage_80": 0.8001561280249805,
+              "mean_width": 3.1740800778449096,
+              "crps": 0.7031321137381662
+            }
+          },
+          "reliability_bins": [
+            {
+              "count": 87,
+              "forecast_sum": 0.375,
+              "events": 1
+            },
+            {
+              "count": 2,
+              "forecast_sum": 0.625,
+              "events": 1
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            },
+            {
+              "count": 2,
+              "forecast_sum": 1.375,
+              "events": 2
+            },
+            {
+              "count": 0,
+              "forecast_sum": 0.0,
+              "events": 0
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "pooled_validation": {
+    "gfs": {
+      "complete_temperature_nights": 183,
+      "excluded_temperature_nights": 1,
+      "hits": 1,
+      "misses": 6,
+      "false_alarms": 0,
+      "correct_negatives": 176,
+      "cold_nights": 7,
+      "mae": {
+        "temperature": 1.4237741692576755,
+        "humidity": 7.470773416245628,
+        "wind": 1.2702822554114972
+      },
+      "paired_hours": {
+        "temperature": 2573,
+        "humidity": 2573,
+        "wind": 2568
+      },
+      "minimum_mae_c": 1.7850122470543164,
+      "cold_duration_mae_h": 5.0,
+      "warm_duration_mae_h": 0.0,
+      "onset_mae_hits_h": 5.0,
+      "onset_pairs": 1,
+      "onset_with_miss_penalty_h": 12.714285714285714,
+      "cold_mask_mae_cold_h": 5.0,
+      "cold_degree_hours_mae": 0.6128348061816947,
+      "cold_degree_hours_mae_cold": 16.02125279017859,
+      "cold_degree_hours_mae_warm": 0.0,
+      "high_humidity_hours_mae": 2.240437158469945,
+      "low_wind_hours_mae": 1.511111111111111,
+      "cold_high_humidity_hours_mae": 0.08743169398907104,
+      "aggregate_pairs": {
+        "minimum": 183,
+        "cold_dose": 183,
+        "high_humidity": 183,
+        "low_wind": 180,
+        "cold_high_humidity": 183
+      },
+      "night_event_brier": 0.03278688524590164,
+      "intervals": {
+        "temperature": {
+          "paired_hours": 2573,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 1.4237741692576777
+        },
+        "humidity": {
+          "paired_hours": 2573,
+          "coverage_80": 0.006995724834823164,
+          "mean_width": 0.0,
+          "crps": 7.470773416245628
+        },
+        "wind": {
+          "paired_hours": 2568,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 1.2702822554114974
+        }
+      },
+      "reliability_bins": [
+        {
+          "count": 182,
+          "forecast_sum": 0.0,
+          "events": 6
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 1,
+          "forecast_sum": 1.0,
+          "events": 1
+        }
+      ],
+      "selection_loss": 0.49280023926106564,
+      "selection_components": {
+        "miss_rate": 0.8571428571428571,
+        "false_alarm_rate": 0.0,
+        "cold_duration_mae_over_14": 0.35714285714285715,
+        "balanced_cold_dose_mae_over_28": 0.2860937998246177,
+        "cold_onset_error_with_miss_penalty_over_14": 0.9081632653061223,
+        "temperature_mae_over_3": 0.4745913897525585,
+        "humidity_mae_over_20": 0.37353867081228137,
+        "wind_mae_over_5": 0.25405645108229946,
+        "high_humidity_duration_mae_over_14": 0.16003122560499608
+      }
+    },
+    "previous_hourly": {
+      "complete_temperature_nights": 183,
+      "excluded_temperature_nights": 1,
+      "hits": 4,
+      "misses": 3,
+      "false_alarms": 1,
+      "correct_negatives": 175,
+      "cold_nights": 7,
+      "mae": {
+        "temperature": 1.3317709158405675,
+        "humidity": 6.969836762315274,
+        "wind": 1.2702822554114972
+      },
+      "paired_hours": {
+        "temperature": 2573,
+        "humidity": 2573,
+        "wind": 2568
+      },
+      "minimum_mae_c": 1.590625747510624,
+      "cold_duration_mae_h": 3.142857142857143,
+      "warm_duration_mae_h": 0.03977272727272727,
+      "onset_mae_hits_h": 3.0,
+      "onset_pairs": 4,
+      "onset_with_miss_penalty_h": 7.714285714285714,
+      "cold_mask_mae_cold_h": 3.142857142857143,
+      "cold_degree_hours_mae": 0.5419391592008853,
+      "cold_degree_hours_mae_cold": 13.717828228340778,
+      "cold_degree_hours_mae_warm": 0.017898116678275934,
+      "high_humidity_hours_mae": 2.0,
+      "low_wind_hours_mae": 1.511111111111111,
+      "cold_high_humidity_hours_mae": 0.08743169398907104,
+      "aggregate_pairs": {
+        "minimum": 183,
+        "cold_dose": 183,
+        "high_humidity": 183,
+        "low_wind": 180,
+        "cold_high_humidity": 183
+      },
+      "night_event_brier": 0.02185792349726776,
+      "intervals": {
+        "temperature": {
+          "paired_hours": 2573,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 1.3317709158405682
+        },
+        "humidity": {
+          "paired_hours": 2573,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 6.9698367623152775
+        },
+        "wind": {
+          "paired_hours": 2568,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 1.2702822554114974
+        }
+      },
+      "reliability_bins": [
+        {
+          "count": 178,
+          "forecast_sum": 0.0,
+          "events": 3
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 5,
+          "forecast_sum": 5.0,
+          "events": 4
+        }
+      ],
+      "selection_loss": 0.32010185929398394,
+      "selection_components": {
+        "miss_rate": 0.42857142857142855,
+        "false_alarm_rate": 0.005681818181818182,
+        "cold_duration_mae_over_14": 0.22448979591836735,
+        "balanced_cold_dose_mae_over_28": 0.24528082758962597,
+        "cold_onset_error_with_miss_penalty_over_14": 0.5510204081632654,
+        "temperature_mae_over_3": 0.4439236386135225,
+        "humidity_mae_over_20": 0.3484918381157637,
+        "wind_mae_over_5": 0.25405645108229946,
+        "high_humidity_duration_mae_over_14": 0.14285714285714285
+      }
+    },
+    "smooth_ridge_10": {
+      "complete_temperature_nights": 183,
+      "excluded_temperature_nights": 1,
+      "hits": 4,
+      "misses": 3,
+      "false_alarms": 1,
+      "correct_negatives": 175,
+      "cold_nights": 7,
+      "mae": {
+        "temperature": 1.3159649411671792,
+        "humidity": 6.858275737550159,
+        "wind": 0.9710121969658636
+      },
+      "paired_hours": {
+        "temperature": 2573,
+        "humidity": 2573,
+        "wind": 2568
+      },
+      "minimum_mae_c": 1.541410854026872,
+      "cold_duration_mae_h": 3.142857142857143,
+      "warm_duration_mae_h": 0.045454545454545456,
+      "onset_mae_hits_h": 2.75,
+      "onset_pairs": 4,
+      "onset_with_miss_penalty_h": 7.571428571428571,
+      "cold_mask_mae_cold_h": 3.142857142857143,
+      "cold_degree_hours_mae": 0.5279790474936141,
+      "cold_degree_hours_mae_cold": 12.842446605262959,
+      "cold_degree_hours_mae_warm": 0.03819908780960621,
+      "high_humidity_hours_mae": 2.185792349726776,
+      "low_wind_hours_mae": 1.4444444444444444,
+      "cold_high_humidity_hours_mae": 0.08743169398907104,
+      "aggregate_pairs": {
+        "minimum": 183,
+        "cold_dose": 183,
+        "high_humidity": 183,
+        "low_wind": 180,
+        "cold_high_humidity": 183
+      },
+      "night_event_brier": 0.02185792349726776,
+      "intervals": {
+        "temperature": {
+          "paired_hours": 2573,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 1.3159649411671785
+        },
+        "humidity": {
+          "paired_hours": 2573,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 6.858275737550166
+        },
+        "wind": {
+          "paired_hours": 2568,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 0.9710121969658637
+        }
+      },
+      "reliability_bins": [
+        {
+          "count": 178,
+          "forecast_sum": 0.0,
+          "events": 3
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 5,
+          "forecast_sum": 5.0,
+          "events": 4
+        }
+      ],
+      "selection_loss": 0.31414069397053873,
+      "selection_components": {
+        "miss_rate": 0.42857142857142855,
+        "false_alarm_rate": 0.005681818181818182,
+        "cold_duration_mae_over_14": 0.22448979591836735,
+        "balanced_cold_dose_mae_over_28": 0.23001153023343865,
+        "cold_onset_error_with_miss_penalty_over_14": 0.5408163265306122,
+        "temperature_mae_over_3": 0.43865498038905976,
+        "humidity_mae_over_20": 0.34291378687750795,
+        "wind_mae_over_5": 0.19420243939317272,
+        "high_humidity_duration_mae_over_14": 0.156128024980484
+      }
+    },
+    "smooth_ridge_100": {
+      "complete_temperature_nights": 183,
+      "excluded_temperature_nights": 1,
+      "hits": 4,
+      "misses": 3,
+      "false_alarms": 1,
+      "correct_negatives": 175,
+      "cold_nights": 7,
+      "mae": {
+        "temperature": 1.3200706126371096,
+        "humidity": 6.815951422450924,
+        "wind": 0.9678687796023593
+      },
+      "paired_hours": {
+        "temperature": 2573,
+        "humidity": 2573,
+        "wind": 2568
+      },
+      "minimum_mae_c": 1.5456602073300503,
+      "cold_duration_mae_h": 3.142857142857143,
+      "warm_duration_mae_h": 0.045454545454545456,
+      "onset_mae_hits_h": 2.75,
+      "onset_pairs": 4,
+      "onset_with_miss_penalty_h": 7.571428571428571,
+      "cold_mask_mae_cold_h": 3.142857142857143,
+      "cold_degree_hours_mae": 0.5286739321790012,
+      "cold_degree_hours_mae_cold": 13.052187513260744,
+      "cold_degree_hours_mae_warm": 0.030579642022340873,
+      "high_humidity_hours_mae": 2.158469945355191,
+      "low_wind_hours_mae": 1.5,
+      "cold_high_humidity_hours_mae": 0.08743169398907104,
+      "aggregate_pairs": {
+        "minimum": 183,
+        "cold_dose": 183,
+        "high_humidity": 183,
+        "low_wind": 180,
+        "cold_high_humidity": 183
+      },
+      "night_event_brier": 0.02185792349726776,
+      "intervals": {
+        "temperature": {
+          "paired_hours": 2573,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 1.3200706126371133
+        },
+        "humidity": {
+          "paired_hours": 2573,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 6.8159514224509214
+        },
+        "wind": {
+          "paired_hours": 2568,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 0.9678687796023584
+        }
+      },
+      "reliability_bins": [
+        {
+          "count": 178,
+          "forecast_sum": 0.0,
+          "events": 3
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 5,
+          "forecast_sum": 5.0,
+          "events": 4
+        }
+      ],
+      "selection_loss": 0.31429784510397785,
+      "selection_components": {
+        "miss_rate": 0.42857142857142855,
+        "false_alarm_rate": 0.005681818181818182,
+        "cold_duration_mae_over_14": 0.22448979591836735,
+        "balanced_cold_dose_mae_over_28": 0.23362084205862652,
+        "cold_onset_error_with_miss_penalty_over_14": 0.5408163265306122,
+        "temperature_mae_over_3": 0.44002353754570317,
+        "humidity_mae_over_20": 0.3407975711225462,
+        "wind_mae_over_5": 0.19357375592047185,
+        "high_humidity_duration_mae_over_14": 0.15417642466822795
+      }
+    },
+    "smooth_ridge_100_cold": {
+      "complete_temperature_nights": 183,
+      "excluded_temperature_nights": 1,
+      "hits": 4,
+      "misses": 3,
+      "false_alarms": 1,
+      "correct_negatives": 175,
+      "cold_nights": 7,
+      "mae": {
+        "temperature": 1.328762150785429,
+        "humidity": 6.917137666308493,
+        "wind": 0.970284149666333
+      },
+      "paired_hours": {
+        "temperature": 2573,
+        "humidity": 2573,
+        "wind": 2568
+      },
+      "minimum_mae_c": 1.5601462581874022,
+      "cold_duration_mae_h": 3.142857142857143,
+      "warm_duration_mae_h": 0.045454545454545456,
+      "onset_mae_hits_h": 2.75,
+      "onset_pairs": 4,
+      "onset_with_miss_penalty_h": 7.571428571428571,
+      "cold_mask_mae_cold_h": 3.142857142857143,
+      "cold_degree_hours_mae": 0.5283014929171042,
+      "cold_degree_hours_mae_cold": 13.283050468118494,
+      "cold_degree_hours_mae_warm": 0.021010340494321506,
+      "high_humidity_hours_mae": 2.2459016393442623,
+      "low_wind_hours_mae": 1.5055555555555555,
+      "cold_high_humidity_hours_mae": 0.08743169398907104,
+      "aggregate_pairs": {
+        "minimum": 183,
+        "cold_dose": 183,
+        "high_humidity": 183,
+        "low_wind": 180,
+        "cold_high_humidity": 183
+      },
+      "night_event_brier": 0.02185792349726776,
+      "intervals": {
+        "temperature": {
+          "paired_hours": 2573,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 1.3287621507854286
+        },
+        "humidity": {
+          "paired_hours": 2573,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 6.917137666308489
+        },
+        "wind": {
+          "paired_hours": 2568,
+          "coverage_80": 0.0,
+          "mean_width": 0.0,
+          "crps": 0.970284149666333
+        }
+      },
+      "reliability_bins": [
+        {
+          "count": 178,
+          "forecast_sum": 0.0,
+          "events": 3
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 5,
+          "forecast_sum": 5.0,
+          "events": 4
+        }
+      ],
+      "selection_loss": 0.3158250712502325,
+      "selection_components": {
+        "miss_rate": 0.42857142857142855,
+        "false_alarm_rate": 0.005681818181818182,
+        "cold_duration_mae_over_14": 0.22448979591836735,
+        "balanced_cold_dose_mae_over_28": 0.23757251443951458,
+        "cold_onset_error_with_miss_penalty_over_14": 0.5408163265306122,
+        "temperature_mae_over_3": 0.44292071692847634,
+        "humidity_mae_over_20": 0.34585688331542463,
+        "wind_mae_over_5": 0.19405682993326662,
+        "high_humidity_duration_mae_over_14": 0.16042154566744732
+      }
+    },
+    "analog_temperature_16": {
+      "complete_temperature_nights": 183,
+      "excluded_temperature_nights": 1,
+      "hits": 5,
+      "misses": 2,
+      "false_alarms": 5,
+      "correct_negatives": 171,
+      "cold_nights": 7,
+      "mae": {
+        "temperature": 1.4037371449001652,
+        "humidity": 7.366770307034589,
+        "wind": 1.1534076407053495
+      },
+      "paired_hours": {
+        "temperature": 2573,
+        "humidity": 2573,
+        "wind": 2568
+      },
+      "minimum_mae_c": 1.565992778507084,
+      "cold_duration_mae_h": 3.5714285714285716,
+      "warm_duration_mae_h": 0.05113636363636364,
+      "onset_mae_hits_h": 3.6,
+      "onset_pairs": 5,
+      "onset_with_miss_penalty_h": 6.571428571428571,
+      "cold_mask_mae_cold_h": 3.5714285714285716,
+      "cold_degree_hours_mae": 0.5722071379781406,
+      "cold_degree_hours_mae_cold": 14.768362165178543,
+      "cold_degree_hours_mae_warm": 0.007587335759942768,
+      "high_humidity_hours_mae": 2.051912568306011,
+      "low_wind_hours_mae": 2.102777777777778,
+      "cold_high_humidity_hours_mae": 0.08743169398907104,
+      "aggregate_pairs": {
+        "minimum": 183,
+        "cold_dose": 183,
+        "high_humidity": 183,
+        "low_wind": 180,
+        "cold_high_humidity": 183
+      },
+      "night_event_brier": 0.02145235655737705,
+      "intervals": {
+        "temperature": {
+          "paired_hours": 2573,
+          "coverage_80": 0.7054022541780023,
+          "mean_width": 3.6477962769361247,
+          "crps": 1.009504354901693
+        },
+        "humidity": {
+          "paired_hours": 2573,
+          "coverage_80": 0.7368830159347066,
+          "mean_width": 19.51766420520793,
+          "crps": 5.331915413670811
+        },
+        "wind": {
+          "paired_hours": 2568,
+          "coverage_80": 0.727803738317757,
+          "mean_width": 3.118408694253759,
+          "crps": 0.841138962858359
+        }
+      },
+      "reliability_bins": [
+        {
+          "count": 173,
+          "forecast_sum": 2.0625,
+          "events": 2
+        },
+        {
+          "count": 5,
+          "forecast_sum": 1.4375,
+          "events": 1
+        },
+        {
+          "count": 2,
+          "forecast_sum": 0.875,
+          "events": 2
+        },
+        {
+          "count": 1,
+          "forecast_sum": 0.75,
+          "events": 0
+        },
+        {
+          "count": 2,
+          "forecast_sum": 1.9375,
+          "events": 2
+        }
+      ],
+      "selection_loss": 0.28834661153903907,
+      "selection_components": {
+        "miss_rate": 0.2857142857142857,
+        "false_alarm_rate": 0.028409090909090908,
+        "cold_duration_mae_over_14": 0.25510204081632654,
+        "balanced_cold_dose_mae_over_28": 0.2638562410881872,
+        "cold_onset_error_with_miss_penalty_over_14": 0.4693877551020408,
+        "temperature_mae_over_3": 0.4679123816333884,
+        "humidity_mae_over_20": 0.36833851535172946,
+        "wind_mae_over_5": 0.2306815281410699,
+        "high_humidity_duration_mae_over_14": 0.14656518345042935
+      }
+    },
+    "analog_weather_8": {
+      "complete_temperature_nights": 183,
+      "excluded_temperature_nights": 1,
+      "hits": 5,
+      "misses": 2,
+      "false_alarms": 4,
+      "correct_negatives": 172,
+      "cold_nights": 7,
+      "mae": {
+        "temperature": 1.3549379808801743,
+        "humidity": 7.12205596579868,
+        "wind": 1.1111744873971645
+      },
+      "paired_hours": {
+        "temperature": 2573,
+        "humidity": 2573,
+        "wind": 2568
+      },
+      "minimum_mae_c": 1.312724062393271,
+      "cold_duration_mae_h": 2.2857142857142856,
+      "warm_duration_mae_h": 0.07386363636363637,
+      "onset_mae_hits_h": 1.6,
+      "onset_pairs": 5,
+      "onset_with_miss_penalty_h": 5.142857142857143,
+      "cold_mask_mae_cold_h": 2.2857142857142856,
+      "cold_degree_hours_mae": 0.5375168763874654,
+      "cold_degree_hours_mae_cold": 12.903069022042391,
+      "cold_degree_hours_mae_warm": 0.045705143321644374,
+      "high_humidity_hours_mae": 1.953551912568306,
+      "low_wind_hours_mae": 1.8833333333333333,
+      "cold_high_humidity_hours_mae": 0.07923497267759563,
+      "aggregate_pairs": {
+        "minimum": 183,
+        "cold_dose": 183,
+        "high_humidity": 183,
+        "low_wind": 180,
+        "cold_high_humidity": 183
+      },
+      "night_event_brier": 0.02185792349726776,
+      "intervals": {
+        "temperature": {
+          "paired_hours": 2573,
+          "coverage_80": 0.6373882627283327,
+          "mean_width": 3.1442897334360116,
+          "crps": 1.0031748053131526
+        },
+        "humidity": {
+          "paired_hours": 2573,
+          "coverage_80": 0.6688690244850369,
+          "mean_width": 17.493455110765645,
+          "crps": 5.33405922075399
+        },
+        "wind": {
+          "paired_hours": 2568,
+          "coverage_80": 0.6639408099688473,
+          "mean_width": 2.676505694408389,
+          "crps": 0.8258415887019096
+        }
+      },
+      "reliability_bins": [
+        {
+          "count": 174,
+          "forecast_sum": 0.875,
+          "events": 2
+        },
+        {
+          "count": 2,
+          "forecast_sum": 0.75,
+          "events": 0
+        },
+        {
+          "count": 1,
+          "forecast_sum": 0.5,
+          "events": 0
+        },
+        {
+          "count": 3,
+          "forecast_sum": 2.0,
+          "events": 3
+        },
+        {
+          "count": 3,
+          "forecast_sum": 2.875,
+          "events": 2
+        }
+      ],
+      "selection_loss": 0.2569121946887486,
+      "selection_components": {
+        "miss_rate": 0.2857142857142857,
+        "false_alarm_rate": 0.022727272727272728,
+        "cold_duration_mae_over_14": 0.16326530612244897,
+        "balanced_cold_dose_mae_over_28": 0.23122811009578634,
+        "cold_onset_error_with_miss_penalty_over_14": 0.3673469387755102,
+        "temperature_mae_over_3": 0.45164599362672475,
+        "humidity_mae_over_20": 0.35610279828993396,
+        "wind_mae_over_5": 0.2222348974794329,
+        "high_humidity_duration_mae_over_14": 0.1395394223263076
+      }
+    },
+    "analog_weather_16": {
+      "complete_temperature_nights": 183,
+      "excluded_temperature_nights": 1,
+      "hits": 5,
+      "misses": 2,
+      "false_alarms": 4,
+      "correct_negatives": 172,
+      "cold_nights": 7,
+      "mae": {
+        "temperature": 1.3338453704561186,
+        "humidity": 6.900466381655655,
+        "wind": 1.0750444815844646
+      },
+      "paired_hours": {
+        "temperature": 2573,
+        "humidity": 2573,
+        "wind": 2568
+      },
+      "minimum_mae_c": 1.3159414956348183,
+      "cold_duration_mae_h": 2.7142857142857144,
+      "warm_duration_mae_h": 0.07386363636363637,
+      "onset_mae_hits_h": 1.6,
+      "onset_pairs": 5,
+      "onset_with_miss_penalty_h": 5.142857142857143,
+      "cold_mask_mae_cold_h": 2.7142857142857144,
+      "cold_degree_hours_mae": 0.503314936069842,
+      "cold_degree_hours_mae_cold": 12.573238176618284,
+      "cold_degree_hours_mae_warm": 0.023261170820756242,
+      "high_humidity_hours_mae": 1.8333333333333333,
+      "low_wind_hours_mae": 1.825,
+      "cold_high_humidity_hours_mae": 0.07650273224043716,
+      "aggregate_pairs": {
+        "minimum": 183,
+        "cold_dose": 183,
+        "high_humidity": 183,
+        "low_wind": 180,
+        "cold_high_humidity": 183
+      },
+      "night_event_brier": 0.016927083333333332,
+      "intervals": {
+        "temperature": {
+          "paired_hours": 2573,
+          "coverage_80": 0.7096774193548387,
+          "mean_width": 3.5804236058080714,
+          "crps": 0.9638196135290019
+        },
+        "humidity": {
+          "paired_hours": 2573,
+          "coverage_80": 0.7528177225029149,
+          "mean_width": 20.07061795569372,
+          "crps": 5.076934755149631
+        },
+        "wind": {
+          "paired_hours": 2568,
+          "coverage_80": 0.7379283489096573,
+          "mean_width": 2.954106547932017,
+          "crps": 0.7761902618699767
+        }
+      },
+      "reliability_bins": [
+        {
+          "count": 174,
+          "forecast_sum": 1.0,
+          "events": 2
+        },
+        {
+          "count": 3,
+          "forecast_sum": 1.0,
+          "events": 0
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 3,
+          "forecast_sum": 2.125,
+          "events": 3
+        },
+        {
+          "count": 3,
+          "forecast_sum": 2.8125,
+          "events": 2
+        }
+      ],
+      "selection_loss": 0.25827328218690276,
+      "selection_components": {
+        "miss_rate": 0.2857142857142857,
+        "false_alarm_rate": 0.022727272727272728,
+        "cold_duration_mae_over_14": 0.19387755102040818,
+        "balanced_cold_dose_mae_over_28": 0.22493748834712574,
+        "cold_onset_error_with_miss_penalty_over_14": 0.3673469387755102,
+        "temperature_mae_over_3": 0.44461512348537285,
+        "humidity_mae_over_20": 0.3450233190827828,
+        "wind_mae_over_5": 0.21500889631689293,
+        "high_humidity_duration_mae_over_14": 0.13095238095238096
+      }
+    },
+    "analog_weather_32": {
+      "complete_temperature_nights": 183,
+      "excluded_temperature_nights": 1,
+      "hits": 5,
+      "misses": 2,
+      "false_alarms": 3,
+      "correct_negatives": 173,
+      "cold_nights": 7,
+      "mae": {
+        "temperature": 1.3324012748638205,
+        "humidity": 6.878216090167121,
+        "wind": 1.0828204009230664
+      },
+      "paired_hours": {
+        "temperature": 2573,
+        "humidity": 2573,
+        "wind": 2568
+      },
+      "minimum_mae_c": 1.3981674844710552,
+      "cold_duration_mae_h": 3.0,
+      "warm_duration_mae_h": 0.05113636363636364,
+      "onset_mae_hits_h": 2.4,
+      "onset_pairs": 5,
+      "onset_with_miss_penalty_h": 5.714285714285714,
+      "cold_mask_mae_cold_h": 3.0,
+      "cold_degree_hours_mae": 0.5647870106514674,
+      "cold_degree_hours_mae_cold": 14.165686383928549,
+      "cold_degree_hours_mae_warm": 0.023842149214310705,
+      "high_humidity_hours_mae": 1.8060109289617485,
+      "low_wind_hours_mae": 1.7472222222222222,
+      "cold_high_humidity_hours_mae": 0.08196721311475409,
+      "aggregate_pairs": {
+        "minimum": 183,
+        "cold_dose": 183,
+        "high_humidity": 183,
+        "low_wind": 180,
+        "cold_high_humidity": 183
+      },
+      "night_event_brier": 0.01875213456284153,
+      "intervals": {
+        "temperature": {
+          "paired_hours": 2573,
+          "coverage_80": 0.7469879518072289,
+          "mean_width": 3.8932677893403222,
+          "crps": 0.9574820936416482
+        },
+        "humidity": {
+          "paired_hours": 2573,
+          "coverage_80": 0.7815779246016323,
+          "mean_width": 21.35226583754371,
+          "crps": 4.965317077280899
+        },
+        "wind": {
+          "paired_hours": 2568,
+          "coverage_80": 0.758177570093458,
+          "mean_width": 3.1300365643815673,
+          "crps": 0.7722727108544262
+        }
+      },
+      "reliability_bins": [
+        {
+          "count": 173,
+          "forecast_sum": 0.875,
+          "events": 2
+        },
+        {
+          "count": 5,
+          "forecast_sum": 1.40625,
+          "events": 1
+        },
+        {
+          "count": 0,
+          "forecast_sum": 0.0,
+          "events": 0
+        },
+        {
+          "count": 2,
+          "forecast_sum": 1.375,
+          "events": 2
+        },
+        {
+          "count": 3,
+          "forecast_sum": 2.78125,
+          "events": 2
+        }
+      ],
+      "selection_loss": 0.2675134436866365,
+      "selection_components": {
+        "miss_rate": 0.2857142857142857,
+        "false_alarm_rate": 0.017045454545454544,
+        "cold_duration_mae_over_14": 0.21428571428571427,
+        "balanced_cold_dose_mae_over_28": 0.25338443809183675,
+        "cold_onset_error_with_miss_penalty_over_14": 0.40816326530612246,
+        "temperature_mae_over_3": 0.44413375828794016,
+        "humidity_mae_over_20": 0.34391080450835604,
+        "wind_mae_over_5": 0.2165640801846133,
+        "high_humidity_duration_mae_over_14": 0.1290007806401249
+      }
+    }
+  },
+  "input_provenance": {
+    "temperature": {
+      "sha256": "56d887828fca75a82a70981c847e765e74385e73314837b3f942ae83403fd054",
+      "decoder": "eccodes-2.49.0",
+      "manifest_sha256": "9627d26da72cbb754acdf1a5236540ecb61ebf664b8572b69c13d53dd0f02cc5"
+    },
+    "covariates": {
+      "sha256": "c9d79b4ff1cce1f0ecff356271e35bb1ad073732b1147e64f6cb7b698a4bb1fc",
+      "manifest_sha256": "c5bcf552f2c2b42c7963e0bdfa407427d76b5d0deb9ef998cb34a638a4247bd0",
+      "decoder": "eccodes"
+    },
+    "humidity": {
+      "sha256": "69b3f396d92ae125bb519871f902b08973533a1ff3dd828209dece60c4bfefe5",
+      "manifest_sha256": "19dd14b9769430e340383a64608cd347a6ddfddc0d73aaea2d8e6f5f0fc0ee9c",
+      "decoder": "eccodes"
+    },
+    "observations": {
+      "2022": {
+        "url": "https://data.meteostat.net/hourly/2022/34929.csv.gz",
+        "sha256": "316ccc650a1f2107a502b873c27e9950a291e20b01b96772a564c7489f87f595",
+        "retrieved_at_utc": "2026-10-12T09:56:24.738802+00:00",
+        "bytes": 72009,
+        "content_type": "application/x-gzip"
+      },
+      "2023": {
+        "url": "https://data.meteostat.net/hourly/2023/34929.csv.gz",
+        "sha256": "c302798573f4ae7e8553394b4ed5fe4551ca2ec4703aef3e6dd82edebaa2271f",
+        "retrieved_at_utc": "2026-10-12T09:56:26.032553+00:00",
+        "bytes": 76648,
+        "content_type": "application/x-gzip"
+      },
+      "2024": {
+        "url": "https://data.meteostat.net/hourly/2024/34929.csv.gz",
+        "sha256": "b5412a30c55c88e0850ea151cd5237bb68ccc1364142c79656fdd3fbf76a1e01",
+        "retrieved_at_utc": "2026-10-12T09:56:28.208852+00:00",
+        "bytes": 76330,
+        "content_type": "application/x-gzip"
+      }
+    },
+    "annual_wind_audit": {
+      "2022": {
+        "accepted": 8756,
+        "missing_or_excluded_source": 4
+      },
+      "2023": {
+        "accepted": 8756,
+        "missing_or_excluded_source": 4
+      },
+      "2024": {
+        "accepted": 8768,
+        "missing_or_excluded_source": 16
+      }
+    }
+  },
+  "training_audit": {
+    "gfs": {
+      "training_years": [
+        2022,
+        2023
+      ],
+      "last_training_time": "2023-06-01T05:00:00+00:00"
+    },
+    "previous_hourly": {
+      "training_years": [
+        2022,
+        2023
+      ],
+      "last_training_time": "2023-06-01T05:00:00+00:00"
+    },
+    "smooth_ridge_10": {
+      "training_years": [
+        2022,
+        2023
+      ],
+      "last_training_time": "2023-06-01T05:00:00+00:00"
+    },
+    "smooth_ridge_100": {
+      "training_years": [
+        2022,
+        2023
+      ],
+      "last_training_time": "2023-06-01T05:00:00+00:00"
+    },
+    "smooth_ridge_100_cold": {
+      "training_years": [
+        2022,
+        2023
+      ],
+      "last_training_time": "2023-06-01T05:00:00+00:00"
+    },
+    "analog_temperature_16": {
+      "training_years": [
+        2022,
+        2023
+      ],
+      "last_training_time": "2023-06-01T05:00:00+00:00",
+      "complete_library_nights": 183,
+      "excluded_joint_nights": 1
+    },
+    "analog_weather_8": {
+      "training_years": [
+        2022,
+        2023
+      ],
+      "last_training_time": "2023-06-01T05:00:00+00:00",
+      "complete_library_nights": 183,
+      "excluded_joint_nights": 1
+    },
+    "analog_weather_16": {
+      "training_years": [
+        2022,
+        2023
+      ],
+      "last_training_time": "2023-06-01T05:00:00+00:00",
+      "complete_library_nights": 183,
+      "excluded_joint_nights": 1
+    },
+    "analog_weather_32": {
+      "training_years": [
+        2022,
+        2023
+      ],
+      "last_training_time": "2023-06-01T05:00:00+00:00",
+      "complete_library_nights": 183,
+      "excluded_joint_nights": 1
+    }
+  },
+  "model_artifact_sha256": {
+    "gfs": "b89ab761db5264de9adaabab46fc63627f9cc57792792f212dd5131b91f38baa",
+    "previous_hourly": "6e8ed17fd4214217825a8de8f39587bd62bf592ddd60bc39ea5a379bf7e0c994",
+    "smooth_ridge_10": "3a21c9c0688541d326c0f1c8cb8b0d13132862f3195f5607699820292e662be5",
+    "smooth_ridge_100": "03ea2349da90b2bf7651dda4297b2177baf2e033f10c12ee54b00481cc817936",
+    "smooth_ridge_100_cold": "44d0538cc2cc4bade5d0ee07c33ca173b55fc6efb60666fd66747f90dfee1303",
+    "analog_temperature_16": "309fd705faf53a1eb0edaa0a782b10c76d0a3d879e8f0dd7fea2c9d7e5db7933",
+    "analog_weather_8": "8adc069837b9c37476f4e4ff571c7ad28beb18c6f2e03af7d321e1ea154c3565",
+    "analog_weather_16": "ed767c145fda4eb5c75a90b128f309e6678c28db4b12ded5e5a1224da560787c",
+    "analog_weather_32": "c1a37e81a4caa190bcc6001e776652edbb9a3720972bb817d5158d02dc834477"
+  },
+  "source_sha256": {
+    "scenario_study.py": "18bb9c576a9366d2201330522460a9085c2f0bfea010d8cbbcb553287c833eb2",
+    "hourly_study.py": "c8f6653ae3f64f11fdb13c42c25ecf625ccb2fe74f20800fce335c8180642c37",
+    "single_run.py": "9b199eb2790f6573e2343fe9ee1cead455fa4a79b81fa480901b861bcf25bac1",
+    "gfs_covariates.py": "c393ab3614cdc82c3f366f9328fed13f7bfeb8fb64ff10c3b9cae312d57a3025",
+    "model_study.py": "c21234dcca6ab7a5d1cd8fd10e0fcf28c58dabd31c033e13ed295c5ed2a70323"
+  }
+}

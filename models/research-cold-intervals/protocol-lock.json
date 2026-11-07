@@ -1,0 +1,87 @@
+{
+  "protocol": {
+    "schema_version": 1,
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      }
+    ],
+    "final_calibration_year": 2024,
+    "evaluation_years": [
+      2025,
+      2026
+    ],
+    "base_coverage": 0.9,
+    "minimum_pool_nights": 30,
+    "candidates": [
+      {
+        "name": "legacy_symmetric",
+        "mode": "legacy"
+      },
+      {
+        "name": "global_symmetric_95",
+        "mode": "symmetric",
+        "quantile": 0.95
+      },
+      {
+        "name": "risk_2_symmetric_95",
+        "mode": "symmetric",
+        "risk_threshold_c": 2.0,
+        "quantile": 0.95
+      },
+      {
+        "name": "risk_5_symmetric_95",
+        "mode": "symmetric",
+        "risk_threshold_c": 5.0,
+        "quantile": 0.95
+      },
+      {
+        "name": "risk_5_symmetric_975",
+        "mode": "symmetric",
+        "risk_threshold_c": 5.0,
+        "quantile": 0.975
+      },
+      {
+        "name": "risk_5_lower_95",
+        "mode": "lower",
+        "risk_threshold_c": 5.0,
+        "quantile": 0.95
+      },
+      {
+        "name": "risk_5_signed_95",
+        "mode": "signed",
+        "risk_threshold_c": 5.0,
+        "quantile": 0.95
+      }
+    ],
+    "risk_group": "min(point_minimum, GFS_minimum) <= threshold; forecast-only; never group by actual cold labels",
+    "selection": "lexicographic: pooled actual-cold uncovered rate, balanced mean90 interval score on cold/warm nights, overall width, registry order",
+    "validation": "whole-night leave-one-out calibration inside each prior-season validation fold; held night excluded from both global and risk pools; retrospective tuning diagnostics, not prospective or independent calibration coverage",
+    "fallback": "risk pool below30 or finite-sample rank beyond sample -> global pool for requested quantile; if global insufficient raise, never cap rank or fabricate width",
+    "nesting": "both bounds contain legacy90 interval; warm forecasts keep legacy bounds for risk candidates",
+    "point_model": "parent frozen huber_1 unchanged; same fixed family fitted on fold training years only for validation",
+    "detector": "parent event_duration_weather@0.25 unchanged, including every cold mask, onset and duration",
+    "uncertainty": "nominal base90, empirical conditional coverage only; selection uses prior calibration-year labels so no distribution-free coverage claim; dependent weather and sparse cold events",
+    "deployment": "station research only; field GFS unchanged, no orchard transfer",
+    "status": "fixed registry and criterion before this comparison on already-viewed2025/2026; evaluation years excluded from all selection/calibration"
+  },
+  "protocol_sha256": "5e52bdefb42d79425ec5dd9e9ae302f42f85f1bf8ffea042cec36cd124752752",
+  "source_sha256": {
+    "cold_interval.py": "5123f7591df1350abf12471d07a12c42ff3c87d52e41b8147365a795e8baad2b",
+    "cold_interval_study.py": "14711ed4114afd80ce7f8d4a823d5167abe0e42567f32844e66963bc6da446b8",
+    "minimum_model.py": "dee4e650d0cd1b390e748c4521c2aa70242a7128e52bb08fa7e18a6f10a0be7d",
+    "scenario_study.py": "0b94631ad28902154250308902996016ee3cdaa55f4e514e4482887a9427d627",
+    "frost_study.py": "0161683092e817a4ff943378ededf42c50dc31c5ecfb867a3b444046d6056ab1"
+  },
+  "saved_at_utc": "2026-10-13T18:01:49.165664+00:00"
+}

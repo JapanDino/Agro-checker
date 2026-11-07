@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "draft_not_approved_not_executed",
+  "document": "docs/field-validation/PROTOCOL.md",
+  "created_on": "2026-10-18",
+  "scope": {"landmark": [45.024106, 37.911914], "orchard_confirmed": false, "timezone": "Europe/Moscow", "crop": "apple", "validation_season": "spring", "planned_year": 2027, "start": null, "end": null, "site_profile_revision": null, "reference_sensor_id": null},
+  "models": {"baseline": "raw_gfs", "local_candidate": null, "candidate_sha256": null, "freeze_at": null, "old_krasnodar_detector_changed": false, "tune_using_2025_2026": false},
+  "truth": {"type": "shielded_air_near_2m", "registration_minutes": 5, "night_start_local": "19:00", "night_end_local": "09:00", "primary_hourly_points": 14, "nearest_match_minutes": 5, "minimum_complete_points": 14, "interpolate": false, "weather_event_strict_below_c": 0, "severe_miss_actual_minimum_lte_c": -1, "protection_must_be_confirmed_not_used": true, "secondary_frequent_series_separate": true},
+  "forecast_selection": {"rule": "latest_complete_issue_saved_before_night_start", "preferred_complete_by_local": "18:00", "cutoff_local_exclusive": "19:00", "single_gfs_run": true, "proposed_max_run_age_hours_at_issue": 18, "automatic_collection_enabled_by_this_plan": false},
+  "proposed_gates": {
+    "technical": {"scheduled_nights_min": 30, "timely_fresh_issue_fraction_min": 0.95, "complete_primary_truth_nights_fraction_min": 0.90, "frequent_samples_fraction_min": 0.95},
+    "descriptive_review": {"complete_nights_min": 60, "cold_nights_min": 10, "cold_groups_min": 3},
+    "human_preparation_support": {"complete_nights_min": 60, "cold_nights_min": 30, "cold_groups_min": 10, "minimum_mae_c_max": 1.0, "cold_minimum_mae_c_max": 1.5, "absolute_bias_c_max": 0.5, "recall_min": 0.90, "severe_misses_max": 0, "false_alarm_rate_warm_max": 0.05, "false_alarm_budget_per_30_nights": null, "required_lead_hours": null, "timely_preparation_fraction_min": 0.90},
+    "correction": {"minimum_mae_relative_improvement_min": 0.10, "cold_minimum_mae_relative_improvement_min": 0.10, "misses_increase_allowed": false, "false_alarms_increase_allowed_per_zone": false, "paired_block_interval_upper_mae_difference_max": 0},
+    "time_and_range": {"onset_mae_hours_max": 1, "duration_mae_hours_max": 1, "cold_coverage_min": 0.90, "cold_full_width_mean_c_max": 4, "cold_full_width_p90_c_max": 6}
+  },
+  "uncertainty_policy": "minimum_counts_are_not_sufficient_without_clustered_uncertainty_review",
+  "not_automatically_evaluated_by_field_report": ["frequent_sample_completeness", "timely_fresh_issue_SLA", "clustered_confidence_intervals", "frequent_series_frost_boundaries", "all_admission_gates"],
+  "automatic_equipment_control_allowed": false,
+  "approved_by": null,
+  "approved_at": null,
+  "observed_results": null
+}

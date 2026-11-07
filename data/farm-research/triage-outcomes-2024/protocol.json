@@ -1,0 +1,54 @@
+{
+  "created_at_utc": "2026-10-21T08:25:37.437187+00:00",
+  "inputs": {
+    "data/farm-research/spectral-triage/meta-oof.json": "db99f14d6995f59527360fc2b76b326a60afe953d618a21fd13fcd6175fe73b1",
+    "data/farm-research/spectral-triage/pool-2024.json": "e67e28ac79c969bf96a98a3b29dea1649c1b51a9559d898047a9566783c07a79",
+    "data/farm-research/spectral-triage/frozen-selection.json": "ee302fdc013d0409791f397a605aca0008bc3f5d29017edc6b9e762070cce1e2",
+    "data/farm-research/field-index-model/protocol.json": "b3a008c38f855b96cfcf34225f02b17777f9b747565e02c35191f5158bea136c",
+    "data/farm-research/field-index-model/observations.json": "47cb4eee276b67264d3bd488d1852f639280e7359a4911937b7c1dcff3179136",
+    "data/farm-research/field-index-model/satellite.json": "e0192caef87feeec399124fb4331f09ddbc031f6a1ab0f0de9bc4eafd63f427d",
+    "data/farm-research/triage-retention-2024/frozen-selection.json": "43e66e9d6589d46b55c33972d3427d068c9258b61c8c34feae4afdd64df37e33",
+    "data/farm-research/triage-retention-2024/candidate-comparison-2024.json": "d8197418a5d8dad50e8a616a5a3956ab7cbbfc082e503f32243b2d16302eb8b8",
+    "data/farm-research/triage-retention-2024/protocol.json": "7d27f153a6e0ef4250da84dabcf91974dd5d04030ec648498c1d632fdfe2eded",
+    "data/farm-research/reconstruction/approximate-areas.geojson": "6fcf4a180f2a8860ed8f09456389943296f2947b1b95b98a81d63cb2c75ae521",
+    "agro_checker/triage_retention.py": "784d5d87bfc9b2e2c17a0be5d545de39a1b91cc1f3472f083438fb92c573e3ca",
+    "agro_checker/spectral_triage.py": "fa830e70eed21da8ae93f3ad85eabe7b60ac3da5d67b4a5677123485f8d40dc6",
+    "agro_checker/triage_outcomes.py": "391197a9a6c4179441eb4ccac0c4736d1d587898bac12bc456927a4e461dd011",
+    "agro_checker/open_land_data.py": "33df094c80efb38d8eef10eae9194a7b72b239baa06e9160d5ab0b80f31fdc7e",
+    "agro_checker/farm_context_analysis.py": "6d392bc3fb5397b160607cfd0d06f873278602a44c0bb9c91f93a608a86172d4"
+  },
+  "bounds_utm": [
+    413020,
+    4979900,
+    422620,
+    4997140
+  ],
+  "bbox_wgs84": [
+    37.894050149650965,
+    44.967214109430984,
+    38.018751513961206,
+    45.123493969362215
+  ],
+  "collection": "sentinel-2-c1-l2a",
+  "start": "2024-06-07T00:00:00Z",
+  "end": "2024-11-03T23:59:59Z",
+  "hybrid": "protect_0.2_margin_0",
+  "budget_k": 3,
+  "fixed_parameters": {
+    "seed": 20241021
+  },
+  "frozen_choices": "Only existing699-row baseline, Extra and hybrid choices from candidate-comparison-2024.json. No scores/threshold/rank refit. No2025/2026 outcome analysis.",
+  "restored_month_boundary": "Known targets purged for monthly tuning can be used for evaluation AFTER the hybrid is frozen; never return them to training/selection.",
+  "additional_scenes": "Fresh complete same-collection catalogue2024. Read previously full-grid-rejected adjacent tiles per fragment. Same original grid; outside footprint remains nodata. No partial-field median or mosaic across acquisitions.",
+  "target": "For originally unavailable cases ONLY: same PB, nearest7days in6-8day window, ties earlier day; same-day highest core coverage, then latest acquisition, then ID. All original known and boundary-purged targets immutable.",
+  "quality": "Unchanged core>=10 cells/.8clear, same20m grid/reflectance offsets, SCL4/5 eroded3x3, positive finite bands, sun_elevation>=20. No interpolation, gap widening, cloud relaxation, Landsat or radar pseudo-label.",
+  "check": "Same133slots. Compare known counts, preserve ALL augmented baselineTP, paired missing-outcome bounds vs BOTH references, not only net observed FP. No model selection using recovered labels.",
+  "limitations": "Previously developed2024, correlated dates/fragments; extra evidence is not a new season or human inspection. Reprocessed bytes at historical issue time not proven.",
+  "sources": [
+    "https://earth-search.aws.element84.com/v1/collections/sentinel-2-c1-l2a",
+    "https://sentiwiki.copernicus.eu/web/s2-processing"
+  ],
+  "model_changed": false,
+  "human_visits_created": 0,
+  "production_promoted": false
+}

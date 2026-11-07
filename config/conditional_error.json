@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "final_calibration_year": 2024,
+  "evaluation_years": [2025, 2026],
+  "crossfit_blocks": 6,
+  "coverage": 0.9,
+  "minimum_calibration_nights": 30,
+  "scale_floor_c": 0.5,
+  "scale_ceiling_c": 9.0,
+  "warm_width_ratio_limit": 1.05,
+  "overall_width_ratio_limit": 1.05,
+  "candidates": [
+    {"name": "legacy_symmetric", "mode": "legacy"},
+    {"name": "risk_5_lower_95", "mode": "lower", "risk_threshold_c": 5.0, "quantile": 0.95},
+    {"name": "scale_ridge_10", "mode": "scale", "alpha": 10.0},
+    {"name": "scale_ridge_100", "mode": "scale", "alpha": 100.0},
+    {"name": "tails_ridge_10", "mode": "asymmetric", "alpha": 10.0},
+    {"name": "tails_ridge_100", "mode": "asymmetric", "alpha": 100.0},
+    {"name": "quantile_linear_005", "mode": "quantile", "alpha": 0.05},
+    {"name": "quantile_linear_02", "mode": "quantile", "alpha": 0.2},
+    {"name": "quantile_trees", "mode": "trees", "estimators": 100, "depth": 2, "minimum_leaf": 20, "learning_rate": 0.05, "seed": 20261013}
+  ],
+  "selection": "eligible: coverage >= legacy, warm width <= 1.05*legacy, overall width <= 1.05*previous risk envelope; lexicographic cold uncovered rate, balanced cold/warm interval score90, overall width, registry order; legacy fallback if no eligible candidate",
+  "residual_training": "six contiguous whole-night blocks within prior training years; point fit excludes held block; all residual-head fit dates precede validation year; forecast-only 15 minimum_model features",
+  "calibration": "held validation season leave-one-night-out score calibration; final 2024; retrospective diagnostics, not prospective or independent coverage; nonnegative CQR correction",
+  "point_and_detector": "frozen huber_1 and event_duration_weather@0.25, all point values, cold masks and timing unchanged",
+  "uncertainty": "empirical station coverage; dependent weather, only seven prior-validation cold nights; no conditional guarantee",
+  "deployment": "station research only; unknown orchard and field GFS unchanged",
+  "status": "fixed registry and gates before new control evaluation; 2025/2026 previously viewed, never used for fitting, selection or calibration"
+}

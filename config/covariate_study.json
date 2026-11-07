@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source_config": "single_run.json",
+  "base_model_protocol": "model_study.json",
+  "field_keys": ["u10", "v10", "dewpoint", "cloud"],
+  "field_step_type": "instant",
+  "feature_groups": ["temperature", "temperature_wind", "temperature_dewpoint", "temperature_cloud", "temperature_all"],
+  "algorithms": ["ridge", "catboost"],
+  "baselines": ["identity", "night_min_median", "lead_hour_median"],
+  "selection_metric": "pooled_validation_night_min_mae",
+  "weather_threshold_c": 0.0,
+  "missing_policy": "complete_nights_all_fields_no_imputation",
+  "status": "fixed_before_covariate_model_evaluation; historical 2025 already seen, excluded from selection",
+  "features": {
+    "wind": ["wind_mean_ms", "wind_min_ms", "wind_at_gfs_min_ms"],
+    "dewpoint": ["dewpoint_mean_c", "dewpoint_min_c", "dewpoint_at_gfs_min_c", "dewpoint_spread_mean_c", "dewpoint_spread_at_gfs_min_c"],
+    "cloud": ["cloud_mean_pct", "cloud_min_pct", "cloud_at_gfs_min_pct"]
+  },
+  "frost_assessment": "strict prediction <0, actual <0; report hits/misses/false alarms and consecutive cold sequences; no threshold tuning",
+  "freeze_rule": "evaluate all 2023/2024 folds and persist selection plus protocol/input/model hashes before evaluating 2025"
+}

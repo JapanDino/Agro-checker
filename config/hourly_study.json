@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "source_config": "single_run.json",
+  "base_model_protocol": "model_study.json",
+  "temperature_candidates": ["identity", "lead_hour_median", "ridge_temperature", "ridge_weather", "catboost_weather"],
+  "humidity_candidates": ["identity", "lead_hour_median", "ridge_weather", "catboost_weather"],
+  "temperature_selection": "pooled_validation_hourly_mae_c",
+  "humidity_selection": "pooled_validation_hourly_mae_percentage_points",
+  "humidity_forecast_bounds_pct": [0.0, 100.0],
+  "humidity_input_valid_range_pct": [0.0, 110.0],
+  "weather_threshold_c": 0.0,
+  "observation_sources": ["isd_lite", "metar"],
+  "missing_policy": "fit_and_hourly_score_per_available_target; frost_score_requires_14_temperature_targets; no_imputation",
+  "frost_time_definition": "14 hourly samples mapped to following one-hour bins in 19:00–09:00 window; first cold sample and cold-bin count; no sub-hour interpolation",
+  "frost_onset_score": "conditional_on_hits; report first_sample_mae_and_interior_uncensored_mae_with_denominators; misses_and_false_alarms_separately",
+  "frost_duration_score": "cold_bin_count_mae_all_complete_nights_and_observed_cold_nights_including_misses",
+  "features": "gfs_temperature, gfs_rh, dewpoint, wind_speed, total_cloud, local_profile_summaries, calendar, lead_indicators; no measured features or corrected-temperature cascade",
+  "status": "fixed_before_hourly_model_evaluation; 2025 previously viewed historical control, excluded from all fitting/selection",
+  "report_examples": ["2025-03-02", "2025-03-07", "2025-03-20", "2025-03-04"]
+}

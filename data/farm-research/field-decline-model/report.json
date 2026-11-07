@@ -1,0 +1,362 @@
+{
+  "created_at_utc": "2026-10-19T18:57:25.643625+00:00",
+  "status": "research_only",
+  "protocol_sha256": "a12ffced913cebc89ad8655f6cdfe25308b0c63a30d29ba0adfde3c61c94c5c4",
+  "frozen_sha256": "2da7d315bdb334ee7ede424a27fa25d90fa4c11fda12ca874a625a7c800fd686",
+  "selected": [
+    {
+      "index": "ndvi",
+      "candidate": "history_pixels_d3_w1",
+      "gate": "joint_momentum",
+      "threshold": 0.7,
+      "oof_metrics": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 41,
+        "tn": 230,
+        "recall": 0.06818181818181818,
+        "precision": 1.0,
+        "date_balanced_recall": 0.035609236013982144,
+        "tp_dates": 2,
+        "fp_dates": 0,
+        "event_dates": 11,
+        "pairs": 274,
+        "dates": 25,
+        "brier": 0.14800442951227324
+      },
+      "enabled": true
+    },
+    {
+      "index": "ndmi",
+      "candidate": null,
+      "threshold": null,
+      "enabled": false,
+      "reason": "No candidate catches >=2 events on >=2 dates with zero OOF false positives; retain old detector"
+    }
+  ],
+  "results": {
+    "spatial2024": {
+      "ndvi": {
+        "old": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 10,
+          "tn": 74,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 5,
+          "pairs": 84,
+          "dates": 26
+        },
+        "new": {
+          "tp": 6,
+          "fp": 0,
+          "fn": 4,
+          "tn": 74,
+          "recall": 0.6,
+          "precision": 1.0,
+          "date_balanced_recall": 0.6065573770491802,
+          "tp_dates": 4,
+          "fp_dates": 0,
+          "event_dates": 5,
+          "pairs": 84,
+          "dates": 26,
+          "brier": 0.03495771485568874
+        },
+        "no_fp_growth": true,
+        "no_fp_date_growth": true,
+        "tp_gain": 6
+      },
+      "ndmi": {
+        "old": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 11,
+          "tn": 73,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 6,
+          "pairs": 84,
+          "dates": 26
+        },
+        "new": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 11,
+          "tn": 73,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 6,
+          "pairs": 84,
+          "dates": 26
+        },
+        "no_fp_growth": true,
+        "no_fp_date_growth": true,
+        "tp_gain": 0
+      }
+    },
+    "all2026": {
+      "ndvi": {
+        "old": {
+          "tp": 0,
+          "fp": 3,
+          "fn": 50,
+          "tn": 446,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 3,
+          "event_dates": 18,
+          "pairs": 499,
+          "dates": 27
+        },
+        "new": {
+          "tp": 10,
+          "fp": 12,
+          "fn": 40,
+          "tn": 437,
+          "recall": 0.2,
+          "precision": 0.45454545454545453,
+          "date_balanced_recall": 0.17138224442261277,
+          "tp_dates": 6,
+          "fp_dates": 8,
+          "event_dates": 18,
+          "pairs": 499,
+          "dates": 27,
+          "brier": 0.09811535452739584
+        },
+        "no_fp_growth": false,
+        "no_fp_date_growth": false,
+        "tp_gain": 10
+      },
+      "ndmi": {
+        "old": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 42,
+          "tn": 455,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 2,
+          "event_dates": 16,
+          "pairs": 499,
+          "dates": 27
+        },
+        "new": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 42,
+          "tn": 455,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 2,
+          "event_dates": 16,
+          "pairs": 499,
+          "dates": 27
+        },
+        "no_fp_growth": true,
+        "no_fp_date_growth": true,
+        "tp_gain": 0
+      }
+    },
+    "temporal2026": {
+      "ndvi": {
+        "old": {
+          "tp": 0,
+          "fp": 3,
+          "fn": 32,
+          "tn": 362,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 3,
+          "event_dates": 16,
+          "pairs": 397,
+          "dates": 26
+        },
+        "new": {
+          "tp": 4,
+          "fp": 11,
+          "fn": 28,
+          "tn": 354,
+          "recall": 0.125,
+          "precision": 0.26666666666666666,
+          "date_balanced_recall": 0.09956538917423943,
+          "tp_dates": 4,
+          "fp_dates": 8,
+          "event_dates": 16,
+          "pairs": 397,
+          "dates": 26,
+          "brier": 0.10753424854822412
+        },
+        "no_fp_growth": false,
+        "no_fp_date_growth": false,
+        "tp_gain": 4
+      },
+      "ndmi": {
+        "old": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 27,
+          "tn": 368,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 2,
+          "event_dates": 15,
+          "pairs": 397,
+          "dates": 26
+        },
+        "new": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 27,
+          "tn": 368,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 2,
+          "event_dates": 15,
+          "pairs": 397,
+          "dates": 26
+        },
+        "no_fp_growth": true,
+        "no_fp_date_growth": true,
+        "tp_gain": 0
+      }
+    },
+    "spatial2026": {
+      "ndvi": {
+        "old": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 18,
+          "tn": 84,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24
+        },
+        "new": {
+          "tp": 6,
+          "fp": 1,
+          "fn": 12,
+          "tn": 83,
+          "recall": 0.3333333333333333,
+          "precision": 0.8571428571428571,
+          "date_balanced_recall": 0.30769230769230765,
+          "tp_dates": 4,
+          "fp_dates": 1,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24,
+          "brier": 0.08714788208457377
+        },
+        "no_fp_growth": false,
+        "no_fp_date_growth": false,
+        "tp_gain": 6
+      },
+      "ndmi": {
+        "old": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 15,
+          "tn": 87,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24
+        },
+        "new": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 15,
+          "tn": 87,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24
+        },
+        "no_fp_growth": true,
+        "no_fp_date_growth": true,
+        "tp_gain": 0
+      }
+    }
+  },
+  "prior_files_verified_unchanged": 1744,
+  "outcome": "rejected_false_alarm_growth",
+  "failed_test_constraints": [
+    "ndvi"
+  ],
+  "production_promoted": false,
+  "evaluation_code_sha256": "a14767497006170051af8279e4ef423e3c4e038a4bc630867785a45987223f3a",
+  "diagnosis": {
+    "ndvi": {
+      "pairs": 489,
+      "events": 66,
+      "event_dates": 18,
+      "initial_fit_events": 0,
+      "predicted_delta_min": -0.08261173954248802,
+      "predicted_delta_max": 0.0182175947948984,
+      "events_with_prior_weekly_decline_005": 49,
+      "common_support_auditable_events": 66,
+      "events_still_declines_on_common_support": 66,
+      "boundary_complete_events": 59,
+      "events_declining_in_all_11_scenarios": 51,
+      "primary_event_median_delta": -0.17247946560382843
+    },
+    "ndmi": {
+      "pairs": 489,
+      "events": 63,
+      "event_dates": 21,
+      "initial_fit_events": 4,
+      "predicted_delta_min": -0.05520433634359142,
+      "predicted_delta_max": 0.03325387644680413,
+      "events_with_prior_weekly_decline_005": 44,
+      "common_support_auditable_events": 63,
+      "events_still_declines_on_common_support": 61,
+      "boundary_complete_events": 55,
+      "events_declining_in_all_11_scenarios": 50,
+      "primary_event_median_delta": -0.15275830030441284
+    }
+  },
+  "no_operational_changes": true,
+  "limitations": [
+    "2026 already seen in previous work; this evaluation cannot be called pristine blind.",
+    "2024 OOF predictions are used for selection, not final independent quality estimates.",
+    "Zero 2024 false alarms is a constraint, not a guarantee for 2026 or a future season.",
+    "No crop/harvest/treatment truth; index declines are not disease or soil moisture labels.",
+    "Only existing clear-sky 6-8-day pairs scored; availability/latency not validated live.",
+    "Nearby fragments and scenes are correlated; five held-out fragments are not an external farm.",
+    "Event score is not a calibrated probability. Original point forecast remains unchanged."
+  ]
+}

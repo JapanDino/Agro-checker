@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "station_id": "37002",
+  "station_latitude": 44.9109,
+  "station_longitude": 38.0053,
+  "development_years": [2022, 2023, 2024],
+  "validation_years": [2023, 2024],
+  "run_hour_utc": 6,
+  "scenario_issue_hour_utc": 15,
+  "observation_hours_utc": [18, 21, 0, 3],
+  "forecast_leads": [12, 15, 18, 21],
+  "target": "2m air temperature at exact archived observation time; not continuous night minimum",
+  "candidates": ["gfs", "bias", "slot_bias", "ridge_temperature_10", "ridge_weather_10", "ridge_weather_100", "ridge_weather_1000"],
+  "selection": "Expanding-year validation: train2022->2023; train2022-2023->2024. Equal-year MAE; candidate requires >=5% reduction in both years, cold-slot MAE no worse in either year, and no additional false-cold complete sampled nights in either year. Otherwise retain GFS. Ties by registry order.",
+  "cold_threshold_c": 0,
+  "bootstrap": {"unit": "7-night calendar blocks within each validation year", "replicates": 2000, "seed": 37002},
+  "controls": "2025-2026 targets forbidden in preparation, fit and selection; no controls downloaded by this experiment",
+  "production_admission": false,
+  "detector": "Existing detector, probability, threshold, mask, timing and routing unchanged. Zero-crossings below are temperature diagnostics only."
+}

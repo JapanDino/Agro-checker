@@ -1,0 +1,983 @@
+{
+  "created_at_utc": "2026-10-19T18:29:37.817399+00:00",
+  "status": "research_only",
+  "task": "core median NDVI/NDMI on nearest available clear acquisition 6-8 days after issue; one record per UTC day",
+  "case_alignment": "inspect unexpected spectral changes before considering a protection decision; no inferred disease/pest or pesticide need",
+  "selected": "temporal_ridge_100",
+  "selection_scores": [
+    {
+      "name": "persistence",
+      "selection": {
+        "pairs": 132,
+        "dates": 14,
+        "fragments": 21,
+        "first_issue": "2024-06-01",
+        "last_target": "2024-07-21",
+        "mae": 0.08478497374030738,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.09688404575180083,
+            "rmse": 0.12672076618293343,
+            "bias": 0.035828009702279145,
+            "observed_declines": 33,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 33,
+              "tn": 99
+            }
+          },
+          "ndmi": {
+            "mae": 0.07268590172881395,
+            "rmse": 0.09064677171631932,
+            "bias": 0.009339177718679226,
+            "observed_declines": 28,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 28,
+              "tn": 104
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "linear_trend",
+      "selection": {
+        "pairs": 132,
+        "dates": 14,
+        "fragments": 21,
+        "first_issue": "2024-06-01",
+        "last_target": "2024-07-21",
+        "mae": 0.09766702411159528,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.11868234490628211,
+            "rmse": 0.14735851764075694,
+            "bias": 0.002378165452311911,
+            "observed_declines": 33,
+            "decline_proxy_confusion": {
+              "tp": 19,
+              "fp": 19,
+              "fn": 14,
+              "tn": 80
+            }
+          },
+          "ndmi": {
+            "mae": 0.07665170331690843,
+            "rmse": 0.09646502336410089,
+            "bias": -0.0036255539437338273,
+            "observed_declines": 28,
+            "decline_proxy_confusion": {
+              "tp": 20,
+              "fp": 14,
+              "fn": 8,
+              "tn": 90
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "temporal_ridge_1",
+      "selection": {
+        "pairs": 132,
+        "dates": 14,
+        "fragments": 21,
+        "first_issue": "2024-06-01",
+        "last_target": "2024-07-21",
+        "mae": 0.11310366054705612,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.08986396861996747,
+            "rmse": 0.11523055161121826,
+            "bias": -0.010398021060029433,
+            "observed_declines": 33,
+            "decline_proxy_confusion": {
+              "tp": 3,
+              "fp": 1,
+              "fn": 30,
+              "tn": 98
+            }
+          },
+          "ndmi": {
+            "mae": 0.1363433524741448,
+            "rmse": 0.15338400682487713,
+            "bias": -0.12840318724797048,
+            "observed_declines": 28,
+            "decline_proxy_confusion": {
+              "tp": 23,
+              "fp": 71,
+              "fn": 5,
+              "tn": 33
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "temporal_ridge_10",
+      "selection": {
+        "pairs": 132,
+        "dates": 14,
+        "fragments": 21,
+        "first_issue": "2024-06-01",
+        "last_target": "2024-07-21",
+        "mae": 0.09012252041324935,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.08919241712409226,
+            "rmse": 0.11514799396674905,
+            "bias": 0.0014953468463517266,
+            "observed_declines": 33,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 33,
+              "tn": 99
+            }
+          },
+          "ndmi": {
+            "mae": 0.09105262370240647,
+            "rmse": 0.10731364815649128,
+            "bias": -0.07115557384466785,
+            "observed_declines": 28,
+            "decline_proxy_confusion": {
+              "tp": 7,
+              "fp": 19,
+              "fn": 21,
+              "tn": 85
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "temporal_ridge_100",
+      "selection": {
+        "pairs": 132,
+        "dates": 14,
+        "fragments": 21,
+        "first_issue": "2024-06-01",
+        "last_target": "2024-07-21",
+        "mae": 0.08167272964662065,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.09408171966452762,
+            "rmse": 0.12346467945317045,
+            "bias": 0.030413351545931434,
+            "observed_declines": 33,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 33,
+              "tn": 99
+            }
+          },
+          "ndmi": {
+            "mae": 0.06926373962871364,
+            "rmse": 0.08635165058117747,
+            "bias": -0.0005349755764598987,
+            "observed_declines": 28,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 28,
+              "tn": 104
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "terrain_ridge_1",
+      "selection": {
+        "pairs": 132,
+        "dates": 14,
+        "fragments": 21,
+        "first_issue": "2024-06-01",
+        "last_target": "2024-07-21",
+        "mae": 0.11345764828457465,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.09011959384760586,
+            "rmse": 0.1154982026001701,
+            "bias": -0.008882670454727662,
+            "observed_declines": 33,
+            "decline_proxy_confusion": {
+              "tp": 2,
+              "fp": 1,
+              "fn": 31,
+              "tn": 98
+            }
+          },
+          "ndmi": {
+            "mae": 0.13679570272154346,
+            "rmse": 0.15376797623091065,
+            "bias": -0.1286414943092588,
+            "observed_declines": 28,
+            "decline_proxy_confusion": {
+              "tp": 22,
+              "fp": 72,
+              "fn": 6,
+              "tn": 32
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "terrain_ridge_10",
+      "selection": {
+        "pairs": 132,
+        "dates": 14,
+        "fragments": 21,
+        "first_issue": "2024-06-01",
+        "last_target": "2024-07-21",
+        "mae": 0.09021216996671068,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.08946009278994141,
+            "rmse": 0.11544888561897862,
+            "bias": 0.0020007207833259723,
+            "observed_declines": 33,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 33,
+              "tn": 99
+            }
+          },
+          "ndmi": {
+            "mae": 0.09096424714347993,
+            "rmse": 0.10722687095527411,
+            "bias": -0.07063924624566682,
+            "observed_declines": 28,
+            "decline_proxy_confusion": {
+              "tp": 7,
+              "fp": 18,
+              "fn": 21,
+              "tn": 86
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "terrain_ridge_100",
+      "selection": {
+        "pairs": 132,
+        "dates": 14,
+        "fragments": 21,
+        "first_issue": "2024-06-01",
+        "last_target": "2024-07-21",
+        "mae": 0.08174122666667356,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.09414782928952287,
+            "rmse": 0.12352440065155863,
+            "bias": 0.030466554591503985,
+            "observed_declines": 33,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 33,
+              "tn": 99
+            }
+          },
+          "ndmi": {
+            "mae": 0.06933462404382428,
+            "rmse": 0.08643161010213479,
+            "bias": -0.0004462009419373484,
+            "observed_declines": 28,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 28,
+              "tn": 104
+            }
+          }
+        }
+      }
+    }
+  ],
+  "split_counts": {
+    "train": {
+      "pairs": 85,
+      "dates": 7,
+      "fragments": 19
+    },
+    "selection": {
+      "pairs": 132,
+      "dates": 14,
+      "fragments": 21
+    },
+    "calibration": {
+      "pairs": 236,
+      "dates": 16,
+      "fragments": 21
+    },
+    "spatial2024": {
+      "pairs": 84,
+      "dates": 26,
+      "fragments": 5
+    },
+    "temporal2026": {
+      "pairs": 397,
+      "dates": 26,
+      "fragments": 21
+    },
+    "spatial2026": {
+      "pairs": 102,
+      "dates": 24,
+      "fragments": 5
+    }
+  },
+  "source_scene_counts": {
+    "2024": 98,
+    "2026": 55
+  },
+  "core_cells": {
+    "R01": 3517,
+    "R02": 13170,
+    "R03": 527,
+    "R04": 431,
+    "R05": 318,
+    "R06": 1809,
+    "R07": 4008,
+    "R08": 2903,
+    "R09": 1184,
+    "R10": 3148,
+    "R11": 1087,
+    "R12": 246,
+    "R13": 777,
+    "R14": 1848,
+    "R15": 532,
+    "R16": 410,
+    "R17": 1645,
+    "R18": 2,
+    "R19": 1541,
+    "R20": 2297,
+    "R21": 2087,
+    "R22": 897,
+    "R23": 4844,
+    "R24": 1167,
+    "R25": 1623,
+    "R26": 242,
+    "R27": 1458
+  },
+  "unsupported_cores": [
+    "R18"
+  ],
+  "spatial_holdout": [
+    "R27",
+    "R26",
+    "R25",
+    "R24",
+    "R23"
+  ],
+  "interval": {
+    "nominal_coverage": 0.9,
+    "calibration_pairs": 236,
+    "calibration_dates": 16,
+    "rank": 16,
+    "radius": [
+      0.1815248052451191,
+      0.23623023744452326
+    ],
+    "method": "maximum per issue date across non-holdout fragments; separate index radii; NOT joint coverage or a temporal guarantee"
+  },
+  "evaluation": {
+    "calibration": {
+      "selected": {
+        "pairs": 236,
+        "dates": 16,
+        "fragments": 21,
+        "first_issue": "2024-08-02",
+        "last_target": "2024-10-14",
+        "mae": 0.03541726131433125,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.03292028128296555,
+            "rmse": 0.0458538423209859,
+            "bias": -0.0020431024960410856,
+            "observed_declines": 20,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 20,
+              "tn": 216
+            },
+            "coverage": 1.0,
+            "mean_width": 0.3629864665218433
+          },
+          "ndmi": {
+            "mae": 0.03791424134569693,
+            "rmse": 0.0552163711268407,
+            "bias": 0.017782775907447118,
+            "observed_declines": 15,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 15,
+              "tn": 221
+            },
+            "coverage": 1.0,
+            "mean_width": 0.4724604748890465
+          }
+        }
+      },
+      "persistence": {
+        "pairs": 236,
+        "dates": 16,
+        "fragments": 21,
+        "first_issue": "2024-08-02",
+        "last_target": "2024-10-14",
+        "mae": 0.03609589597291403,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.03409392701096403,
+            "rmse": 0.0540179061559973,
+            "bias": 0.019870215034966048,
+            "observed_declines": 20,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 20,
+              "tn": 216
+            },
+            "coverage": 1.0,
+            "mean_width": 0.444990845244048
+          },
+          "ndmi": {
+            "mae": 0.03809786493486403,
+            "rmse": 0.05557142965780489,
+            "bias": 0.018886170659784655,
+            "observed_declines": 15,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 15,
+              "tn": 221
+            },
+            "coverage": 1.0,
+            "mean_width": 0.423453152179718
+          }
+        }
+      },
+      "linear_trend": {
+        "pairs": 236,
+        "dates": 16,
+        "fragments": 21,
+        "first_issue": "2024-08-02",
+        "last_target": "2024-10-14",
+        "mae": 0.0683362835392082,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.05133258508152223,
+            "rmse": 0.07481124882692315,
+            "bias": 0.003299398216589168,
+            "observed_declines": 20,
+            "decline_proxy_confusion": {
+              "tp": 10,
+              "fp": 12,
+              "fn": 10,
+              "tn": 204
+            }
+          },
+          "ndmi": {
+            "mae": 0.08533998199689419,
+            "rmse": 0.14107959467835188,
+            "bias": 0.01887295050376561,
+            "observed_declines": 15,
+            "decline_proxy_confusion": {
+              "tp": 4,
+              "fp": 28,
+              "fn": 11,
+              "tn": 193
+            }
+          }
+        }
+      }
+    },
+    "spatial2024": {
+      "selected": {
+        "pairs": 84,
+        "dates": 26,
+        "fragments": 5,
+        "first_issue": "2024-03-30",
+        "last_target": "2024-10-14",
+        "mae": 0.052797190740562265,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.05262611974255107,
+            "rmse": 0.07950966791903456,
+            "bias": 0.0018815210675982876,
+            "observed_declines": 10,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 10,
+              "tn": 74
+            },
+            "coverage": 0.9346153846153846,
+            "mean_width": 0.36086766987652313
+          },
+          "ndmi": {
+            "mae": 0.052968261738573434,
+            "rmse": 0.07387016553775794,
+            "bias": 0.011233693088636478,
+            "observed_declines": 11,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 11,
+              "tn": 73
+            },
+            "coverage": 0.9807692307692307,
+            "mean_width": 0.4724604748890466
+          }
+        }
+      },
+      "persistence": {
+        "pairs": 84,
+        "dates": 26,
+        "fragments": 5,
+        "first_issue": "2024-03-30",
+        "last_target": "2024-10-14",
+        "mae": 0.05966181488967357,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.06082804361119484,
+            "rmse": 0.08991879996998155,
+            "bias": 0.02428926670302948,
+            "observed_declines": 10,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 10,
+              "tn": 74
+            },
+            "coverage": 0.926923076923077,
+            "mean_width": 0.4378581882669375
+          },
+          "ndmi": {
+            "mae": 0.05849558616815231,
+            "rmse": 0.08114950241204812,
+            "bias": 0.013221846915817318,
+            "observed_declines": 11,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 11,
+              "tn": 73
+            },
+            "coverage": 0.9807692307692307,
+            "mean_width": 0.4234531521797181
+          }
+        }
+      },
+      "linear_trend": {
+        "pairs": 84,
+        "dates": 26,
+        "fragments": 5,
+        "first_issue": "2024-03-30",
+        "last_target": "2024-10-14",
+        "mae": 0.07013673629081779,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.06877187854953891,
+            "rmse": 0.10769706651493474,
+            "bias": 0.008432304990244572,
+            "observed_declines": 10,
+            "decline_proxy_confusion": {
+              "tp": 6,
+              "fp": 5,
+              "fn": 4,
+              "tn": 69
+            }
+          },
+          "ndmi": {
+            "mae": 0.07150159403209666,
+            "rmse": 0.09314440706182989,
+            "bias": -0.005096037562631613,
+            "observed_declines": 11,
+            "decline_proxy_confusion": {
+              "tp": 5,
+              "fp": 7,
+              "fn": 6,
+              "tn": 66
+            }
+          }
+        }
+      }
+    },
+    "temporal2026": {
+      "selected": {
+        "pairs": 397,
+        "dates": 26,
+        "fragments": 21,
+        "first_issue": "2026-07-31",
+        "last_target": "2026-10-19",
+        "mae": 0.04602013351418043,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.04781381755927047,
+            "rmse": 0.07082240582013596,
+            "bias": -0.01113289428359862,
+            "observed_declines": 32,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 3,
+              "fn": 32,
+              "tn": 362
+            },
+            "coverage": 0.9799145299145299,
+            "mean_width": 0.3622686716435066
+          },
+          "ndmi": {
+            "mae": 0.04422644946909039,
+            "rmse": 0.06818067520727036,
+            "bias": 0.002760263918091297,
+            "observed_declines": 27,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 2,
+              "fn": 27,
+              "tn": 368
+            },
+            "coverage": 0.9878205128205129,
+            "mean_width": 0.4724604748890465
+          }
+        }
+      },
+      "persistence": {
+        "pairs": 397,
+        "dates": 26,
+        "fragments": 21,
+        "first_issue": "2026-07-31",
+        "last_target": "2026-10-19",
+        "mae": 0.04245985042990548,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.0429376495245876,
+            "rmse": 0.0708402254301668,
+            "bias": 0.014669771941312757,
+            "observed_declines": 32,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 32,
+              "tn": 365
+            },
+            "coverage": 0.9799145299145299,
+            "mean_width": 0.4435043948487593
+          },
+          "ndmi": {
+            "mae": 0.04198205133522336,
+            "rmse": 0.06600755479891973,
+            "bias": 0.006842655402874948,
+            "observed_declines": 27,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 27,
+              "tn": 370
+            },
+            "coverage": 0.9878205128205129,
+            "mean_width": 0.423453152179718
+          }
+        }
+      },
+      "linear_trend": {
+        "pairs": 397,
+        "dates": 26,
+        "fragments": 21,
+        "first_issue": "2026-07-31",
+        "last_target": "2026-10-19",
+        "mae": 0.08496179242553008,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.07887436720734028,
+            "rmse": 0.13190967878676316,
+            "bias": -0.008317294349961398,
+            "observed_declines": 32,
+            "decline_proxy_confusion": {
+              "tp": 10,
+              "fp": 41,
+              "fn": 22,
+              "tn": 324
+            }
+          },
+          "ndmi": {
+            "mae": 0.09104921764371987,
+            "rmse": 0.14386134233032083,
+            "bias": -0.015178723593018377,
+            "observed_declines": 27,
+            "decline_proxy_confusion": {
+              "tp": 3,
+              "fp": 44,
+              "fn": 24,
+              "tn": 326
+            }
+          }
+        }
+      }
+    },
+    "spatial2026": {
+      "selected": {
+        "pairs": 102,
+        "dates": 24,
+        "fragments": 5,
+        "first_issue": "2026-07-28",
+        "last_target": "2026-10-14",
+        "mae": 0.05040157931381248,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.048240167051542444,
+            "rmse": 0.0757798024407652,
+            "bias": 0.01803769234328726,
+            "observed_declines": 18,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 18,
+              "tn": 84
+            },
+            "coverage": 0.9500000000000001,
+            "mean_width": 0.3628675992054223
+          },
+          "ndmi": {
+            "mae": 0.052562991576082525,
+            "rmse": 0.08495831363905816,
+            "bias": 0.028322263263956707,
+            "observed_declines": 15,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 15,
+              "tn": 87
+            },
+            "coverage": 0.9583333333333334,
+            "mean_width": 0.4724604748890467
+          }
+        }
+      },
+      "persistence": {
+        "pairs": 102,
+        "dates": 24,
+        "fragments": 5,
+        "first_issue": "2026-07-28",
+        "last_target": "2026-10-14",
+        "mae": 0.05657854271121324,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.05776571482419968,
+            "rmse": 0.0901438802376253,
+            "bias": 0.04655136372894049,
+            "observed_declines": 18,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 18,
+              "tn": 84
+            },
+            "coverage": 0.9416666666666668,
+            "mean_width": 0.43870543787876765
+          },
+          "ndmi": {
+            "mae": 0.05539137059822679,
+            "rmse": 0.09013107557114433,
+            "bias": 0.0345866302959621,
+            "observed_declines": 15,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 15,
+              "tn": 87
+            },
+            "coverage": 0.9416666666666668,
+            "mean_width": 0.4234531521797181
+          }
+        }
+      },
+      "linear_trend": {
+        "pairs": 102,
+        "dates": 24,
+        "fragments": 5,
+        "first_issue": "2026-07-28",
+        "last_target": "2026-10-14",
+        "mae": 0.07912854901489079,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.076265885202835,
+            "rmse": 0.11617836444025852,
+            "bias": 0.009450313753137986,
+            "observed_declines": 18,
+            "decline_proxy_confusion": {
+              "tp": 8,
+              "fp": 10,
+              "fn": 10,
+              "tn": 74
+            }
+          },
+          "ndmi": {
+            "mae": 0.08199121282694655,
+            "rmse": 0.12210908971397215,
+            "bias": 0.005286353181323242,
+            "observed_declines": 15,
+            "decline_proxy_confusion": {
+              "tp": 6,
+              "fp": 12,
+              "fn": 9,
+              "tn": 75
+            }
+          }
+        }
+      }
+    },
+    "all2026": {
+      "selected": {
+        "pairs": 499,
+        "dates": 27,
+        "fragments": 26,
+        "first_issue": "2026-07-28",
+        "last_target": "2026-10-19",
+        "mae": 0.045291493071180786,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.04603806036469104,
+            "rmse": 0.0695557653940422,
+            "bias": -0.005817646967654435,
+            "observed_declines": 50,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 3,
+              "fn": 50,
+              "tn": 446
+            },
+            "coverage": 0.9761271137059714,
+            "mean_width": 0.3623267181248983
+          },
+          "ndmi": {
+            "mae": 0.04454492577767054,
+            "rmse": 0.06972950673887793,
+            "bias": 0.0074541573679329735,
+            "observed_declines": 42,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 2,
+              "fn": 42,
+              "tn": 455
+            },
+            "coverage": 0.9833715386315558,
+            "mean_width": 0.4724604748890466
+          }
+        }
+      },
+      "persistence": {
+        "pairs": 499,
+        "dates": 27,
+        "fragments": 26,
+        "first_issue": "2026-07-28",
+        "last_target": "2026-10-19",
+        "mae": 0.04360347871928126,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.04412610735164123,
+            "rmse": 0.07278858293243587,
+            "bias": 0.0204848477183976,
+            "observed_declines": 50,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 50,
+              "tn": 449
+            },
+            "coverage": 0.9746456322244899,
+            "mean_width": 0.4408768788856713
+          },
+          "ndmi": {
+            "mae": 0.04308085008692128,
+            "rmse": 0.06921217792293041,
+            "bias": 0.01178607128792886,
+            "observed_declines": 42,
+            "decline_proxy_confusion": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 42,
+              "tn": 457
+            },
+            "coverage": 0.9804085756685929,
+            "mean_width": 0.423453152179718
+          }
+        }
+      },
+      "linear_trend": {
+        "pairs": 499,
+        "dates": 27,
+        "fragments": 26,
+        "first_issue": "2026-07-28",
+        "last_target": "2026-10-19",
+        "mae": 0.08525350518100827,
+        "per_index": {
+          "ndvi": {
+            "mae": 0.08070471202557829,
+            "rmse": 0.1290126798477238,
+            "bias": -0.0015323262307427824,
+            "observed_declines": 50,
+            "decline_proxy_confusion": {
+              "tp": 18,
+              "fp": 51,
+              "fn": 32,
+              "tn": 398
+            }
+          },
+          "ndmi": {
+            "mae": 0.08980229833643821,
+            "rmse": 0.1404791860079226,
+            "bias": -0.011656341478282763,
+            "observed_declines": 42,
+            "decline_proxy_confusion": {
+              "tp": 9,
+              "fp": 56,
+              "fn": 33,
+              "tn": 401
+            }
+          }
+        }
+      }
+    }
+  },
+  "boundary": {
+    "eligible_pairs": 499,
+    "complete_11_scenario_pairs": 473,
+    "median_prediction_span": [
+      0.019868382810592722,
+      0.015515943651751851
+    ],
+    "max_prediction_span": [
+      0.47978122795074823,
+      0.37797434989485856
+    ],
+    "target_span_le_005_both": 368
+  },
+  "source_protocol_sha256": "b3a008c38f855b96cfcf34225f02b17777f9b747565e02c35191f5158bea136c",
+  "training_protocol_sha256": "99611513684d4bfc86899b0903c5bb4f49b2e1fce47dcfb58b1d2dbb37a1add4",
+  "model_sha256": "b518c04fc57182e5c31abb6db72286c178a6d4d0a6b06a6ef15c75acd65790dc",
+  "observations_sha256": "47cb4eee276b67264d3bd488d1852f639280e7359a4911937b7c1dcff3179136",
+  "code_sha256": "42e2841b54149991811faa6e8e3714d714aa07d7f23eb4f7257d12c5d3315f96",
+  "prior_files_verified_unchanged": 1918,
+  "operational_model_changed": false,
+  "limitations": [
+    "Only one fit season (2024), source-policy audit pending for 2023.",
+    "2026 held out from fitting/selection but seen descriptively; no pristine prospective claim.",
+    "2026 July-October tests omit spring. Crops, sowing/harvest and treatment histories unconfirmed.",
+    "Only clear-sky observed-date pairs are scored; cloudy periods are missing, not successes.",
+    "Retrospective reprocessed reflectance, not a demonstrated live forecast backtest.",
+    "Correlated fragments/dates, heuristic boundaries, no disease/soil-water/yield labels.",
+    "Intervals are empirical and may fail under seasonal, crop or processing shifts.",
+    "No agronomist inspection outcomes or demonstrated treatment savings."
+  ]
+}

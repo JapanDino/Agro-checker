@@ -1,0 +1,76 @@
+{
+  "protocol": {
+    "schema_version": 1,
+    "selection_train_years": [
+      2022
+    ],
+    "selection_year": 2023,
+    "final_train_years": [
+      2022,
+      2023
+    ],
+    "calibration_year": 2024,
+    "evaluation_years": [
+      2025,
+      2026
+    ],
+    "candidates": [
+      {
+        "name": "gfs",
+        "kind": "gfs"
+      },
+      {
+        "name": "median_bias",
+        "kind": "bias"
+      },
+      {
+        "name": "ridge_10",
+        "kind": "ridge",
+        "alpha": 10.0
+      },
+      {
+        "name": "ridge_100",
+        "kind": "ridge",
+        "alpha": 100.0
+      },
+      {
+        "name": "huber_1",
+        "kind": "huber",
+        "alpha": 1.0
+      },
+      {
+        "name": "ridge_temperature_10",
+        "kind": "ridge",
+        "alpha": 10.0,
+        "temperature_only": true
+      }
+    ],
+    "selection_metric": "complete-night minimum MAE on 2023; registry order breaks ties; never choose on calibration or evaluation",
+    "interval_alpha": 0.1,
+    "minimum_calibration_nights": 30,
+    "ood_max_abs_z": 4.0,
+    "weather_threshold_c": 0.0,
+    "bootstrap": {
+      "seed": 20261013,
+      "replicates": 2000,
+      "block_days": [
+        3,
+        7,
+        14
+      ]
+    },
+    "scope": "public station 34929, March-May, GFS06UTC leads10..23, 14 hourly samples; minimum of sampled air2m temperatures, not continuous minimum or crop damage",
+    "evaluation_status": "2025 and 2026 already viewed; frozen new comparison on historical controls, not fresh blind validation",
+    "deployment": "research only; keep field GFS and frozen separate cold detector; no orchard transfer",
+    "interval_note": "split absolute-residual interval calibrated on held-out 2024; nominal90 under exchangeability, empirical coverage only for dependent seasonal weather"
+  },
+  "protocol_sha256": "da8b79068263289699ba041afb6da0cc523ddf25f532e4c12b637da77399a1bb",
+  "source_sha256": {
+    "minimum_model.py": "dee4e650d0cd1b390e748c4521c2aa70242a7128e52bb08fa7e18a6f10a0be7d",
+    "minimum_study.py": "7410165891a473db7a2f757e28232d9c89cc76312cadb3031b957c0411708824",
+    "scenario_study.py": "0b94631ad28902154250308902996016ee3cdaa55f4e514e4482887a9427d627",
+    "hourly_study.py": "c8f6653ae3f64f11fdb13c42c25ecf625ccb2fe74f20800fce335c8180642c37",
+    "single_run.py": "9b199eb2790f6573e2343fe9ee1cead455fa4a79b81fa480901b861bcf25bac1"
+  },
+  "saved_at_utc": "2026-10-13T17:12:14.377294+00:00"
+}

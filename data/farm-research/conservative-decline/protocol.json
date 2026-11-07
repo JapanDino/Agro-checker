@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "created_at_utc": "2026-10-20T20:36:09.179154+00:00",
+  "source_2024_sha256": "d54e9a2e527bcf7e1dfdb811a35777b3a050076d04033656c57fb5ea5b56c329",
+  "legacy_sha256": "b518c04fc57182e5c31abb6db72286c178a6d4d0a6b06a6ef15c75acd65790dc",
+  "holdout_ids": [
+    "R23",
+    "R24",
+    "R25",
+    "R26",
+    "R27"
+  ],
+  "target": "future core median minus current core median <= -0.10; same baseline, 6-8 days; no damage label",
+  "candidates": [
+    {
+      "id": "past_momentum",
+      "family": "momentum",
+      "features": "basic"
+    },
+    {
+      "id": "basic_logit_0.1",
+      "family": "logit",
+      "features": "basic",
+      "c": 0.1
+    },
+    {
+      "id": "basic_logit_1.0",
+      "family": "logit",
+      "features": "basic",
+      "c": 1.0
+    },
+    {
+      "id": "basic_extra_10",
+      "family": "extra",
+      "features": "basic",
+      "leaf": 10
+    },
+    {
+      "id": "basic_extra_25",
+      "family": "extra",
+      "features": "basic",
+      "leaf": 25
+    },
+    {
+      "id": "basic_quantile_0.5",
+      "family": "quantile",
+      "features": "basic",
+      "q": 0.5
+    },
+    {
+      "id": "basic_quantile_0.9",
+      "family": "quantile",
+      "features": "basic",
+      "q": 0.9
+    },
+    {
+      "id": "history_season_logit_0.1",
+      "family": "logit",
+      "features": "history_season",
+      "c": 0.1
+    },
+    {
+      "id": "history_season_logit_1.0",
+      "family": "logit",
+      "features": "history_season",
+      "c": 1.0
+    },
+    {
+      "id": "history_season_extra_10",
+      "family": "extra",
+      "features": "history_season",
+      "leaf": 10
+    },
+    {
+      "id": "history_season_extra_25",
+      "family": "extra",
+      "features": "history_season",
+      "leaf": 25
+    },
+    {
+      "id": "history_season_quantile_0.5",
+      "family": "quantile",
+      "features": "history_season",
+      "q": 0.5
+    },
+    {
+      "id": "history_season_quantile_0.9",
+      "family": "quantile",
+      "features": "history_season",
+      "q": 0.9
+    }
+  ],
+  "gates": [
+    "none",
+    "joint_momentum"
+  ],
+  "gate_definition": "joint_momentum: both previous slopes *7 <= -0.05, current NDVI>=0.40 / NDMI>=0.00",
+  "probability_thresholds": [
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.85,
+    0.9,
+    0.925,
+    0.95,
+    0.975,
+    0.99,
+    1.01
+  ],
+  "decline_thresholds": [
+    0.1,
+    0.125,
+    0.15,
+    0.175,
+    0.2,
+    0.25,
+    0.3,
+    0.4,
+    0.5,
+    2.01
+  ],
+  "folds": [
+    "2024-06-01",
+    "2024-07-01",
+    "2024-08-01",
+    "2024-09-01",
+    "2024-10-01"
+  ],
+  "fold_rule": "fit target < month start; validation issue in month, target < next month; crossing pairs purged",
+  "feature_policy": "basic: seven existing inputs; history_season: 23 past/history/pixel inputs plus 17 past-only seasonal proxies. No calendar crop guesses, field ID, future target/date/clouds or audit fields.",
+  "weights": "each issue date equal total weight; all fragments of a date stay in same fold",
+  "fixed_hyperparameters": {
+    "extra_trees": 256,
+    "extra_max_depth": 4,
+    "cat_iterations": 160,
+    "cat_depth": 2,
+    "cat_learning_rate": 0.04,
+    "cat_l2": 10,
+    "seed": 20241020,
+    "threads": 2
+  },
+  "selection": "per index: zero false-positive pairs and dates (persistence budget), >=2TP on >=2 issue dates. Maximize date-balanced recall, then TP dates, TP count, prefer candidate order, ungated, higher threshold.",
+  "diagnostic": "Also freeze best zero-FP operating point with >=1TP even if insufficient event dates. Evaluate as rejected diagnostic, never eligible through 2026 results.",
+  "final_fit": "all eligible 2024 nonreserved pairs, March-October; exact same algorithm; no early stopping or test-driven calibration",
+  "comparators": [
+    "persistence: current indices unchanged, zero alarms",
+    "original frozen Ridge alarms",
+    "previous rejected direct classifier: frozen 2024 settings; descriptive comparator only"
+  ],
+  "acceptance": "Per index require more TP and no growth of FP pairs or FP dates versus original Ridge AND persistence, on all2026 and spatial2026. Cannot claim superiority to zero-alarm persistence when any FP occurs.",
+  "test": "Only frozen choice and predeclared diagnostic on existing 2026 and reserved 2024; 2025 absent, not fabricated. Previously examined 2026 is not pristine blind.",
+  "deployment": "research only; operational model, point forecast, intervals and journals never changed",
+  "availability": "Retrospective acquisition-date experiment; historical delivery latency and archive availability unproven",
+  "caveats": [
+    "2024 reused for selection across previous experiments; selection scores optimistic.",
+    "Nearby fragments and overlapping windows dependent; reserved fragments not external farms.",
+    "Scores are not calibrated agronomic probabilities; crop and operations unknown."
+  ]
+}

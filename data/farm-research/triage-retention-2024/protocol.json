@@ -1,0 +1,95 @@
+{
+  "created_at_utc": "2026-10-21T08:05:18.805049+00:00",
+  "variants": [
+    {
+      "id": "baseline",
+      "kind": "blend",
+      "alpha": 0.0
+    },
+    {
+      "id": "extra",
+      "kind": "blend",
+      "alpha": 1.0
+    },
+    {
+      "id": "blend_0.25",
+      "kind": "blend",
+      "alpha": 0.25
+    },
+    {
+      "id": "blend_0.5",
+      "kind": "blend",
+      "alpha": 0.5
+    },
+    {
+      "id": "blend_0.75",
+      "kind": "blend",
+      "alpha": 0.75
+    },
+    {
+      "id": "anchor_1",
+      "kind": "anchor",
+      "anchors": 1
+    },
+    {
+      "id": "anchor_2",
+      "kind": "anchor",
+      "anchors": 2
+    },
+    {
+      "id": "protect_0.1_margin_0",
+      "kind": "protect",
+      "threshold": 0.1,
+      "margin": 0.0
+    },
+    {
+      "id": "protect_0.1_margin_0.05",
+      "kind": "protect",
+      "threshold": 0.1,
+      "margin": 0.05
+    },
+    {
+      "id": "protect_0.2_margin_0",
+      "kind": "protect",
+      "threshold": 0.2,
+      "margin": 0.0
+    },
+    {
+      "id": "protect_0.2_margin_0.05",
+      "kind": "protect",
+      "threshold": 0.2,
+      "margin": 0.05
+    }
+  ],
+  "budget_k": 3,
+  "fixed_parameters": {
+    "seed": 20241021
+  },
+  "inputs": {
+    "data/farm-research/spectral-triage/protocol.json": "e058523da1fd8077859246e76d531645b6624e2bdadb516d2be5b2046d826478",
+    "data/farm-research/spectral-triage/pool-2024.json": "e67e28ac79c969bf96a98a3b29dea1649c1b51a9559d898047a9566783c07a79",
+    "data/farm-research/spectral-triage/meta-oof.json": "db99f14d6995f59527360fc2b76b326a60afe953d618a21fd13fcd6175fe73b1",
+    "data/farm-research/spectral-triage/selection-table.json": "d028072ba087edf9ddcfbae52aba1f17b891d52ce6523c5b996506c8631bc743",
+    "data/farm-research/spectral-triage/frozen-selection.json": "ee302fdc013d0409791f397a605aca0008bc3f5d29017edc6b9e762070cce1e2",
+    "agro_checker/spectral_triage.py": "fa830e70eed21da8ae93f3ad85eabe7b60ac3da5d67b4a5677123485f8d40dc6",
+    "agro_checker/triage_retention.py": "784d5d87bfc9b2e2c17a0be5d545de39a1b91cc1f3472f083438fb92c573e3ca"
+  },
+  "source": "Unchanged causal monthly OOF2024 scores; all699 issue-time candidates including unknown outcomes; no new fit of base models.",
+  "selection_year": 2024,
+  "selection_status": "Development reuse of2024, not an independent estimate after selecting settings.",
+  "holdout_ids": [
+    "R23",
+    "R24",
+    "R25",
+    "R26",
+    "R27"
+  ],
+  "blend": "Per-date average tied-rank percentiles of recent_drop and Extra, weights fixed in variants. Alpha0/1 exactly reproduce source order.",
+  "anchor": "Keep first1/2 baseline candidates, fill remaining slots by Extra score; never exceed original min(3,N).",
+  "protect": "Start at baseline. Protect its candidates with recent_drop>=.10/.20 weekly index units. Consider Extra outsiders in score order; replace weakest unprotected candidate only if Extra score advantage strictly exceeds0/.05. No future-label branch.",
+  "acceptance": "Restore all four lost baselineTP, retain EVERY known baselineTP, knownTP>=originalExtra, knownFP<=BOTH references; paired worst-case negative growth<=0 against BOTH references; strictly positive date-balanced paired precision lower bound vs baseline. Same slots each date. Otherwise baseline retained with no claim of improvement.",
+  "unknown": "None remains unknown, shared choices cancel. Missing-outcome scenarios are not confidence intervals; no assumption clouds missing at random.",
+  "tests": "Do not load2025/2026 matrices or analyse their outcomes in this experiment. Hash-only preservation is allowed. Reserved2024 fragments excluded from tuning. No invented human labels or operational writes.",
+  "known_development_diagnosis": "Four losses are R02/R17/R21 on2024-06-03 and R13 on2024-06-11. These IDs/dates/outcomes must never enter prediction rules.",
+  "deployment": "Research-only. Preserve prior detectors, forecasts, intervals, UI and journals."
+}

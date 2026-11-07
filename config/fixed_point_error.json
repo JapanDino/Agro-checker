@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "folds": [
+    {
+      "train_years": [
+        2022
+      ],
+      "validation_year": 2023
+    },
+    {
+      "train_years": [
+        2022,
+        2023
+      ],
+      "validation_year": 2024
+    }
+  ],
+  "extra_years": [
+    2021
+  ],
+  "evaluation_years": [
+    2025,
+    2026
+  ],
+  "final_calibration_year": 2024,
+  "crossfit_blocks": 6,
+  "coverage": 0.9,
+  "minimum_calibration_nights": 30,
+  "scale_floor_c": 0.5,
+  "scale_ceiling_c": 9.0,
+  "warm_width_ratio_limit": 1.05,
+  "overall_width_ratio_limit": 1.05,
+  "version_registry": [
+    {
+      "name": "pre_v16",
+      "from": "2021-01-01T00:00:00+00:00",
+      "until": "2021-03-22T12:00:00+00:00"
+    },
+    {
+      "name": "v16_before_2022_update",
+      "from": "2021-03-22T12:00:00+00:00",
+      "until": "2022-11-29T12:00:00+00:00"
+    },
+    {
+      "name": "after_2022_update",
+      "from": "2022-11-29T12:00:00+00:00",
+      "until": "2026-06-01T00:00:00+00:00"
+    }
+  ],
+  "version_resolution": "coarse documented update regimes, not every operational patch; known registry limited to archive window, no future version assumption",
+  "policies": [
+    {
+      "name": "uniform",
+      "half_life_seasons": null,
+      "version_weights": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "version_offsets": false
+    },
+    {
+      "name": "age_1",
+      "half_life_seasons": 1.0,
+      "version_weights": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "version_offsets": false
+    },
+    {
+      "name": "age_2",
+      "half_life_seasons": 2.0,
+      "version_weights": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "version_offsets": false
+    },
+    {
+      "name": "version_discount",
+      "half_life_seasons": null,
+      "version_weights": [
+        0.25,
+        0.5,
+        1.0
+      ],
+      "version_offsets": false
+    },
+    {
+      "name": "age_version_1",
+      "half_life_seasons": 1.0,
+      "version_weights": [
+        0.25,
+        0.5,
+        1.0
+      ],
+      "version_offsets": false
+    },
+    {
+      "name": "version_offsets",
+      "half_life_seasons": null,
+      "version_weights": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "version_offsets": true
+    },
+    {
+      "name": "age_version_offsets_2",
+      "half_life_seasons": 2.0,
+      "version_weights": [
+        0.25,
+        0.5,
+        1.0
+      ],
+      "version_offsets": true
+    }
+  ],
+  "families": [
+    {
+      "name": "scale_ridge_100",
+      "mode": "scale",
+      "alpha": 100.0
+    },
+    {
+      "name": "tails_ridge_10",
+      "mode": "asymmetric",
+      "alpha": 10.0
+    },
+    {
+      "name": "quantile_trees",
+      "mode": "trees",
+      "estimators": 100,
+      "depth": 2,
+      "minimum_leaf": 20,
+      "learning_rate": 0.05,
+      "seed": 20261013
+    }
+  ],
+  "baselines": [
+    {
+      "name": "legacy_symmetric",
+      "mode": "legacy"
+    },
+    {
+      "name": "risk_5_lower_95",
+      "mode": "lower",
+      "risk_threshold_c": 5.0,
+      "quantile": 0.95
+    }
+  ],
+  "weighting": "Age/version weights and version indicators ONLY in error head, never in point or detector; recent_uniform comparator plus compatible2021 x fixed policies",
+  "point_family": "Original unweighted Huber alpha1, all15 features incl instantaneous cloud; same prior-year folds as before, final immutable artifact; no point parameters selected",
+  "calibration": "unweighted held-season90, whole-night LOO on validation2023/2024, final2024; no weighted quantile guarantee claimed; retrospective tuning, not independent coverage",
+  "selection": "coverage>=legacy, pointMAE<=originalHuber, warm width<=1.05*legacy, overall width<=1.05*previous cold; lexicographic cold uncovered rate, balanced cold/warm interval score90, overall width, registry order",
+  "diagnostic": "Best eligible nonuniform compatible2021 head by frozen prior criterion; if none eligible best nonuniform head diagnostic-only; freeze matched uniform same-family/window before controls",
+  "detector": "frozen event_duration_weather@0.25; assert every14-hour mask and timing against previous snapshots; no retraining",
+  "guards": "site34929, original06UTC lead10–23, March–May; missing fields/unknown registry date/extrapolation/unseen fitted regime => no guarded corrected prediction",
+  "deployment": "station research only; field GFS and original models unchanged; no chosen orchard, no crop-damage probability",
+  "status": "Fixed registry before new2023/2024 comparison and new controls; 2025/2026 previously viewed, not blind; never used for fitting/calibration/selection",
+  "scope": "ONLY residual head; final frozen original15-feature Huber point and detector unchanged; no weighted/no-cloud point fitting",
+  "windows": [
+    "recent_uniform",
+    "compatible_2021"
+  ],
+  "early_exclusion": "2021-03-01..22 cannot provide original point errors: instantaneous cloud missing; no imputation or proxy model; compatible2021-03-23..05-31 only, all warm"
+}

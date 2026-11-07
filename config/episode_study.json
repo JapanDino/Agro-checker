@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source_config": "single_run.json",
+  "base_model_protocol": "model_study.json",
+  "detector_protocol": "frost_study.json",
+  "fixed_detector": {"name": "event_duration_weather@0.25", "family": "event_duration_weather", "threshold": 0.25},
+  "regularization": [1.0, 10.0],
+  "decoders": ["map", "minimum_expected_loss"],
+  "selection_weights": {"miss_rate": 0.25, "false_alarm_rate": 0.15, "cold_duration_mae_over_14": 0.2, "warm_duration_mae_over_14": 0.1, "cold_mask_mismatch_over_14": 0.15, "cold_first_sample_error_with_miss_penalty_over_14": 0.15},
+  "decoder_loss_weights": {"hour_mask_fraction": 1.0, "duration_absolute_over_14": 1.0, "first_sample_absolute_over_13": 1.0, "episode_count_absolute_over_7": 0.25},
+  "optimizer": {"method": "L-BFGS-B", "maxiter": 300, "ftol": 1e-9, "gtol": 1e-6},
+  "model": "conditional_linear_CRF_over_all_16383_nonempty_14_hour_masks; unary_weather_plus_duration_boundaries_and_transition_features; exact_log_partition",
+  "training": "conditional_sequence_log_likelihood_on_complete_observed_cold_nights; L2; forecast_feature_scaler_on_training_nights_only",
+  "selection": "minimum_pooled_episode_loss_among_four_joint_variants_and_previous_reference; detection_masks_identical_to_frozen_detector",
+  "missing_policy": "all_14_temperature_targets_required_for_fit_and_score; forecast_without_observations; no_imputation",
+  "weather_threshold_c": 0.0,
+  "time_definition": "hourly_cold_bins_19_to_09_MSK; first_cold_sample; edge_censoring; no_continuous_duration_claim",
+  "features": "same_run_GFS_only; no_measured_features; no_calendar; no_2025_fit_or_selection",
+  "historical_status": "2025_previously_viewed_historical_control; protocol_fixed_before_new_validation",
+  "deployment": "research_only; do_not_replace_pilot",
+  "report_examples": ["2025-03-02", "2025-03-03", "2025-03-07", "2025-03-19", "2025-03-20"]
+}

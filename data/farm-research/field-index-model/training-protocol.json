@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "created_at_utc": "2026-10-19T18:27:19.817729+00:00",
+  "archive_protocol_sha256": "b3a008c38f855b96cfcf34225f02b17777f9b747565e02c35191f5158bea136c",
+  "candidates": [
+    "persistence",
+    "linear_trend",
+    "temporal_ridge_1",
+    "temporal_ridge_10",
+    "temporal_ridge_100",
+    "terrain_ridge_1",
+    "terrain_ridge_10",
+    "terrain_ridge_100"
+  ],
+  "source_revision": "2023 excluded: all 197 catalogue entries rejected by existing collector baseline policy. No 2023 labels extracted or used. This does NOT establish that all PB05.09 products are invalid.",
+  "initial_fit": "2024 issue AND target before 2024-06-01; non-holdout fragments",
+  "selection": "2024 issue >=2024-06-01 AND target before 2024-08-01; non-holdout fragments",
+  "final_fit": "initial_fit + selection only",
+  "calibration": "2024 issue >=2024-08-01; non-holdout fragments; never used for model/feature/alpha selection",
+  "spatial_holdout": "five southernmost representative-point latitudes, never fit/select/calibrate",
+  "temporal_test": "2026, no fitting, calibration or selection; previously seen descriptively, not pristine blind test",
+  "selection_metric": "mean of NDVI/NDMI issue-date-balanced MAE; ties prefer listed order",
+  "target": "core median NDVI/NDMI on nearest available clear acquisition 6-8 days after issue; one record per UTC day",
+  "features": [
+    "ndvi_now",
+    "ndmi_now",
+    "ndvi_slope",
+    "ndmi_slope",
+    "past_lag_days",
+    "doy_sin",
+    "doy_cos",
+    "dsm_height_m",
+    "dsm_slope_p90_deg"
+  ],
+  "baseline_policy": "exclude unsupported baselines; issue, previous and target must have identical processing baseline",
+  "intervals": "90% nominal, per-index maximum residual per calibration issue day; temporal dependence means no guaranteed coverage",
+  "production_policy": "research only even if test wins; original weather model/detector and operational data untouched",
+  "historical_live_backtest": false,
+  "historical_availability": "Reprocessed archive availability at original issue time not established. Retrospective acquisition-date experiment only.",
+  "boundary_policy": "fixed eroded core + full-pixel guard; >=10 clear cells and >=80% clear coverage; all 11 geometry scenarios checked separately, not confidence probabilities",
+  "auxiliary_event": "index decline <= -0.10, NOT a disease/pest/stress ground-truth label"
+}

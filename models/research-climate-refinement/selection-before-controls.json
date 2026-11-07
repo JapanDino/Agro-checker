@@ -1,0 +1,1765 @@
+{
+  "protocol_sha256": "0cf6b63e4d1ae45d400a9ea6f89c6fad676f7b19ae8608b8bc8fcb482f520796",
+  "source_sha256": "a072c06955db6eff21d44127af2a35434e0ea78fbb4e0a49065abeacff711db6",
+  "climate_selection_sha256": "b9de07d6eff59a5d808ada7ce397498eb45508053b04d4a454c89c9bf09d1366",
+  "terrain_prior_meta": {
+    "sha256": "ab7ec355aed7d2eb0e66ad1084566eae79c6aee8629783850c1e0453b4dc04ba"
+  },
+  "primary_provenance": {
+    "temperature": {
+      "sha256": "56d887828fca75a82a70981c847e765e74385e73314837b3f942ae83403fd054",
+      "decoder": "eccodes-2.49.0",
+      "manifest_sha256": "9627d26da72cbb754acdf1a5236540ecb61ebf664b8572b69c13d53dd0f02cc5"
+    },
+    "covariates": {
+      "sha256": "c9d79b4ff1cce1f0ecff356271e35bb1ad073732b1147e64f6cb7b698a4bb1fc",
+      "manifest_sha256": "c5bcf552f2c2b42c7963e0bdfa407427d76b5d0deb9ef998cb34a638a4247bd0",
+      "decoder": "eccodes"
+    },
+    "humidity": {
+      "sha256": "69b3f396d92ae125bb519871f902b08973533a1ff3dd828209dece60c4bfefe5",
+      "manifest_sha256": "19dd14b9769430e340383a64608cd347a6ddfddc0d73aaea2d8e6f5f0fc0ee9c",
+      "decoder": "eccodes"
+    },
+    "observations": {
+      "2022": {
+        "url": "https://data.meteostat.net/hourly/2022/34929.csv.gz",
+        "sha256": "316ccc650a1f2107a502b873c27e9950a291e20b01b96772a564c7489f87f595",
+        "retrieved_at_utc": "2026-10-12T09:56:24.738802+00:00",
+        "bytes": 72009,
+        "content_type": "application/x-gzip"
+      },
+      "2023": {
+        "url": "https://data.meteostat.net/hourly/2023/34929.csv.gz",
+        "sha256": "c302798573f4ae7e8553394b4ed5fe4551ca2ec4703aef3e6dd82edebaa2271f",
+        "retrieved_at_utc": "2026-10-12T09:56:26.032553+00:00",
+        "bytes": 76648,
+        "content_type": "application/x-gzip"
+      },
+      "2024": {
+        "url": "https://data.meteostat.net/hourly/2024/34929.csv.gz",
+        "sha256": "b5412a30c55c88e0850ea151cd5237bb68ccc1364142c79656fdd3fbf76a1e01",
+        "retrieved_at_utc": "2026-10-12T09:56:28.208852+00:00",
+        "bytes": 76330,
+        "content_type": "application/x-gzip"
+      }
+    },
+    "annual_wind_audit": {
+      "2022": {
+        "accepted": 8756,
+        "missing_or_excluded_source": 4
+      },
+      "2023": {
+        "accepted": 8756,
+        "missing_or_excluded_source": 4
+      },
+      "2024": {
+        "accepted": 8768,
+        "missing_or_excluded_source": 16
+      }
+    }
+  },
+  "parent_hashes": {
+    "point_model": "b273ad32caf00e21303f9fe11b0b2aef630eef03336bd63f2d3033d341ec9954",
+    "point_selection": "ea6ab05a32ed1ab4d823e022a94719d3266b10322c681e1c8561f75bcc8432a3",
+    "detector": "fba66530ceca0a4baee688eeb96df88b98b5b3c36150fef3575d96c03828eab8",
+    "detector_selection": "55a377c51df66208136938a01d348a3c60c763481bfdd7bf1fdf98617a729e69"
+  },
+  "protocol": {
+    "schema_version": 1,
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      }
+    ],
+    "final_train_years": [
+      2022,
+      2023
+    ],
+    "evaluation_years": [
+      2025,
+      2026
+    ],
+    "expert_policy": "diagnostic family of frozen climate prior selection; no control or heldout choice",
+    "weights": [
+      0.25,
+      0.5,
+      1
+    ],
+    "routing": "if approved anchor minimum <0, blend with standalone climate expert; otherwise retain anchor exactly; no clipping or forced sign",
+    "anchors": {
+      "reference": "legacy minimum",
+      "other_stations": "GFS"
+    },
+    "selection": "same each-year primary vs legacy/regional vs GFS all,cold MAE and crossing FA/misses gates; rank primary cold MAE then all MAE; fallback anchors",
+    "limits": "cannot discover cold missed by anchor; original detector separate and unchanged; research minimum only"
+  },
+  "expert_spec": {
+    "name": "matched3_weather_cold2",
+    "family": "matched3_weather",
+    "cold_weight": 2
+  },
+  "expert_sha256": "3a9395692ba590d2aa6a4dfb93e9400c067fb9a09418cdbb1f8bac99da3df2ee",
+  "winner": "anchor",
+  "diagnostic": "1",
+  "gates": {
+    "0.25": {
+      "primary_2023_mae_c": false,
+      "primary_2023_cold_mae_c": false,
+      "primary_2023_misses": true,
+      "primary_2023_false_alarms": true,
+      "regional_2023_site_macro_mae_c": true,
+      "regional_2023_site_macro_cold_mae_c": true,
+      "regional_2023_misses": true,
+      "regional_2023_false_alarms": true,
+      "primary_2024_mae_c": true,
+      "primary_2024_cold_mae_c": true,
+      "primary_2024_misses": true,
+      "primary_2024_false_alarms": true,
+      "regional_2024_site_macro_mae_c": true,
+      "regional_2024_site_macro_cold_mae_c": true,
+      "regional_2024_misses": true,
+      "regional_2024_false_alarms": true
+    },
+    "0.5": {
+      "primary_2023_mae_c": false,
+      "primary_2023_cold_mae_c": false,
+      "primary_2023_misses": true,
+      "primary_2023_false_alarms": true,
+      "regional_2023_site_macro_mae_c": true,
+      "regional_2023_site_macro_cold_mae_c": true,
+      "regional_2023_misses": true,
+      "regional_2023_false_alarms": true,
+      "primary_2024_mae_c": true,
+      "primary_2024_cold_mae_c": true,
+      "primary_2024_misses": true,
+      "primary_2024_false_alarms": true,
+      "regional_2024_site_macro_mae_c": true,
+      "regional_2024_site_macro_cold_mae_c": true,
+      "regional_2024_misses": true,
+      "regional_2024_false_alarms": true
+    },
+    "1": {
+      "primary_2023_mae_c": false,
+      "primary_2023_cold_mae_c": false,
+      "primary_2023_misses": true,
+      "primary_2023_false_alarms": true,
+      "regional_2023_site_macro_mae_c": true,
+      "regional_2023_site_macro_cold_mae_c": true,
+      "regional_2023_misses": false,
+      "regional_2023_false_alarms": true,
+      "primary_2024_mae_c": true,
+      "primary_2024_cold_mae_c": true,
+      "primary_2024_misses": true,
+      "primary_2024_false_alarms": true,
+      "regional_2024_site_macro_mae_c": true,
+      "regional_2024_site_macro_cold_mae_c": true,
+      "regional_2024_misses": false,
+      "regional_2024_false_alarms": true
+    }
+  },
+  "validation": {
+    "primary": {
+      "anchor": {
+        "complete_nights": 183,
+        "excluded_nights": 1,
+        "cold_site_nights": 7,
+        "cold_dates": 7,
+        "cold_episode_groups": 4,
+        "mae_c": 1.2976199438861342,
+        "cold_mae_c": 2.171678398543216,
+        "warm_mae_c": 1.2628562553486367,
+        "episode_macro_mae_c": 2.29656637505098,
+        "hits": 4,
+        "misses": 3,
+        "false_alarms": 2,
+        "correct_negatives": 174,
+        "site_macro_mae_c": 1.2976199438861342,
+        "site_macro_cold_mae_c": 2.171678398543216,
+        "by_site": {
+          "349290-99999": {
+            "nights": 183,
+            "cold_nights": 7,
+            "mae_c": 1.2976199438861342,
+            "cold_mae_c": 2.171678398543216,
+            "false_alarms": 2,
+            "misses": 3
+          }
+        },
+        "crossing_scope": "point <0 diagnostic, not original detector alerts"
+      },
+      "gfs": {
+        "complete_nights": 183,
+        "excluded_nights": 1,
+        "cold_site_nights": 7,
+        "cold_dates": 7,
+        "cold_episode_groups": 4,
+        "mae_c": 1.7850122470543164,
+        "cold_mae_c": 4.473733956473244,
+        "warm_mae_c": 1.6780744517933364,
+        "episode_macro_mae_c": 4.659320882161485,
+        "hits": 1,
+        "misses": 6,
+        "false_alarms": 0,
+        "correct_negatives": 176,
+        "site_macro_mae_c": 1.7850122470543164,
+        "site_macro_cold_mae_c": 4.473733956473244,
+        "by_site": {
+          "349290-99999": {
+            "nights": 183,
+            "cold_nights": 7,
+            "mae_c": 1.7850122470543164,
+            "cold_mae_c": 4.473733956473244,
+            "false_alarms": 0,
+            "misses": 6
+          }
+        },
+        "crossing_scope": "point <0 diagnostic, not original detector alerts"
+      },
+      "0.25": {
+        "complete_nights": 183,
+        "excluded_nights": 1,
+        "cold_site_nights": 7,
+        "cold_dates": 7,
+        "cold_episode_groups": 4,
+        "mae_c": 1.297366421541817,
+        "cold_mae_c": 2.1404406244323266,
+        "warm_mae_c": 1.263835061199581,
+        "episode_macro_mae_c": 2.279138106231551,
+        "hits": 4,
+        "misses": 3,
+        "false_alarms": 2,
+        "correct_negatives": 174,
+        "site_macro_mae_c": 1.297366421541817,
+        "site_macro_cold_mae_c": 2.1404406244323266,
+        "by_site": {
+          "349290-99999": {
+            "nights": 183,
+            "cold_nights": 7,
+            "mae_c": 1.297366421541817,
+            "cold_mae_c": 2.1404406244323266,
+            "false_alarms": 2,
+            "misses": 3
+          }
+        },
+        "crossing_scope": "point <0 diagnostic, not original detector alerts"
+      },
+      "0.5": {
+        "complete_nights": 183,
+        "excluded_nights": 1,
+        "cold_site_nights": 7,
+        "cold_dates": 7,
+        "cold_episode_groups": 4,
+        "mae_c": 1.2971128991974998,
+        "cold_mae_c": 2.109202850321437,
+        "warm_mae_c": 1.2648138670505253,
+        "episode_macro_mae_c": 2.2617098374121225,
+        "hits": 4,
+        "misses": 3,
+        "false_alarms": 2,
+        "correct_negatives": 174,
+        "site_macro_mae_c": 1.2971128991974998,
+        "site_macro_cold_mae_c": 2.109202850321437,
+        "by_site": {
+          "349290-99999": {
+            "nights": 183,
+            "cold_nights": 7,
+            "mae_c": 1.2971128991974998,
+            "cold_mae_c": 2.109202850321437,
+            "false_alarms": 2,
+            "misses": 3
+          }
+        },
+        "crossing_scope": "point <0 diagnostic, not original detector alerts"
+      },
+      "1": {
+        "complete_nights": 183,
+        "excluded_nights": 1,
+        "cold_site_nights": 7,
+        "cold_dates": 7,
+        "cold_episode_groups": 4,
+        "mae_c": 1.296605854508866,
+        "cold_mae_c": 2.046727302099657,
+        "warm_mae_c": 1.2667714787524138,
+        "episode_macro_mae_c": 2.226853299773265,
+        "hits": 4,
+        "misses": 3,
+        "false_alarms": 2,
+        "correct_negatives": 174,
+        "site_macro_mae_c": 1.296605854508866,
+        "site_macro_cold_mae_c": 2.046727302099657,
+        "by_site": {
+          "349290-99999": {
+            "nights": 183,
+            "cold_nights": 7,
+            "mae_c": 1.296605854508866,
+            "cold_mae_c": 2.046727302099657,
+            "false_alarms": 2,
+            "misses": 3
+          }
+        },
+        "crossing_scope": "point <0 diagnostic, not original detector alerts"
+      }
+    },
+    "regional": {
+      "anchor": {
+        "complete_nights": 1101,
+        "excluded_nights": 187,
+        "cold_site_nights": 94,
+        "cold_dates": 48,
+        "cold_episode_groups": 13,
+        "mae_c": 2.3699240192687068,
+        "cold_mae_c": 4.065590093085117,
+        "warm_mae_c": 2.211639400660224,
+        "episode_macro_mae_c": 4.237080636160714,
+        "hits": 63,
+        "misses": 31,
+        "false_alarms": 82,
+        "correct_negatives": 925,
+        "site_macro_mae_c": 2.3700137208735064,
+        "site_macro_cold_mae_c": 3.8938718009949262,
+        "by_site": {
+          "339460-99999": {
+            "nights": 146,
+            "cold_nights": 6,
+            "mae_c": 1.9742251377889333,
+            "cold_mae_c": 1.6510823567708315,
+            "false_alarms": 3,
+            "misses": 0
+          },
+          "345600-99999": {
+            "nights": 161,
+            "cold_nights": 29,
+            "mae_c": 2.5649093040324407,
+            "cold_mae_c": 3.0443159011314984,
+            "false_alarms": 1,
+            "misses": 12
+          },
+          "348610-99999": {
+            "nights": 157,
+            "cold_nights": 22,
+            "mae_c": 1.7991681180334658,
+            "cold_mae_c": 2.4015611683238913,
+            "false_alarms": 0,
+            "misses": 11
+          },
+          "370010-99999": {
+            "nights": 160,
+            "cold_nights": 5,
+            "mae_c": 2.633054748535178,
+            "cold_mae_c": 7.01597265625004,
+            "false_alarms": 0,
+            "misses": 5
+          },
+          "371710-99999": {
+            "nights": 163,
+            "cold_nights": 0,
+            "mae_c": 1.3664901714675834,
+            "cold_mae_c": null,
+            "false_alarms": 1,
+            "misses": 0
+          },
+          "372120-99999": {
+            "nights": 157,
+            "cold_nights": 4,
+            "mae_c": 1.1610018629329315,
+            "cold_mae_c": 2.6228649902344046,
+            "false_alarms": 1,
+            "misses": 3
+          },
+          "375491-99999": {
+            "nights": 157,
+            "cold_nights": 28,
+            "mae_c": 5.091246703324014,
+            "cold_mae_c": 6.627433733258895,
+            "false_alarms": 76,
+            "misses": 0
+          }
+        },
+        "crossing_scope": "point <0 diagnostic, not original detector alerts"
+      },
+      "gfs": {
+        "complete_nights": 1101,
+        "excluded_nights": 187,
+        "cold_site_nights": 94,
+        "cold_dates": 48,
+        "cold_episode_groups": 13,
+        "mae_c": 2.3699240192687068,
+        "cold_mae_c": 4.065590093085117,
+        "warm_mae_c": 2.211639400660224,
+        "episode_macro_mae_c": 4.237080636160714,
+        "hits": 63,
+        "misses": 31,
+        "false_alarms": 82,
+        "correct_negatives": 925,
+        "site_macro_mae_c": 2.3700137208735064,
+        "site_macro_cold_mae_c": 3.8938718009949262,
+        "by_site": {
+          "339460-99999": {
+            "nights": 146,
+            "cold_nights": 6,
+            "mae_c": 1.9742251377889333,
+            "cold_mae_c": 1.6510823567708315,
+            "false_alarms": 3,
+            "misses": 0
+          },
+          "345600-99999": {
+            "nights": 161,
+            "cold_nights": 29,
+            "mae_c": 2.5649093040324407,
+            "cold_mae_c": 3.0443159011314984,
+            "false_alarms": 1,
+            "misses": 12
+          },
+          "348610-99999": {
+            "nights": 157,
+            "cold_nights": 22,
+            "mae_c": 1.7991681180334658,
+            "cold_mae_c": 2.4015611683238913,
+            "false_alarms": 0,
+            "misses": 11
+          },
+          "370010-99999": {
+            "nights": 160,
+            "cold_nights": 5,
+            "mae_c": 2.633054748535178,
+            "cold_mae_c": 7.01597265625004,
+            "false_alarms": 0,
+            "misses": 5
+          },
+          "371710-99999": {
+            "nights": 163,
+            "cold_nights": 0,
+            "mae_c": 1.3664901714675834,
+            "cold_mae_c": null,
+            "false_alarms": 1,
+            "misses": 0
+          },
+          "372120-99999": {
+            "nights": 157,
+            "cold_nights": 4,
+            "mae_c": 1.1610018629329315,
+            "cold_mae_c": 2.6228649902344046,
+            "false_alarms": 1,
+            "misses": 3
+          },
+          "375491-99999": {
+            "nights": 157,
+            "cold_nights": 28,
+            "mae_c": 5.091246703324014,
+            "cold_mae_c": 6.627433733258895,
+            "false_alarms": 76,
+            "misses": 0
+          }
+        },
+        "crossing_scope": "point <0 diagnostic, not original detector alerts"
+      },
+      "0.25": {
+        "complete_nights": 1101,
+        "excluded_nights": 187,
+        "cold_site_nights": 94,
+        "cold_dates": 48,
+        "cold_episode_groups": 13,
+        "mae_c": 2.2138130718453977,
+        "cold_mae_c": 3.3772194195663183,
+        "warm_mae_c": 2.105213075136593,
+        "episode_macro_mae_c": 3.4128478655769308,
+        "hits": 63,
+        "misses": 31,
+        "false_alarms": 60,
+        "correct_negatives": 947,
+        "site_macro_mae_c": 2.213771859203109,
+        "site_macro_cold_mae_c": 3.497884859758916,
+        "by_site": {
+          "339460-99999": {
+            "nights": 146,
+            "cold_nights": 6,
+            "mae_c": 1.966299810708555,
+            "cold_mae_c": 1.622862663083062,
+            "false_alarms": 2,
+            "misses": 0
+          },
+          "345600-99999": {
+            "nights": 161,
+            "cold_nights": 29,
+            "mae_c": 2.499285210728223,
+            "cold_mae_c": 2.6757618669489536,
+            "false_alarms": 1,
+            "misses": 12
+          },
+          "348610-99999": {
+            "nights": 157,
+            "cold_nights": 22,
+            "mae_c": 1.7652886596260808,
+            "cold_mae_c": 2.159785033325736,
+            "false_alarms": 0,
+            "misses": 11
+          },
+          "370010-99999": {
+            "nights": 160,
+            "cold_nights": 5,
+            "mae_c": 2.633054748535178,
+            "cold_mae_c": 7.01597265625004,
+            "false_alarms": 0,
+            "misses": 5
+          },
+          "371710-99999": {
+            "nights": 163,
+            "cold_nights": 0,
+            "mae_c": 1.367651944473668,
+            "cold_mae_c": null,
+            "false_alarms": 1,
+            "misses": 0
+          },
+          "372120-99999": {
+            "nights": 157,
+            "cold_nights": 4,
+            "mae_c": 1.1612114337799613,
+            "cold_mae_c": 2.61803054107001,
+            "false_alarms": 1,
+            "misses": 3
+          },
+          "375491-99999": {
+            "nights": 157,
+            "cold_nights": 28,
+            "mae_c": 4.103611206570096,
+            "cold_mae_c": 4.894896397875698,
+            "false_alarms": 55,
+            "misses": 0
+          }
+        },
+        "crossing_scope": "point <0 diagnostic, not original detector alerts"
+      },
+      "0.5": {
+        "complete_nights": 1101,
+        "excluded_nights": 187,
+        "cold_site_nights": 94,
+        "cold_dates": 48,
+        "cold_episode_groups": 13,
+        "mae_c": 2.0678560523678877,
+        "cold_mae_c": 2.742801031877451,
+        "warm_mae_c": 2.0048522509042344,
+        "episode_macro_mae_c": 2.7001712643794957,
+        "hits": 63,
+        "misses": 31,
+        "false_alarms": 45,
+        "correct_negatives": 962,
+        "site_macro_mae_c": 2.0676575562663224,
+        "site_macro_cold_mae_c": 3.1340818853190484,
+        "by_site": {
+          "339460-99999": {
+            "nights": 146,
+            "cold_nights": 6,
+            "mae_c": 1.9583744836281762,
+            "cold_mae_c": 1.5946429693952926,
+            "false_alarms": 2,
+            "misses": 0
+          },
+          "345600-99999": {
+            "nights": 161,
+            "cold_nights": 29,
+            "mae_c": 2.4459830224454615,
+            "cold_mae_c": 2.3756156502993235,
+            "false_alarms": 1,
+            "misses": 12
+          },
+          "348610-99999": {
+            "nights": 157,
+            "cold_nights": 22,
+            "mae_c": 1.7408397597834222,
+            "cold_mae_c": 1.985308793539491,
+            "false_alarms": 0,
+            "misses": 11
+          },
+          "370010-99999": {
+            "nights": 160,
+            "cold_nights": 5,
+            "mae_c": 2.633054748535178,
+            "cold_mae_c": 7.01597265625004,
+            "false_alarms": 0,
+            "misses": 5
+          },
+          "371710-99999": {
+            "nights": 163,
+            "cold_nights": 0,
+            "mae_c": 1.3688137174797526,
+            "cold_mae_c": null,
+            "false_alarms": 1,
+            "misses": 0
+          },
+          "372120-99999": {
+            "nights": 157,
+            "cold_nights": 4,
+            "mae_c": 1.1614210046269915,
+            "cold_mae_c": 2.613196091905616,
+            "false_alarms": 1,
+            "misses": 3
+          },
+          "375491-99999": {
+            "nights": 157,
+            "cold_nights": 28,
+            "mae_c": 3.165116157365275,
+            "cold_mae_c": 3.219755150524527,
+            "false_alarms": 40,
+            "misses": 0
+          }
+        },
+        "crossing_scope": "point <0 diagnostic, not original detector alerts"
+      },
+      "1": {
+        "complete_nights": 1101,
+        "excluded_nights": 187,
+        "cold_site_nights": 94,
+        "cold_dates": 48,
+        "cold_episode_groups": 13,
+        "mae_c": 1.9401463426475831,
+        "cold_mae_c": 2.1954583701863095,
+        "warm_mae_c": 1.916313839580413,
+        "episode_macro_mae_c": 2.628225634010133,
+        "hits": 60,
+        "misses": 34,
+        "false_alarms": 17,
+        "correct_negatives": 990,
+        "site_macro_mae_c": 1.9398708951445571,
+        "site_macro_cold_mae_c": 2.8564408448795082,
+        "by_site": {
+          "339460-99999": {
+            "nights": 146,
+            "cold_nights": 6,
+            "mae_c": 1.9530727283303686,
+            "cold_mae_c": 1.7948934543515087,
+            "false_alarms": 2,
+            "misses": 0
+          },
+          "345600-99999": {
+            "nights": 161,
+            "cold_nights": 29,
+            "mae_c": 2.3852054190493437,
+            "cold_mae_c": 2.0297408197681377,
+            "false_alarms": 1,
+            "misses": 12
+          },
+          "348610-99999": {
+            "nights": 157,
+            "cold_nights": 22,
+            "mae_c": 1.7475468046240228,
+            "cold_mae_c": 2.0331727044474137,
+            "false_alarms": 0,
+            "misses": 11
+          },
+          "370010-99999": {
+            "nights": 160,
+            "cold_nights": 5,
+            "mae_c": 2.633054748535178,
+            "cold_mae_c": 7.01597265625004,
+            "false_alarms": 0,
+            "misses": 5
+          },
+          "371710-99999": {
+            "nights": 163,
+            "cold_nights": 0,
+            "mae_c": 1.3711372634919214,
+            "cold_mae_c": null,
+            "false_alarms": 1,
+            "misses": 0
+          },
+          "372120-99999": {
+            "nights": 157,
+            "cold_nights": 4,
+            "mae_c": 1.1618401463210515,
+            "cold_mae_c": 2.603527193576827,
+            "false_alarms": 1,
+            "misses": 3
+          },
+          "375491-99999": {
+            "nights": 157,
+            "cold_nights": 28,
+            "mae_c": 2.3272391556600147,
+            "cold_mae_c": 1.6613382408831234,
+            "false_alarms": 12,
+            "misses": 3
+          }
+        },
+        "crossing_scope": "point <0 diagnostic, not original detector alerts"
+      }
+    }
+  },
+  "fold_scores": [
+    {
+      "year": 2023,
+      "groups": {
+        "primary": {
+          "anchor": {
+            "complete_nights": 92,
+            "excluded_nights": 0,
+            "cold_site_nights": 3,
+            "cold_dates": 3,
+            "cold_episode_groups": 2,
+            "mae_c": 1.220603615946277,
+            "cold_mae_c": 1.844658234332502,
+            "warm_mae_c": 1.1995680670119098,
+            "episode_macro_mae_c": 1.9624195530859276,
+            "hits": 2,
+            "misses": 1,
+            "false_alarms": 2,
+            "correct_negatives": 87,
+            "site_macro_mae_c": 1.220603615946277,
+            "site_macro_cold_mae_c": 1.844658234332502,
+            "by_site": {
+              "349290-99999": {
+                "nights": 92,
+                "cold_nights": 3,
+                "mae_c": 1.220603615946277,
+                "cold_mae_c": 1.844658234332502,
+                "false_alarms": 2,
+                "misses": 1
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "gfs": {
+            "complete_nights": 92,
+            "excluded_nights": 0,
+            "cold_site_nights": 3,
+            "cold_dates": 3,
+            "cold_episode_groups": 2,
+            "mae_c": 1.4154948093580249,
+            "cold_mae_c": 3.9729752604166984,
+            "warm_mae_c": 1.329287603142564,
+            "episode_macro_mae_c": 4.356176757812534,
+            "hits": 1,
+            "misses": 2,
+            "false_alarms": 0,
+            "correct_negatives": 89,
+            "site_macro_mae_c": 1.4154948093580249,
+            "site_macro_cold_mae_c": 3.9729752604166984,
+            "by_site": {
+              "349290-99999": {
+                "nights": 92,
+                "cold_nights": 3,
+                "mae_c": 1.4154948093580249,
+                "cold_mae_c": 3.9729752604166984,
+                "false_alarms": 0,
+                "misses": 2
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "0.25": {
+            "complete_nights": 92,
+            "excluded_nights": 0,
+            "cold_site_nights": 3,
+            "cold_dates": 3,
+            "cold_episode_groups": 2,
+            "mae_c": 1.2226831835077154,
+            "cold_mae_c": 1.8510083629612242,
+            "warm_mae_c": 1.2015036830766985,
+            "episode_macro_mae_c": 1.9671821495574693,
+            "hits": 2,
+            "misses": 1,
+            "false_alarms": 2,
+            "correct_negatives": 87,
+            "site_macro_mae_c": 1.2226831835077154,
+            "site_macro_cold_mae_c": 1.8510083629612242,
+            "by_site": {
+              "349290-99999": {
+                "nights": 92,
+                "cold_nights": 3,
+                "mae_c": 1.2226831835077154,
+                "cold_mae_c": 1.8510083629612242,
+                "false_alarms": 2,
+                "misses": 1
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "0.5": {
+            "complete_nights": 92,
+            "excluded_nights": 0,
+            "cold_site_nights": 3,
+            "cold_dates": 3,
+            "cold_episode_groups": 2,
+            "mae_c": 1.2247627510691543,
+            "cold_mae_c": 1.8573584915899464,
+            "warm_mae_c": 1.2034392991414873,
+            "episode_macro_mae_c": 1.9719447460290107,
+            "hits": 2,
+            "misses": 1,
+            "false_alarms": 2,
+            "correct_negatives": 87,
+            "site_macro_mae_c": 1.2247627510691543,
+            "site_macro_cold_mae_c": 1.8573584915899464,
+            "by_site": {
+              "349290-99999": {
+                "nights": 92,
+                "cold_nights": 3,
+                "mae_c": 1.2247627510691543,
+                "cold_mae_c": 1.8573584915899464,
+                "false_alarms": 2,
+                "misses": 1
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "1": {
+            "complete_nights": 92,
+            "excluded_nights": 0,
+            "cold_site_nights": 3,
+            "cold_dates": 3,
+            "cold_episode_groups": 2,
+            "mae_c": 1.228921886192032,
+            "cold_mae_c": 1.8700587488473905,
+            "warm_mae_c": 1.2073105312710648,
+            "episode_macro_mae_c": 1.981469938972094,
+            "hits": 2,
+            "misses": 1,
+            "false_alarms": 2,
+            "correct_negatives": 87,
+            "site_macro_mae_c": 1.228921886192032,
+            "site_macro_cold_mae_c": 1.8700587488473905,
+            "by_site": {
+              "349290-99999": {
+                "nights": 92,
+                "cold_nights": 3,
+                "mae_c": 1.228921886192032,
+                "cold_mae_c": 1.8700587488473905,
+                "false_alarms": 2,
+                "misses": 1
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          }
+        },
+        "regional": {
+          "anchor": {
+            "complete_nights": 575,
+            "excluded_nights": 69,
+            "cold_site_nights": 36,
+            "cold_dates": 21,
+            "cold_episode_groups": 7,
+            "mae_c": 2.299867077105977,
+            "cold_mae_c": 4.350670437282994,
+            "warm_mae_c": 2.162893197762058,
+            "episode_macro_mae_c": 4.240469611965879,
+            "hits": 23,
+            "misses": 13,
+            "false_alarms": 50,
+            "correct_negatives": 489,
+            "site_macro_mae_c": 2.3013419787402527,
+            "site_macro_cold_mae_c": 3.9917473541744326,
+            "by_site": {
+              "339460-99999": {
+                "nights": 76,
+                "cold_nights": 4,
+                "mae_c": 2.1061515085320455,
+                "cold_mae_c": 1.4387390136718778,
+                "false_alarms": 2,
+                "misses": 0
+              },
+              "345600-99999": {
+                "nights": 85,
+                "cold_nights": 8,
+                "mae_c": 2.440713062959581,
+                "cold_mae_c": 3.3375054931641017,
+                "false_alarms": 1,
+                "misses": 5
+              },
+              "348610-99999": {
+                "nights": 81,
+                "cold_nights": 7,
+                "mae_c": 1.630044457706428,
+                "cold_mae_c": 2.2330950055803913,
+                "false_alarms": 0,
+                "misses": 4
+              },
+              "370010-99999": {
+                "nights": 84,
+                "cold_nights": 2,
+                "mae_c": 1.9681932140532175,
+                "cold_mae_c": 6.760866699218781,
+                "false_alarms": 0,
+                "misses": 2
+              },
+              "371710-99999": {
+                "nights": 86,
+                "cold_nights": 0,
+                "mae_c": 1.436739331622439,
+                "cold_mae_c": null,
+                "false_alarms": 1,
+                "misses": 0
+              },
+              "372120-99999": {
+                "nights": 81,
+                "cold_nights": 3,
+                "mae_c": 1.285255895543988,
+                "cold_mae_c": 3.016399739583354,
+                "false_alarms": 0,
+                "misses": 2
+              },
+              "375491-99999": {
+                "nights": 82,
+                "cold_nights": 12,
+                "mae_c": 5.242296380764068,
+                "cold_mae_c": 7.163878173828091,
+                "false_alarms": 46,
+                "misses": 0
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "gfs": {
+            "complete_nights": 575,
+            "excluded_nights": 69,
+            "cold_site_nights": 36,
+            "cold_dates": 21,
+            "cold_episode_groups": 7,
+            "mae_c": 2.299867077105977,
+            "cold_mae_c": 4.350670437282994,
+            "warm_mae_c": 2.162893197762058,
+            "episode_macro_mae_c": 4.240469611965879,
+            "hits": 23,
+            "misses": 13,
+            "false_alarms": 50,
+            "correct_negatives": 489,
+            "site_macro_mae_c": 2.3013419787402527,
+            "site_macro_cold_mae_c": 3.9917473541744326,
+            "by_site": {
+              "339460-99999": {
+                "nights": 76,
+                "cold_nights": 4,
+                "mae_c": 2.1061515085320455,
+                "cold_mae_c": 1.4387390136718778,
+                "false_alarms": 2,
+                "misses": 0
+              },
+              "345600-99999": {
+                "nights": 85,
+                "cold_nights": 8,
+                "mae_c": 2.440713062959581,
+                "cold_mae_c": 3.3375054931641017,
+                "false_alarms": 1,
+                "misses": 5
+              },
+              "348610-99999": {
+                "nights": 81,
+                "cold_nights": 7,
+                "mae_c": 1.630044457706428,
+                "cold_mae_c": 2.2330950055803913,
+                "false_alarms": 0,
+                "misses": 4
+              },
+              "370010-99999": {
+                "nights": 84,
+                "cold_nights": 2,
+                "mae_c": 1.9681932140532175,
+                "cold_mae_c": 6.760866699218781,
+                "false_alarms": 0,
+                "misses": 2
+              },
+              "371710-99999": {
+                "nights": 86,
+                "cold_nights": 0,
+                "mae_c": 1.436739331622439,
+                "cold_mae_c": null,
+                "false_alarms": 1,
+                "misses": 0
+              },
+              "372120-99999": {
+                "nights": 81,
+                "cold_nights": 3,
+                "mae_c": 1.285255895543988,
+                "cold_mae_c": 3.016399739583354,
+                "false_alarms": 0,
+                "misses": 2
+              },
+              "375491-99999": {
+                "nights": 82,
+                "cold_nights": 12,
+                "mae_c": 5.242296380764068,
+                "cold_mae_c": 7.163878173828091,
+                "false_alarms": 46,
+                "misses": 0
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "0.25": {
+            "complete_nights": 575,
+            "excluded_nights": 69,
+            "cold_site_nights": 36,
+            "cold_dates": 21,
+            "cold_episode_groups": 7,
+            "mae_c": 2.144130643512527,
+            "cold_mae_c": 3.660203579133153,
+            "warm_mae_c": 2.0428715977196834,
+            "episode_macro_mae_c": 3.4356240712385473,
+            "hits": 23,
+            "misses": 13,
+            "false_alarms": 37,
+            "correct_negatives": 502,
+            "site_macro_mae_c": 2.1452598561247185,
+            "site_macro_cold_mae_c": 3.6066233544358663,
+            "by_site": {
+              "339460-99999": {
+                "nights": 76,
+                "cold_nights": 4,
+                "mae_c": 2.0926664215350113,
+                "cold_mae_c": 1.3597979613511297,
+                "false_alarms": 2,
+                "misses": 0
+              },
+              "345600-99999": {
+                "nights": 85,
+                "cold_nights": 8,
+                "mae_c": 2.4182386434038774,
+                "cold_mae_c": 3.0833912892204163,
+                "false_alarms": 1,
+                "misses": 5
+              },
+              "348610-99999": {
+                "nights": 81,
+                "cold_nights": 7,
+                "mae_c": 1.6098892546341228,
+                "cold_mae_c": 1.9998705128865752,
+                "false_alarms": 0,
+                "misses": 4
+              },
+              "370010-99999": {
+                "nights": 84,
+                "cold_nights": 2,
+                "mae_c": 1.9681932140532175,
+                "cold_mae_c": 6.760866699218781,
+                "false_alarms": 0,
+                "misses": 2
+              },
+              "371710-99999": {
+                "nights": 86,
+                "cold_nights": 0,
+                "mae_c": 1.4389412967386226,
+                "cold_mae_c": null,
+                "false_alarms": 1,
+                "misses": 0
+              },
+              "372120-99999": {
+                "nights": 81,
+                "cold_nights": 3,
+                "mae_c": 1.2850171573136475,
+                "cold_mae_c": 3.009953807364161,
+                "false_alarms": 0,
+                "misses": 2
+              },
+              "375491-99999": {
+                "nights": 82,
+                "cold_nights": 12,
+                "mae_c": 4.203873005194529,
+                "cold_mae_c": 5.425859856574134,
+                "false_alarms": 33,
+                "misses": 0
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "0.5": {
+            "complete_nights": 575,
+            "excluded_nights": 69,
+            "cold_site_nights": 36,
+            "cold_dates": 21,
+            "cold_episode_groups": 7,
+            "mae_c": 1.9970669610676783,
+            "cold_mae_c": 2.998932500168336,
+            "warm_mae_c": 1.930152008548896,
+            "episode_macro_mae_c": 2.668315960891959,
+            "hits": 23,
+            "misses": 13,
+            "false_alarms": 28,
+            "correct_negatives": 511,
+            "site_macro_mae_c": 1.9978882000811462,
+            "site_macro_cold_mae_c": 3.2465243082844624,
+            "by_site": {
+              "339460-99999": {
+                "nights": 76,
+                "cold_nights": 4,
+                "mae_c": 2.0791813345379766,
+                "cold_mae_c": 1.2808569090303812,
+                "false_alarms": 2,
+                "misses": 0
+              },
+              "345600-99999": {
+                "nights": 85,
+                "cold_nights": 8,
+                "mae_c": 2.3957642238481736,
+                "cold_mae_c": 2.82927708527673,
+                "false_alarms": 1,
+                "misses": 5
+              },
+              "348610-99999": {
+                "nights": 81,
+                "cold_nights": 7,
+                "mae_c": 1.6027099534218279,
+                "cold_mae_c": 1.9167957417157364,
+                "false_alarms": 0,
+                "misses": 4
+              },
+              "370010-99999": {
+                "nights": 84,
+                "cold_nights": 2,
+                "mae_c": 1.9681932140532175,
+                "cold_mae_c": 6.760866699218781,
+                "false_alarms": 0,
+                "misses": 2
+              },
+              "371710-99999": {
+                "nights": 86,
+                "cold_nights": 0,
+                "mae_c": 1.4411432618548061,
+                "cold_mae_c": null,
+                "false_alarms": 1,
+                "misses": 0
+              },
+              "372120-99999": {
+                "nights": 81,
+                "cold_nights": 3,
+                "mae_c": 1.2847784190833071,
+                "cold_mae_c": 3.003507875144969,
+                "false_alarms": 0,
+                "misses": 2
+              },
+              "375491-99999": {
+                "nights": 82,
+                "cold_nights": 12,
+                "mae_c": 3.2134469937687142,
+                "cold_mae_c": 3.6878415393201767,
+                "false_alarms": 24,
+                "misses": 0
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "1": {
+            "complete_nights": 575,
+            "excluded_nights": 69,
+            "cold_site_nights": 36,
+            "cold_dates": 21,
+            "cold_episode_groups": 7,
+            "mae_c": 1.8809076354040122,
+            "cold_mae_c": 2.3706087366111728,
+            "warm_mae_c": 1.8482003262324762,
+            "episode_macro_mae_c": 2.1818922732555412,
+            "hits": 22,
+            "misses": 14,
+            "false_alarms": 10,
+            "correct_negatives": 529,
+            "site_macro_mae_c": 1.8816083080323902,
+            "site_macro_cold_mae_c": 2.9394895955995075,
+            "by_site": {
+              "339460-99999": {
+                "nights": 76,
+                "cold_nights": 4,
+                "mae_c": 2.0724761504648357,
+                "cold_mae_c": 1.5080096128865172,
+                "false_alarms": 2,
+                "misses": 0
+              },
+              "345600-99999": {
+                "nights": 85,
+                "cold_nights": 8,
+                "mae_c": 2.3626429302675525,
+                "cold_mae_c": 2.446716348653958,
+                "false_alarms": 1,
+                "misses": 5
+              },
+              "348610-99999": {
+                "nights": 81,
+                "cold_nights": 7,
+                "mae_c": 1.608624595131211,
+                "cold_mae_c": 1.9852365957814542,
+                "false_alarms": 0,
+                "misses": 4
+              },
+              "370010-99999": {
+                "nights": 84,
+                "cold_nights": 2,
+                "mae_c": 1.9681932140532175,
+                "cold_mae_c": 6.760866699218781,
+                "false_alarms": 0,
+                "misses": 2
+              },
+              "371710-99999": {
+                "nights": 86,
+                "cold_nights": 0,
+                "mae_c": 1.445547192087173,
+                "cold_mae_c": null,
+                "false_alarms": 1,
+                "misses": 0
+              },
+              "372120-99999": {
+                "nights": 81,
+                "cold_nights": 3,
+                "mae_c": 1.2843009426226262,
+                "cold_mae_c": 2.990616010706584,
+                "false_alarms": 0,
+                "misses": 2
+              },
+              "375491-99999": {
+                "nights": 82,
+                "cold_nights": 12,
+                "mae_c": 2.429473131600116,
+                "cold_mae_c": 1.9454923063497507,
+                "false_alarms": 6,
+                "misses": 1
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          }
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "groups": {
+        "primary": {
+          "anchor": {
+            "complete_nights": 91,
+            "excluded_nights": 1,
+            "cold_site_nights": 4,
+            "cold_dates": 4,
+            "cold_episode_groups": 2,
+            "mae_c": 1.3754826051000555,
+            "cold_mae_c": 2.416943521701252,
+            "warm_mae_c": 1.3275993445666674,
+            "episode_macro_mae_c": 2.630713197016032,
+            "hits": 2,
+            "misses": 2,
+            "false_alarms": 0,
+            "correct_negatives": 87,
+            "site_macro_mae_c": 1.3754826051000555,
+            "site_macro_cold_mae_c": 2.416943521701252,
+            "by_site": {
+              "349290-99999": {
+                "nights": 91,
+                "cold_nights": 4,
+                "mae_c": 1.3754826051000555,
+                "cold_mae_c": 2.416943521701252,
+                "false_alarms": 0,
+                "misses": 2
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "gfs": {
+            "complete_nights": 91,
+            "excluded_nights": 1,
+            "cold_site_nights": 4,
+            "cold_dates": 4,
+            "cold_episode_groups": 2,
+            "mae_c": 2.1585903159340836,
+            "cold_mae_c": 4.849302978515652,
+            "warm_mae_c": 2.034879388918839,
+            "episode_macro_mae_c": 4.9624650065104365,
+            "hits": 0,
+            "misses": 4,
+            "false_alarms": 0,
+            "correct_negatives": 87,
+            "site_macro_mae_c": 2.1585903159340836,
+            "site_macro_cold_mae_c": 4.849302978515652,
+            "by_site": {
+              "349290-99999": {
+                "nights": 91,
+                "cold_nights": 4,
+                "mae_c": 2.1585903159340836,
+                "cold_mae_c": 4.849302978515652,
+                "false_alarms": 0,
+                "misses": 4
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "0.25": {
+            "complete_nights": 91,
+            "excluded_nights": 1,
+            "cold_site_nights": 4,
+            "cold_dates": 4,
+            "cold_episode_groups": 2,
+            "mae_c": 1.3728703544993701,
+            "cold_mae_c": 2.3575148205356533,
+            "warm_mae_c": 1.3275993445666674,
+            "episode_macro_mae_c": 2.591094062905633,
+            "hits": 2,
+            "misses": 2,
+            "false_alarms": 0,
+            "correct_negatives": 87,
+            "site_macro_mae_c": 1.3728703544993701,
+            "site_macro_cold_mae_c": 2.3575148205356533,
+            "by_site": {
+              "349290-99999": {
+                "nights": 91,
+                "cold_nights": 4,
+                "mae_c": 1.3728703544993701,
+                "cold_mae_c": 2.3575148205356533,
+                "false_alarms": 0,
+                "misses": 2
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "0.5": {
+            "complete_nights": 91,
+            "excluded_nights": 1,
+            "cold_site_nights": 4,
+            "cold_dates": 4,
+            "cold_episode_groups": 2,
+            "mae_c": 1.3702581038986843,
+            "cold_mae_c": 2.2980861193700544,
+            "warm_mae_c": 1.3275993445666674,
+            "episode_macro_mae_c": 2.5514749287952343,
+            "hits": 2,
+            "misses": 2,
+            "false_alarms": 0,
+            "correct_negatives": 87,
+            "site_macro_mae_c": 1.3702581038986843,
+            "site_macro_cold_mae_c": 2.2980861193700544,
+            "by_site": {
+              "349290-99999": {
+                "nights": 91,
+                "cold_nights": 4,
+                "mae_c": 1.3702581038986843,
+                "cold_mae_c": 2.2980861193700544,
+                "false_alarms": 0,
+                "misses": 2
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "1": {
+            "complete_nights": 91,
+            "excluded_nights": 1,
+            "cold_site_nights": 4,
+            "cold_dates": 4,
+            "cold_episode_groups": 2,
+            "mae_c": 1.3650336026973129,
+            "cold_mae_c": 2.179228717038857,
+            "warm_mae_c": 1.3275993445666674,
+            "episode_macro_mae_c": 2.4722366605744357,
+            "hits": 2,
+            "misses": 2,
+            "false_alarms": 0,
+            "correct_negatives": 87,
+            "site_macro_mae_c": 1.3650336026973129,
+            "site_macro_cold_mae_c": 2.179228717038857,
+            "by_site": {
+              "349290-99999": {
+                "nights": 91,
+                "cold_nights": 4,
+                "mae_c": 1.3650336026973129,
+                "cold_mae_c": 2.179228717038857,
+                "false_alarms": 0,
+                "misses": 2
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          }
+        },
+        "regional": {
+          "anchor": {
+            "complete_nights": 526,
+            "excluded_nights": 118,
+            "cold_site_nights": 58,
+            "cold_dates": 27,
+            "cold_episode_groups": 6,
+            "mae_c": 2.446507178477014,
+            "cold_mae_c": 3.8886436725485027,
+            "warm_mae_c": 2.2677808608356753,
+            "episode_macro_mae_c": 4.233126831054689,
+            "hits": 40,
+            "misses": 18,
+            "false_alarms": 32,
+            "correct_negatives": 436,
+            "site_macro_mae_c": 2.4464037398850516,
+            "site_macro_cold_mae_c": 3.72366280352882,
+            "by_site": {
+              "339460-99999": {
+                "nights": 70,
+                "cold_nights": 2,
+                "mae_c": 1.830990792410697,
+                "cold_mae_c": 2.0757690429687385,
+                "false_alarms": 1,
+                "misses": 0
+              },
+              "345600-99999": {
+                "nights": 76,
+                "cold_nights": 21,
+                "mae_c": 2.703812994706034,
+                "cold_mae_c": 2.932624627976221,
+                "false_alarms": 0,
+                "misses": 7
+              },
+              "348610-99999": {
+                "nights": 76,
+                "cold_nights": 15,
+                "mae_c": 1.9794183349609664,
+                "cold_mae_c": 2.4801787109375253,
+                "false_alarms": 0,
+                "misses": 7
+              },
+              "370010-99999": {
+                "nights": 76,
+                "cold_nights": 3,
+                "mae_c": 3.36790170769945,
+                "cold_mae_c": 7.1860432942708785,
+                "false_alarms": 0,
+                "misses": 3
+              },
+              "371710-99999": {
+                "nights": 77,
+                "cold_nights": 0,
+                "mae_c": 1.2880300705154069,
+                "cold_mae_c": null,
+                "false_alarms": 0,
+                "misses": 0
+              },
+              "372120-99999": {
+                "nights": 76,
+                "cold_nights": 1,
+                "mae_c": 1.0285732229132527,
+                "cold_mae_c": 1.4422607421875568,
+                "false_alarms": 1,
+                "misses": 1
+              },
+              "375491-99999": {
+                "nights": 75,
+                "cold_nights": 16,
+                "mae_c": 4.926099055989555,
+                "cold_mae_c": 6.225100402831998,
+                "false_alarms": 30,
+                "misses": 0
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "gfs": {
+            "complete_nights": 526,
+            "excluded_nights": 118,
+            "cold_site_nights": 58,
+            "cold_dates": 27,
+            "cold_episode_groups": 6,
+            "mae_c": 2.446507178477014,
+            "cold_mae_c": 3.8886436725485027,
+            "warm_mae_c": 2.2677808608356753,
+            "episode_macro_mae_c": 4.233126831054689,
+            "hits": 40,
+            "misses": 18,
+            "false_alarms": 32,
+            "correct_negatives": 436,
+            "site_macro_mae_c": 2.4464037398850516,
+            "site_macro_cold_mae_c": 3.72366280352882,
+            "by_site": {
+              "339460-99999": {
+                "nights": 70,
+                "cold_nights": 2,
+                "mae_c": 1.830990792410697,
+                "cold_mae_c": 2.0757690429687385,
+                "false_alarms": 1,
+                "misses": 0
+              },
+              "345600-99999": {
+                "nights": 76,
+                "cold_nights": 21,
+                "mae_c": 2.703812994706034,
+                "cold_mae_c": 2.932624627976221,
+                "false_alarms": 0,
+                "misses": 7
+              },
+              "348610-99999": {
+                "nights": 76,
+                "cold_nights": 15,
+                "mae_c": 1.9794183349609664,
+                "cold_mae_c": 2.4801787109375253,
+                "false_alarms": 0,
+                "misses": 7
+              },
+              "370010-99999": {
+                "nights": 76,
+                "cold_nights": 3,
+                "mae_c": 3.36790170769945,
+                "cold_mae_c": 7.1860432942708785,
+                "false_alarms": 0,
+                "misses": 3
+              },
+              "371710-99999": {
+                "nights": 77,
+                "cold_nights": 0,
+                "mae_c": 1.2880300705154069,
+                "cold_mae_c": null,
+                "false_alarms": 0,
+                "misses": 0
+              },
+              "372120-99999": {
+                "nights": 76,
+                "cold_nights": 1,
+                "mae_c": 1.0285732229132527,
+                "cold_mae_c": 1.4422607421875568,
+                "false_alarms": 1,
+                "misses": 1
+              },
+              "375491-99999": {
+                "nights": 75,
+                "cold_nights": 16,
+                "mae_c": 4.926099055989555,
+                "cold_mae_c": 6.225100402831998,
+                "false_alarms": 30,
+                "misses": 0
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "0.25": {
+            "complete_nights": 526,
+            "excluded_nights": 118,
+            "cold_site_nights": 58,
+            "cold_dates": 27,
+            "cold_episode_groups": 6,
+            "mae_c": 2.2899868290533836,
+            "cold_mae_c": 3.201574079145525,
+            "warm_mae_c": 2.177012340794101,
+            "episode_macro_mae_c": 3.3862756256383784,
+            "hits": 40,
+            "misses": 18,
+            "false_alarms": 23,
+            "correct_negatives": 445,
+            "site_macro_mae_c": 2.289875271256053,
+            "site_macro_cold_mae_c": 3.338142697396051,
+            "by_site": {
+              "339460-99999": {
+                "nights": 70,
+                "cold_nights": 2,
+                "mae_c": 1.8291017760969737,
+                "cold_mae_c": 2.148992066546927,
+                "false_alarms": 0,
+                "misses": 0
+              },
+              "345600-99999": {
+                "nights": 76,
+                "cold_nights": 21,
+                "mae_c": 2.589929397867293,
+                "cold_mae_c": 2.5204744679883966,
+                "false_alarms": 0,
+                "misses": 7
+              },
+              "348610-99999": {
+                "nights": 76,
+                "cold_nights": 15,
+                "mae_c": 1.930911709683299,
+                "cold_mae_c": 2.2344118095306778,
+                "false_alarms": 0,
+                "misses": 7
+              },
+              "370010-99999": {
+                "nights": 76,
+                "cold_nights": 3,
+                "mae_c": 3.36790170769945,
+                "cold_mae_c": 7.1860432942708785,
+                "false_alarms": 0,
+                "misses": 3
+              },
+              "371710-99999": {
+                "nights": 77,
+                "cold_nights": 0,
+                "mae_c": 1.2880300705154069,
+                "cold_mae_c": null,
+                "false_alarms": 0,
+                "misses": 0
+              },
+              "372120-99999": {
+                "nights": 76,
+                "cold_nights": 1,
+                "mae_c": 1.0292605968559012,
+                "cold_mae_c": 1.4422607421875568,
+                "false_alarms": 1,
+                "misses": 1
+              },
+              "375491-99999": {
+                "nights": 75,
+                "cold_nights": 16,
+                "mae_c": 3.9939916400740474,
+                "cold_mae_c": 4.49667380385187,
+                "false_alarms": 22,
+                "misses": 0
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "0.5": {
+            "complete_nights": 526,
+            "excluded_nights": 118,
+            "cold_site_nights": 58,
+            "cold_dates": 27,
+            "cold_episode_groups": 6,
+            "mae_c": 2.1452395647207783,
+            "cold_mae_c": 2.583822879145177,
+            "warm_mae_c": 2.0908852223348484,
+            "episode_macro_mae_c": 2.7373357851149556,
+            "hits": 40,
+            "misses": 18,
+            "false_alarms": 17,
+            "correct_negatives": 451,
+            "site_macro_mae_c": 2.1450818270191934,
+            "site_macro_cold_mae_c": 2.989880547177832,
+            "by_site": {
+              "339460-99999": {
+                "nights": 70,
+                "cold_nights": 2,
+                "mae_c": 1.8272127597832506,
+                "cold_mae_c": 2.222215090125115,
+                "false_alarms": 0,
+                "misses": 0
+              },
+              "345600-99999": {
+                "nights": 76,
+                "cold_nights": 21,
+                "mae_c": 2.502148784034533,
+                "cold_mae_c": 2.2027922464984067,
+                "false_alarms": 0,
+                "misses": 7
+              },
+              "348610-99999": {
+                "nights": 76,
+                "cold_nights": 15,
+                "mae_c": 1.8880570534056476,
+                "cold_mae_c": 2.017281551057244,
+                "false_alarms": 0,
+                "misses": 7
+              },
+              "370010-99999": {
+                "nights": 76,
+                "cold_nights": 3,
+                "mae_c": 3.36790170769945,
+                "cold_mae_c": 7.1860432942708785,
+                "false_alarms": 0,
+                "misses": 3
+              },
+              "371710-99999": {
+                "nights": 77,
+                "cold_nights": 0,
+                "mae_c": 1.2880300705154069,
+                "cold_mae_c": null,
+                "false_alarms": 0,
+                "misses": 0
+              },
+              "372120-99999": {
+                "nights": 76,
+                "cold_nights": 1,
+                "mae_c": 1.0299479707985497,
+                "cold_mae_c": 1.4422607421875568,
+                "false_alarms": 1,
+                "misses": 1
+              },
+              "375491-99999": {
+                "nights": 75,
+                "cold_nights": 16,
+                "mae_c": 3.112274442897516,
+                "cold_mae_c": 2.8686903589277906,
+                "false_alarms": 16,
+                "misses": 0
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          },
+          "1": {
+            "complete_nights": 526,
+            "excluded_nights": 118,
+            "cold_site_nights": 58,
+            "cold_dates": 27,
+            "cold_episode_groups": 6,
+            "mae_c": 2.0049034845963534,
+            "cold_mae_c": 2.086744349646739,
+            "warm_mae_c": 1.9947608132866899,
+            "episode_macro_mae_c": 3.1489478882238218,
+            "hits": 38,
+            "misses": 20,
+            "false_alarms": 7,
+            "correct_negatives": 461,
+            "site_macro_mae_c": 2.0046001400978697,
+            "site_macro_cold_mae_c": 2.728603958875802,
+            "by_site": {
+              "339460-99999": {
+                "nights": 70,
+                "cold_nights": 2,
+                "mae_c": 1.8234347271558042,
+                "cold_mae_c": 2.368661137281492,
+                "false_alarms": 0,
+                "misses": 0
+              },
+              "345600-99999": {
+                "nights": 76,
+                "cold_nights": 21,
+                "mae_c": 2.4104397815026615,
+                "cold_mae_c": 1.870892999240206,
+                "false_alarms": 0,
+                "misses": 7
+              },
+              "348610-99999": {
+                "nights": 76,
+                "cold_nights": 15,
+                "mae_c": 1.895608633162414,
+                "cold_mae_c": 2.055542888491529,
+                "false_alarms": 0,
+                "misses": 7
+              },
+              "370010-99999": {
+                "nights": 76,
+                "cold_nights": 3,
+                "mae_c": 3.36790170769945,
+                "cold_mae_c": 7.1860432942708785,
+                "false_alarms": 0,
+                "misses": 3
+              },
+              "371710-99999": {
+                "nights": 77,
+                "cold_nights": 0,
+                "mae_c": 1.2880300705154069,
+                "cold_mae_c": null,
+                "false_alarms": 0,
+                "misses": 0
+              },
+              "372120-99999": {
+                "nights": 76,
+                "cold_nights": 1,
+                "mae_c": 1.031322718683847,
+                "cold_mae_c": 1.4422607421875568,
+                "false_alarms": 1,
+                "misses": 1
+              },
+              "375491-99999": {
+                "nights": 75,
+                "cold_nights": 16,
+                "mae_c": 2.2154633419655045,
+                "cold_mae_c": 1.4482226917831524,
+                "false_alarms": 6,
+                "misses": 2
+              }
+            },
+            "crossing_scope": "point <0 diagnostic, not original detector alerts"
+          }
+        }
+      }
+    }
+  ],
+  "selection_saved_at_utc": "2026-10-14T20:10:42.412607+00:00",
+  "heldout_targets_loaded_in_selection": false,
+  "observations_loaded_years": [
+    2022,
+    2023,
+    2024
+  ],
+  "scope": "research refinement; cannot discover anchor misses; detector unchanged"
+}

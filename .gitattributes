@@ -1,2 +1,9 @@
-# Preserve PDF bytes and avoid text diffs for presentations.
-*.pdf binary
+# Frozen scientific evidence is verified by byte hashes. Never rewrite newlines.
+data/** -text
+models/** -text
+*.json -text
+*.geojson -text
+*.csv -text
+*.npz -text
+*.tif -text
+*.cbm -text

@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "candidates": ["identity", "night_min_median", "lead_hour_median", "ridge_min", "catboost_min", "ridge_hourly"],
+  "folds": [
+    {"train_years": [2022], "validation_year": 2023},
+    {"train_years": [2022, 2023], "validation_year": 2024}
+  ],
+  "final_train_years": [2022, 2023],
+  "historical_check_year": 2025,
+  "selection_metric": "pooled_validation_night_min_mae",
+  "ridge_alpha": 10.0,
+  "catboost": {"iterations": 200, "depth": 3, "learning_rate": 0.03, "l2_leaf_reg": 10.0, "loss_function": "MAE", "random_seed": 20261012, "thread_count": 2, "allow_writing_files": false, "verbose": false},
+  "bootstrap": {"replicates": 5000, "block_days": [3, 7, 14], "seed": 20261012},
+  "warning_margins_c": [0.0, 1.0, 2.0, 3.0],
+  "event_thresholds_c": [-2.0, 0.0, 1.0],
+  "diagnostic_ridge_feature_groups": {
+    "gfs_min_only": ["gfs_min"],
+    "calendar_only": ["season_sin", "season_cos"],
+    "profile_without_calendar": ["gfs_min", "gfs_max", "gfs_mean", "gfs_range", "evening_temperature", "morning_temperature", "overnight_change", "early_cooling", "late_warming", "min_hour_index"],
+    "full_profile_and_calendar": ["gfs_min", "gfs_max", "gfs_mean", "gfs_range", "evening_temperature", "morning_temperature", "overnight_change", "early_cooling", "late_warming", "min_hour_index", "season_sin", "season_cos"]
+  },
+  "status": "retrospective_exploration; 2025 outcomes already known from earlier reports and demos"
+}

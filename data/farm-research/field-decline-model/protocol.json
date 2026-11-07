@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "target": "core NDVI/NDMI decline <= -0.10 on original same-baseline 6-8-day labels; no disease label",
+  "created_at_utc": "2026-10-19T18:53:21.335745+00:00",
+  "source_observations_sha256": "47cb4eee276b67264d3bd488d1852f639280e7359a4911937b7c1dcff3179136",
+  "old_model_sha256": "b518c04fc57182e5c31abb6db72286c178a6d4d0a6b06a6ef15c75acd65790dc",
+  "holdout_ids": [
+    "R27",
+    "R26",
+    "R25",
+    "R24",
+    "R23"
+  ],
+  "diagnosis": "2024 non-holdout only; source support and boundary checks are audits, never new post-test target filters",
+  "folds": [
+    "2024-06-01",
+    "2024-07-01",
+    "2024-08-01",
+    "2024-09-01",
+    "2024-10-01"
+  ],
+  "fit_rule": "non-holdout 2024 records whose target < validation month start; validate issue >= month start, target < next month; crossing pairs purged",
+  "candidates": [
+    {
+      "id": "basic_d2_w1",
+      "features": "basic",
+      "depth": 2,
+      "positive_weight": 1
+    },
+    {
+      "id": "basic_d2_w3",
+      "features": "basic",
+      "depth": 2,
+      "positive_weight": 3
+    },
+    {
+      "id": "basic_d3_w1",
+      "features": "basic",
+      "depth": 3,
+      "positive_weight": 1
+    },
+    {
+      "id": "basic_d3_w3",
+      "features": "basic",
+      "depth": 3,
+      "positive_weight": 3
+    },
+    {
+      "id": "history_pixels_d2_w1",
+      "features": "history_pixels",
+      "depth": 2,
+      "positive_weight": 1
+    },
+    {
+      "id": "history_pixels_d2_w3",
+      "features": "history_pixels",
+      "depth": 2,
+      "positive_weight": 3
+    },
+    {
+      "id": "history_pixels_d3_w1",
+      "features": "history_pixels",
+      "depth": 3,
+      "positive_weight": 1
+    },
+    {
+      "id": "history_pixels_d3_w3",
+      "features": "history_pixels",
+      "depth": 3,
+      "positive_weight": 3
+    }
+  ],
+  "iterations": 120,
+  "learning_rate": 0.04,
+  "l2_leaf_reg": 10,
+  "random_seed": 1729,
+  "thread_count": 2,
+  "thresholds": [
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    0.95,
+    0.975,
+    0.99,
+    1.01
+  ],
+  "selection": "per index: zero added pooled false-positive rows AND false-positive issue dates vs original fixed model across all chronological OOF folds; >=2 TP rows on >=2 issue dates; maximize date-balanced recall then minimize Brier then prefer listed candidate and higher threshold",
+  "negative_alarm_budget": 0,
+  "final_fit": "all eligible non-holdout 2024 pairs only, no 2025/2026 labels/features used to select or fit",
+  "minimum_event_dates": 2,
+  "minimum_true_positives": 2,
+  "zero_event_training": "smoothed observed prevalence (constant); no synthetic positive examples",
+  "features": {
+    "basic": [
+      "ndvi",
+      "ndmi",
+      "ndvi_slope",
+      "ndmi_slope",
+      "past_lag",
+      "doy_sin",
+      "doy_cos"
+    ],
+    "history_pixels": [
+      "ndvi",
+      "ndmi",
+      "ndvi_slope",
+      "ndmi_slope",
+      "past_lag",
+      "doy_sin",
+      "doy_cos",
+      "ndvi_30d_slope",
+      "ndmi_30d_slope",
+      "ndvi_below_30d_peak",
+      "ndmi_below_30d_peak",
+      "ndvi_history_sd",
+      "ndmi_history_sd",
+      "history_count",
+      "history_days",
+      "ndvi_iqr",
+      "ndmi_iqr",
+      "coverage",
+      "ndvi_fraction_fallen_010",
+      "ndmi_fraction_fallen_010",
+      "common_past_coverage",
+      "ndvi_iqr_change",
+      "ndmi_iqr_change"
+    ]
+  },
+  "historical_features": "same fragment/baseline, past 30 calendar days including issue; raw spatial features only issue and previous scenes; no future scene, future acquisition lead, ID or target cloud feature",
+  "test": "2026 only after frozen selection and models; 2024 five southern fragments also held out spatially; neither may influence tuning",
+  "test_status": "2026 previously examined; new predictions evaluated without tuning, not a pristine external test",
+  "deployment": "no promotion or operational write; retain previous detector regardless of test result",
+  "score": "class-weighted event score, not a calibrated probability or treatment instruction",
+  "historical_live_backtest": false,
+  "sources": "immutable same-source processed Sentinel archive; no local disease/operation truth",
+  "no_guarantee": "Zero empirical false alarms on 2024 cannot guarantee zero on a different season."
+}

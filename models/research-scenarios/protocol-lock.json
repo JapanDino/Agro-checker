@@ -1,0 +1,151 @@
+{
+  "protocol": {
+    "schema_version": 1,
+    "station_id": "34929",
+    "source_config": "single_run.json",
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      }
+    ],
+    "final_train_years": [
+      2022,
+      2023
+    ],
+    "historical_year": 2025,
+    "fresh_year": 2026,
+    "candidates": [
+      {
+        "name": "gfs",
+        "kind": "gfs"
+      },
+      {
+        "name": "previous_hourly",
+        "kind": "previous_hourly"
+      },
+      {
+        "name": "smooth_ridge_10",
+        "kind": "smooth",
+        "alpha": 10.0,
+        "near_zero_weight": 1.0
+      },
+      {
+        "name": "smooth_ridge_100",
+        "kind": "smooth",
+        "alpha": 100.0,
+        "near_zero_weight": 1.0
+      },
+      {
+        "name": "smooth_ridge_100_cold",
+        "kind": "smooth",
+        "alpha": 100.0,
+        "near_zero_weight": 4.0
+      },
+      {
+        "name": "analog_temperature_16",
+        "kind": "analog",
+        "feature_groups": [
+          "temperature"
+        ],
+        "neighbors": 16,
+        "event_threshold": 0.25
+      },
+      {
+        "name": "analog_weather_8",
+        "kind": "analog",
+        "feature_groups": [
+          "temperature",
+          "humidity",
+          "dewpoint_spread",
+          "wind",
+          "cloud"
+        ],
+        "neighbors": 8,
+        "event_threshold": 0.25
+      },
+      {
+        "name": "analog_weather_16",
+        "kind": "analog",
+        "feature_groups": [
+          "temperature",
+          "humidity",
+          "dewpoint_spread",
+          "wind",
+          "cloud"
+        ],
+        "neighbors": 16,
+        "event_threshold": 0.25
+      },
+      {
+        "name": "analog_weather_32",
+        "kind": "analog",
+        "feature_groups": [
+          "temperature",
+          "humidity",
+          "dewpoint_spread",
+          "wind",
+          "cloud"
+        ],
+        "neighbors": 32,
+        "event_threshold": 0.25
+      }
+    ],
+    "targets": [
+      "temperature",
+      "humidity",
+      "wind"
+    ],
+    "weather_threshold_c": 0.0,
+    "high_humidity_threshold_pct": 90.0,
+    "low_wind_threshold_ms": 2.0,
+    "selection_weights": {
+      "miss_rate": 0.25,
+      "false_alarm_rate": 0.1,
+      "cold_duration_mae_over_14": 0.15,
+      "balanced_cold_dose_mae_over_28": 0.1,
+      "cold_onset_error_with_miss_penalty_over_14": 0.1,
+      "temperature_mae_over_3": 0.1,
+      "humidity_mae_over_20": 0.1,
+      "wind_mae_over_5": 0.05,
+      "high_humidity_duration_mae_over_14": 0.05
+    },
+    "point_selection": "one fixed registry; choose T/RH/wind marginal point models separately by pooled available-hour validation MAE; decision scenario model chosen by balanced loss; no changes after either evaluation year",
+    "wind_target_valid_range_ms": [
+      0.0,
+      80.0
+    ],
+    "observation_sources": [
+      "isd_lite",
+      "metar"
+    ],
+    "wind_units": "Meteostat wspd km/h divided by 3.6; GFS 10m vector speed m/s; station sensor height not independently confirmed",
+    "analog_policy": "equal group mean squared standardized forecast distance; scaler trained only on prior seasons; joint complete-night T/RH/wind residual paths transported onto current GFS; RH clipped 0..100, wind clipped >=0",
+    "event_schedule_policy": "analog event = cold member fraction >=0.25; select one whole conditional cold/warm path minimizing average absolute duration/14 + first-sample/14 + cold-dose/28 + mask disagreement/14; point T/RH/wind are marginal medians and distinct from warning path",
+    "missing_policy": "fit scalar heads per available target; analog library requires complete T/RH/wind; score each target on available pairs; night aggregates require full relevant target; no imputation",
+    "new_targets": "wind speed, cold degree-hours below 0, high-RH hourly bins >=90%, low-wind hourly bins <2m/s, cold-and-high-RH joint bins; meteorological proxies, not tissue damage, leaf wetness, disease or yield",
+    "uncertainty": "empirical analog member frequencies and 10..90 percentile intervals; evaluate CRPS/Brier/coverage/reliability counts; no guaranteed coverage or calibrated crop probabilities",
+    "bootstrap": {
+      "replicates": 2000,
+      "block_days": [
+        3,
+        7,
+        14
+      ],
+      "seed": 20261012
+    },
+    "status": "fixed before validation; 2025 already viewed historical control, excluded from fitting/selection; attempt unseen completed spring 2026 only after choice frozen",
+    "deployment": "research only; keep field GFS and existing demonstrations unchanged"
+  },
+  "protocol_sha256": "34b8c2f3eb19ed99ec3bd9bf1f7c6e5961cd4ccc1fe38f31c301ff322ac8d6d9",
+  "saved_at_utc": "2026-10-12T21:09:53.723754+00:00"
+}

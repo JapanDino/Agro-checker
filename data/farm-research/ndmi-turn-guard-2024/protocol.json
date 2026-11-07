@@ -1,0 +1,87 @@
+{
+  "created_at_utc": "2026-10-21T13:45:53.152048+00:00",
+  "inputs": {
+    "data/farm-research/spectral-triage/meta-oof.json": "db99f14d6995f59527360fc2b76b326a60afe953d618a21fd13fcd6175fe73b1",
+    "data/farm-research/spectral-triage/pool-2024.json": "e67e28ac79c969bf96a98a3b29dea1649c1b51a9559d898047a9566783c07a79",
+    "data/farm-research/spectral-triage/protocol.json": "e058523da1fd8077859246e76d531645b6624e2bdadb516d2be5b2046d826478",
+    "data/farm-research/field-index-model/observations.json": "47cb4eee276b67264d3bd488d1852f639280e7359a4911937b7c1dcff3179136",
+    "data/farm-research/triage-outcomes-2024/frozen-evaluation.json": "f51f8344fcefb4de6ce54d334f5562e90910a0ce0364a216ec63761d2755a90a",
+    "data/farm-research/triage-outcomes-2024/report.json": "99ae0e46315472c2450bc04e3f861d5c3884bde3ac1e162e1c9c9821ff0a1528",
+    "data/farm-research/triage-outcomes-2024/recovery-ledger.json": "cb4b2faceb7316b96dc73340a4d6c28a3444a4c29a37a88d7f5d9c7a91b691eb",
+    "data/farm-research/triage-retention-2024/protocol.json": "7d27f153a6e0ef4250da84dabcf91974dd5d04030ec648498c1d632fdfe2eded",
+    "data/farm-research/triage-retention-2024/candidate-comparison-2024.json": "d8197418a5d8dad50e8a616a5a3956ab7cbbfc082e503f32243b2d16302eb8b8",
+    "agro_checker/ndmi_turn_guard.py": "896d0d00c6a2dd14ecdeb93ae702ac03869962add1c9d209560b13474e1484b1",
+    "agro_checker/triage_retention.py": "784d5d87bfc9b2e2c17a0be5d545de39a1b91cc1f3472f083438fb92c573e3ca",
+    "agro_checker/triage_outcomes.py": "391197a9a6c4179441eb4ccac0c4736d1d587898bac12bc456927a4e461dd011",
+    "agro_checker/spectral_triage.py": "fa830e70eed21da8ae93f3ad85eabe7b60ac3da5d67b4a5677123485f8d40dc6"
+  },
+  "variants": [
+    {
+      "id": "baseline",
+      "kind": "reference"
+    },
+    {
+      "id": "extra",
+      "kind": "reference"
+    },
+    {
+      "id": "old_hybrid",
+      "kind": "reference"
+    },
+    {
+      "id": "weak_round_0.05",
+      "kind": "weak_round",
+      "threshold": 0.05
+    },
+    {
+      "id": "weak_round_0.1",
+      "kind": "weak_round",
+      "threshold": 0.1
+    },
+    {
+      "id": "weak_round_0.2",
+      "kind": "weak_round",
+      "threshold": 0.2
+    },
+    {
+      "id": "divergent",
+      "kind": "divergent"
+    },
+    {
+      "id": "divergent_negative_ndmi",
+      "kind": "divergent_negative"
+    },
+    {
+      "id": "divergent_low_ndvi",
+      "kind": "divergent_low",
+      "ndvi_max": 0.3
+    },
+    {
+      "id": "weak_divergent_round",
+      "kind": "weak_divergent_round",
+      "threshold": 0.1
+    },
+    {
+      "id": "margin_0.1",
+      "kind": "margin",
+      "margin": 0.1
+    }
+  ],
+  "budget_k": 3,
+  "fixed_parameters": {
+    "seed": 20241021
+  },
+  "primary_labels": "Original known and94 month-boundary outcomes only:368 known/331 unknown on unchanged699 candidates. All3 additional-tile responses remain UNKNOWN, including cloud-mask conflict. Do not retune quality or recovery.",
+  "references": "Fixed baseline, Extra and old protect_0.2_margin_0; causal monthly OOF2024 scores unchanged.",
+  "design": "Three Sep29 losses motivate guards. This is2024 development reuse, not independent evidence. No field/date-ID-specific rescue.",
+  "divergence": "Input pair ONLY: NDVI slope<0, NDMI slope>0; all11 boundary common-pixel deltas supported, max NDVI delta<0 and min NDMI delta>0.",
+  "rules": "Keep old strong baseline anchors (weekly decline>=.20). Weak-round guard protects entire baseline when round maximum recent_drop<threshold. Divergence variants protect baseline rows only, optionally currentNDMI<=0 and NDVI<=.30. Weak-divergent-round requires weak max<.10 AND all baseline choices divergent. Margin rule requires Extra score gain>.10. Same3slots, deterministic hash ties.",
+  "repair_acceptance": "Retain EVERY known baselineTP (includes June4 and Sep3), TP>=old_hybrid, knownFP<=both baseline and old_hybrid, paired worst-case negative growth vs old_hybrid<=0 and strict paired precision lower difference vs old_hybrid>0. Counts/retention refer to identities where stated; do NOT require all old_hybridTP identities when round capacity makes union impossible.",
+  "global_acceptance": "Repair must also have worst-case negative growth vs baseline<=0 and strict paired lower gain vs baseline>0. No operational promotion even if development gate passes.",
+  "selection": "Fixed2024 table only. Prefer maximum lower paired gain vs old hybrid, then fewer known negatives, then listed order. Default old_hybrid if no repair qualifies. Report global gate separately; never silently replace it.",
+  "forward_check": "June-Oct2024: choose variant at month start using only prior ISSUE pools with target<monthstart labels; keep every prior candidate, mask unavailable targets UNKNOWN. >=20 known rows/5 issue dates otherwise old_hybrid. Apply fixed repair gate on past pools, same selection order. Never tune on current month or drop unknowns. Design still informed by September, not a blind validation.",
+  "test_policy": "No2025/2026 matrix/outcome analysis; no refit of original point models, detectors, base classifiers or intervals.",
+  "labels_are": "Future spectral index changes only, not inspection usefulness, crop damage or irrigation/disease diagnosis.",
+  "human_visits_created": 0,
+  "production_promoted": false
+}

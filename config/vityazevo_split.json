@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "years": [2022, 2023, 2024],
+  "sites": [
+    {"id": "vityazevo_airport", "name": "Витязево, аэропорт", "latitude": 45.002, "longitude": 37.347, "elevation_m": 53, "role": "development"},
+    {"id": "anapa_synoptic", "name": "Анапа, синоптическая позиция", "latitude": 44.883, "longitude": 37.283, "elevation_m": 32, "role": "spatial_check_only"}
+  ],
+  "observation_policy": "Full annual ISD archive preserved separately per exact lat/lon/elevation. T QC1/5 only; unknown positions quarantined; conflicting same-site/same-UTC values unavailable. No merging, rounding, interpolation or gap filling.",
+  "season": "March-May; night16UTC through05UTC next day; exact hourly observations; retain partial nights for slot scores, require14/14 for sampled-night minimum and crossing diagnostics",
+  "forecast": "Original GFS06UTC, leads10-23, one issue, at each physical position;15UTC scenario issue; archive LastModified+10min proxy, first publication not proven",
+  "candidates": ["gfs", "bias", "lead_bias", "ridge_temperature_10", "ridge_weather_10", "ridge_weather_100", "ridge_weather_1000"],
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "selection": "Vityazevo only. Candidate must reduce all-slot MAE by at least5% in each validation year, not worsen cold-slot MAE or complete14-slot night-minimum MAE, and not add missed or false-cold complete14-slot nights in either year. At least one cold slot and complete cold night required in each year. Rank eligible by equal-year all-slot MAE; ties registry order. Otherwise GFS.",
+  "training": "Each season uses only previous Vityazevo years; all training labels2022-2023. Final artifact retains the2024-fold fit2022-2023; no refit on2024 and no operational deployment.",
+  "spatial_policy": "Anapa labels never enter fit/selection. Evaluate after immutable selection. Sparse already inspected archive is not a new blind test.",
+  "threshold_c": 0,
+  "bootstrap": {"replicates": 2000, "seed": 370010, "block_nights": 7, "year_weighting": "equal"},
+  "protected": "Original detector/threshold/mask/timing, point model, interval and prior Krymsk selection remain immutable. Temperature crossings are diagnostics only; original detector not transferred.",
+  "control_years": "No2025-2026 download, training, calibration, selection or evaluation",
+  "production_admitted": false
+}

@@ -1,0 +1,628 @@
+{
+  "created_at_utc": "2026-10-20T20:36:41.647328+00:00",
+  "frozen_sha256": "90c486a8e9ac6082e674e6cc2c468bf24483c0eccb5ea1703663a39927afcd4b",
+  "selected": [
+    {
+      "index": "ndvi",
+      "candidate": "history_season_extra_10",
+      "gate": "joint_momentum",
+      "threshold": 0.5,
+      "metrics": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 40,
+        "tn": 230,
+        "recall": 0.09090909090909091,
+        "precision": 1.0,
+        "date_balanced_recall": 0.04622218478677682,
+        "tp_dates": 3,
+        "fp_dates": 0,
+        "event_dates": 11,
+        "pairs": 274,
+        "dates": 25
+      },
+      "eligible": true,
+      "enabled": true
+    },
+    {
+      "index": "ndmi",
+      "candidate": "basic_logit_1.0",
+      "gate": "joint_momentum",
+      "threshold": 0.85,
+      "metrics": {
+        "tp": 9,
+        "fp": 0,
+        "fn": 27,
+        "tn": 238,
+        "recall": 0.25,
+        "precision": 1.0,
+        "date_balanced_recall": 0.11867134434585948,
+        "tp_dates": 2,
+        "fp_dates": 0,
+        "event_dates": 12,
+        "pairs": 274,
+        "dates": 25
+      },
+      "eligible": true,
+      "enabled": true
+    }
+  ],
+  "diagnostic": [
+    {
+      "index": "ndvi",
+      "candidate": "history_season_extra_10",
+      "gate": "joint_momentum",
+      "threshold": 0.5,
+      "metrics": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 40,
+        "tn": 230,
+        "recall": 0.09090909090909091,
+        "precision": 1.0,
+        "date_balanced_recall": 0.04622218478677682,
+        "tp_dates": 3,
+        "fp_dates": 0,
+        "event_dates": 11,
+        "pairs": 274,
+        "dates": 25
+      },
+      "eligible": true,
+      "enabled": true
+    },
+    {
+      "index": "ndmi",
+      "candidate": "basic_logit_1.0",
+      "gate": "joint_momentum",
+      "threshold": 0.85,
+      "metrics": {
+        "tp": 9,
+        "fp": 0,
+        "fn": 27,
+        "tn": 238,
+        "recall": 0.25,
+        "precision": 1.0,
+        "date_balanced_recall": 0.11867134434585948,
+        "tp_dates": 2,
+        "fp_dates": 0,
+        "event_dates": 12,
+        "pairs": 274,
+        "dates": 25
+      },
+      "eligible": true,
+      "enabled": true
+    }
+  ],
+  "results": {
+    "spatial2024": {
+      "ndvi": {
+        "persistence": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 10,
+          "tn": 74,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 5,
+          "pairs": 84,
+          "dates": 26
+        },
+        "legacy": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 10,
+          "tn": 74,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 5,
+          "pairs": 84,
+          "dates": 26
+        },
+        "new": {
+          "tp": 7,
+          "fp": 0,
+          "fn": 3,
+          "tn": 74,
+          "recall": 0.7,
+          "precision": 1.0,
+          "date_balanced_recall": 0.6885245901639344,
+          "tp_dates": 4,
+          "fp_dates": 0,
+          "event_dates": 5,
+          "pairs": 84,
+          "dates": 26
+        },
+        "rejected_diagnostic": {
+          "tp": 7,
+          "fp": 0,
+          "fn": 3,
+          "tn": 74,
+          "recall": 0.7,
+          "precision": 1.0,
+          "date_balanced_recall": 0.6885245901639344,
+          "tp_dates": 4,
+          "fp_dates": 0,
+          "event_dates": 5,
+          "pairs": 84,
+          "dates": 26
+        },
+        "point_mae": {
+          "legacy": 0.05262611974255107,
+          "persistence": 0.06082804361119484
+        },
+        "passes_vs_legacy": true,
+        "passes_vs_persistence": true
+      },
+      "ndmi": {
+        "persistence": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 11,
+          "tn": 73,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 6,
+          "pairs": 84,
+          "dates": 26
+        },
+        "legacy": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 11,
+          "tn": 73,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 6,
+          "pairs": 84,
+          "dates": 26
+        },
+        "new": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 9,
+          "tn": 73,
+          "recall": 0.18181818181818182,
+          "precision": 1.0,
+          "date_balanced_recall": 0.12121212121212122,
+          "tp_dates": 1,
+          "fp_dates": 0,
+          "event_dates": 6,
+          "pairs": 84,
+          "dates": 26
+        },
+        "rejected_diagnostic": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 9,
+          "tn": 73,
+          "recall": 0.18181818181818182,
+          "precision": 1.0,
+          "date_balanced_recall": 0.12121212121212122,
+          "tp_dates": 1,
+          "fp_dates": 0,
+          "event_dates": 6,
+          "pairs": 84,
+          "dates": 26
+        },
+        "point_mae": {
+          "legacy": 0.052968261738573434,
+          "persistence": 0.05849558616815231
+        },
+        "passes_vs_legacy": true,
+        "passes_vs_persistence": true
+      }
+    },
+    "all2026": {
+      "ndvi": {
+        "persistence": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 50,
+          "tn": 449,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 18,
+          "pairs": 499,
+          "dates": 27
+        },
+        "legacy": {
+          "tp": 0,
+          "fp": 3,
+          "fn": 50,
+          "tn": 446,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 3,
+          "event_dates": 18,
+          "pairs": 499,
+          "dates": 27
+        },
+        "new": {
+          "tp": 12,
+          "fp": 17,
+          "fn": 38,
+          "tn": 432,
+          "recall": 0.24,
+          "precision": 0.41379310344827586,
+          "date_balanced_recall": 0.21007514172851727,
+          "tp_dates": 8,
+          "fp_dates": 10,
+          "event_dates": 18,
+          "pairs": 499,
+          "dates": 27
+        },
+        "rejected_diagnostic": {
+          "tp": 12,
+          "fp": 17,
+          "fn": 38,
+          "tn": 432,
+          "recall": 0.24,
+          "precision": 0.41379310344827586,
+          "date_balanced_recall": 0.21007514172851727,
+          "tp_dates": 8,
+          "fp_dates": 10,
+          "event_dates": 18,
+          "pairs": 499,
+          "dates": 27
+        },
+        "point_mae": {
+          "legacy": 0.04603806036469104,
+          "persistence": 0.04412610735164123
+        },
+        "passes_vs_legacy": false,
+        "passes_vs_persistence": false
+      },
+      "ndmi": {
+        "persistence": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 42,
+          "tn": 457,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 16,
+          "pairs": 499,
+          "dates": 27
+        },
+        "legacy": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 42,
+          "tn": 455,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 2,
+          "event_dates": 16,
+          "pairs": 499,
+          "dates": 27
+        },
+        "new": {
+          "tp": 3,
+          "fp": 3,
+          "fn": 39,
+          "tn": 454,
+          "recall": 0.07142857142857142,
+          "precision": 0.5,
+          "date_balanced_recall": 0.06207881943632205,
+          "tp_dates": 3,
+          "fp_dates": 3,
+          "event_dates": 16,
+          "pairs": 499,
+          "dates": 27
+        },
+        "rejected_diagnostic": {
+          "tp": 3,
+          "fp": 3,
+          "fn": 39,
+          "tn": 454,
+          "recall": 0.07142857142857142,
+          "precision": 0.5,
+          "date_balanced_recall": 0.06207881943632205,
+          "tp_dates": 3,
+          "fp_dates": 3,
+          "event_dates": 16,
+          "pairs": 499,
+          "dates": 27
+        },
+        "point_mae": {
+          "legacy": 0.04454492577767054,
+          "persistence": 0.04308085008692128
+        },
+        "passes_vs_legacy": false,
+        "passes_vs_persistence": false
+      }
+    },
+    "temporal2026": {
+      "ndvi": {
+        "persistence": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 32,
+          "tn": 365,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 16,
+          "pairs": 397,
+          "dates": 26
+        },
+        "legacy": {
+          "tp": 0,
+          "fp": 3,
+          "fn": 32,
+          "tn": 362,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 3,
+          "event_dates": 16,
+          "pairs": 397,
+          "dates": 26
+        },
+        "new": {
+          "tp": 6,
+          "fp": 16,
+          "fn": 26,
+          "tn": 349,
+          "recall": 0.1875,
+          "precision": 0.2727272727272727,
+          "date_balanced_recall": 0.15645989727380483,
+          "tp_dates": 6,
+          "fp_dates": 10,
+          "event_dates": 16,
+          "pairs": 397,
+          "dates": 26
+        },
+        "rejected_diagnostic": {
+          "tp": 6,
+          "fp": 16,
+          "fn": 26,
+          "tn": 349,
+          "recall": 0.1875,
+          "precision": 0.2727272727272727,
+          "date_balanced_recall": 0.15645989727380483,
+          "tp_dates": 6,
+          "fp_dates": 10,
+          "event_dates": 16,
+          "pairs": 397,
+          "dates": 26
+        },
+        "point_mae": {
+          "legacy": 0.04781381755927047,
+          "persistence": 0.0429376495245876
+        },
+        "passes_vs_legacy": false,
+        "passes_vs_persistence": false
+      },
+      "ndmi": {
+        "persistence": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 27,
+          "tn": 370,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 15,
+          "pairs": 397,
+          "dates": 26
+        },
+        "legacy": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 27,
+          "tn": 368,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 2,
+          "event_dates": 15,
+          "pairs": 397,
+          "dates": 26
+        },
+        "new": {
+          "tp": 0,
+          "fp": 3,
+          "fn": 27,
+          "tn": 367,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 3,
+          "event_dates": 15,
+          "pairs": 397,
+          "dates": 26
+        },
+        "rejected_diagnostic": {
+          "tp": 0,
+          "fp": 3,
+          "fn": 27,
+          "tn": 367,
+          "recall": 0.0,
+          "precision": 0.0,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 3,
+          "event_dates": 15,
+          "pairs": 397,
+          "dates": 26
+        },
+        "point_mae": {
+          "legacy": 0.04422644946909039,
+          "persistence": 0.04198205133522336
+        },
+        "passes_vs_legacy": false,
+        "passes_vs_persistence": false
+      }
+    },
+    "spatial2026": {
+      "ndvi": {
+        "persistence": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 18,
+          "tn": 84,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24
+        },
+        "legacy": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 18,
+          "tn": 84,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24
+        },
+        "new": {
+          "tp": 6,
+          "fp": 1,
+          "fn": 12,
+          "tn": 83,
+          "recall": 0.3333333333333333,
+          "precision": 0.8571428571428571,
+          "date_balanced_recall": 0.30769230769230765,
+          "tp_dates": 4,
+          "fp_dates": 1,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24
+        },
+        "rejected_diagnostic": {
+          "tp": 6,
+          "fp": 1,
+          "fn": 12,
+          "tn": 83,
+          "recall": 0.3333333333333333,
+          "precision": 0.8571428571428571,
+          "date_balanced_recall": 0.30769230769230765,
+          "tp_dates": 4,
+          "fp_dates": 1,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24
+        },
+        "point_mae": {
+          "legacy": 0.048240167051542444,
+          "persistence": 0.05776571482419968
+        },
+        "passes_vs_legacy": false,
+        "passes_vs_persistence": false
+      },
+      "ndmi": {
+        "persistence": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 15,
+          "tn": 87,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24
+        },
+        "legacy": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 15,
+          "tn": 87,
+          "recall": 0.0,
+          "precision": null,
+          "date_balanced_recall": 0.0,
+          "tp_dates": 0,
+          "fp_dates": 0,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24
+        },
+        "new": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 12,
+          "tn": 87,
+          "recall": 0.2,
+          "precision": 1.0,
+          "date_balanced_recall": 0.1818181818181818,
+          "tp_dates": 3,
+          "fp_dates": 0,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24
+        },
+        "rejected_diagnostic": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 12,
+          "tn": 87,
+          "recall": 0.2,
+          "precision": 1.0,
+          "date_balanced_recall": 0.1818181818181818,
+          "tp_dates": 3,
+          "fp_dates": 0,
+          "event_dates": 9,
+          "pairs": 102,
+          "dates": 24
+        },
+        "point_mae": {
+          "legacy": 0.052562991576082525,
+          "persistence": 0.05539137059822679
+        },
+        "passes_vs_legacy": true,
+        "passes_vs_persistence": true
+      }
+    }
+  },
+  "test_constraints": {
+    "ndvi": false,
+    "ndmi": false
+  },
+  "protected_files": 1472,
+  "changed_files": [],
+  "production_promoted": false,
+  "point_and_intervals_unchanged": true,
+  "year2025": "unavailable in existing satellite archive; not evaluated",
+  "evaluation_code_sha256": "859f9b36831fc05ed59be5ac521f40cd61b90ce68ec5e90c93d979fe9eab537b"
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "final_calibration_year": 2024,
+  "evaluation_years": [2025, 2026],
+  "base_coverage": 0.9,
+  "minimum_pool_nights": 30,
+  "candidates": [
+    {"name": "legacy_symmetric", "mode": "legacy"},
+    {"name": "global_symmetric_95", "mode": "symmetric", "quantile": 0.95},
+    {"name": "risk_2_symmetric_95", "mode": "symmetric", "risk_threshold_c": 2.0, "quantile": 0.95},
+    {"name": "risk_5_symmetric_95", "mode": "symmetric", "risk_threshold_c": 5.0, "quantile": 0.95},
+    {"name": "risk_5_symmetric_975", "mode": "symmetric", "risk_threshold_c": 5.0, "quantile": 0.975},
+    {"name": "risk_5_lower_95", "mode": "lower", "risk_threshold_c": 5.0, "quantile": 0.95},
+    {"name": "risk_5_signed_95", "mode": "signed", "risk_threshold_c": 5.0, "quantile": 0.95}
+  ],
+  "risk_group": "min(point_minimum, GFS_minimum) <= threshold; forecast-only; never group by actual cold labels",
+  "selection": "lexicographic: pooled actual-cold uncovered rate, balanced mean90 interval score on cold/warm nights, overall width, registry order",
+  "validation": "whole-night leave-one-out calibration inside each prior-season validation fold; held night excluded from both global and risk pools; retrospective tuning diagnostics, not prospective or independent calibration coverage",
+  "fallback": "risk pool below30 or finite-sample rank beyond sample -> global pool for requested quantile; if global insufficient raise, never cap rank or fabricate width",
+  "nesting": "both bounds contain legacy90 interval; warm forecasts keep legacy bounds for risk candidates",
+  "point_model": "parent frozen huber_1 unchanged; same fixed family fitted on fold training years only for validation",
+  "detector": "parent event_duration_weather@0.25 unchanged, including every cold mask, onset and duration",
+  "uncertainty": "nominal base90, empirical conditional coverage only; selection uses prior calibration-year labels so no distribution-free coverage claim; dependent weather and sparse cold events",
+  "deployment": "station research only; field GFS unchanged, no orchard transfer",
+  "status": "fixed registry and criterion before this comparison on already-viewed2025/2026; evaluation years excluded from all selection/calibration"
+}

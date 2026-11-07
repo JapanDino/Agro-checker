@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "final_train_years": [2022, 2023],
+  "evaluation_years": [2025, 2026],
+  "candidates": ["gfs", "detector_gate_gfs", "cold_mean", "cold_ridge_10", "cold_ridge_100", "all_ridge_10", "all_ridge_100"],
+  "minimum_conditional_nights": 10,
+  "weather_threshold_c": 0,
+  "definition": "sum(max(0, threshold - hourly T))*1h; rectangular hourly-sample weather index over14bins, not continuous measured freezing duration or crop damage",
+  "selection": "All-night MAE, cold-night MAE and warm-night mean exposure <=GFS; then cold MAE, all MAE, registry order. Original detector masks never changed. Learned heads research-only.",
+  "scope": "New exposure target on original complete station observations; final fit2022/23, choose2023/24, no calibration/tuning2025/26. No orchard generalization, no tissue/harvest-loss model."
+}

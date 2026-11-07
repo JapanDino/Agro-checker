@@ -1,0 +1,2509 @@
+{
+  "protocol": {
+    "schema_version": 1,
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024
+      }
+    ],
+    "extra_years": [
+      2021
+    ],
+    "evaluation_years": [
+      2025,
+      2026
+    ],
+    "final_calibration_year": 2024,
+    "crossfit_blocks": 6,
+    "coverage": 0.9,
+    "minimum_calibration_nights": 30,
+    "scale_floor_c": 0.5,
+    "scale_ceiling_c": 9.0,
+    "warm_width_ratio_limit": 1.05,
+    "overall_width_ratio_limit": 1.05,
+    "version_registry": [
+      {
+        "name": "pre_v16",
+        "from": "2021-01-01T00:00:00+00:00",
+        "until": "2021-03-22T12:00:00+00:00"
+      },
+      {
+        "name": "v16_before_2022_update",
+        "from": "2021-03-22T12:00:00+00:00",
+        "until": "2022-11-29T12:00:00+00:00"
+      },
+      {
+        "name": "after_2022_update",
+        "from": "2022-11-29T12:00:00+00:00",
+        "until": "2026-06-01T00:00:00+00:00"
+      }
+    ],
+    "version_resolution": "coarse documented update regimes, not every operational patch; known registry limited to archive window, no future version assumption",
+    "policies": [
+      {
+        "name": "uniform",
+        "half_life_seasons": null,
+        "version_weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "version_offsets": false
+      },
+      {
+        "name": "age_1",
+        "half_life_seasons": 1.0,
+        "version_weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "version_offsets": false
+      },
+      {
+        "name": "age_2",
+        "half_life_seasons": 2.0,
+        "version_weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "version_offsets": false
+      },
+      {
+        "name": "version_discount",
+        "half_life_seasons": null,
+        "version_weights": [
+          0.25,
+          0.5,
+          1.0
+        ],
+        "version_offsets": false
+      },
+      {
+        "name": "age_version_1",
+        "half_life_seasons": 1.0,
+        "version_weights": [
+          0.25,
+          0.5,
+          1.0
+        ],
+        "version_offsets": false
+      },
+      {
+        "name": "version_offsets",
+        "half_life_seasons": null,
+        "version_weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "version_offsets": true
+      },
+      {
+        "name": "age_version_offsets_2",
+        "half_life_seasons": 2.0,
+        "version_weights": [
+          0.25,
+          0.5,
+          1.0
+        ],
+        "version_offsets": true
+      }
+    ],
+    "families": [
+      {
+        "name": "scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0
+      },
+      {
+        "name": "tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0
+      },
+      {
+        "name": "quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013
+      }
+    ],
+    "baselines": [
+      {
+        "name": "legacy_symmetric",
+        "mode": "legacy"
+      },
+      {
+        "name": "risk_5_lower_95",
+        "mode": "lower",
+        "risk_threshold_c": 5.0,
+        "quantile": 0.95
+      }
+    ],
+    "weighting": "forecast date/known regime only; 2^(-(anchor_training_year-year)/half_life)*version_weight; positive weights normalized to mean1 on each fit, weighted scaler/Huber/residual head; anchor fixed to training cutoff, never control year",
+    "point_family": "Huber alpha1 on13 no-cloud aggregates; offset policies add two historical-regime indicators, modern regime reference; same policy for point and OOF residual heads",
+    "calibration": "unweighted held-season90, whole-night LOO on validation2023/2024, final2024; no weighted quantile guarantee claimed; retrospective tuning, not independent coverage",
+    "selection": "coverage>=legacy, pointMAE<=originalHuber, warm width<=1.05*legacy, overall width<=1.05*previous cold; lexicographic cold uncovered rate, balanced cold/warm interval score90, overall width, registry order",
+    "diagnostic": "best eligible nonuniform candidate by same prior criterion; if none, best nonuniform candidate diagnostic-only with gate failures; freeze same-family uniform comparator before controls; never promote on2025/2026",
+    "detector": "frozen event_duration_weather@0.25; assert every14-hour mask and timing against previous snapshots; no retraining",
+    "guards": "site34929, original06UTC lead10–23, March–May; missing fields/unknown registry date/extrapolation/unseen fitted regime => no guarded corrected prediction",
+    "deployment": "station research only; field GFS and original models unchanged; no chosen orchard, no crop-damage probability",
+    "status": "fixed registry before new validation/control results; previously viewed2025/2026 remain excluded from all selection and calibration, not blind controls",
+    "numerical_revision": "v2: exactly constant feature gets scale1 even if weighted roundoff makes variance positive; v1 prior-only selection retained; same registry/gates before any new controls",
+    "candidates": [
+      {
+        "name": "legacy_symmetric",
+        "mode": "legacy"
+      },
+      {
+        "name": "risk_5_lower_95",
+        "mode": "lower",
+        "risk_threshold_c": 5.0,
+        "quantile": 0.95
+      },
+      {
+        "name": "uniform__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "uniform"
+      },
+      {
+        "name": "uniform__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "uniform"
+      },
+      {
+        "name": "uniform__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "uniform"
+      },
+      {
+        "name": "age_1__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "age_1"
+      },
+      {
+        "name": "age_1__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "age_1"
+      },
+      {
+        "name": "age_1__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "age_1"
+      },
+      {
+        "name": "age_2__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "age_2"
+      },
+      {
+        "name": "age_2__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "age_2"
+      },
+      {
+        "name": "age_2__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "age_2"
+      },
+      {
+        "name": "version_discount__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "version_discount"
+      },
+      {
+        "name": "version_discount__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "version_discount"
+      },
+      {
+        "name": "version_discount__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "version_discount"
+      },
+      {
+        "name": "age_version_1__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "age_version_1"
+      },
+      {
+        "name": "age_version_1__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "age_version_1"
+      },
+      {
+        "name": "age_version_1__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "age_version_1"
+      },
+      {
+        "name": "version_offsets__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "version_offsets"
+      },
+      {
+        "name": "version_offsets__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "version_offsets"
+      },
+      {
+        "name": "version_offsets__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "version_offsets"
+      },
+      {
+        "name": "age_version_offsets_2__scale_ridge_100",
+        "mode": "scale",
+        "alpha": 100.0,
+        "family": "scale_ridge_100",
+        "policy_name": "age_version_offsets_2"
+      },
+      {
+        "name": "age_version_offsets_2__tails_ridge_10",
+        "mode": "asymmetric",
+        "alpha": 10.0,
+        "family": "tails_ridge_10",
+        "policy_name": "age_version_offsets_2"
+      },
+      {
+        "name": "age_version_offsets_2__quantile_trees",
+        "mode": "trees",
+        "estimators": 100,
+        "depth": 2,
+        "minimum_leaf": 20,
+        "learning_rate": 0.05,
+        "seed": 20261013,
+        "family": "quantile_trees",
+        "policy_name": "age_version_offsets_2"
+      }
+    ]
+  },
+  "protocol_sha256": "4fa8c050839a535ae0569cf134c09fcee87222046e0232ca1cb9000b7a02037e",
+  "source_sha256": {
+    "regime_error_v2.py": "1833b70dd022ad44ed756e6c0c67fd80a2dffd0920d69c71153102fba4de12fe",
+    "regime_error_study_v2.py": "a55be625905d718ddb108a2f0fac1834b8700a7daf8a44c7be9175b3e8156c9c",
+    "regime_error.py": "5ee629cd7fb123d0a71df9a13fc3bfaf031eb13e6f9b133613b8becce3faed4a",
+    "regime_error_study.py": "fa75d309e7556a4db231af41b88b7090afbe780cf7f29f8a2a60d7ab08b0351e",
+    "no_cloud_error.py": "567fd80ab510edbaa2eea2d914a2b57c465fbae6ed08ece4e981e36d3a5a0d98",
+    "extended_error.py": "cb790b07ea270dfbfad6b026a2d169424d61ec026c9eb9488b55ee1e3c2e1b63",
+    "extended_error_study.py": "aff63b89b60a097053623e5de6703ae32d13f4079b04931617209cebb12dc533",
+    "extended_archive.py": "856b365ff23c61212e249bdc25d5c9675e276d6486fd08545317b6358be294c2",
+    "early_cold_archive.py": "b844efc76d6592e134cd58dbb88b56ca15152f8c163abb4cfd9af1f8fe341c71",
+    "conditional_error.py": "9e90c52166367c9b6e18348eed6e6b1a02371b23aa54f73a4dda4f72df56824e",
+    "conditional_error_study.py": "de26639e88ea759100f730d7d56e9cbf6e90f3c24f06fcd868c4e3b48e5fe5d9",
+    "minimum_model.py": "dee4e650d0cd1b390e748c4521c2aa70242a7128e52bb08fa7e18a6f10a0be7d",
+    "cold_interval.py": "5123f7591df1350abf12471d07a12c42ff3c87d52e41b8147365a795e8baad2b",
+    "cold_interval_study.py": "14711ed4114afd80ce7f8d4a823d5167abe0e42567f32844e66963bc6da446b8",
+    "scenario_study.py": "0b94631ad28902154250308902996016ee3cdaa55f4e514e4482887a9427d627",
+    "single_run.py": "9b199eb2790f6573e2343fe9ee1cead455fa4a79b81fa480901b861bcf25bac1",
+    "gfs_archive.py": "0768edb2c92d37aafe9c5f75da031ebd6323fe14d69f3dfed7a530316e5de2c2",
+    "gfs_covariates.py": "c393ab3614cdc82c3f366f9328fed13f7bfeb8fb64ff10c3b9cae312d57a3025",
+    "humidity_archive.py": "7d350e4893fa962ed5883b52ba0129cc47198379cda9a6b7d64e98d7684377a3",
+    "hourly_study.py": "c8f6653ae3f64f11fdb13c42c25ecf625ccb2fe74f20800fce335c8180642c37",
+    "frost_study.py": "0161683092e817a4ff943378ededf42c50dc31c5ecfb867a3b444046d6056ab1"
+  },
+  "parent_hashes": {
+    "point_model": "b273ad32caf00e21303f9fe11b0b2aef630eef03336bd63f2d3033d341ec9954",
+    "point_selection": "ea6ab05a32ed1ab4d823e022a94719d3266b10322c681e1c8561f75bcc8432a3",
+    "detector": "fba66530ceca0a4baee688eeb96df88b98b5b3c36150fef3575d96c03828eab8",
+    "detector_selection": "55a377c51df66208136938a01d348a3c60c763481bfdd7bf1fdf98617a729e69"
+  },
+  "previous_selection_sha256": "f862a7a26eef2313baee2bc55fd2d73a4239f0cad6f2f00743b4ce18f4464480",
+  "winner": "risk_5_lower_95",
+  "diagnostic": "version_offsets__quantile_trees",
+  "matched_uniform": "uniform__quantile_trees",
+  "gates": {
+    "legacy_symmetric": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": true,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "risk_5_lower_95": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": true,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "uniform__scale_ridge_100": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "uniform__tails_ridge_10": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "uniform__quantile_trees": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_1__scale_ridge_100": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_1__tails_ridge_10": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_1__quantile_trees": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_2__scale_ridge_100": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_2__tails_ridge_10": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_2__quantile_trees": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "version_discount__scale_ridge_100": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "version_discount__tails_ridge_10": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "version_discount__quantile_trees": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_version_1__scale_ridge_100": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_version_1__tails_ridge_10": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_version_1__quantile_trees": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "version_offsets__scale_ridge_100": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "version_offsets__tails_ridge_10": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": false,
+      "overall_width_within_limit": false
+    },
+    "version_offsets__quantile_trees": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_version_offsets_2__scale_ridge_100": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_version_offsets_2__tails_ridge_10": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    },
+    "age_version_offsets_2__quantile_trees": {
+      "coverage_not_lower": true,
+      "point_mae_not_higher": false,
+      "warm_width_within_limit": true,
+      "overall_width_within_limit": true
+    }
+  },
+  "pooled_validation": {
+    "legacy_symmetric": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 5,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.7142857142857143,
+      "lower_cold_misses": 2,
+      "upper_cold_misses": 0,
+      "mae_c": 1.2976199438861342,
+      "mean_width_c": 5.396844739247288,
+      "cold_mean_width_c": 5.4214953951439435,
+      "warm_mean_width_c": 5.395864315433216,
+      "interval_score": 6.503916382194887,
+      "cold_interval_score": 7.105301211471248,
+      "warm_interval_score": 6.479997667394122,
+      "crosses_zero_nights": 19,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 0
+    },
+    "risk_5_lower_95": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 167,
+      "cold_covered": 7,
+      "coverage": 0.912568306010929,
+      "cold_coverage": 1.0,
+      "lower_cold_misses": 0,
+      "upper_cold_misses": 0,
+      "mae_c": 1.2976199438861342,
+      "mean_width_c": 5.444990228355551,
+      "cold_mean_width_c": 5.688099861017449,
+      "warm_mean_width_c": 5.435321095238316,
+      "interval_score": 6.3796502395918555,
+      "cold_interval_score": 5.688099861017449,
+      "warm_interval_score": 6.407155084194247,
+      "crosses_zero_nights": 19,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 38,
+      "extrapolation_nights": 0
+    },
+    "uniform__scale_ridge_100": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3186951590496963,
+      "mean_width_c": 5.021844201635758,
+      "cold_mean_width_c": 6.5760092846528115,
+      "warm_mean_width_c": 4.960030817652125,
+      "interval_score": 6.15669762536355,
+      "cold_interval_score": 7.726894161817159,
+      "warm_interval_score": 6.094246626754599,
+      "crosses_zero_nights": 18,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "uniform__tails_ridge_10": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 4,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.5714285714285714,
+      "lower_cold_misses": 3,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3186951590496963,
+      "mean_width_c": 5.452740542954136,
+      "cold_mean_width_c": 6.082622190762705,
+      "warm_mean_width_c": 5.4276884319617515,
+      "interval_score": 6.488747481420338,
+      "cold_interval_score": 8.52563128372651,
+      "warm_interval_score": 6.407735057464979,
+      "crosses_zero_nights": 18,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "uniform__quantile_trees": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3186951590496963,
+      "mean_width_c": 5.064752934572088,
+      "cold_mean_width_c": 5.683787222408374,
+      "warm_mean_width_c": 5.040132252669507,
+      "interval_score": 6.2220876517476205,
+      "cold_interval_score": 6.757483867339431,
+      "warm_interval_score": 6.200793484082038,
+      "crosses_zero_nights": 19,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "age_1__scale_ridge_100": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3237793951471601,
+      "mean_width_c": 5.173995169520521,
+      "cold_mean_width_c": 6.572450125664988,
+      "warm_mean_width_c": 5.118374801946595,
+      "interval_score": 6.258252198943775,
+      "cold_interval_score": 7.382389969040129,
+      "warm_interval_score": 6.2135421739967605,
+      "crosses_zero_nights": 18,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "age_1__tails_ridge_10": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 5,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.7142857142857143,
+      "lower_cold_misses": 2,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3237793951471601,
+      "mean_width_c": 5.460601236677558,
+      "cold_mean_width_c": 6.15489321277044,
+      "warm_mean_width_c": 5.4329873512647735,
+      "interval_score": 6.644322492651154,
+      "cold_interval_score": 8.784532791469776,
+      "warm_interval_score": 6.559200492129961,
+      "crosses_zero_nights": 18,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "age_1__quantile_trees": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 5,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.7142857142857143,
+      "lower_cold_misses": 2,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3237793951471601,
+      "mean_width_c": 5.417153466402593,
+      "cold_mean_width_c": 5.62608297183658,
+      "warm_mean_width_c": 5.408843770163741,
+      "interval_score": 6.388453079473172,
+      "cold_interval_score": 8.007472643588665,
+      "warm_interval_score": 6.324060255900395,
+      "crosses_zero_nights": 18,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "age_2__scale_ridge_100": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3208729301626938,
+      "mean_width_c": 5.037347666299817,
+      "cold_mean_width_c": 6.503528008731651,
+      "warm_mean_width_c": 4.979033675407641,
+      "interval_score": 6.23385374319692,
+      "cold_interval_score": 7.6252736550397575,
+      "warm_interval_score": 6.178513178521353,
+      "crosses_zero_nights": 17,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "age_2__tails_ridge_10": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 5,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.7142857142857143,
+      "lower_cold_misses": 2,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3208729301626938,
+      "mean_width_c": 5.606916809238854,
+      "cold_mean_width_c": 6.292441890342661,
+      "warm_mean_width_c": 5.579651607149496,
+      "interval_score": 6.7033322026733035,
+      "cold_interval_score": 8.759068364016482,
+      "warm_interval_score": 6.621569968983517,
+      "crosses_zero_nights": 18,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "age_2__quantile_trees": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3208729301626938,
+      "mean_width_c": 5.23411557329894,
+      "cold_mean_width_c": 5.960077811228174,
+      "warm_mean_width_c": 5.2052420751994815,
+      "interval_score": 6.418498596861634,
+      "cold_interval_score": 6.427656965618013,
+      "warm_interval_score": 6.418134343558824,
+      "crosses_zero_nights": 17,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "version_discount__scale_ridge_100": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3302103746856118,
+      "mean_width_c": 5.076735271846063,
+      "cold_mean_width_c": 6.592911162201548,
+      "warm_mean_width_c": 5.01643282166147,
+      "interval_score": 6.150415274591669,
+      "cold_interval_score": 7.525878605291345,
+      "warm_interval_score": 6.095709346666113,
+      "crosses_zero_nights": 17,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "version_discount__tails_ridge_10": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 5,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.7142857142857143,
+      "lower_cold_misses": 2,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3302103746856118,
+      "mean_width_c": 5.440279193061739,
+      "cold_mean_width_c": 6.142471102119393,
+      "warm_mean_width_c": 5.412351105769673,
+      "interval_score": 6.51730486541694,
+      "cold_interval_score": 8.805074611778043,
+      "warm_interval_score": 6.426314023232123,
+      "crosses_zero_nights": 18,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "version_discount__quantile_trees": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 5,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.7142857142857143,
+      "lower_cold_misses": 2,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3302103746856118,
+      "mean_width_c": 5.452832643996114,
+      "cold_mean_width_c": 5.7865144823561625,
+      "warm_mean_width_c": 5.439561207243158,
+      "interval_score": 6.431037858709463,
+      "cold_interval_score": 8.44298978500481,
+      "warm_interval_score": 6.3510170434590805,
+      "crosses_zero_nights": 20,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "age_version_1__scale_ridge_100": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.331598123431574,
+      "mean_width_c": 5.170158728053783,
+      "cold_mean_width_c": 6.436338658288939,
+      "warm_mean_width_c": 5.11979929901034,
+      "interval_score": 6.382889705453473,
+      "cold_interval_score": 7.344309320260457,
+      "warm_interval_score": 6.344651425319103,
+      "crosses_zero_nights": 18,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 7
+    },
+    "age_version_1__tails_ridge_10": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 5,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.7142857142857143,
+      "lower_cold_misses": 2,
+      "upper_cold_misses": 0,
+      "mae_c": 1.331598123431574,
+      "mean_width_c": 5.222861080261397,
+      "cold_mean_width_c": 5.8755513112761255,
+      "warm_mean_width_c": 5.196901809709673,
+      "interval_score": 6.340980045692949,
+      "cold_interval_score": 8.339794021271542,
+      "warm_interval_score": 6.261481762573346,
+      "crosses_zero_nights": 17,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 7
+    },
+    "age_version_1__quantile_trees": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 5,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.7142857142857143,
+      "lower_cold_misses": 2,
+      "upper_cold_misses": 0,
+      "mae_c": 1.331598123431574,
+      "mean_width_c": 5.52401054248389,
+      "cold_mean_width_c": 5.425524390078536,
+      "warm_mean_width_c": 5.527927605363649,
+      "interval_score": 6.805948173053503,
+      "cold_interval_score": 9.50028402231448,
+      "warm_interval_score": 6.698787088139715,
+      "crosses_zero_nights": 17,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 7
+    },
+    "version_offsets__scale_ridge_100": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3856842241725762,
+      "mean_width_c": 5.4359822649682785,
+      "cold_mean_width_c": 7.039122760137096,
+      "warm_mean_width_c": 5.372220995274065,
+      "interval_score": 6.467207926656943,
+      "cold_interval_score": 8.536638856325292,
+      "warm_interval_score": 6.384901014681498,
+      "crosses_zero_nights": 18,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "version_offsets__tails_ridge_10": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3856842241725762,
+      "mean_width_c": 5.764363980601788,
+      "cold_mean_width_c": 6.513597936153614,
+      "warm_mean_width_c": 5.734564902824158,
+      "interval_score": 6.9208958905742115,
+      "cold_interval_score": 7.8048672834667405,
+      "warm_interval_score": 6.885737937447804,
+      "crosses_zero_nights": 18,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "version_offsets__quantile_trees": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 7,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 1.0,
+      "lower_cold_misses": 0,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3856842241725762,
+      "mean_width_c": 5.322320177109531,
+      "cold_mean_width_c": 5.962539150364726,
+      "warm_mean_width_c": 5.296856922491428,
+      "interval_score": 6.74924153875818,
+      "cold_interval_score": 5.962539150364726,
+      "warm_interval_score": 6.780530838296556,
+      "crosses_zero_nights": 17,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 4
+    },
+    "age_version_offsets_2__scale_ridge_100": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3854339418471255,
+      "mean_width_c": 5.470204317014885,
+      "cold_mean_width_c": 6.872502985455514,
+      "warm_mean_width_c": 5.414431074520087,
+      "interval_score": 6.58911585322684,
+      "cold_interval_score": 7.886455340944514,
+      "warm_interval_score": 6.537517123601705,
+      "crosses_zero_nights": 18,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 98
+    },
+    "age_version_offsets_2__tails_ridge_10": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3854339418471255,
+      "mean_width_c": 5.330820777609581,
+      "cold_mean_width_c": 6.051091151317661,
+      "warm_mean_width_c": 5.302173660473465,
+      "interval_score": 6.510342238965069,
+      "cold_interval_score": 7.0081322047991055,
+      "warm_interval_score": 6.490543774414851,
+      "crosses_zero_nights": 17,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 98
+    },
+    "age_version_offsets_2__quantile_trees": {
+      "nights": 183,
+      "excluded_nights": 0,
+      "cold_nights": 7,
+      "covered": 165,
+      "cold_covered": 6,
+      "coverage": 0.9016393442622951,
+      "cold_coverage": 0.8571428571428571,
+      "lower_cold_misses": 1,
+      "upper_cold_misses": 0,
+      "mae_c": 1.3854339418471255,
+      "mean_width_c": 5.257229303071511,
+      "cold_mean_width_c": 5.6197687440077235,
+      "warm_mean_width_c": 5.242810120761547,
+      "interval_score": 6.6172619844697,
+      "cold_interval_score": 7.380444813437884,
+      "warm_interval_score": 6.586908121953919,
+      "crosses_zero_nights": 19,
+      "cold_fully_warm_range": 0,
+      "fallback_nights": 0,
+      "extrapolation_nights": 98
+    }
+  },
+  "folds": [
+    {
+      "train_years": [
+        2022
+      ],
+      "validation_year": 2023,
+      "scores": {
+        "legacy_symmetric": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.220603615946277,
+          "mean_width_c": 4.820349538479695,
+          "cold_mean_width_c": 4.825888256112751,
+          "warm_mean_width_c": 4.820162840132514,
+          "interval_score": 5.976832279068011,
+          "cold_interval_score": 4.825888256112751,
+          "warm_interval_score": 6.015628145010323,
+          "crosses_zero_nights": 8,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "risk_5_lower_95": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.220603615946277,
+          "mean_width_c": 4.820349538479695,
+          "cold_mean_width_c": 4.825888256112751,
+          "warm_mean_width_c": 4.820162840132514,
+          "interval_score": 5.976832279068011,
+          "cold_interval_score": 4.825888256112751,
+          "warm_interval_score": 6.015628145010323,
+          "crosses_zero_nights": 8,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 17,
+          "extrapolation_nights": 0
+        },
+        "uniform__scale_ridge_100": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2304080133846655,
+          "mean_width_c": 4.239453967145185,
+          "cold_mean_width_c": 6.103398813209149,
+          "warm_mean_width_c": 4.176624365592468,
+          "interval_score": 5.484174451847948,
+          "cold_interval_score": 6.103398813209149,
+          "warm_interval_score": 5.463301720566109,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "uniform__tails_ridge_10": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 2,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 0.6666666666666666,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2304080133846655,
+          "mean_width_c": 4.850370211198707,
+          "cold_mean_width_c": 5.620371010619395,
+          "warm_mean_width_c": 4.824415128072167,
+          "interval_score": 5.904446599270154,
+          "cold_interval_score": 8.116262176544774,
+          "warm_interval_score": 5.829891018013704,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "uniform__quantile_trees": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2304080133846655,
+          "mean_width_c": 4.630285050949264,
+          "cold_mean_width_c": 5.3106630643815205,
+          "warm_mean_width_c": 4.60735096060885,
+          "interval_score": 5.879752889796367,
+          "cold_interval_score": 5.3106630643815205,
+          "warm_interval_score": 5.898935692900239,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "age_1__scale_ridge_100": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.217643497874472,
+          "mean_width_c": 4.2853343616849955,
+          "cold_mean_width_c": 5.8853346997819465,
+          "warm_mean_width_c": 4.231401766018806,
+          "interval_score": 5.588442882257189,
+          "cold_interval_score": 5.8853346997819465,
+          "warm_interval_score": 5.578435292902423,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "age_1__tails_ridge_10": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 2,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 0.6666666666666666,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.217643497874472,
+          "mean_width_c": 4.816646959837117,
+          "cold_mean_width_c": 5.612348434683528,
+          "warm_mean_width_c": 4.789825561808587,
+          "interval_score": 5.804852328737423,
+          "cold_interval_score": 8.341031524987494,
+          "warm_interval_score": 5.719363142346973,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "age_1__quantile_trees": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 2,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 0.6666666666666666,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.217643497874472,
+          "mean_width_c": 5.0852586484972155,
+          "cold_mean_width_c": 5.475315343446643,
+          "warm_mean_width_c": 5.072110670015774,
+          "interval_score": 5.97772351507069,
+          "cold_interval_score": 5.630873140905135,
+          "warm_interval_score": 5.989415100716718,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "age_2__scale_ridge_100": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2225337147937563,
+          "mean_width_c": 4.237265688824025,
+          "cold_mean_width_c": 5.976061870123014,
+          "warm_mean_width_c": 4.178654581589227,
+          "interval_score": 5.572421979094856,
+          "cold_interval_score": 5.976061870123014,
+          "warm_interval_score": 5.558816140071436,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "age_2__tails_ridge_10": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 2,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 0.6666666666666666,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2225337147937563,
+          "mean_width_c": 4.828849671616972,
+          "cold_mean_width_c": 5.614063679053949,
+          "warm_mean_width_c": 4.802381783725838,
+          "interval_score": 5.858653059557356,
+          "cold_interval_score": 8.284980065498583,
+          "warm_interval_score": 5.776866755986301,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "age_2__quantile_trees": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2225337147937563,
+          "mean_width_c": 4.685000859118415,
+          "cold_mean_width_c": 5.704946039819298,
+          "warm_mean_width_c": 4.650620684488048,
+          "interval_score": 5.940501896502907,
+          "cold_interval_score": 5.704946039819298,
+          "warm_interval_score": 5.948441981559659,
+          "crosses_zero_nights": 8,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "version_discount__scale_ridge_100": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2265073185142334,
+          "mean_width_c": 4.304983411350443,
+          "cold_mean_width_c": 6.168532335879722,
+          "warm_mean_width_c": 4.242167155467433,
+          "interval_score": 5.525557633797791,
+          "cold_interval_score": 6.168532335879722,
+          "warm_interval_score": 5.503884329233232,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "version_discount__tails_ridge_10": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 2,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 0.6666666666666666,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2265073185142334,
+          "mean_width_c": 4.755227223273121,
+          "cold_mean_width_c": 5.542887520156081,
+          "warm_mean_width_c": 4.728676876187178,
+          "interval_score": 5.732313522699847,
+          "cold_interval_score": 8.443271013736318,
+          "warm_interval_score": 5.640932933114349,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "version_discount__quantile_trees": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 2,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 0.6666666666666666,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2265073185142334,
+          "mean_width_c": 4.93029605487119,
+          "cold_mean_width_c": 5.1931731312343965,
+          "warm_mean_width_c": 4.92143502982524,
+          "interval_score": 5.90150105343936,
+          "cold_interval_score": 6.901928029866397,
+          "warm_interval_score": 5.867778795806987,
+          "crosses_zero_nights": 10,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "age_version_1__scale_ridge_100": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2151973598279184,
+          "mean_width_c": 4.274695651776525,
+          "cold_mean_width_c": 5.81961242522618,
+          "warm_mean_width_c": 4.222619805480468,
+          "interval_score": 5.480660257207682,
+          "cold_interval_score": 5.81961242522618,
+          "warm_interval_score": 5.4692349032295295,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "age_version_1__tails_ridge_10": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 2,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 0.6666666666666666,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2151973598279184,
+          "mean_width_c": 4.784099301753943,
+          "cold_mean_width_c": 5.5983776696734795,
+          "warm_mean_width_c": 4.756651716318453,
+          "interval_score": 5.74997857042102,
+          "cold_interval_score": 8.244927528126679,
+          "warm_interval_score": 5.665879167352292,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "age_version_1__quantile_trees": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 2,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 0.6666666666666666,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2151973598279184,
+          "mean_width_c": 5.281372134197169,
+          "cold_mean_width_c": 5.354493889367542,
+          "warm_mean_width_c": 5.278907355933,
+          "interval_score": 6.68440460010332,
+          "cold_interval_score": 7.59851286196,
+          "warm_interval_score": 6.653591962063207,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "version_offsets__scale_ridge_100": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.3044148069019577,
+          "mean_width_c": 4.941478250082714,
+          "cold_mean_width_c": 6.894937408943174,
+          "warm_mean_width_c": 4.8756313121435975,
+          "interval_score": 5.94553073817286,
+          "cold_interval_score": 6.894937408943174,
+          "warm_interval_score": 5.9135282661244215,
+          "crosses_zero_nights": 10,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "version_offsets__tails_ridge_10": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.3044148069019577,
+          "mean_width_c": 5.076183915796412,
+          "cold_mean_width_c": 5.836844525679698,
+          "warm_mean_width_c": 5.050543670519447,
+          "interval_score": 6.16896245217914,
+          "cold_interval_score": 5.836844525679698,
+          "warm_interval_score": 6.180157438465638,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "version_offsets__quantile_trees": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.3044148069019577,
+          "mean_width_c": 4.808006668479456,
+          "cold_mean_width_c": 5.478371294280457,
+          "warm_mean_width_c": 4.785410108059197,
+          "interval_score": 6.787279015144515,
+          "cold_interval_score": 5.478371294280457,
+          "warm_interval_score": 6.8313995001174606,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "age_version_offsets_2__scale_ridge_100": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2969994272584133,
+          "mean_width_c": 4.752642436926811,
+          "cold_mean_width_c": 6.5232796322143,
+          "warm_mean_width_c": 4.69295803708566,
+          "interval_score": 5.8406394235300185,
+          "cold_interval_score": 6.5232796322143,
+          "warm_interval_score": 5.817629079417064,
+          "crosses_zero_nights": 10,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 92
+        },
+        "age_version_offsets_2__tails_ridge_10": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2969994272584133,
+          "mean_width_c": 5.04800625672093,
+          "cold_mean_width_c": 5.831025619953974,
+          "warm_mean_width_c": 5.0216123456007145,
+          "interval_score": 6.2024915428099465,
+          "cold_interval_score": 5.831025619953974,
+          "warm_interval_score": 6.215012866052284,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 92
+        },
+        "age_version_offsets_2__quantile_trees": {
+          "nights": 92,
+          "excluded_nights": 0,
+          "cold_nights": 3,
+          "covered": 83,
+          "cold_covered": 3,
+          "coverage": 0.9021739130434783,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.2969994272584133,
+          "mean_width_c": 4.738452422720701,
+          "cold_mean_width_c": 5.44701222038762,
+          "warm_mean_width_c": 4.714568384597096,
+          "interval_score": 6.589952759176243,
+          "cold_interval_score": 5.44701222038762,
+          "warm_interval_score": 6.6284788447533876,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 92
+        }
+      },
+      "unseen_fitted_regime_nights": {
+        "legacy_symmetric": 0,
+        "risk_5_lower_95": 0,
+        "uniform__scale_ridge_100": 92,
+        "uniform__tails_ridge_10": 92,
+        "uniform__quantile_trees": 92,
+        "age_1__scale_ridge_100": 92,
+        "age_1__tails_ridge_10": 92,
+        "age_1__quantile_trees": 92,
+        "age_2__scale_ridge_100": 92,
+        "age_2__tails_ridge_10": 92,
+        "age_2__quantile_trees": 92,
+        "version_discount__scale_ridge_100": 92,
+        "version_discount__tails_ridge_10": 92,
+        "version_discount__quantile_trees": 92,
+        "age_version_1__scale_ridge_100": 92,
+        "age_version_1__tails_ridge_10": 92,
+        "age_version_1__quantile_trees": 92,
+        "version_offsets__scale_ridge_100": 92,
+        "version_offsets__tails_ridge_10": 92,
+        "version_offsets__quantile_trees": 92,
+        "age_version_offsets_2__scale_ridge_100": 92,
+        "age_version_offsets_2__tails_ridge_10": 92,
+        "age_version_offsets_2__quantile_trees": 92
+      },
+      "training_weight_audit": {
+        "uniform": {
+          "effective_nights": 183.0,
+          "normalized_weight_sum": 183.0,
+          "regimes": {
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 22.0
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 161.0
+            }
+          }
+        },
+        "age_1": {
+          "effective_nights": 164.76034858387797,
+          "normalized_weight_sum": 183.00000000000003,
+          "regimes": {
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 14.640000000000008
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 168.36000000000016
+            }
+          }
+        },
+        "age_2": {
+          "effective_nights": 177.7766977759094,
+          "normalized_weight_sum": 183.0,
+          "regimes": {
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 18.208325407019252
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 164.79167459298068
+            }
+          }
+        },
+        "version_discount": {
+          "effective_nights": 177.68168168168168,
+          "normalized_weight_sum": 182.99999999999997,
+          "regimes": {
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 11.703488372093021
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 171.2965116279075
+            }
+          }
+        },
+        "age_version_1": {
+          "effective_nights": 157.50508474576284,
+          "normalized_weight_sum": 183.00000000000003,
+          "regimes": {
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 7.625000000000001
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 175.3749999999998
+            }
+          }
+        },
+        "version_offsets": {
+          "effective_nights": 183.0,
+          "normalized_weight_sum": 183.0,
+          "regimes": {
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 22.0
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 161.0
+            }
+          }
+        },
+        "age_version_offsets_2": {
+          "effective_nights": 170.7745595285569,
+          "normalized_weight_sum": 183.0,
+          "regimes": {
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 9.580803086744654
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 173.41919691325492
+            }
+          }
+        }
+      }
+    },
+    {
+      "train_years": [
+        2022,
+        2023
+      ],
+      "validation_year": 2024,
+      "scores": {
+        "legacy_symmetric": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 2,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.5,
+          "lower_cold_misses": 2,
+          "upper_cold_misses": 0,
+          "mae_c": 1.3754826051000555,
+          "mean_width_c": 5.979675052111229,
+          "cold_mean_width_c": 5.868200749417337,
+          "warm_mean_width_c": 5.984800307407499,
+          "interval_score": 7.036792618323157,
+          "cold_interval_score": 8.81486092799012,
+          "warm_interval_score": 6.955042351212032,
+          "crosses_zero_nights": 11,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 0
+        },
+        "risk_5_lower_95": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 84,
+          "cold_covered": 4,
+          "coverage": 0.9230769230769231,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.3754826051000555,
+          "mean_width_c": 6.076495101636636,
+          "cold_mean_width_c": 6.334758564695971,
+          "warm_mean_width_c": 6.064620919427012,
+          "interval_score": 6.786894771110468,
+          "cold_interval_score": 6.334758564695971,
+          "warm_interval_score": 6.807682642669755,
+          "crosses_zero_nights": 11,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 21,
+          "extrapolation_nights": 0
+        },
+        "uniform__scale_ridge_100": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4079524931286287,
+          "mean_width_c": 5.812832131010843,
+          "cold_mean_width_c": 6.930467138235558,
+          "warm_mean_width_c": 5.761446613437292,
+          "interval_score": 6.836611163423279,
+          "cold_interval_score": 8.944515673273168,
+          "warm_interval_score": 6.739696013545124,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "uniform__tails_ridge_10": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 2,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.5,
+          "lower_cold_misses": 2,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4079524931286287,
+          "mean_width_c": 6.061730328904682,
+          "cold_mean_width_c": 6.429310575870185,
+          "warm_mean_width_c": 6.044830087664888,
+          "interval_score": 7.079469252385363,
+          "cold_interval_score": 8.83265811411281,
+          "warm_interval_score": 6.998862867938124,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "uniform__quantile_trees": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4079524931286287,
+          "mean_width_c": 5.503995190542414,
+          "cold_mean_width_c": 5.963630340928513,
+          "warm_mean_width_c": 5.4828625399499495,
+          "interval_score": 6.568184334159877,
+          "cold_interval_score": 7.842599469557864,
+          "warm_interval_score": 6.509590534831233,
+          "crosses_zero_nights": 10,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "age_1__scale_ridge_100": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4310816209613069,
+          "mean_width_c": 6.072421480738856,
+          "cold_mean_width_c": 7.087786695077268,
+          "warm_mean_width_c": 6.025738022608354,
+          "interval_score": 6.935422057571971,
+          "cold_interval_score": 8.505181420983766,
+          "warm_interval_score": 6.863249213277175,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "age_1__tails_ridge_10": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4310816209613069,
+          "mean_width_c": 6.111631934142618,
+          "cold_mean_width_c": 6.561801796335624,
+          "warm_mean_width_c": 6.090934469214207,
+          "interval_score": 7.493017603421082,
+          "cold_interval_score": 9.117158741331487,
+          "warm_interval_score": 7.418344447655084,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "age_1__quantile_trees": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4310816209613069,
+          "mean_width_c": 5.752695480109128,
+          "cold_mean_width_c": 5.739158693129033,
+          "warm_mean_width_c": 5.753317861119707,
+          "interval_score": 6.803696155572386,
+          "cold_interval_score": 9.789922270601311,
+          "warm_interval_score": 6.666398403157262,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "age_2__scale_ridge_100": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4202927962499716,
+          "mean_width_c": 5.846221753418201,
+          "cold_mean_width_c": 6.899127612688131,
+          "warm_mean_width_c": 5.79781228862418,
+          "interval_score": 6.902553988223181,
+          "cold_interval_score": 8.862182493727316,
+          "warm_interval_score": 6.8124561259011545,
+          "crosses_zero_nights": 8,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "age_2__tails_ridge_10": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4202927962499716,
+          "mean_width_c": 6.39353413518625,
+          "cold_mean_width_c": 6.801225548809196,
+          "warm_mean_width_c": 6.374789702376,
+          "interval_score": 7.557293534175142,
+          "cold_interval_score": 9.114634587904908,
+          "warm_interval_score": 7.485691646647338,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "age_2__quantile_trees": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4202927962499716,
+          "mean_width_c": 5.789264515107822,
+          "cold_mean_width_c": 6.15142663978483,
+          "warm_mean_width_c": 5.772613382938765,
+          "interval_score": 6.901748008213315,
+          "cold_interval_score": 6.9696901599670475,
+          "warm_interval_score": 6.898624231121189,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "version_discount__scale_ridge_100": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4350530248808513,
+          "mean_width_c": 5.8569679220174615,
+          "cold_mean_width_c": 6.911195281942918,
+          "warm_mean_width_c": 5.808497698572611,
+          "interval_score": 6.7821394828668,
+          "cold_interval_score": 8.543888307350059,
+          "warm_interval_score": 6.701139536913545,
+          "crosses_zero_nights": 8,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "version_discount__tails_ridge_10": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4350530248808513,
+          "mean_width_c": 6.132859206474409,
+          "cold_mean_width_c": 6.592158788591878,
+          "warm_mean_width_c": 6.111741984308089,
+          "interval_score": 7.310922486625428,
+          "cold_interval_score": 9.076427310309338,
+          "warm_interval_score": 7.2297498510537554,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "version_discount__quantile_trees": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4350530248808513,
+          "mean_width_c": 5.9811113934410916,
+          "cold_mean_width_c": 6.231520495697486,
+          "warm_mean_width_c": 5.969598331268383,
+          "interval_score": 6.966393749751767,
+          "cold_interval_score": 9.59878610135862,
+          "warm_interval_score": 6.845364216344554,
+          "crosses_zero_nights": 10,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "age_version_1__scale_ridge_100": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4492780163055994,
+          "mean_width_c": 6.075462057916509,
+          "cold_mean_width_c": 6.898883333086008,
+          "warm_mean_width_c": 6.037603608483428,
+          "interval_score": 7.295033763020647,
+          "cold_interval_score": 8.487831991536165,
+          "warm_interval_score": 7.240192465157865,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 7
+        },
+        "age_version_1__tails_ridge_10": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4492780163055994,
+          "mean_width_c": 5.666444416774425,
+          "cold_mean_width_c": 6.08343154247811,
+          "warm_mean_width_c": 5.647272594902991,
+          "interval_score": 6.938476042671161,
+          "cold_interval_score": 8.41094389113019,
+          "warm_interval_score": 6.870776371477643,
+          "crosses_zero_nights": 8,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 7
+        },
+        "age_version_1__quantile_trees": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4492780163055994,
+          "mean_width_c": 5.769315306905629,
+          "cold_mean_width_c": 5.478797265611781,
+          "warm_mean_width_c": 5.782672458229484,
+          "interval_score": 6.92882738966248,
+          "cold_interval_score": 10.926612392580338,
+          "warm_interval_score": 6.745021182631775,
+          "crosses_zero_nights": 8,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 7
+        },
+        "version_offsets__scale_ridge_100": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4678467119626522,
+          "mean_width_c": 5.935920389907531,
+          "cold_mean_width_c": 7.147261773532538,
+          "warm_mean_width_c": 5.88022653318914,
+          "interval_score": 6.994617831497995,
+          "cold_interval_score": 9.76791494186188,
+          "warm_interval_score": 6.8671099183778175,
+          "crosses_zero_nights": 8,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "version_offsets__tails_ridge_10": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4678467119626522,
+          "mean_width_c": 6.460106463701728,
+          "cold_mean_width_c": 7.02116299400905,
+          "warm_mean_width_c": 6.434310761158863,
+          "interval_score": 7.681092333786809,
+          "cold_interval_score": 9.280884351807023,
+          "warm_interval_score": 7.607538677785881,
+          "crosses_zero_nights": 9,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "version_offsets__quantile_trees": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 4,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4678467119626522,
+          "mean_width_c": 5.842285482537742,
+          "cold_mean_width_c": 6.325665042427926,
+          "warm_mean_width_c": 5.820061134956583,
+          "interval_score": 6.7107860681258416,
+          "cold_interval_score": 6.325665042427926,
+          "warm_interval_score": 6.728492781951032,
+          "crosses_zero_nights": 8,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 4
+        },
+        "age_version_offsets_2__scale_ridge_100": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.474840264288461,
+          "mean_width_c": 6.195651492488542,
+          "cold_mean_width_c": 7.134420500386426,
+          "warm_mean_width_c": 6.152489699021973,
+          "interval_score": 7.345817298634616,
+          "cold_interval_score": 8.908837122492175,
+          "warm_interval_score": 7.273954318227372,
+          "crosses_zero_nights": 8,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 6
+        },
+        "age_version_offsets_2__tails_ridge_10": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.474840264288461,
+          "mean_width_c": 5.616743150376131,
+          "cold_mean_width_c": 6.216140299840425,
+          "warm_mean_width_c": 5.589184660745589,
+          "interval_score": 6.821575909803211,
+          "cold_interval_score": 7.890962143432954,
+          "warm_interval_score": 6.772408726647821,
+          "crosses_zero_nights": 8,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 6
+        },
+        "age_version_offsets_2__quantile_trees": {
+          "nights": 91,
+          "excluded_nights": 0,
+          "cold_nights": 4,
+          "covered": 82,
+          "cold_covered": 3,
+          "coverage": 0.9010989010989011,
+          "cold_coverage": 0.75,
+          "lower_cold_misses": 1,
+          "upper_cold_misses": 0,
+          "mae_c": 1.474840264288461,
+          "mean_width_c": 5.781707028261341,
+          "cold_mean_width_c": 5.7493361367228015,
+          "warm_mean_width_c": 5.783195345113686,
+          "interval_score": 6.644871311140006,
+          "cold_interval_score": 8.830519258225582,
+          "warm_interval_score": 6.544381750354463,
+          "crosses_zero_nights": 10,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 6
+        }
+      },
+      "unseen_fitted_regime_nights": {
+        "legacy_symmetric": 0,
+        "risk_5_lower_95": 0,
+        "uniform__scale_ridge_100": 0,
+        "uniform__tails_ridge_10": 0,
+        "uniform__quantile_trees": 0,
+        "age_1__scale_ridge_100": 0,
+        "age_1__tails_ridge_10": 0,
+        "age_1__quantile_trees": 0,
+        "age_2__scale_ridge_100": 0,
+        "age_2__tails_ridge_10": 0,
+        "age_2__quantile_trees": 0,
+        "version_discount__scale_ridge_100": 0,
+        "version_discount__tails_ridge_10": 0,
+        "version_discount__quantile_trees": 0,
+        "age_version_1__scale_ridge_100": 0,
+        "age_version_1__tails_ridge_10": 0,
+        "age_version_1__quantile_trees": 0,
+        "version_offsets__scale_ridge_100": 0,
+        "version_offsets__tails_ridge_10": 0,
+        "version_offsets__quantile_trees": 0,
+        "age_version_offsets_2__scale_ridge_100": 0,
+        "age_version_offsets_2__tails_ridge_10": 0,
+        "age_version_offsets_2__quantile_trees": 0
+      },
+      "training_weight_audit": {
+        "uniform": {
+          "effective_nights": 275.0,
+          "normalized_weight_sum": 275.0,
+          "regimes": {
+            "after_2022_update": {
+              "nights": 92,
+              "weight_sum": 92.0
+            },
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 22.0
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 161.0
+            }
+          }
+        },
+        "age_1": {
+          "effective_nights": 214.11134127395135,
+          "normalized_weight_sum": 275.0,
+          "regimes": {
+            "after_2022_update": {
+              "nights": 92,
+              "weight_sum": 157.3872472783828
+            },
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 9.409020217729394
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 108.20373250388826
+            }
+          }
+        },
+        "age_2": {
+          "effective_nights": 255.22893663464788,
+          "normalized_weight_sum": 274.99999999999994,
+          "regimes": {
+            "after_2022_update": {
+              "nights": 92,
+              "weight_sum": 124.905072225851
+            },
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 14.93430211396042
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 135.16062566018846
+            }
+          }
+        },
+        "version_discount": {
+          "effective_nights": 237.11131898970993,
+          "normalized_weight_sum": 275.0,
+          "regimes": {
+            "after_2022_update": {
+              "nights": 92,
+              "weight_sum": 142.134831460674
+            },
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 8.497191011235957
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 124.36797752808972
+            }
+          }
+        },
+        "age_version_1": {
+          "effective_nights": 157.96540557617877,
+          "normalized_weight_sum": 274.99999999999994,
+          "regimes": {
+            "after_2022_update": {
+              "nights": 92,
+              "weight_sum": 202.39999999999972
+            },
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 3.025000000000001
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 69.57499999999982
+            }
+          }
+        },
+        "version_offsets": {
+          "effective_nights": 275.0,
+          "normalized_weight_sum": 275.0,
+          "regimes": {
+            "after_2022_update": {
+              "nights": 92,
+              "weight_sum": 92.0
+            },
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 22.0
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 161.0
+            }
+          }
+        },
+        "age_version_offsets_2": {
+          "effective_nights": 193.1282591005715,
+          "normalized_weight_sum": 274.99999999999994,
+          "regimes": {
+            "after_2022_update": {
+              "nights": 92,
+              "weight_sum": 175.05390284303468
+            },
+            "pre_v16": {
+              "nights": 22,
+              "weight_sum": 5.232589487155926
+            },
+            "v16_before_2022_update": {
+              "nights": 161,
+              "weight_sum": 94.71350766980977
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": {
+    "risk_5_lower_95": {
+      "point": "risk_5_lower_95-point.json",
+      "head": "risk_5_lower_95-head.json",
+      "calibration": "risk_5_lower_95-calibration.json"
+    },
+    "version_offsets__quantile_trees": {
+      "point": "version_offsets__quantile_trees-point.json",
+      "head": "version_offsets__quantile_trees-head.json",
+      "calibration": "version_offsets__quantile_trees-calibration.json"
+    },
+    "uniform__quantile_trees": {
+      "point": "uniform__quantile_trees-point.json",
+      "head": "uniform__quantile_trees-head.json",
+      "calibration": "uniform__quantile_trees-calibration.json"
+    }
+  },
+  "artifact_sha256": {
+    "risk_5_lower_95-point.json": "b273ad32caf00e21303f9fe11b0b2aef630eef03336bd63f2d3033d341ec9954",
+    "risk_5_lower_95-head.json": "7d7c89ff8de6c8157d5be621d45e967d0bccf7273a91dfa98096a9a47730328f",
+    "risk_5_lower_95-calibration.json": "44321312bb6875ae433d7660ebe11a9affd1aa913c198b2acec7720330d45100",
+    "version_offsets__quantile_trees-point.json": "f21b448c4a55ed987062582c450755b8876346f97ef54aef998b2a5f61e43835",
+    "version_offsets__quantile_trees-head.json": "16eda05064974f69fd82d482a0c801d5d97413568ad7e993ffa765407f8c16af",
+    "version_offsets__quantile_trees-calibration.json": "2723771ebde22ee8e4df9cd66a739efced978c635c15b786b76747361e94fc0e",
+    "uniform__quantile_trees-point.json": "adc1e0a2330138a4e472d481bdfba6a68a3228c4d0200b75cbc6efe45cb7150a",
+    "uniform__quantile_trees-head.json": "4432d8efabd97e528f00a804985ca22931b168c00d297e2dc42c3d15d702b044",
+    "uniform__quantile_trees-calibration.json": "0d942884f7baf1ba6d59552f1aa74f6c10c189adab4e625d5ed0885474109084"
+  },
+  "input_provenance": {
+    "recent": {
+      "temperature": {
+        "sha256": "56d887828fca75a82a70981c847e765e74385e73314837b3f942ae83403fd054",
+        "decoder": "eccodes-2.49.0",
+        "manifest_sha256": "9627d26da72cbb754acdf1a5236540ecb61ebf664b8572b69c13d53dd0f02cc5"
+      },
+      "covariates": {
+        "sha256": "c9d79b4ff1cce1f0ecff356271e35bb1ad073732b1147e64f6cb7b698a4bb1fc",
+        "manifest_sha256": "c5bcf552f2c2b42c7963e0bdfa407427d76b5d0deb9ef998cb34a638a4247bd0",
+        "decoder": "eccodes"
+      },
+      "humidity": {
+        "sha256": "69b3f396d92ae125bb519871f902b08973533a1ff3dd828209dece60c4bfefe5",
+        "manifest_sha256": "19dd14b9769430e340383a64608cd347a6ddfddc0d73aaea2d8e6f5f0fc0ee9c",
+        "decoder": "eccodes"
+      },
+      "observations": {
+        "2022": {
+          "url": "https://data.meteostat.net/hourly/2022/34929.csv.gz",
+          "sha256": "316ccc650a1f2107a502b873c27e9950a291e20b01b96772a564c7489f87f595",
+          "retrieved_at_utc": "2026-10-12T09:56:24.738802+00:00",
+          "bytes": 72009,
+          "content_type": "application/x-gzip"
+        },
+        "2023": {
+          "url": "https://data.meteostat.net/hourly/2023/34929.csv.gz",
+          "sha256": "c302798573f4ae7e8553394b4ed5fe4551ca2ec4703aef3e6dd82edebaa2271f",
+          "retrieved_at_utc": "2026-10-12T09:56:26.032553+00:00",
+          "bytes": 76648,
+          "content_type": "application/x-gzip"
+        },
+        "2024": {
+          "url": "https://data.meteostat.net/hourly/2024/34929.csv.gz",
+          "sha256": "b5412a30c55c88e0850ea151cd5237bb68ccc1364142c79656fdd3fbf76a1e01",
+          "retrieved_at_utc": "2026-10-12T09:56:28.208852+00:00",
+          "bytes": 76330,
+          "content_type": "application/x-gzip"
+        }
+      },
+      "annual_wind_audit": {
+        "2022": {
+          "accepted": 8756,
+          "missing_or_excluded_source": 4
+        },
+        "2023": {
+          "accepted": 8756,
+          "missing_or_excluded_source": 4
+        },
+        "2024": {
+          "accepted": 8768,
+          "missing_or_excluded_source": 16
+        }
+      }
+    },
+    "extra_post_upgrade": {
+      "temperature": {
+        "sha256": "11b635eaa83549650276f52cc394d4c2f162f8c97bc6906b5fe009cbc68d1208",
+        "decoder": "eccodes-2.49.0",
+        "manifest_sha256": "df7c2bbc11f3370ffd4e9c2f88fecfb4183d73bf25f85c04d14c3a60593d4afb"
+      },
+      "covariates": {
+        "sha256": "0555399b7edefb44981ee43314f017459dc74e9e6e77cd901d3e365f346302db",
+        "manifest_sha256": "3fce17aaad4e899d9e6cf510f8aa8bab9e332f88d94caa3bdea65c959a5524fd",
+        "decoder": "eccodes"
+      },
+      "humidity": {
+        "sha256": "9707350269f5237d48691f66b21bff63c04281baea69a450c2926a5c56bfcd60",
+        "manifest_sha256": "45b0ff37bd42914e544ba6bbfded625fcf6c17a2c5e52b0981d50f960ec6c254",
+        "decoder": "eccodes"
+      },
+      "observations": {
+        "2021": {
+          "url": "https://data.meteostat.net/hourly/2021/34929.csv.gz",
+          "sha256": "f2c56341421d1b839be2c5314bd46afc4bcb0cb140a39f5753a37a5f1d162174",
+          "retrieved_at_utc": "2026-10-13T20:04:06.909831+00:00",
+          "bytes": 69267,
+          "content_type": "application/x-gzip"
+        }
+      },
+      "annual_wind_audit": {
+        "2021": {
+          "accepted": 8632,
+          "missing_or_excluded_source": 128
+        }
+      }
+    },
+    "extra_pre_upgrade": {
+      "extraction_sha256": "049b221cd2c2992609ef764812512d6a137785bcd876922a68937435e6814da6",
+      "observations": {
+        "url": "https://data.meteostat.net/hourly/2021/34929.csv.gz",
+        "sha256": "f2c56341421d1b839be2c5314bd46afc4bcb0cb140a39f5753a37a5f1d162174",
+        "retrieved_at_utc": "2026-10-13T20:04:06.909831+00:00",
+        "bytes": 69267,
+        "content_type": "application/x-gzip"
+      }
+    }
+  },
+  "observations_loaded_years": [
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "selection_saved_at_utc": "2026-10-13T20:40:18.187448+00:00",
+  "archive_counts": {
+    "2021": {
+      "forecast_nights": 92,
+      "complete_target_nights": 91,
+      "missing_target_nights": 1,
+      "cold_nights": 9,
+      "consecutive_cold_groups": 5
+    },
+    "2022": {
+      "forecast_nights": 92,
+      "complete_target_nights": 92,
+      "missing_target_nights": 0,
+      "cold_nights": 18,
+      "consecutive_cold_groups": 5
+    },
+    "2023": {
+      "forecast_nights": 92,
+      "complete_target_nights": 92,
+      "missing_target_nights": 0,
+      "cold_nights": 3,
+      "consecutive_cold_groups": 2
+    },
+    "2024": {
+      "forecast_nights": 92,
+      "complete_target_nights": 91,
+      "missing_target_nights": 1,
+      "cold_nights": 4,
+      "consecutive_cold_groups": 3
+    }
+  }
+}

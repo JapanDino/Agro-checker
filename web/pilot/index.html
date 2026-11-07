@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'">
+  <meta name="description" content="Onlyfarms: архивный пилот предупреждения о заморозках для яблони в Краснодаре.">
+  <title>Onlyfarms — архив ночных заморозков</title>
+  <!-- PILOT_STYLE -->
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#archive" aria-label="Onlyfarms — архив"><span class="brand-mark">of</span><span>onlyfarms<span class="brand-sub">пилот · Краснодар</span></span></a>
+    <div class="nav-label">РАБОЧЕЕ ПРОСТРАНСТВО</div>
+    <nav aria-label="Разделы пилота">
+      <button class="nav-item active" data-view="archive" aria-current="page"><span aria-hidden="true">◷</span> Архив ночей</button>
+      <button class="nav-item" data-view="quality"><span aria-hidden="true">▥</span> Качество прогноза</button>
+      <button class="nav-item" data-view="sources"><span aria-hidden="true">≡</span> Данные и источники</button>
+    </nav>
+    <div class="sidebar-bottom"><span class="small-dot"></span> Работает без интернета<p>Яблоня · температура воздуха<br>Архив 2022–2025</p></div>
+  </aside>
+  <main>
+    <header class="page-header"><div><p class="eyebrow">ONLYFARMS / ДЕМОНСТРАЦИОННЫЙ ПИЛОТ</p><h1 id="page-title">Архив ночных заморозков</h1><p class="intro">Одна ночь. Один выпуск прогноза. Проверка по наблюдениям.</p></div><span class="mode-badge">Историческое воспроизведение</span></header>
+    <section id="archive-view" aria-label="Архив ночей">
+      <section class="demo-panel" aria-labelledby="demo-heading"><div class="demo-heading"><h2 id="demo-heading">Три ночи для демонстрации</h2><span>Погодный порог 0 °C · отложенный сезон 2025</span></div><div id="demo-cases" class="demo-cases"></div><p class="control-note">Исходы этих примеров известны по архиву. Быстрый выбор меняет только ночь и сбрасывает фильтр; фазу яблони выбирайте отдельно.</p></section>
+      <div class="controls card">
+        <label>Сезон<select id="year" aria-label="Сезон"></select></label>
+        <label>Дата вечера<input id="date" type="date" aria-label="Дата вечера архивной ночи"></label>
+        <label class="phase-control">Фаза яблони <span class="scenario-tag">сценарий</span><select id="phase"><option value="">Выберите фазу</option></select></label>
+        <label>Показать<select id="filter"><option value="all">Все ночи</option><option value="cold">По факту: ниже 0 °C</option><option value="incomplete">По факту: неполные данные</option></select></label>
+      </div>
+      <p class="control-note">Фаза не восстановлена из архива: выбирайте её для демонстрационного сценария. Фильтры по факту используют последующие наблюдения.</p>
+      <div id="input-error" class="error-message" role="alert" hidden></div>
+      <div id="empty-state" class="card empty-state" hidden><h2>Нет ночей для этого фильтра</h2><p>Выберите другой сезон или покажите все ночи.</p></div>
+      <div id="night-dashboard">
+        <div id="demo-note" class="demo-note" hidden><strong id="demo-note-title"></strong><p id="demo-note-text"></p><span id="demo-note-reveal"></span></div>
+        <div class="night-heading"><div><h2 id="night-title"></h2><p id="night-context"></p></div><div class="night-nav"><span id="split-badge" class="split-badge"></span><button id="prev" class="icon-button" aria-label="Предыдущая ночь">←</button><button id="next" class="icon-button" aria-label="Следующая ночь">→</button></div></div>
+        <div class="metric-grid">
+          <article class="card metric"><span class="metric-label"><i class="series-dot base"></i> Минимум GFS</span><strong id="base-min">—</strong><span id="base-detail" class="metric-detail"></span></article>
+          <article class="card metric"><span class="metric-label"><i class="series-dot corrected"></i> Минимум с коррекцией</span><strong id="corrected-min">—</strong><span class="metric-detail">Сдвиг минимума −0,78 °C · эксперимент</span></article>
+          <article class="card metric observed-metric"><span class="metric-label"><i class="series-dot observed"></i> Минимум станции после ночи</span><strong id="observed-min">—</strong><span id="observed-detail" class="metric-detail"></span></article>
+        </div>
+        <div class="content-grid">
+          <article class="card chart-card"><div class="chart-heading"><div><h2>Температура в течение ночи</h2><p>Воздух на высоте 2 м · московское время</p></div><span class="chart-unit">°C</span></div>
+            <div class="chart-legend"><span><i class="legend-line base"></i> GFS</span><span><i class="legend-line corrected"></i> Коррекция</span><label class="observed-toggle"><input id="show-observed" type="checkbox" checked><i class="legend-line observed"></i> Наблюдения после ночи</label></div>
+            <div class="plot-wrap"><svg id="chart" viewBox="0 0 1000 340" role="img" tabindex="0" aria-label="График почасовой температуры; стрелки влево и вправо выбирают час"></svg><div id="chart-tooltip" class="chart-tooltip" hidden></div></div>
+            <p class="chart-help">Наведите на график или используйте стрелки на клавиатуре. Пропуски не соединяются линией.</p>
+            <div class="chart-notice">Коррекция выбрана для ночного минимума. Смещение всей кривой показано для диагностики и не повышает точность каждого часа.</div>
+          </article>
+          <article id="risk-card" class="card risk-card" aria-live="polite"><div class="risk-heading"><span class="eyebrow">ЯБЛОНЯ · СПРАВОЧНЫЙ РИСК</span><span id="risk-icon" aria-hidden="true">!</span></div><span id="risk-status" class="risk-status"></span><h2 id="risk-title"></h2><p id="risk-explanation"></p>
+            <div class="risk-threshold"><span>Порог для выбранной фазы</span><strong id="threshold">—</strong><span id="threshold-stage"></span></div>
+            <div id="risk-points"></div><p id="weather-note" class="risk-small"></p>
+            <details><summary>Что означает справочный порог?</summary><p>Таблица описывает 10% повреждения почек после 30 минут воздействия. Это не прогноз потери урожая этой ночью. Температура цветков, длительность воздействия и сорт в пилоте не измеряются; данные станции не заменяют измерения в саду.</p><a id="threshold-source" target="_blank" rel="noopener noreferrer">Таблица WSU / Utah State University ↗</a></details>
+            <p class="risk-small review-note">Порог и карточка не проверены агрономом для этого сада. Вероятность и доля повреждений не рассчитываются.</p>
+          </article>
+        </div>
+        <div class="bottom-grid">
+          <article class="card retrospective-card"><span class="eyebrow">ПОСЛЕ НОЧИ · ПРОВЕРКА ПО ФАКТУ</span><h2 id="retro-title"></h2><p id="retro-explanation"></p><div id="retro-results" class="retro-results"></div></article>
+          <article class="card preparation"><span class="eyebrow">ПОДГОТОВКА К ПОХОЛОДАНИЮ</span><h2>Что проверить в саду</h2><ul><li>Показания датчиков в уязвимых местах.</li><li>Готовность персонала и доступного оборудования.</li><li>Регламент защиты с агрономом до наступления ночи.</li></ul><p class="muted">Черновик мер для пилота. Режим запуска и остановки защиты не назначается.</p></article>
+        </div>
+        <details class="card hourly-details"><summary>Почасовые значения и происхождение наблюдений</summary><div class="table-scroll"><table><thead><tr><th>Время МСК</th><th>GFS, °C</th><th>Коррекция, °C</th><th>Наблюдение, °C</th><th>Источник цели</th><th>Горизонт</th></tr></thead><tbody id="hourly-body"></tbody></table></div></details>
+      </div>
+    </section>
+    <section id="quality-view" hidden><div class="card text-card"><span class="eyebrow">ОТЛОЖЕННЫЙ СЕЗОН · 2025</span><h2>Средний минимум точнее. Пропуски остались.</h2><p>Обучение: весна 2022–2023. Выбор коррекции: 2024. Проверка: 2025, 91 полная ночь, 6 холодных ночей в 3 последовательных сериях. Метод после выбора не переобучался.</p><div id="quality-table" class="table-scroll"></div><div class="chart-notice">Сдвиг уменьшил MAE ночного минимума, но не улучшил обнаружение заморозков и ухудшил почасовую кривую. Шесть холодных ночей недостаточны для обещаний эффективности в саду.</div><h3>Что именно сравнивается</h3><p>База и коррекция получают один выпуск NOAA GFS 06:00 UTC, одну точку сетки и одни ночи. Событие проверки — минимум воздуха ниже 0 °C; это не справочный порог повреждения яблони.</p><p class="muted">Диапазоны неопределённости и вероятности пока не откалиброваны. В архиве нет журнала фаз и повреждений растений.</p></div></section>
+    <section id="sources-view" hidden><div class="card text-card"><span class="eyebrow">ПРОИСХОЖДЕНИЕ И ГРАНИЦЫ ДАННЫХ</span><h2>Погода у станции, сценарий для яблони</h2><div id="source-details"></div><h3>Справочный порог</h3><p>Взята строка яблони из таблицы WSU, опубликованной Utah State University Extension в марте 2020 года. Исходные значения в °F преобразованы в °C; на экране округлены до одного знака. Фаза выбирается пользователем как сценарная.</p><p><a href="https://extension.usu.edu/productionhort/files/CriticalTemperaturesFrostDamageFruitTrees.pdf" target="_blank" rel="noopener noreferrer">Таблица критических температур, страница 1 ↗</a></p><h3>Подготовка и применение</h3><p>Карточка подготовки — черновик для демонстрации. Температура станции и справочная таблица сами по себе не определяют способ защиты, расход воды или момент включения оборудования.</p><p><a href="https://www.fao.org/4/y7223e/y7223e0d.htm" target="_blank" rel="noopener noreferrer">FAO: условия применения активной защиты ↗</a></p><details><summary>Контрольные суммы исходной сводки и таблицы</summary><pre id="provenance"></pre></details></div></section>
+    <footer>ONLYFARMS · Архивный пилот · Фаза яблони — сценарий, повреждения урожая не измерены.</footer>
+  </main>
+  <!-- PILOT_DATA -->
+  <!-- PILOT_SCRIPT -->
+</body>
+</html>

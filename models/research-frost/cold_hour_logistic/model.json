@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "family": "cold_hour_logistic",
+  "training_years": [
+    2022,
+    2023
+  ],
+  "training_nights": 184,
+  "training_cold_nights": 21,
+  "training_cold_hours": 166,
+  "last_training_night": "2023-05-31",
+  "feature_schema": {
+    "hour": [
+      "temperature_c",
+      "night_min_c",
+      "night_range_c",
+      "hour_change_c",
+      "dewpoint_c",
+      "dewpoint_spread_c",
+      "rh_pct",
+      "wind_ms",
+      "cloud_pct",
+      "hour_index_over_13"
+    ],
+    "night": [
+      "min_c",
+      "max_c",
+      "mean_c",
+      "range_c",
+      "evening_c",
+      "morning_c",
+      "change_c",
+      "min_index",
+      "gfs_cold_bins",
+      "gfs_near_zero_bins",
+      "dewpoint_mean_c",
+      "wind_mean_ms",
+      "cloud_mean_pct",
+      "rh_mean_pct"
+    ],
+    "duration": [
+      "min_c",
+      "range_c",
+      "change_c",
+      "min_index",
+      "gfs_cold_bins",
+      "dewpoint_mean_c",
+      "wind_mean_ms",
+      "cloud_mean_pct"
+    ]
+  },
+  "hour_head": {
+    "kind": "logistic",
+    "scaler_mean": [
+      9.568919098658588,
+      8.196295922320838,
+      3.684066440748112,
+      -0.18860829702815662,
+      6.164802137102412,
+      3.404116961556194,
+      80.03319099378884,
+      4.342199938816825,
+      68.50923913043479,
+      0.4999999999999999
+    ],
+    "scaler_scale": [
+      5.036053742364706,
+      4.719239239670566,
+      1.5765990786829798,
+      0.6148312440637081,
+      5.349953181458549,
+      2.0495830593526714,
+      10.741974690546481,
+      2.472877288138869,
+      41.6001466012699,
+      0.3100868364730164
+    ],
+    "coefficients": [
+      -3.2398405012793616,
+      -1.3306599413988558,
+      -0.231527379567931,
+      -0.08872184967959333,
+      -2.7583126474294137,
+      -0.7607241631147847,
+      -0.04148314907952038,
+      -0.12578879383203226,
+      0.7166249213725157,
+      0.25063833482704817
+    ],
+    "intercept": -12.929199633699278
+  }
+}

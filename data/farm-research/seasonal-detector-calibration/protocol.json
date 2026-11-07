@@ -1,0 +1,146 @@
+{
+  "schema": 1,
+  "created_at_utc": "2026-10-20T21:35:21.384130+00:00",
+  "families": [
+    "identity",
+    "temperature",
+    "platt",
+    "beta",
+    "isotonic_shrink50",
+    "conditional",
+    "conditional_mix50"
+  ],
+  "base_choices": [
+    {
+      "index": "ndvi",
+      "regime": "season25",
+      "gate": "joint_momentum",
+      "threshold": 0.5,
+      "metrics": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 40,
+        "tn": 230,
+        "recall": 0.09090909090909091,
+        "precision": 1.0,
+        "date_balanced_recall": 0.04622218478677682,
+        "tp_dates": 3,
+        "fp_dates": 0,
+        "event_dates": 11,
+        "pairs": 274,
+        "dates": 25
+      },
+      "enabled": true
+    },
+    {
+      "index": "ndmi",
+      "regime": "2024_only",
+      "gate": "joint_momentum",
+      "threshold": 0.85,
+      "metrics": {
+        "tp": 9,
+        "fp": 0,
+        "fn": 27,
+        "tn": 238,
+        "recall": 0.25,
+        "precision": 1.0,
+        "date_balanced_recall": 0.11867134434585948,
+        "tp_dates": 2,
+        "fp_dates": 0,
+        "event_dates": 12,
+        "pairs": 274,
+        "dates": 25
+      },
+      "enabled": true
+    }
+  ],
+  "input_hashes": {
+    "data/farm-research/early-season-decline/data-early.json": "ddcef643c3e85d7a600801d83c9af3615a5d6965cd4e0210ee978b9c9c998995",
+    "data/farm-research/crop-season-model/data-2024.json": "d54e9a2e527bcf7e1dfdb811a35777b3a050076d04033656c57fb5ea5b56c329",
+    "data/farm-research/field-index-model/frozen-model.json": "b518c04fc57182e5c31abb6db72286c178a6d4d0a6b06a6ef15c75acd65790dc",
+    "data/farm-research/season-version-decline/protocol.json": "161189fee0e4d4f83fcfa4e07506f34943e4d70a637f7917c9259eab4380b866",
+    "data/farm-research/season-version-decline/frozen-selection.json": "5ad240856b0027aca98d8f34ef91567ef22886a20c23a0d238c0140205670f6d",
+    "agro_checker/season_version_decline.py": "871da99c566c508843891f51475f7932be3ae7c796bb9df1d290aeafcd463279",
+    "data/farm-research/season-version-decline/0-season25.joblib": "16d901d7f0e0256e1c50ef240911e964192dacfee977d5529532dcec44419da9",
+    "data/farm-research/season-version-decline/1-2024_only.joblib": "0e89d0f1a9f504eda93c2d9b962f878fe28b91ccf3d315dec62530394bd77c62"
+  },
+  "holdout_ids": [
+    "R23",
+    "R24",
+    "R25",
+    "R26",
+    "R27"
+  ],
+  "source_scope": "NDVI existing season25 candidate; NDMI existing2024-only temporal classifier. No accepted NDMI seasonal model exists.",
+  "goal": "Reduce false-positive alerts while preserving EVERY true-positive case of each baseline, not merely equal TP totals",
+  "alert_policy": "VETO ONLY: baseline_alarm AND calibrated_probability>=threshold. Cannot create an alert or add an FP case.",
+  "thresholds": [
+    0.0,
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1.01
+  ],
+  "base_oof": "Expanding issue-date2024 models; fit current2024 targets<issue with>=5 fit dates/20 pairs; fixed previous algorithms, features and source weights. Prior early years for NDVI only. No in-sample predictions for calibration.",
+  "calibration_folds": [
+    "2024-06-01",
+    "2024-07-01",
+    "2024-08-01",
+    "2024-09-01",
+    "2024-10-01"
+  ],
+  "meta_rule": "Calibrator fits causal score rows whose target<validation month start; validation issue in month and target<next month. Crossing windows purged.",
+  "calibration_support": {
+    "min_pairs": 20,
+    "min_dates": 5,
+    "min_positive_dates": 2,
+    "min_negative_dates": 2
+  },
+  "unsupported_policy": "Identity fallback, retained in all denominators; no fabricated positives or missing-probability removal",
+  "fixed_parameters": {
+    "probability_clip": 1e-05,
+    "temperature_bounds": [
+      0.25,
+      4.0
+    ],
+    "monotonic_penalty": 0.01,
+    "conditional_penalty": 0.1,
+    "maxiter": 500,
+    "ftol": 1e-12
+  },
+  "calibration": "Temperature, positive-slope regularized Platt/beta, half-shrunk isotonic; conditional logit correction with four past-only seasonal/lag inputs and its half-shrunk variant.",
+  "conditional_features": [
+    "observed_relative_range",
+    "past_weekly_slope_over_observed_amplitude",
+    "past_lag_capped21_div7",
+    "past_history_supported"
+  ],
+  "selection": "2024 meta-OOF only: retain every baselineTP, no added alarms/FP and no worse Brier or logloss than raw. Minimize FP pairs, FP dates, date-balanced Brier, logloss, listed family order; ties choose LOWER veto threshold to avoid unsupported extra filtering.",
+  "minimum_reference": "Baseline must contain>=2TP on>=2dates; otherwise retain identity/no veto and mark insufficient detection support",
+  "final_calibration": "All causal2024 score rows, same selected family. Final base models remain exact previous binaries; calibration transfer from expanding fits to final fit is a limitation.",
+  "reliability_bins": [
+    0.0,
+    0.1,
+    0.2,
+    0.4,
+    0.6,
+    0.8,
+    1.0
+  ],
+  "acceptance": "On all2026 AND spatial2026: lose0 baselineTP cases, strictly fewer FP, no growth of FP dates. Separately check original Ridge FP budget. No production promotion.",
+  "test": "Existing499 pairs2026 only after frozen calibrators/thresholds; already examined in prior work, not pristine blind.2025 absent.",
+  "limitations": [
+    "2024 repeatedly used for upstream choices and calibration selection, selection estimates optimistic.",
+    "Monotone probability calibration cannot improve ordering; isotonic can introduce ties.",
+    "Brier/logloss reflect calibration and discrimination, not proof of calibrated agronomic probabilities.",
+    "Correlated fragments and overlapping windows; no crop/operation/damage labels; no live delivery validation."
+  ],
+  "reference": "https://scikit-learn.org/stable/modules/calibration.html",
+  "operational": false
+}

@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "created_at_utc": "2026-10-19T21:27:28.242486+00:00",
+  "status": "preregistered_before_fit",
+  "source_2024_sha256": "b111d6234a863b7fe38aadd608ad7459138a4cd3cc1b1f0282b4be866448ccbe",
+  "old_point_sha256": "b518c04fc57182e5c31abb6db72286c178a6d4d0a6b06a6ef15c75acd65790dc",
+  "holdout_ids": [
+    "R23",
+    "R24",
+    "R25",
+    "R26",
+    "R27"
+  ],
+  "point_model": "temporal_ridge_100",
+  "point_policy": "Same fixed seven features and alpha previously chosen on 2024; isolate full-season fit. No new point hyperparameter search.",
+  "final_fit": "all eligible 2024 pairs outside five reserved fragments, March-October",
+  "oof": "one issue-date fold; fit only rows with target < issue; minimum 5 fit dates and 20 rows",
+  "interval_outer_starts": [
+    "2024-08-01",
+    "2024-09-01",
+    "2024-10-01"
+  ],
+  "outer_target_policy": "issue in month and target before next month; crossing pairs purged",
+  "meta_split": "Only OOF rows with target < outer start. Last 8 issue dates for calibration; residual-fit target < first calibration issue. >=3 residual-fit dates and >=20 rows.",
+  "interval_candidates": [
+    "date_max",
+    "global_asymmetric",
+    "conditional",
+    "event_weighted"
+  ],
+  "quantile_alphas": [
+    0.05,
+    0.95
+  ],
+  "tail_hyperparameters": {
+    "iterations": 120,
+    "depth": 2,
+    "learning_rate": 0.05,
+    "l2_leaf_reg": 5,
+    "random_seed": 202410,
+    "thread_count": 2
+  },
+  "calibration": "Empirical date-balanced one-sided 95th residual shortfall; event_weighted also 90th lower shortfall among actual declines. If <3 event dates use event maximum, if none use overall only.",
+  "event": "future index minus current index <= -0.10, spectral event only",
+  "event_fit_weight": 3,
+  "minimum_overall_coverage": 0.9,
+  "minimum_decline_coverage": 0.85,
+  "maximum_width_ratio_vs_date_max": 1.1,
+  "selection": "Among candidates meeting both per-index coverage floors and width budget on causal outer 2024 folds, minimize date-balanced 90% interval score with weight 3 on declines. If none, keep date_max comparator and declare no candidate passed.",
+  "selection_limit": "2024 outer predictions used for candidate selection, not independent quality estimates. Final full-season point and causal-OOF residual models differ in fit size; no exact conformal guarantee.",
+  "detector_policy": "Keep original frozen point-derived event alarms bitwise. Independently report unprotected alarms from full-season point; any increase in FP or FP dates on all2026 or spatial2026 fails point-warning replacement.",
+  "test_constraints": "Interval: improve decline coverage for both indices vs legacy, overall>=90%, full width<=110% of legacy, on all2026 and spatial2026. No promotion even if passes without local observations.",
+  "evaluation": "Only frozen choice on all2026, temporal2026, spatial2026 and reserved spatial2024. No test-driven retries. 2026 already seen, not pristine blind.",
+  "unavailable": "2025 absent; no fabricated crop, disease, inspection or moisture labels",
+  "source_archive": "Retrospective acquisition-date experiment; reprocessed bytes availability at original issue time not proven"
+}

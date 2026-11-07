@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "final_train_years": [2022, 2023],
+  "evaluation_years": [2025, 2026],
+  "weather_thresholds_c": [-3, -2, -1, 0],
+  "ordinal_base": "ordinal_score_0.1",
+  "ordinal_penalty": 0.1,
+  "date_blocks": 6,
+  "decision_threshold": 0.25,
+  "mixture_weights": [0.25, 0.5, 0.75],
+  "affine_penalties": [0.1, 1.0, 10.0],
+  "minimum_calibration_nights": 50,
+  "minimum_calibration_events": 3,
+  "selection": "At0 pooled misses/FA/Brier <= raw detector; pooled cold Brier <= raw; warm Brier <= raw in EACH validation season; preserve nested probabilities. Among eligible minimum pooled Brier, then simpler registry order. Identity fallback. 0.25 decision fixed; never tunes detector alarms.",
+  "calibration": "Positive affine logit fit on binary event at0, identity shrinkage, Brier or log loss. OOF excludes complete dates; forward source uses 2022 fit->2023 predictions when both years available, otherwise explicit 2022 OOF fallback. Frozen ordinal slope supplies threshold spacing only.",
+  "scope": "Separate research calibration, anchored at0, not crop damage, no hourly/timing changes. Original detector point masks and timings immutable. Selection uses only 2023/2024; final fit/calibration only2022/2023.",
+  "status": "Previously viewed2025/2026 are diagnostic/evaluation only. No post-control source/model/protocol edits or further search. Identity and prior ordinal are references, not newly tuned."
+}

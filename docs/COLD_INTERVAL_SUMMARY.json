@@ -1,0 +1,889 @@
+{
+  "selection": {
+    "protocol": {
+      "schema_version": 1,
+      "folds": [
+        {
+          "train_years": [
+            2022
+          ],
+          "validation_year": 2023
+        },
+        {
+          "train_years": [
+            2022,
+            2023
+          ],
+          "validation_year": 2024
+        }
+      ],
+      "final_calibration_year": 2024,
+      "evaluation_years": [
+        2025,
+        2026
+      ],
+      "base_coverage": 0.9,
+      "minimum_pool_nights": 30,
+      "candidates": [
+        {
+          "name": "legacy_symmetric",
+          "mode": "legacy"
+        },
+        {
+          "name": "global_symmetric_95",
+          "mode": "symmetric",
+          "quantile": 0.95
+        },
+        {
+          "name": "risk_2_symmetric_95",
+          "mode": "symmetric",
+          "risk_threshold_c": 2.0,
+          "quantile": 0.95
+        },
+        {
+          "name": "risk_5_symmetric_95",
+          "mode": "symmetric",
+          "risk_threshold_c": 5.0,
+          "quantile": 0.95
+        },
+        {
+          "name": "risk_5_symmetric_975",
+          "mode": "symmetric",
+          "risk_threshold_c": 5.0,
+          "quantile": 0.975
+        },
+        {
+          "name": "risk_5_lower_95",
+          "mode": "lower",
+          "risk_threshold_c": 5.0,
+          "quantile": 0.95
+        },
+        {
+          "name": "risk_5_signed_95",
+          "mode": "signed",
+          "risk_threshold_c": 5.0,
+          "quantile": 0.95
+        }
+      ],
+      "risk_group": "min(point_minimum, GFS_minimum) <= threshold; forecast-only; never group by actual cold labels",
+      "selection": "lexicographic: pooled actual-cold uncovered rate, balanced mean90 interval score on cold/warm nights, overall width, registry order",
+      "validation": "whole-night leave-one-out calibration inside each prior-season validation fold; held night excluded from both global and risk pools; retrospective tuning diagnostics, not prospective or independent calibration coverage",
+      "fallback": "risk pool below30 or finite-sample rank beyond sample -> global pool for requested quantile; if global insufficient raise, never cap rank or fabricate width",
+      "nesting": "both bounds contain legacy90 interval; warm forecasts keep legacy bounds for risk candidates",
+      "point_model": "parent frozen huber_1 unchanged; same fixed family fitted on fold training years only for validation",
+      "detector": "parent event_duration_weather@0.25 unchanged, including every cold mask, onset and duration",
+      "uncertainty": "nominal base90, empirical conditional coverage only; selection uses prior calibration-year labels so no distribution-free coverage claim; dependent weather and sparse cold events",
+      "deployment": "station research only; field GFS unchanged, no orchard transfer",
+      "status": "fixed registry and criterion before this comparison on already-viewed2025/2026; evaluation years excluded from all selection/calibration"
+    },
+    "protocol_sha256": "5e52bdefb42d79425ec5dd9e9ae302f42f85f1bf8ffea042cec36cd124752752",
+    "source_sha256": {
+      "cold_interval.py": "5123f7591df1350abf12471d07a12c42ff3c87d52e41b8147365a795e8baad2b",
+      "cold_interval_study.py": "14711ed4114afd80ce7f8d4a823d5167abe0e42567f32844e66963bc6da446b8",
+      "minimum_model.py": "dee4e650d0cd1b390e748c4521c2aa70242a7128e52bb08fa7e18a6f10a0be7d",
+      "scenario_study.py": "0b94631ad28902154250308902996016ee3cdaa55f4e514e4482887a9427d627",
+      "frost_study.py": "0161683092e817a4ff943378ededf42c50dc31c5ecfb867a3b444046d6056ab1"
+    },
+    "selection_saved_at_utc": "2026-10-13T18:01:50.769513+00:00",
+    "winner": "risk_5_lower_95",
+    "observations_loaded_years": [
+      2022,
+      2023,
+      2024
+    ],
+    "parent_hashes": {
+      "point_model": "b273ad32caf00e21303f9fe11b0b2aef630eef03336bd63f2d3033d341ec9954",
+      "point_selection": "ea6ab05a32ed1ab4d823e022a94719d3266b10322c681e1c8561f75bcc8432a3",
+      "detector": "fba66530ceca0a4baee688eeb96df88b98b5b3c36150fef3575d96c03828eab8",
+      "detector_selection": "55a377c51df66208136938a01d348a3c60c763481bfdd7bf1fdf98617a729e69"
+    },
+    "folds": [
+      {
+        "train_years": [
+          2022
+        ],
+        "validation_year": 2023,
+        "calibration_available_nights": 92,
+        "scores": {
+          "legacy_symmetric": {
+            "nights": 92,
+            "excluded_nights": 0,
+            "cold_nights": 3,
+            "covered": 83,
+            "cold_covered": 3,
+            "coverage": 0.9021739130434783,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.220603615946277,
+            "mean_width_c": 4.820349538479695,
+            "cold_mean_width_c": 4.825888256112751,
+            "warm_mean_width_c": 4.820162840132514,
+            "interval_score": 5.976832279068011,
+            "cold_interval_score": 4.825888256112751,
+            "warm_interval_score": 6.015628145010323,
+            "crosses_zero_nights": 8,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 0,
+            "extrapolation_nights": 0
+          },
+          "global_symmetric_95": {
+            "nights": 92,
+            "excluded_nights": 0,
+            "cold_nights": 3,
+            "covered": 88,
+            "cold_covered": 3,
+            "coverage": 0.9565217391304348,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.220603615946277,
+            "mean_width_c": 6.198431810394964,
+            "cold_mean_width_c": 6.219757601776784,
+            "warm_mean_width_c": 6.197712963494451,
+            "interval_score": 6.712751350846766,
+            "cold_interval_score": 6.219757601776784,
+            "warm_interval_score": 6.729369117669349,
+            "crosses_zero_nights": 10,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 0,
+            "extrapolation_nights": 0
+          },
+          "risk_2_symmetric_95": {
+            "nights": 92,
+            "excluded_nights": 0,
+            "cold_nights": 3,
+            "covered": 83,
+            "cold_covered": 3,
+            "coverage": 0.9021739130434783,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.220603615946277,
+            "mean_width_c": 4.967141041276756,
+            "cold_mean_width_c": 6.219757601776784,
+            "warm_mean_width_c": 4.9249180111475415,
+            "interval_score": 6.019276592044053,
+            "cold_interval_score": 6.219757601776784,
+            "warm_interval_score": 6.012518805199129,
+            "crosses_zero_nights": 9,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 10,
+            "extrapolation_nights": 0
+          },
+          "risk_5_symmetric_95": {
+            "nights": 92,
+            "excluded_nights": 0,
+            "cold_nights": 3,
+            "covered": 83,
+            "cold_covered": 3,
+            "coverage": 0.9021739130434783,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.220603615946277,
+            "mean_width_c": 5.07319631757728,
+            "cold_mean_width_c": 6.219757601776784,
+            "warm_mean_width_c": 5.034548184402017,
+            "interval_score": 6.125331868344579,
+            "cold_interval_score": 6.219757601776784,
+            "warm_interval_score": 6.1221489784536045,
+            "crosses_zero_nights": 10,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 17,
+            "extrapolation_nights": 0
+          },
+          "risk_5_symmetric_975": {
+            "nights": 92,
+            "excluded_nights": 0,
+            "cold_nights": 3,
+            "covered": 83,
+            "cold_covered": 3,
+            "coverage": 0.9021739130434783,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.220603615946277,
+            "mean_width_c": 5.167269376609371,
+            "cold_mean_width_c": 6.71781671566033,
+            "warm_mean_width_c": 5.115003735967204,
+            "interval_score": 6.144864100331495,
+            "cold_interval_score": 6.71781671566033,
+            "warm_interval_score": 6.125551090826029,
+            "crosses_zero_nights": 10,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 17,
+            "extrapolation_nights": 0
+          },
+          "risk_5_lower_95": {
+            "nights": 92,
+            "excluded_nights": 0,
+            "cold_nights": 3,
+            "covered": 83,
+            "cold_covered": 3,
+            "coverage": 0.9021739130434783,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.220603615946277,
+            "mean_width_c": 4.820349538479695,
+            "cold_mean_width_c": 4.825888256112751,
+            "warm_mean_width_c": 4.820162840132514,
+            "interval_score": 5.976832279068011,
+            "cold_interval_score": 4.825888256112751,
+            "warm_interval_score": 6.015628145010323,
+            "crosses_zero_nights": 8,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 17,
+            "extrapolation_nights": 0
+          },
+          "risk_5_signed_95": {
+            "nights": 92,
+            "excluded_nights": 0,
+            "cold_nights": 3,
+            "covered": 83,
+            "cold_covered": 3,
+            "coverage": 0.9021739130434783,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.220603615946277,
+            "mean_width_c": 4.943441025443515,
+            "cold_mean_width_c": 5.522822928944767,
+            "warm_mean_width_c": 4.923911298359203,
+            "interval_score": 6.062214627910277,
+            "cold_interval_score": 5.522822928944767,
+            "warm_interval_score": 6.080396370572034,
+            "crosses_zero_nights": 9,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 17,
+            "extrapolation_nights": 0
+          }
+        }
+      },
+      {
+        "train_years": [
+          2022,
+          2023
+        ],
+        "validation_year": 2024,
+        "calibration_available_nights": 91,
+        "scores": {
+          "legacy_symmetric": {
+            "nights": 91,
+            "excluded_nights": 0,
+            "cold_nights": 4,
+            "covered": 82,
+            "cold_covered": 2,
+            "coverage": 0.9010989010989011,
+            "cold_coverage": 0.5,
+            "lower_cold_misses": 2,
+            "upper_cold_misses": 0,
+            "mae_c": 1.3754826051000555,
+            "mean_width_c": 5.979675052111229,
+            "cold_mean_width_c": 5.868200749417337,
+            "warm_mean_width_c": 5.984800307407499,
+            "interval_score": 7.036792618323157,
+            "cold_interval_score": 8.81486092799012,
+            "warm_interval_score": 6.955042351212032,
+            "crosses_zero_nights": 11,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 0,
+            "extrapolation_nights": 0
+          },
+          "global_symmetric_95": {
+            "nights": 91,
+            "excluded_nights": 0,
+            "cold_nights": 4,
+            "covered": 87,
+            "cold_covered": 4,
+            "coverage": 0.9560439560439561,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.3754826051000555,
+            "mean_width_c": 6.7976310018132775,
+            "cold_mean_width_c": 6.801316379974605,
+            "warm_mean_width_c": 6.797461559139195,
+            "interval_score": 7.103453468856512,
+            "cold_interval_score": 6.801316379974605,
+            "warm_interval_score": 7.117344829264877,
+            "crosses_zero_nights": 11,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 0,
+            "extrapolation_nights": 0
+          },
+          "risk_2_symmetric_95": {
+            "nights": 91,
+            "excluded_nights": 0,
+            "cold_nights": 4,
+            "covered": 84,
+            "cold_covered": 4,
+            "coverage": 0.9230769230769231,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.3754826051000555,
+            "mean_width_c": 6.029418096459906,
+            "cold_mean_width_c": 6.801316379974605,
+            "warm_mean_width_c": 5.993928520206357,
+            "interval_score": 6.957012138338963,
+            "cold_interval_score": 6.801316379974605,
+            "warm_interval_score": 6.964170564010889,
+            "crosses_zero_nights": 11,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 5,
+            "extrapolation_nights": 0
+          },
+          "risk_5_symmetric_95": {
+            "nights": 91,
+            "excluded_nights": 0,
+            "cold_nights": 4,
+            "covered": 84,
+            "cold_covered": 4,
+            "coverage": 0.9230769230769231,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.3754826051000555,
+            "mean_width_c": 6.173315151162043,
+            "cold_mean_width_c": 6.801316379974605,
+            "warm_mean_width_c": 6.144441531446524,
+            "interval_score": 6.883714820635876,
+            "cold_interval_score": 6.801316379974605,
+            "warm_interval_score": 6.887503254689267,
+            "crosses_zero_nights": 11,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 21,
+            "extrapolation_nights": 0
+          },
+          "risk_5_symmetric_975": {
+            "nights": 91,
+            "excluded_nights": 0,
+            "cold_nights": 4,
+            "covered": 85,
+            "cold_covered": 4,
+            "coverage": 0.9340659340659341,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.3754826051000555,
+            "mean_width_c": 6.339333451907779,
+            "cold_mean_width_c": 7.525756098096874,
+            "warm_mean_width_c": 6.284785284266902,
+            "interval_score": 6.932144406602201,
+            "cold_interval_score": 7.525756098096874,
+            "warm_interval_score": 6.904851915039227,
+            "crosses_zero_nights": 12,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 21,
+            "extrapolation_nights": 0
+          },
+          "risk_5_lower_95": {
+            "nights": 91,
+            "excluded_nights": 0,
+            "cold_nights": 4,
+            "covered": 84,
+            "cold_covered": 4,
+            "coverage": 0.9230769230769231,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.3754826051000555,
+            "mean_width_c": 6.076495101636636,
+            "cold_mean_width_c": 6.334758564695971,
+            "warm_mean_width_c": 6.064620919427012,
+            "interval_score": 6.786894771110468,
+            "cold_interval_score": 6.334758564695971,
+            "warm_interval_score": 6.807682642669755,
+            "crosses_zero_nights": 11,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 21,
+            "extrapolation_nights": 0
+          },
+          "risk_5_signed_95": {
+            "nights": 91,
+            "excluded_nights": 0,
+            "cold_nights": 4,
+            "covered": 84,
+            "cold_covered": 4,
+            "coverage": 0.9230769230769231,
+            "cold_coverage": 1.0,
+            "lower_cold_misses": 0,
+            "upper_cold_misses": 0,
+            "mae_c": 1.3754826051000555,
+            "mean_width_c": 6.076495101636636,
+            "cold_mean_width_c": 6.334758564695971,
+            "warm_mean_width_c": 6.064620919427012,
+            "interval_score": 6.786894771110468,
+            "cold_interval_score": 6.334758564695971,
+            "warm_interval_score": 6.807682642669755,
+            "crosses_zero_nights": 11,
+            "cold_fully_warm_range": 0,
+            "fallback_nights": 21,
+            "extrapolation_nights": 0
+          }
+        }
+      }
+    ],
+    "pooled_validation": {
+      "legacy_symmetric": {
+        "nights": 183,
+        "excluded_nights": 0,
+        "cold_nights": 7,
+        "covered": 165,
+        "cold_covered": 5,
+        "coverage": 0.9016393442622951,
+        "cold_coverage": 0.7142857142857143,
+        "lower_cold_misses": 2,
+        "upper_cold_misses": 0,
+        "mae_c": 1.2976199438861342,
+        "mean_width_c": 5.396844739247288,
+        "cold_mean_width_c": 5.4214953951439435,
+        "warm_mean_width_c": 5.395864315433216,
+        "interval_score": 6.503916382194887,
+        "cold_interval_score": 7.105301211471248,
+        "warm_interval_score": 6.479997667394122,
+        "crosses_zero_nights": 19,
+        "cold_fully_warm_range": 0,
+        "fallback_nights": 0,
+        "extrapolation_nights": 0
+      },
+      "global_symmetric_95": {
+        "nights": 183,
+        "excluded_nights": 0,
+        "cold_nights": 7,
+        "covered": 175,
+        "cold_covered": 7,
+        "coverage": 0.9562841530054644,
+        "cold_coverage": 1.0,
+        "lower_cold_misses": 0,
+        "upper_cold_misses": 0,
+        "mae_c": 1.2976199438861342,
+        "mean_width_c": 6.496394249843416,
+        "cold_mean_width_c": 6.552076903604111,
+        "warm_mean_width_c": 6.494179598841568,
+        "interval_score": 6.90703491772593,
+        "cold_interval_score": 6.552076903604111,
+        "warm_interval_score": 6.9211525660148645,
+        "crosses_zero_nights": 21,
+        "cold_fully_warm_range": 0,
+        "fallback_nights": 0,
+        "extrapolation_nights": 0
+      },
+      "risk_2_symmetric_95": {
+        "nights": 183,
+        "excluded_nights": 0,
+        "cold_nights": 7,
+        "covered": 167,
+        "cold_covered": 7,
+        "coverage": 0.912568306010929,
+        "cold_coverage": 1.0,
+        "lower_cold_misses": 0,
+        "upper_cold_misses": 0,
+        "mae_c": 1.2976199438861342,
+        "mean_width_c": 5.495377172542693,
+        "cold_mean_width_c": 6.552076903604111,
+        "warm_mean_width_c": 5.453349342330023,
+        "interval_score": 6.485582246212562,
+        "cold_interval_score": 6.552076903604111,
+        "warm_interval_score": 6.482937572339032,
+        "crosses_zero_nights": 20,
+        "cold_fully_warm_range": 0,
+        "fallback_nights": 15,
+        "extrapolation_nights": 0
+      },
+      "risk_5_symmetric_95": {
+        "nights": 183,
+        "excluded_nights": 0,
+        "cold_nights": 7,
+        "covered": 167,
+        "cold_covered": 7,
+        "coverage": 0.912568306010929,
+        "cold_coverage": 1.0,
+        "lower_cold_misses": 0,
+        "upper_cold_misses": 0,
+        "mae_c": 1.2976199438861342,
+        "mean_width_c": 5.620249945206862,
+        "cold_mean_width_c": 6.552076903604111,
+        "warm_mean_width_c": 5.583188645725154,
+        "interval_score": 6.502451259921125,
+        "cold_interval_score": 6.552076903604111,
+        "warm_interval_score": 6.500477512729187,
+        "crosses_zero_nights": 21,
+        "cold_fully_warm_range": 0,
+        "fallback_nights": 38,
+        "extrapolation_nights": 0
+      },
+      "risk_5_symmetric_975": {
+        "nights": 183,
+        "excluded_nights": 0,
+        "cold_nights": 7,
+        "covered": 168,
+        "cold_covered": 7,
+        "coverage": 0.9180327868852459,
+        "cold_coverage": 1.0,
+        "lower_cold_misses": 0,
+        "upper_cold_misses": 0,
+        "mae_c": 1.2976199438861342,
+        "mean_width_c": 5.750099053397104,
+        "cold_mean_width_c": 7.179496362766928,
+        "warm_mean_width_c": 5.693248024047168,
+        "interval_score": 6.536353214378676,
+        "cold_interval_score": 7.179496362766928,
+        "warm_interval_score": 6.510773657340508,
+        "crosses_zero_nights": 22,
+        "cold_fully_warm_range": 0,
+        "fallback_nights": 38,
+        "extrapolation_nights": 0
+      },
+      "risk_5_lower_95": {
+        "nights": 183,
+        "excluded_nights": 0,
+        "cold_nights": 7,
+        "covered": 167,
+        "cold_covered": 7,
+        "coverage": 0.912568306010929,
+        "cold_coverage": 1.0,
+        "lower_cold_misses": 0,
+        "upper_cold_misses": 0,
+        "mae_c": 1.2976199438861342,
+        "mean_width_c": 5.444990228355551,
+        "cold_mean_width_c": 5.688099861017449,
+        "warm_mean_width_c": 5.435321095238316,
+        "interval_score": 6.3796502395918555,
+        "cold_interval_score": 5.688099861017449,
+        "warm_interval_score": 6.407155084194247,
+        "crosses_zero_nights": 19,
+        "cold_fully_warm_range": 0,
+        "fallback_nights": 38,
+        "extrapolation_nights": 0
+      },
+      "risk_5_signed_95": {
+        "nights": 183,
+        "excluded_nights": 0,
+        "cold_nights": 7,
+        "covered": 167,
+        "cold_covered": 7,
+        "coverage": 0.912568306010929,
+        "cold_coverage": 1.0,
+        "lower_cold_misses": 0,
+        "upper_cold_misses": 0,
+        "mae_c": 1.2976199438861342,
+        "mean_width_c": 5.506872287375613,
+        "cold_mean_width_c": 5.986786149374027,
+        "warm_mean_width_c": 5.487784804227949,
+        "interval_score": 6.422574699119115,
+        "cold_interval_score": 5.986786149374027,
+        "warm_interval_score": 6.439907198256702,
+        "crosses_zero_nights": 20,
+        "cold_fully_warm_range": 0,
+        "fallback_nights": 38,
+        "extrapolation_nights": 0
+      }
+    },
+    "input_provenance": {
+      "temperature": {
+        "sha256": "56d887828fca75a82a70981c847e765e74385e73314837b3f942ae83403fd054",
+        "decoder": "eccodes-2.49.0",
+        "manifest_sha256": "9627d26da72cbb754acdf1a5236540ecb61ebf664b8572b69c13d53dd0f02cc5"
+      },
+      "covariates": {
+        "sha256": "c9d79b4ff1cce1f0ecff356271e35bb1ad073732b1147e64f6cb7b698a4bb1fc",
+        "manifest_sha256": "c5bcf552f2c2b42c7963e0bdfa407427d76b5d0deb9ef998cb34a638a4247bd0",
+        "decoder": "eccodes"
+      },
+      "humidity": {
+        "sha256": "69b3f396d92ae125bb519871f902b08973533a1ff3dd828209dece60c4bfefe5",
+        "manifest_sha256": "19dd14b9769430e340383a64608cd347a6ddfddc0d73aaea2d8e6f5f0fc0ee9c",
+        "decoder": "eccodes"
+      },
+      "observations": {
+        "2022": {
+          "url": "https://data.meteostat.net/hourly/2022/34929.csv.gz",
+          "sha256": "316ccc650a1f2107a502b873c27e9950a291e20b01b96772a564c7489f87f595",
+          "retrieved_at_utc": "2026-10-12T09:56:24.738802+00:00",
+          "bytes": 72009,
+          "content_type": "application/x-gzip"
+        },
+        "2023": {
+          "url": "https://data.meteostat.net/hourly/2023/34929.csv.gz",
+          "sha256": "c302798573f4ae7e8553394b4ed5fe4551ca2ec4703aef3e6dd82edebaa2271f",
+          "retrieved_at_utc": "2026-10-12T09:56:26.032553+00:00",
+          "bytes": 76648,
+          "content_type": "application/x-gzip"
+        },
+        "2024": {
+          "url": "https://data.meteostat.net/hourly/2024/34929.csv.gz",
+          "sha256": "b5412a30c55c88e0850ea151cd5237bb68ccc1364142c79656fdd3fbf76a1e01",
+          "retrieved_at_utc": "2026-10-12T09:56:28.208852+00:00",
+          "bytes": 76330,
+          "content_type": "application/x-gzip"
+        }
+      },
+      "annual_wind_audit": {
+        "2022": {
+          "accepted": 8756,
+          "missing_or_excluded_source": 4
+        },
+        "2023": {
+          "accepted": 8756,
+          "missing_or_excluded_source": 4
+        },
+        "2024": {
+          "accepted": 8768,
+          "missing_or_excluded_source": 16
+        }
+      }
+    },
+    "envelope_sha256": "44321312bb6875ae433d7660ebe11a9affd1aa913c198b2acec7720330d45100"
+  },
+  "selection_sha256": "af75cc47de5e0f01e8fb4b210fa59703e87115a1d57613d2a71d37bcbc8351e4",
+  "envelope": {
+    "spec": {
+      "name": "risk_5_lower_95",
+      "mode": "lower",
+      "risk_threshold_c": 5.0,
+      "quantile": 0.95
+    },
+    "base_radius_c": 3.0035809332370524,
+    "lower_radius_c": 3.4006581899873023,
+    "upper_radius_c": 3.0035809332370524,
+    "pool_nights": 91,
+    "global_rank": 83,
+    "risk_pool_nights": 21,
+    "fallback_to_global": true,
+    "excluded_date": null,
+    "tail_ranks": {
+      "lower_radius_c": {
+        "value": 3.4006581899873023,
+        "rank": 88,
+        "nights": 91,
+        "fallback_to_global": true
+      }
+    }
+  },
+  "seasons": {
+    "2025": {
+      "scores": {
+        "gfs": {
+          "nights": 91,
+          "excluded_nights": 1,
+          "cold_nights": 6,
+          "covered": 88,
+          "cold_covered": 4,
+          "coverage": 0.967032967032967,
+          "cold_coverage": 0.6666666666666666,
+          "lower_cold_misses": 2,
+          "upper_cold_misses": 0,
+          "mae_c": 1.5619965605683506,
+          "mean_width_c": 9.724609375000114,
+          "cold_mean_width_c": 9.724609375000114,
+          "warm_mean_width_c": 9.724609375000114,
+          "interval_score": 10.455037345467126,
+          "cold_interval_score": 17.612825520833287,
+          "warm_interval_score": 9.949781709558927,
+          "crosses_zero_nights": 22,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 5
+        },
+        "legacy_huber": {
+          "nights": 91,
+          "excluded_nights": 1,
+          "cold_nights": 6,
+          "covered": 84,
+          "cold_covered": 3,
+          "coverage": 0.9230769230769231,
+          "cold_coverage": 0.5,
+          "lower_cold_misses": 2,
+          "upper_cold_misses": 1,
+          "mae_c": 1.331187614684394,
+          "mean_width_c": 6.007161866474106,
+          "cold_mean_width_c": 6.007161866474107,
+          "warm_mean_width_c": 6.007161866474106,
+          "interval_score": 6.876268903105139,
+          "cold_interval_score": 17.782512596701608,
+          "warm_interval_score": 6.106416407086565,
+          "crosses_zero_nights": 17,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 5
+        },
+        "cold_aware": {
+          "nights": 91,
+          "excluded_nights": 1,
+          "cold_nights": 6,
+          "covered": 84,
+          "cold_covered": 3,
+          "coverage": 0.9230769230769231,
+          "cold_coverage": 0.5,
+          "lower_cold_misses": 2,
+          "upper_cold_misses": 1,
+          "mae_c": 1.331187614684394,
+          "mean_width_c": 6.124975997597806,
+          "cold_mean_width_c": 6.404239123224355,
+          "warm_mean_width_c": 6.105263306377109,
+          "interval_score": 6.819543580712247,
+          "cold_interval_score": 15.532408141783522,
+          "warm_interval_score": 6.2045178469895665,
+          "crosses_zero_nights": 21,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 27,
+          "extrapolation_nights": 5
+        }
+      },
+      "detector": {
+        "hits": 6,
+        "correct_negatives": 82,
+        "false_alarms": 3
+      },
+      "detector_masks_verified": 92,
+      "input_provenance": {
+        "temperature": {
+          "sha256": "56d887828fca75a82a70981c847e765e74385e73314837b3f942ae83403fd054",
+          "decoder": "eccodes-2.49.0",
+          "manifest_sha256": "9627d26da72cbb754acdf1a5236540ecb61ebf664b8572b69c13d53dd0f02cc5"
+        },
+        "covariates": {
+          "sha256": "c9d79b4ff1cce1f0ecff356271e35bb1ad073732b1147e64f6cb7b698a4bb1fc",
+          "manifest_sha256": "c5bcf552f2c2b42c7963e0bdfa407427d76b5d0deb9ef998cb34a638a4247bd0",
+          "decoder": "eccodes"
+        },
+        "humidity": {
+          "sha256": "69b3f396d92ae125bb519871f902b08973533a1ff3dd828209dece60c4bfefe5",
+          "manifest_sha256": "19dd14b9769430e340383a64608cd347a6ddfddc0d73aaea2d8e6f5f0fc0ee9c",
+          "decoder": "eccodes"
+        },
+        "observations": {
+          "2025": {
+            "url": "https://data.meteostat.net/hourly/2025/34929.csv.gz",
+            "sha256": "ebaab70f1e72dc5bd2fe5914fc12e8da7d09da6b66419573f574e0ab37231e40",
+            "retrieved_at_utc": "2026-10-12T09:56:30.548229+00:00",
+            "bytes": 75781,
+            "content_type": "application/x-gzip"
+          }
+        },
+        "annual_wind_audit": {
+          "2025": {
+            "accepted": 8756,
+            "missing_or_excluded_source": 4
+          }
+        }
+      }
+    },
+    "2026": {
+      "scores": {
+        "gfs": {
+          "nights": 86,
+          "excluded_nights": 6,
+          "cold_nights": 4,
+          "covered": 84,
+          "cold_covered": 2,
+          "coverage": 0.9767441860465116,
+          "cold_coverage": 0.5,
+          "lower_cold_misses": 2,
+          "upper_cold_misses": 0,
+          "mae_c": 1.4838743981649833,
+          "mean_width_c": 9.724609375000114,
+          "cold_mean_width_c": 9.724609375000114,
+          "warm_mean_width_c": 9.724609375000114,
+          "interval_score": 9.994935501453586,
+          "cold_interval_score": 15.536621093749773,
+          "warm_interval_score": 9.724609375000114,
+          "crosses_zero_nights": 20,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 1
+        },
+        "legacy_huber": {
+          "nights": 86,
+          "excluded_nights": 6,
+          "cold_nights": 4,
+          "covered": 83,
+          "cold_covered": 4,
+          "coverage": 0.9651162790697675,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.1087440615603243,
+          "mean_width_c": 6.007161866474107,
+          "cold_mean_width_c": 6.007161866474105,
+          "warm_mean_width_c": 6.007161866474106,
+          "interval_score": 6.097801641560557,
+          "cold_interval_score": 6.007161866474105,
+          "warm_interval_score": 6.102223094003798,
+          "crosses_zero_nights": 18,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 0,
+          "extrapolation_nights": 1
+        },
+        "cold_aware": {
+          "nights": 86,
+          "excluded_nights": 6,
+          "cold_nights": 4,
+          "covered": 84,
+          "cold_covered": 4,
+          "coverage": 0.9767441860465116,
+          "cold_coverage": 1.0,
+          "lower_cold_misses": 0,
+          "upper_cold_misses": 0,
+          "mae_c": 1.1087440615603243,
+          "mean_width_c": 6.1364428337881405,
+          "cold_mean_width_c": 6.404239123224355,
+          "warm_mean_width_c": 6.123379600157106,
+          "interval_score": 6.181081883211064,
+          "cold_interval_score": 6.404239123224355,
+          "warm_interval_score": 6.1701961641860255,
+          "crosses_zero_nights": 20,
+          "cold_fully_warm_range": 0,
+          "fallback_nights": 28,
+          "extrapolation_nights": 1
+        }
+      },
+      "detector": {
+        "correct_negatives": 81,
+        "hits": 4,
+        "false_alarms": 1
+      },
+      "detector_masks_verified": 92,
+      "input_provenance": {
+        "temperature": {
+          "sha256": "7cb2ec81ccffa5a6d7ef7f5302371235500fe236cac357defa23642c3048624d",
+          "decoder": "eccodes-2.49.0",
+          "manifest_sha256": "39296b934cdcdebe6adc36b5c75247b473ff830de3be3b73b87e680e9ce14f80"
+        },
+        "covariates": {
+          "sha256": "230adc2aec579ab614fb3746d8bb684207ed5879e1ad60fc4dff48c764b5b0b4",
+          "manifest_sha256": "f7f9061d86d8139d843a66d0c9595e4c157527c12f4809a6808e82a3f905d84e",
+          "decoder": "eccodes"
+        },
+        "humidity": {
+          "sha256": "a425d9553660691799e3613fb10421477fa8f935059cc030305a32a35943d1a4",
+          "manifest_sha256": "d31458e305ae035999ce2ad618c8e794aca4941e9c67c4133c47fdb528ed1f5d",
+          "decoder": "eccodes"
+        },
+        "observations": {
+          "2026": {
+            "url": "https://data.meteostat.net/hourly/2026/34929.csv.gz",
+            "sha256": "450bd4c4ccd2433e3ab3fa4c48c2d467985737c260a0dbc93ad7b82e4951e3eb",
+            "retrieved_at_utc": "2026-10-12T21:11:11.159006+00:00",
+            "bytes": 62926,
+            "content_type": "application/x-gzip"
+          }
+        },
+        "annual_wind_audit": {
+          "2026": {
+            "accepted": 6659,
+            "missing_or_excluded_source": 407
+          }
+        }
+      }
+    }
+  },
+  "generated_at_utc": "2026-10-13T18:06:29.271529+00:00",
+  "legacy_forecast_sha256": "3a5630902752cbcb0358b7721d374b457d56dd9c8aeb5a678b1d70abdefcf2d6",
+  "legacy_mask_sha256": "b8d77ebe554988cf2af69f04887c8c99b0d3e9614903228baf471561907bba77",
+  "deployment": "station research only; field GFS unchanged, no orchard transfer",
+  "forecast_sha256": "eefaa47ea765cdb1cadc352e6baf6cbbf751b295223fcf8832afd2893c9bf6c7"
+}

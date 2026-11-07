@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "folds": [{"train_years": [2022], "validation_year": 2023}, {"train_years": [2022, 2023], "validation_year": 2024}],
+  "final_train_years": [2022, 2023],
+  "evaluation_years": [2025, 2026],
+  "algorithms": [{"kind": "huber", "alpha": 1}, {"kind": "ridge", "alpha": 10}],
+  "site_feature_scales": [1, 4],
+  "cold_weights": [1, 2],
+  "blend_weights": [0.25, 0.5, 1],
+  "selection": "same per-year primary and regional gates as regional_minimum; rank primary cold MAE then all MAE; fallback legacy",
+  "chronology": "separate follow-up registered after first prior results, before heldout targets or 2025/2026; final fit2022/23",
+  "unknown_site": "zero station indicator; global research prediction only, no orchard support or local bias claim",
+  "detector": "immutable original point/event assets; new layer minimum only, never alert replacement"
+}
