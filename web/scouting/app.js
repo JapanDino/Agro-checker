@@ -59,9 +59,10 @@
     document.body.dataset.stage=String(step);
     for(const n of document.querySelectorAll('[data-panel]'))n.hidden=Number(n.dataset.panel)!==step;
     for(const n of document.querySelectorAll('[data-step]')){if(Number(n.dataset.step)===step)n.setAttribute('aria-current','step');else n.removeAttribute('aria-current');}
-    document.querySelector('.primary-nav [data-step="1"]').classList.toggle('is-active',step!==5);
+    document.querySelector('.primary-nav [data-step="1"]').classList.toggle('is-active',step!==5&&step!==4);
+    document.querySelector('.primary-nav [data-step="4"]').classList.toggle('is-active',step===4);
     document.querySelector('.primary-nav [data-step="5"]').classList.toggle('is-active',step===5);
-    for(const button of document.querySelectorAll('.primary-nav [data-step]')){if(Number(button.dataset.step)===(step===5?5:1))button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');}
+    for(const button of document.querySelectorAll('.primary-nav [data-step]')){if(Number(button.dataset.step)===([4,5].includes(step)?step:1))button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');}
     if(step===1){renderAreaList();highlightMap();if(['ndvi','ndmi'].includes($('map-layer').value))S.explorer?.setLayer(S.metric);}
     if(step===4)renderHistory();if(step===5)S.planner?.render();
     $('page-title').textContent=['','Карта хозяйства','Сравнение снимков','Задача на осмотр','История места','План обследования'][step];
@@ -135,7 +136,7 @@
     for(const n of document.querySelectorAll('[data-aside]'))n.setAttribute('aria-pressed',String(n.dataset.aside===name));
   }
   for(const n of document.querySelectorAll('[data-aside]'))n.addEventListener('click',()=>{showAside(n.dataset.aside);if(n.dataset.aside==='sensors')S.explorer?.setLayer('sensors');if(n.dataset.aside==='change')S.explorer?.setLayer(S.metric);});
-  $('toggle-details').addEventListener('click',()=>{const closed=$('toggle-details').closest('.selection-card').classList.toggle('mobile-collapsed');document.body.classList.toggle('inspector-open',!closed);$('toggle-details').setAttribute('aria-expanded',String(!closed));$('toggle-details').textContent=closed?'Контекст ↑':'Свернуть ↓';});
+  $('toggle-details').addEventListener('click',()=>{const closed=$('toggle-details').closest('.selection-card').classList.toggle('mobile-collapsed');document.body.classList.toggle('inspector-open',!closed);$('toggle-details').setAttribute('aria-expanded',String(!closed));$('toggle-details').textContent=closed?'О площади ↑':'Свернуть ↓';});
   $('toggle-area-list').addEventListener('click',()=>{const open=document.body.classList.toggle('map-list-open');$('toggle-area-list').setAttribute('aria-expanded',String(open));if(open){$('date-picker').open=false;collapseInspector();}});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.body.classList.remove('map-list-open');$('toggle-area-list').setAttribute('aria-expanded','false');}});
   async function selectCandidate(site){
@@ -182,7 +183,7 @@
     }});
   }
   function highlightMap(){S.explorer?.select(S.fid,$('period').value);}
-  function collapseInspector(){if(true){document.querySelector('.selection-card').classList.add('mobile-collapsed');document.body.classList.remove('inspector-open');$('toggle-details').setAttribute('aria-expanded','false');$('toggle-details').textContent='Контекст ↑';}}
+  function collapseInspector(){if(true){document.querySelector('.selection-card').classList.add('mobile-collapsed');document.body.classList.remove('inspector-open');$('toggle-details').setAttribute('aria-expanded','false');$('toggle-details').textContent='О площади ↑';}}
   function focusMap(){collapseInspector();S.explorer?.focus(S.fid);}
   $('focus-map').addEventListener('click',focusMap);
   $('zoom-in').addEventListener('click',()=>S.explorer?.zoom(1));
@@ -292,7 +293,7 @@
     for(const[label,value]of [['Съёмки',`${date(p.before.at)} → ${date(p.after.at)}`],['Индекс',S.metric.toUpperCase()],['Изменение по площади',signed(p.metrics[S.metric].base)],['Изменение в окне 60 м',signed(S.placeComparison?.[S.metric])],['Общее покрытие площади',`${Math.round(p.coverage*100)}%`],['Место',S.relative?'Выбрано на карте':'Внутренняя опорная точка'],['Границы','Не подтверждены']]){const n=el('div',undefined,body,'context-line');el('span',label,n);el('strong',value,n);}
   }
   const questionStarters={plants:'Что изменилось в состоянии растений в выбранном месте? Зафиксировать наблюдения и фото.',operations:'Какие полевые работы проводились между выбранными съёмками? Уточнить даты и сопоставить с изменением индексов.',sensor:'Подходит ли выбранное место для установки датчика? Проверить поверхность, доступ, связь, питание и безопасность.'};
-  function taskReadiness(){const ready=$('task-actor').value.trim()&&$('task-objective').value.trim();$('task-readiness').textContent=ready?'Вопрос подготовлен. После сохранения задача появится в плане выезда.':'Укажите ответственного и вопрос для проверки.';}
+  function taskReadiness(){const ready=$('task-actor').value.trim()&&$('task-objective').value.trim();$('task-readiness').textContent=ready?'Вопрос подготовлен. После сохранения откроется история этого места.':'Укажите ответственного и вопрос для проверки.';}
   for(const button of document.querySelectorAll('[data-question]'))button.addEventListener('click',()=>{const input=$('task-objective'),text=questionStarters[button.dataset.question];if(!input.value.includes(text))input.value+=(input.value.trim()?'\n\n':'')+text;taskReadiness();input.focus();saveDraft();});
   for(const id of ['task-actor','task-objective','task-date'])$(id).addEventListener('input',()=>{taskReadiness();saveDraft();});
   $('open-demo').addEventListener('click',()=>{$('demo-dialog').showModal();});
@@ -306,7 +307,7 @@
     e.preventDefault();if(S.busy)return;if(S.commonBusy||S.locationPending||!S.detail?.pair||!S.locationConfirmed){$('task-status').textContent='Данные или место изменились. Вернитесь к снимкам и подтвердите место.';return;}if(draftKey!==taskDraftKey()){saveDraft();prepareTask();taskReadiness();$('task-status').textContent='Основание задачи обновилось. Проверьте вопрос и сохраните ещё раз.';return;}const button=e.submitter||$('task-form').querySelector('button[type="submit"]');S.busy=true;button.disabled=true;context();$('task-status').textContent='Сохраняем задачу…';
     try{
       const p=S.detail.pair;const task=await api('/api/scouting/tasks',{request_id:taskRequest,fragment:S.fid,period:S.detail.period,before:p.before.id,after:p.after.id,version:p.version,relative:S.relative,actor:$('task-actor').value,planned_date:$('task-date').value,objective:$('task-objective').value,metric:S.metric});
-      S.data=await api('/api/scouting/state');S.task=task;drafts.delete(draftKey);window.ScoutingDrafts.remove(draftKey);draftKey='';taskRequest=uid();S.busy=false;journalCounts();S.planner.addTask(task.id);go(5);message('Задача сохранена и выбрана для плана. Записи посещения пока нет.');
+      S.data=await api('/api/scouting/state');S.task=task;drafts.delete(draftKey);window.ScoutingDrafts.remove(draftKey);draftKey='';taskRequest=uid();S.busy=false;journalCounts();go(4);message('Задача сохранена. После выезда запишите результат здесь. План выезда можно составить отдельно.');
     }catch(error){$('task-status').textContent=error.message;}finally{S.busy=false;button.disabled=false;context();}
   });
   const outcomes={observed_change:'Изменения описаны в заметке',nothing_notable:'Ничего существенного',unclear:'Нужно уточнение',not_checked:'Проверить не удалось'};
@@ -314,16 +315,17 @@
     $('history-area').textContent=S.fid;const tasks=S.data.tasks.filter(t=>t.payload.place.fragment===S.fid).slice().reverse();const target=$('task-list');target.replaceChildren();
     if(!tasks.length){el('p','Задач этой площади пока нет.',target,'muted');S.task=null;}
     if(!S.task||!tasks.some(t=>t.id===S.task.id)){const placeId=S.selectedLocation?.id||S.detail?.default_location?.id;S.task=tasks.find(t=>t.payload.place.id===placeId)||tasks[0]||null;}
-    for(const task of tasks){const p=task.payload,visits=S.data.visits.filter(v=>v.payload.task_id===task.id),btn=el('button',undefined,target,'task-item');btn.setAttribute('aria-pressed',String(task.id===S.task?.id));el('span',visits.length?'Есть запись посещения':'Ожидает проверки',btn,'tag');el('strong',p.objective,btn);el('p',`${p.actor}${p.planned_date?' · '+date(p.planned_date+'T12:00:00+03:00'):' · без плановой даты'}`,btn);el('small',`Место ${p.place.id} · ${visits.length} записей`,btn);btn.addEventListener('click',()=>{S.task=task;renderHistory();writeRoute(true);});}
+    for(const task of tasks){const p=task.payload,visits=S.data.visits.filter(v=>v.payload.task_id===task.id),btn=el('button',undefined,target,'task-item');btn.setAttribute('aria-pressed',String(task.id===S.task?.id));el('span',visits.length?'Есть запись посещения':'Ожидает проверки',btn,'tag');el('strong',p.objective,btn);el('p',`${p.actor}${p.planned_date?' · '+date(p.planned_date+'T12:00:00+03:00'):' · без плановой даты'}`,btn);el('small',`Место ${p.place.id} · записей: ${visits.length}`,btn);btn.addEventListener('click',()=>{S.task=task;renderHistory();writeRoute(true);});}
     $('history-empty').hidden=!!S.task;$('place-history').hidden=!S.task;
-    $('repeat-task').textContent=S.task?'+ Повторный осмотр':'+ Создать задачу';
+    $('repeat-task').textContent=S.task?'+ Новая задача для места':'+ Создать задачу';
     if(S.task)renderPlace();context();
   }
+  $('add-task-to-plan').addEventListener('click',()=>{if(!S.task||S.busy)return;const added=S.planner.addTask(S.task.id);go(5);if(!added)message('Место не добавлено: в плане уже три места или это место выбрано через другую задачу. Проверьте список.',true);});
   async function renderPlace(){
     const task=S.task,place=task.payload.place,p=task.payload.evidence,run=++historyRun;
     const visits=S.data.visits.filter(v=>v.payload.place.id===place.id).sort((a,b)=>Date.parse(b.payload.observed_at_utc)-Date.parse(a.payload.observed_at_utc)||Date.parse(b.recorded_at_utc)-Date.parse(a.recorded_at_utc));
-    $('place-title').textContent=`${place.fragment} · место ${place.id.split('-').slice(1).join('–')}`;$('place-coordinates').textContent=`${place.latitude.toFixed(5)}, ${place.longitude.toFixed(5)} · окно 60 м, точка по карте, не GPS`;
-    $('visit-count').textContent=`${visits.length} записей посещений`;$('saved-objective').textContent=task.payload.objective;
+    $('place-title').textContent=`${place.fragment} · выбранное место`;$('place-coordinates').textContent=`${place.latitude.toFixed(5)}, ${place.longitude.toFixed(5)} · окно 60 м, точка по карте, не GPS`;
+    $('visit-count').textContent=visits.length?`Посещений: ${visits.length}`:'Осмотр ещё не записан';$('saved-objective').textContent=task.payload.objective;
     const ev=$('saved-evidence');ev.replaceChildren();el('p',`${date(p.before.at)} → ${date(p.after.at)} · ${task.payload.metric.toUpperCase()} ${signed(p.metrics[task.payload.metric].base)} · общее покрытие ${Math.round(p.coverage*100)}%`,ev);el('p',`Задача сохранена ${datetime(task.recorded_at_utc)}. Архивная версия ${p.version.slice(0,12)}. Это исходное основание задачи, не актуальная оценка поля.`,ev);
     if(task.payload.place_evidence){const m=task.payload.place_evidence;el('p',`Отдельно в выбранном окне: ΔNDVI ${signed(m.ndvi)}, ΔNDMI ${signed(m.ndmi)} · общие ячейки ${m.paired_cells}/${m.total_cells}.`,ev);}
     const timeline=$('visit-timeline');timeline.replaceChildren();
@@ -341,18 +343,36 @@
   }
   function renderPlaceChart(){
     if(!S.series||!S.task)return;const period=S.data.periods.find(v=>v.id===$('history-period').value),visits=S.data.visits.filter(v=>v.payload.place.id===S.task.payload.place.id);
-    chart($('place-chart'),S.series.rows.filter(v=>v.period===period.id),period,visits);
+    const visibleVisits=visits.filter(v=>Date.parse(v.payload.observed_at_utc)>=Date.parse(period.start)&&Date.parse(v.payload.observed_at_utc)<=Date.parse(period.end));
+    chart($('place-chart'),S.series.rows.filter(v=>v.period===period.id),period,visibleVisits);
     const outside=visits.filter(v=>Date.parse(v.payload.observed_at_utc)<Date.parse(period.start)||Date.parse(v.payload.observed_at_utc)>Date.parse(period.end)).length;
-    $('place-chart-note').textContent=`В окне ${S.series.total_cells} полностью внутренних ячеек 20 м. Для точки нужны ≥5 пригодных ячеек и покрытие ≥80%; пропуски не заполняются.${outside?` За пределами этого архивного периода: ${outside} записей посещений. Они остаются в журнале ниже.`:''}`;
+    $('place-chart-note').textContent=`В окне ${S.series.total_cells} полностью внутренних ячеек 20 м. Для точки нужны ≥5 пригодных ячеек и покрытие ≥80%; пропуски не заполняются.${outside?` Посещений за пределами этого архивного периода: ${outside}. Они остаются в журнале ниже.`:''}`;
   }
   $('history-period').addEventListener('change',renderPlaceChart);
-  function openVisit(preview=false){
-    if(!S.task&&!preview)return;S.visitPreview=preview;visitRequest=uid();$('visit-form').reset();$('photo-preview').replaceChildren();$('visit-status').textContent='';
-    $('visit-actor').value=preview?'':S.task.payload.actor;$('visit-place-label').textContent=preview?`Площадь ${S.fid} · поля формы заполняются после настоящего посещения`:`${S.task.payload.place.id} · ${S.task.payload.objective}`;
-    $('visit-preview-note').hidden=!preview;$('visit-submit').disabled=preview;$('visit-submit').textContent=preview?'Запись доступна после создания задачи':'Сохранить результат посещения';
-    $('visit-dialog').showModal();
+  // Unsaved observations and photos stay only in page memory, never sessionStorage.
+  const visitDrafts=new Map(),visitFields=['actor','time','outcome','notes','follow-up'];let activeVisitTask=null;
+  function rememberVisit(){
+    if(S.visitPreview||!activeVisitTask)return;
+    const value={request:visitRequest,files:[...$('visit-photos').files]};
+    for(const name of visitFields)value[name]=$('visit-'+name).value;
+    visitDrafts.set(activeVisitTask,value);
+    $('visit-draft-note').textContent='При закрытии формы текст и фото останутся в этой вкладке. Обновление страницы удалит несохранённый результат.';
   }
-  $('open-visit-form').addEventListener('click',()=>openVisit());$('preview-visit').addEventListener('click',()=>openVisit(true));
+  for(const name of visitFields)$('visit-'+name).addEventListener('input',rememberVisit);
+  function openVisit(preview=false){
+    if(!S.task&&!preview)return;rememberVisit();S.visitPreview=preview;activeVisitTask=preview?null:S.task.id;
+    const draft=activeVisitTask?visitDrafts.get(activeVisitTask):null;visitRequest=draft?.request||uid();$('visit-form').reset();$('photo-preview').replaceChildren();$('visit-status').textContent='';
+    $('visit-actor').value=preview?'':S.task.payload.actor;
+    if(draft){for(const name of visitFields)$('visit-'+name).value=draft[name]||'';const transfer=new DataTransfer();for(const file of draft.files)transfer.items.add(file);$('visit-photos').files=transfer.files;}
+    renderPhotoPreview();
+    $('visit-place-label').textContent=preview?`Площадь ${S.fid} · поля формы заполняются после настоящего посещения`:`${S.fid} · ${S.task.payload.objective}`;
+    $('visit-dialog-title').textContent=preview?'Форма результата · просмотр':'Что вы увидели на месте?';
+    $('visit-preview-note').hidden=!preview;$('visit-submit').disabled=preview;$('visit-submit').textContent=preview?'Просмотр · сохранение отключено':'Сохранить результат осмотра';
+    $('visit-draft-note').textContent=preview?'':'При закрытии формы текст и фото останутся в этой вкладке. Обновление страницы удалит несохранённый результат.';
+    $('visit-dialog').showModal();$('visit-dialog').scrollTop=0;
+  }
+  $('open-visit-form').addEventListener('click',()=>openVisit());$('preview-visit').addEventListener('click',()=>openVisit(true));$('preview-saved-visit').addEventListener('click',()=>openVisit(true));
+  $('visit-now').addEventListener('click',()=>{const now=new Date(Date.now()+3*60*60*1000).toISOString().slice(0,16);$('visit-time').value=now;rememberVisit();});
   $('close-visit').addEventListener('click',()=>{if(!S.busy)$('visit-dialog').close();});
   $('visit-dialog').addEventListener('cancel',e=>{if(S.busy)e.preventDefault();});
   function compareView(view){
@@ -377,13 +397,14 @@
     if(e.key==='Escape'){$('date-picker').open=false;collapseInspector();}
   });
   const previewUrls=[];
-  $('visit-photos').addEventListener('change',()=>{for(const url of previewUrls)URL.revokeObjectURL(url);previewUrls.length=0;$('photo-preview').replaceChildren();for(const file of $('visit-photos').files){const url=URL.createObjectURL(file);previewUrls.push(url);const img=el('img',undefined,$('photo-preview'));img.src=url;img.alt=file.name;}});
+  function renderPhotoPreview(){for(const url of previewUrls)URL.revokeObjectURL(url);previewUrls.length=0;$('photo-preview').replaceChildren();for(const file of $('visit-photos').files){const url=URL.createObjectURL(file);previewUrls.push(url);const img=el('img',undefined,$('photo-preview'));img.src=url;img.alt=file.name;}}
+  $('visit-photos').addEventListener('change',()=>{renderPhotoPreview();rememberVisit();});
   async function photo(file){if(file.size>5_000_000)throw Error('Фото должно быть не больше 5 МБ');if(!['image/jpeg','image/png','image/webp'].includes(file.type))throw Error('Нужен файл JPEG, PNG или WebP');return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve({filename:file.name,data_base64:reader.result.split(',')[1]});reader.onerror=()=>reject(Error('Не удалось прочитать фото'));reader.readAsDataURL(file);});}
   $('visit-form').addEventListener('submit',async e=>{
     e.preventDefault();if(S.busy||!S.task||S.visitPreview)return;const button=e.submitter;button.disabled=true;S.busy=true;context();$('visit-status').textContent='Проверяем и сохраняем запись…';
     try{const files=[...$('visit-photos').files];if(files.length>3)throw Error('Можно приложить до трёх фотографий');const photos=await Promise.all(files.map(photo));
       const raw={request_id:visitRequest,task_id:S.task.id,actor:$('visit-actor').value,observed_at:$('visit-time').value+':00+03:00',notes:$('visit-notes').value,outcome:$('visit-outcome').value,follow_up:$('visit-follow-up').value,photos,real_visit_confirmed:$('visit-confirm').checked};
-      await api('/api/scouting/visits',raw);S.data=await api('/api/scouting/state');$('visit-dialog').close();journalCounts();renderHistory();message('Фактическая запись сохранена с указанными автором и датой.');
+      await api('/api/scouting/visits',raw);visitDrafts.delete(activeVisitTask);activeVisitTask=null;S.data=await api('/api/scouting/state');$('visit-dialog').close();journalCounts();renderHistory();message('Результат сохранён. Запись появилась в истории этого места.');
     }catch(error){$('visit-status').textContent=error.message;}finally{S.busy=false;button.disabled=false;context();}
   });
   async function applyRoute(){
