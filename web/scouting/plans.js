@@ -1,12 +1,17 @@
 'use strict';
-window.ScoutingPlans={create({api,getData,onRefresh,onOpenTask,onChange}){
+window.ScoutingPlans={create({api,getData,onRefresh,onOpenTask,onChange,onNotice}){
   const $=id=>document.getElementById(id),chosen=new Set();let request=crypto.randomUUID().replaceAll('-',''),report=null,loading=0,saving=false;
+  const draftKey=window.ScoutingDrafts.key('plan',['builder']);
+  const draft=window.ScoutingDrafts.load(draftKey);
+  if(draft){if(typeof draft.title==='string')$('plan-title').value=draft.title.slice(0,160);if(['inspection','sensor_survey'].includes(draft.purpose))$('plan-purpose').value=draft.purpose;if(Array.isArray(draft.chosen))for(const id of draft.chosen.slice(0,3))if(typeof id==='string')chosen.add(id);if(typeof draft.request==='string'&&/^[a-f0-9]{32}$/.test(draft.request))request=draft.request;}
+  function saveDraft(){const value={title:$('plan-title').value,purpose:$('plan-purpose').value,chosen:[...chosen],request};if(!value.title.trim()&&!chosen.size&&value.purpose==='inspection'){window.ScoutingDrafts.remove(draftKey);return;}const ok=window.ScoutingDrafts.save(draftKey,value);$('plan-draft-status').textContent=ok?'Черновик выезда сохранён в этой вкладке.':'Черновик в памяти. После обновления страницы текст может потеряться.';}
+  $('plan-title').addEventListener('input',count);
   const node=(tag,text,parent,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;parent?.append(n);return n;};
   function positions(){const order=[...chosen];for(const e of document.querySelectorAll('.plan-task-option')){const i=order.indexOf(e.querySelector('input').value);e.querySelector('.plan-order').textContent=i>=0?'Место '+(i+1)+' в плане':'';}}
   const number=v=>typeof v==='number'&&Number.isFinite(v)?v.toFixed(3).replace('.',','):'нет пригодных данных';
   const day=s=>new Date(s).toLocaleDateString('ru-RU',{timeZone:'Europe/Moscow'});
   const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function count(){ $('plan-count').textContent=chosen.size+' / 3';$('save-plan').disabled=saving||chosen.size<1||chosen.size>3;onChange?.(); }
+  function count(){saveDraft();$('plan-count').textContent=chosen.size+' / 3';$('save-plan').disabled=saving||chosen.size<1||chosen.size>3||!$('plan-title').value.trim();onChange?.(); }
   function render(){
     const data=getData(),tasks=data.tasks.slice().reverse(),target=$('plan-task-options');target.replaceChildren();
     for(const id of chosen)if(!tasks.some(t=>t.id===id))chosen.delete(id);
@@ -33,18 +38,18 @@ window.ScoutingPlans={create({api,getData,onRefresh,onOpenTask,onChange}){
   function purposeNote(){
     $('plan-purpose-note').textContent=$('plan-purpose').value==='sensor_survey'?'В лист добавятся вопросы о поверхности, доступе, связи и монтаже. Это подготовка обследования, пригодность установки пока неизвестна.':'Сохраните вопросы для проверки изменений поверхности. Причину и необходимость действий оценивает агроном.';
   }
-  $('plan-purpose').addEventListener('change',purposeNote);
+  $('plan-purpose').addEventListener('change',()=>{purposeNote();count();});
   $('plan-form').addEventListener('submit',async e=>{
     e.preventDefault();if(saving||!chosen.size||chosen.size>3)return;saving=true;count();$('plan-status').textContent='Сохраняем основание плана…';
     try{
       const plan=await api('/api/scouting/plans',{request_id:request,title:$('plan-title').value,task_ids:[...chosen],purpose:$('plan-purpose').value});
-      onRefresh(await api('/api/scouting/state'));request=crypto.randomUUID().replaceAll('-','');chosen.clear();$('plan-form').reset();$('plan-status').textContent='План сохранён. Он не является записью посещения.';await open(plan.id);render();
+      onRefresh(await api('/api/scouting/state'));request=crypto.randomUUID().replaceAll('-','');chosen.clear();$('plan-form').reset();window.ScoutingDrafts.remove(draftKey);$('plan-status').textContent='План сохранён. Он не является записью посещения.';const opened=await open(plan.id);render();if(opened){$('plan-status').textContent='План сохранён. Маршрутный лист готов к выгрузке.';onNotice?.('План выезда сохранён. Можно скачать маршрутный лист.');}else{$('plan-status').textContent='План сохранён, но лист не загрузился. Откройте его из списка сохранённых планов.';onNotice?.('План сохранён. Для загрузки листа откройте его из списка ещё раз.',true);}if(opened&&document.body.dataset.stage==='5'){$('report-title').setAttribute('tabindex','-1');$('report-title').focus({preventScroll:true});$('plan-report').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth',block:'start'});}
     }catch(error){$('plan-status').textContent=error.message;}finally{saving=false;count();}
   });
   async function open(id){
-    const run=++loading;$('plan-status').textContent='Открываем сохранённый лист…';
-    try{const data=await api('/api/scouting/plans/export?'+new URLSearchParams({id}));if(run!==loading)return;report=data;renderReport();$('plan-status').textContent='';render();}
-    catch(error){if(run===loading)$('plan-status').textContent=error.message;}
+    const run=++loading;report=null;renderReport();onChange?.();$('plan-status').textContent='Открываем сохранённый лист…';
+    try{const data=await api('/api/scouting/plans/export?'+new URLSearchParams({id}));if(run!==loading)return false;report=data;renderReport();$('plan-status').textContent='';render();return true;}
+    catch(error){if(run===loading){report=null;renderReport();$('plan-status').textContent=error.message;onChange?.();}return false;}
   }
   function renderReport(){
     $('plan-report').hidden=!report;if(!report)return;
@@ -73,5 +78,5 @@ window.ScoutingPlans={create({api,getData,onRefresh,onOpenTask,onChange}){
     const html='<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escape(p.title)+'</title><style>body{font:15px/1.6 "Segoe UI",Arial,sans-serif;max-width:900px;margin:40px auto;padding:0 24px;color:#263c30}h1{font-size:32px;line-height:1.2}.eyebrow{font-size:12px;color:#6a786b}article{border-top:2px solid #315c44;padding:20px 0;margin:28px 0;break-inside:avoid}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #dce3da;text-align:left;padding:8px;vertical-align:top}th{width:40%;font-weight:500}.note{color:#647363;font-size:13px}details p{overflow-wrap:anywhere;font-size:11px}@media print{body{margin:0;font-size:11px}h1{font-size:23px}details{display:none}}</style><p class="eyebrow">AGROPULSE / ONLYFARMS · ПЛАН ОБСЛЕДОВАНИЯ</p><h1>'+escape(p.title)+'</h1><p>'+escape(p.purpose_label)+'</p><p class="note">'+escape(report.notice)+' Границы приблизительные. Пустые строки ниже не являются наблюдениями.</p>'+cards+'<footer class="note">Составлен '+escape(day(report.plan.recorded_at_utc))+' · план '+escape(report.plan.id)+' · источники: Sentinel-2 L2A; геометрия восстановлена по скриншоту. Полные источники и SHA256 — в JSON-выгрузке. Запись посещения в продукте требует отдельного ввода человеком.</footer></html>';
     download(html,'text/html;charset=utf-8','html');
   });
-  return {render,canSave:()=>!saving&&chosen.size>0&&chosen.size<=3,addTask(id){const data=getData(),t=data.tasks.find(x=>x.id===id);if(chosen.size<3&&t&&![...chosen].some(i=>data.tasks.find(x=>x.id===i)?.payload.place.id===t.payload.place.id))chosen.add(id);}};
+  return {render,state:()=>({saving,hasReport:!!report,hasDraft:chosen.size>0||!!$('plan-title').value.trim()||$('plan-purpose').value!=='inspection',canSave:!saving&&chosen.size>0&&chosen.size<=3&&!!$('plan-title').value.trim()}),hasReport:()=>!!report,downloadReport:()=>{if(report)$('download-plan-html').click();},canSave:()=>!saving&&chosen.size>0&&chosen.size<=3&&!!$('plan-title').value.trim(),addTask(id){const data=getData(),t=data.tasks.find(x=>x.id===id);if(chosen.size<3&&t&&![...chosen].some(i=>data.tasks.find(x=>x.id===i)?.payload.place.id===t.payload.place.id))chosen.add(id);}};
 }};

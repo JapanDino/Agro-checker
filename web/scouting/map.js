@@ -6,8 +6,8 @@ window.ScoutingMap={create({bundle,onSelect,onSite,onLayer}){
   map.createPane('wideImages');map.getPane('wideImages').style.zIndex='190';
   if(bundle.wide_basemap)L.imageOverlay('/scouting/assets/wide-basemap.jpg',bundle.wide_basemap.bounds,{pane:'wideImages'}).addTo(map);
   L.imageOverlay('/scouting/assets/basemap.jpg',bundle.basemap.bounds,{pane:'baseImages',attribution:'Esri, Vantor, Earthstar Geographics, GIS User Community. Дата мозаики неизвестна.'}).addTo(map);
-  L.control.scale({imperial:false,position:'bottomleft',maxWidth:110}).addTo(map);
-  const shapes=new Map(),sites=L.layerGroup().addTo(map);let selected='R11',period='recent2026',layer='ndmi',raster=null,pin=null,focused=false,comparison={rows:[]};
+  L.control.scale({imperial:false,position:'topright',maxWidth:110}).addTo(map);
+  const shapes=new Map(),sites=L.layerGroup().addTo(map);let selected='R11',period='recent2026',layer='ndmi',raster=null,pin=null,focused=false,comparison={rows:[]},initialized=false,viewportWidth=window.innerWidth;
   const geo=L.geoJSON(bundle.geometry,{style:()=>({color:'#fff',weight:1.2,fillOpacity:.08}),onEachFeature(feature,node){
     const id=feature.properties.id;shapes.set(id,node);node.bindTooltip(id,{permanent:true,direction:'center',className:'area-label',interactive:false});
     node.on('click',()=>onSelect(id));node.on('mouseover',()=>{if(id!==selected)node.setStyle({weight:2,color:'#f2f2df'});});node.on('mouseout',paint);
@@ -16,13 +16,14 @@ window.ScoutingMap={create({bundle,onSelect,onSite,onLayer}){
     const mobile=matchMedia('(max-width:1000px)').matches;
     const dock=document.querySelector('.map-control-dock'),card=document.querySelector('.selection-card');
     const top=(dock?.getBoundingClientRect().height||160)+32;
-    const a=mobile?[20,top]:[24,top],b=mobile?[20,(card?.getBoundingClientRect().height||150)+46]:[(card?.getBoundingClientRect().width||320)+44,108];
+    const listOpen=document.body.classList.contains('map-list-open');
+    const a=mobile?[20,top]:[listOpen?290:24,top],b=mobile?[20,(card?.getBoundingClientRect().height||150)+46]:[(card?.getBoundingClientRect().width||320)+44,108];
     const size=map.getSize(),budgets=[Math.max(0,size.x-120),Math.max(0,size.y-140)];
     for(let axis=0;axis<2;axis++){const total=a[axis]+b[axis];if(total>budgets[axis]&&total>0){const scale=budgets[axis]/total;a[axis]*=scale;b[axis]*=scale;}}
     return {paddingTopLeft:a,paddingBottomRight:b};
   }
-  function fitAll(){focused=false;map.invalidateSize({pan:false});map.fitBounds(geo.getBounds(),{...padding(),animate:false});}
-  function focus(id){focused=true;map.invalidateSize({pan:false});map.fitBounds(shapes.get(id).getBounds(),{...padding(),maxZoom:16,animate:false});}
+  function fitAll(){document.body.classList.remove('map-focused');focused=false;map.invalidateSize({pan:false});if(map.getSize().x<1||map.getSize().y<1)return;initialized=true;map.fitBounds(geo.getBounds(),{...padding(),animate:false});}
+  function focus(id){document.body.classList.add('map-focused');focused=true;map.invalidateSize({pan:false});map.fitBounds(shapes.get(id).getBounds(),{...padding(),maxZoom:16,animate:false});}
   function paint(){
     for(const[id,node]of shapes){
       const p=comparison.rows.find(r=>r.id===id),value=p?.[layer]?.base;
@@ -56,10 +57,10 @@ window.ScoutingMap={create({bundle,onSelect,onSite,onLayer}){
   }
   document.getElementById('map-layer').addEventListener('change',e=>setLayer(e.target.value));
   map.on('zoomend',paint);
-  const observer=new ResizeObserver(()=>{if(document.body.dataset.stage==='1'){map.invalidateSize({pan:false});if(focused)focus(selected);}});observer.observe(document.getElementById('geo-map'));
+  const observer=new ResizeObserver(()=>{if(document.body.dataset.stage==='1')map.invalidateSize({pan:false});});observer.observe(document.getElementById('geo-map'));
   requestAnimationFrame(()=>{fitAll();});
   return {setComparison(value){comparison=value;paint();},select(id,p){selected=id;period=p||period;paint();drawSites();},focus,fitAll,zoom(direction){map.zoomIn(direction);},
-    resize(){requestAnimationFrame(()=>{map.invalidateSize({pan:false});if(!focused)fitAll();});},
+    resize(){requestAnimationFrame(()=>{const changed=viewportWidth!==window.innerWidth;viewportWidth=window.innerWidth;map.invalidateSize({pan:false});if(!initialized||changed){if(focused)focus(selected);else fitAll();}});},
     clearSite(){if(pin){map.removeLayer(pin);pin=null;}},
     showSite(site){if(pin)map.removeLayer(pin);pin=L.circleMarker([site.latitude,site.longitude],{radius:10,color:'#fff',weight:3,fillColor:'#1e5140',fillOpacity:1}).addTo(map);},
     setLayer(value){document.getElementById('map-layer').value=value;setLayer(value);},
