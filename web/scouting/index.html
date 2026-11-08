@@ -87,7 +87,7 @@
 <dialog id="records-dialog" aria-labelledby="records-title"><div class="dialog-heading"><div><p class="eyebrow">ДАННЫЕ УЧЁТА · БЕЗ ПОВТОРНОГО ВВОДА</p><h2 id="records-title">Загрузить выгрузку из учёта</h2></div><button type="button" class="close-button" id="close-records" aria-label="Закрыть загрузку">×</button></div>
   <p class="records-lead">Таблица CSV из АгроМон или другой системы учёта: поля и культуры, даты сева и фаз, обработки, прошлые очаги. Сопоставьте поля с обводками R01–R27 в столбце «обводка».</p>
   <div class="records-links"><a href="/api/scouting/records/template" download="agropulse-шаблон-учёта.csv">Скачать шаблон CSV</a><a href="/api/scouting/records/example" download="agropulse-пример-учёта.csv">Пример для демонстрации</a></div>
-  <label class="records-file">Файл CSV<input type="file" id="records-file" accept=".csv,text/csv"></label>
+  <label class="records-file"><span class="records-file-label">Файл CSV</span><input type="file" id="records-file" accept=".csv,text/csv"><span class="records-file-box"><span class="records-file-button">Выбрать файл CSV</span><span id="records-file-name" class="records-file-name">Файл не выбран</span></span></label>
   <div id="records-preview" class="records-preview" aria-live="polite"></div>
   <label class="confirmation"><input type="checkbox" id="records-confirm"><span>Подтверждаю: это выгрузка учёта нашего хозяйства, а не демонстрационный пример.</span></label>
   <p id="records-status" class="form-note" role="status"></p>

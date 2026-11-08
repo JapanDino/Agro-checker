@@ -496,3 +496,34 @@ body[data-stage="6"] .steps,body[data-stage="6"] .context-bar{display:none}
 [data-aside-panel="sensors"]>.siting-panel:not(:empty)+.explanation{display:none}
 body[data-stage="6"] .intro{display:none}
 body[data-stage="6"] .today-head h2{font-size:36px}
+/* custom file picker: the native button text follows the browser language */
+.records-file{position:relative}
+.records-file input[type="file"]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.records-file-box{display:flex;align-items:center;gap:12px;background:var(--soft);border-radius:var(--radius-sm);padding:8px;cursor:pointer;border:1.5px solid transparent}
+.records-file:hover .records-file-box{background:var(--soft-2)}
+.records-file input:focus-visible+.records-file-box{border-color:var(--green)}
+.records-file-button{flex-shrink:0;font:700 13px/1 var(--sans);color:#fff;background:var(--green);border-radius:10px;padding:11px 14px}
+.records-file-name{font:600 13.5px/1.3 var(--sans);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mark-choice input[value="focus"]{accent-color:var(--red)}
+/* Phones: keep the map visible — list button joins the bottom toolbar, card gets compact.
+   Pinch zoom replaces the ± buttons; the archive pair stays in the top dock. */
+@media(max-width:760px){
+  .map-toolbar #zoom-in,.map-toolbar #zoom-out{display:none}
+  #toggle-area-list{top:auto;left:auto;right:12px;bottom:66px;min-height:44px;border-radius:14px}
+  .map-list-open #toggle-area-list{top:12px;bottom:auto}
+  .selection-card .date-pair{display:none}
+  .selection-card .selected-heading{margin:4px 0 8px}
+  .index-cards{gap:8px;margin-bottom:10px}
+  .index-cards>div{padding:10px 12px;border-radius:14px}
+  .index-cards span{font-size:11px}
+  .index-cards strong{font-size:20px}
+  .selection-card .primary.wide{min-height:46px;font-size:14px}
+  .map-explorer-controls select{font-size:12.5px;padding-right:14px}
+}
+@media(max-width:760px){
+  #toggle-area-list{font-size:0;gap:8px;padding:8px 10px 8px 14px}
+  #toggle-area-list>span,#toggle-area-list b{font-size:15px}
+  #toggle-area-list b{font-size:12px}
+}
+@media(max-width:380px){.map-toolbar #reset-map{display:none}}
+@media(max-width:380px){.design-toggle{display:none}.layer-note{font-size:9.5px;line-height:1.35}.map-explorer-controls select{font-size:11.5px}}

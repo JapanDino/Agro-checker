@@ -20,7 +20,7 @@
       sensors:()=>{close();nav(1);const layer=$('map-layer');if(layer&&layer.value!=='sensors'){layer.value='sensors';layer.dispatchEvent(new Event('change',{bubbles:true}));}
         $('focus-map')?.click(); // zooms in and collapses the card, so expand it afterwards
         const details=$('toggle-details');if(details?.getAttribute('aria-expanded')==='false')details.click();
-        document.querySelector('[data-aside="sensors"]')?.click();},
+        document.querySelector('[data-aside="sensors"]')?.click();window.dispatchEvent(new Event('agropulse-siting'));},
       // The archive example lives in the demo dialog; reuse its button so app.js keeps control.
       demo:()=>{close();const start=$('start-demo');if(start&&!start.disabled)start.click();else $('open-demo')?.click();},
     };

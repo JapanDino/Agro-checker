@@ -90,13 +90,13 @@ window.ScoutingToday={create({api,getData,onNotice,onChange,onOpenArea}){
   }
 
   /* Farm records import */
-  function openRecords(){recordsRequest=uid();preview=null;$('records-file').value='';$('records-preview').replaceChildren();$('records-confirm').checked=false;$('records-status').textContent='';updateSave();$('records-dialog').showModal();}
+  function openRecords(){recordsRequest=uid();preview=null;$('records-file').value='';$('records-file-name').textContent='Файл не выбран';$('records-preview').replaceChildren();$('records-confirm').checked=false;$('records-status').textContent='';updateSave();$('records-dialog').showModal();}
   function updateSave(){$('save-records').disabled=!preview||preview.errors?.length>0||!$('records-confirm').checked;}
   $('open-records').addEventListener('click',openRecords);
   $('close-records').addEventListener('click',()=>$('records-dialog').close());
   $('records-confirm').addEventListener('change',updateSave);
   $('records-file').addEventListener('change',async()=>{
-    const file=$('records-file').files[0];preview=null;updateSave();const box=$('records-preview');box.replaceChildren();if(!file)return;
+    const file=$('records-file').files[0];preview=null;updateSave();const box=$('records-preview');box.replaceChildren();$('records-file-name').textContent=file?file.name:'Файл не выбран';if(!file)return;
     if(file.size>2_500_000){el('p','Файл больше 2,5 МБ.',box,'records-error');return;}
     try{
       const text=await file.text();preview=await api('/api/scouting/records/preview',{filename:file.name,csv:text});preview.csv=text;preview.filename=file.name;
@@ -132,9 +132,9 @@ window.ScoutingToday={create({api,getData,onNotice,onChange,onOpenArea}){
 
   /* Sensor node siting for the selected outline (sensors tab of the selection card) */
   let sitingFid='',sitingRun=0;
-  async function siting(){
+  async function siting(force=false){
     const fid=$('selected-area')?.textContent?.trim(),panel=$('siting-panel');
-    if(!panel||!fid||panel.closest('[hidden]')||fid===sitingFid)return;
+    if(!panel||!fid||panel.closest('[hidden]')||(fid===sitingFid&&!force&&panel.childElementCount))return;
     sitingFid=fid;const current=++sitingRun;panel.replaceChildren();el('p','Подбираем места для узла…',panel,'muted');
     try{
       const s=await api('/api/scouting/siting?'+new URLSearchParams({fid}));if(current!==sitingRun)return;panel.replaceChildren();
@@ -147,6 +147,7 @@ window.ScoutingToday={create({api,getData,onNotice,onChange,onOpenArea}){
   const watch=new MutationObserver(()=>siting());
   for(const id of ['selected-area'])if($(id))watch.observe($(id),{childList:true,characterData:true,subtree:true});
   for(const b of document.querySelectorAll('[data-aside]'))b.addEventListener('click',()=>setTimeout(siting,0));
+  window.addEventListener('agropulse-siting',()=>setTimeout(()=>siting(true),0));
 
   return {render,openRecords,note:()=>result?`Риск ${result.summary.risk||0} · проверить ${result.summary.check||0}`:'Поля по риску'};
 }};
