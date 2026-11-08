@@ -18,7 +18,10 @@ window.ScoutingMap={create({bundle,onSelect,onSite,onLayer}){
     const top=(dock?.getBoundingClientRect().height||160)+32;
     const listOpen=document.body.classList.contains('map-list-open');
     const covered=card?Math.max(0,document.getElementById('geo-map').getBoundingClientRect().bottom-card.getBoundingClientRect().top):196;
-    const a=mobile?[20,top]:[listOpen?290:24,top],b=mobile?[20,covered+18]:[(card?.getBoundingClientRect().width||320)+44,108];
+    // Keep fields clear of the left overlay card when the design shows one (Pulse capability card).
+    const cap=document.querySelector('.capability-card'),capVisible=cap&&getComputedStyle(cap).display!=='none';
+    const capWidth=capVisible?cap.getBoundingClientRect().width+40:0;
+    const a=mobile?[20,top]:[Math.max(listOpen?290:24,capWidth),top],b=mobile?[20,covered+18]:[(card?.getBoundingClientRect().width||320)+44,108];
     const size=map.getSize(),budgets=[Math.max(0,size.x-120),Math.max(0,size.y-140)];
     for(let axis=0;axis<2;axis++){const total=a[axis]+b[axis];if(total>budgets[axis]&&total>0){const scale=budgets[axis]/total;a[axis]*=scale;b[axis]*=scale;}}
     return {paddingTopLeft:a,paddingBottomRight:b};
