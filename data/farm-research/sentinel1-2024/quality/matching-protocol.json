@@ -1,0 +1,20 @@
+{
+  "code_sha256": "c75171cac0ee2fec385158cea3961ea1b7056f0986f197bb3a751803dc7ab9e0",
+  "input_pdf_sha256": {
+    "data/farm-research/sentinel1-2024/quality/RFI-258-1.pdf": "882242f6b072af5a622ac466703cc6a1021707ddf178afff091371d08625e9ae",
+    "data/farm-research/sentinel1-2024/quality/RFI-254-1.pdf": "1a6d6dd5f90b5d62b4aca5e98e42f7b1a391cb97985769a80de6ae2af93dcdba",
+    "data/farm-research/sentinel1-2024/quality/RFI-248-1.pdf": "b8f7f04f8fd0d7d9d17e917bff7d1f422d377c7d71d69d0970b298ff68de8c40",
+    "data/farm-research/sentinel1-2024/quality/RFI-244-1.pdf": "ff3d6b79f04111b2df4c6cb260d04dff5d3eb9daf5526333ae017ddfcf0dee88",
+    "data/farm-research/sentinel1-2024/quality/RFI-237-1.pdf": "d68f906e9aae2d775c95e07d344fe7f472f6acfc56e2afee789c5cddfee3c4bc",
+    "data/farm-research/sentinel1-2024/quality/RFI-232-1.pdf": "054236642209409c8ce49db7e663eab70b1402e4c6d82f3a84fc6db5319d6e63",
+    "data/farm-research/sentinel1-2024/quality/RFI-229-1.pdf": "5cf34ff94139e4981661f861da9ccf1fc1714554a5ef659ebcc85c42673cfeb0",
+    "data/farm-research/sentinel1-2024/quality/RFI-216-1.pdf": "d873ac8c9d5e9adc4fc1a19191814e69c81e429475d6012fe9dc200f1b21aa78",
+    "data/farm-research/sentinel1-2024/quality/RFI-214-1.pdf": "1224c609ba15caca8b7501148893eead30324a2ed4fcf3a9f091979bc017092e",
+    "data/farm-research/sentinel1-2024/quality/RFI-206-1.pdf": "a4c69244eee619da997a095f2d8b8eb5a2347ba5288cf61b50b0c2985eb3ff04",
+    "data/farm-research/sentinel1-2024/quality/RFI-202-1.pdf": "1977ecd274b8b3962e497dd10cdbfd8d90ca3afd9c4f95956322684956a3fced",
+    "data/farm-research/sentinel1-2024/quality/RFI-191-1.pdf": "5d16ceb0d0afcfe51374f1bad42bd9c6eb4fc16d0ef81c4b5671a0ebc1646008"
+  },
+  "parser_note": "Initial parsers stopped on May/January wildcard product templates and title variants; retained protocols, accepted those PDF syntax variants before matching. No model refit or outcome selection.",
+  "already_frozen_model_report_sha256": "18d638fb47a05b7171e66e401fcf376da54650d8f5d63e07ff520ddfdbeb7fa6",
+  "rule": "Parse product lists only. Match original GRD acquisition template or same platform/mode/absolute orbit/datatake and>=min(10s,50%shorter) time overlap. Flag potential source-product risk, not proven effect on farm pixels. Nonlisted=UNKNOWN, never clean. Post-fit audit; no scores/labels/masks/pool changes."
+}

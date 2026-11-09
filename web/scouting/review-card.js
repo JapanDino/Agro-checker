@@ -12,7 +12,7 @@
       ['Общие ячейки окна',`${w.paired_cells}/${w.total_cells} · ${Math.round(w.coverage*100)}%`],
       ['Поздний снимок пары',`${date(o.after.at)} · ${age(o.pair_age_days)} назад`],
       ['Последний пригодный снимок места в архиве',latest?`${date(latest.at)} · ${age(latest.age_days)} назад`:'Нет пригодного наблюдения']];
-    if(data.archive_end_exclusive_utc)lines.push(['Конец периода архива (UTC, не включая)',utcdate(data.archive_end_exclusive_utc)]);
+    if(data.archive_end_exclusive_utc)lines.push(['Конец периода архива (UTC, не включая)',new Date(data.archive_end_exclusive_utc).toLocaleString('ru-RU',{timeZone:'UTC',dateStyle:'short',timeStyle:'short'})]);
     const b=o.boundary_sensitivity.ndmi;
     const boundary=b.complete?`${n(b.min)}…${n(b.max)} · ${b.direction==='decrease'?'снижение во всех сценариях':b.direction==='increase'?'повышение во всех сценариях':'нет единого ненулевого знака'}`:'Не все сценарии имеют пригодные данные';
     const f=data.forecast;let prediction='Нет сохранённого будущего выпуска для просмотра.';

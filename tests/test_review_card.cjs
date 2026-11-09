@@ -27,3 +27,8 @@ test('absent final row stays unknown rather than becoming a negative',()=>{
  const f=fixture();Object.assign(f.forecast,{status:'finalised',input_available:true,selected_baseline:true,selected_candidate:true,outcome:null});
  assert.match(card.view(f).forecast,/исход неизвестен/);
 });
+test('partial-day archive cutoff retains its UTC hour',()=>{
+ const f=fixture();f.archive_end_exclusive_utc='2026-11-09T15:00:01Z';
+ const row=card.view(f).lines.find(v=>v[0].startsWith('Конец периода'));
+ assert.match(row[1],/15:00/);assert.doesNotMatch(row[1],/18:00/);
+});
