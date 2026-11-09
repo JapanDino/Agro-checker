@@ -10,6 +10,7 @@ import io
 import json
 import math
 import re
+from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageDraw
@@ -22,6 +23,7 @@ from .pipeline import ROOT
 from .field_store import digest, encoded, stamp
 from .land_inspections import photo_input, _blob
 from .farm_context_analysis import scenarios, masks, spectral_stats, metric
+from .sector_refresh import extend_archive
 
 D = ROOT/'data/farm-research/area-context'
 R = ROOT/'data/farm-research/reconstruction'
@@ -45,7 +47,8 @@ def archive():
         raise ValueError('Версия архива или контуров изменилась; требуется повторная проверка')
     scenes = json.loads((D/'satellite.json').read_text(encoding='utf-8'))['scenes']
     s['_scouting_version'] = sha(D/'summary.json')
-    return p, s, {f['properties']['id']: f for f in geo['features']}, {v['id']: v for v in scenes}
+    p, s, sources = extend_archive(p, s, {v['id']: v for v in scenes})
+    return p, s, {f['properties']['id']: f for f in geo['features']}, sources
 
 
 def fragment(fid):
@@ -67,7 +70,8 @@ def raster(scene_id):
     source = archive()[3].get(scene_id)
     if not source or source['status'] != 'ready':
         raise ValueError('Съёмка недоступна в проверенном архиве')
-    path = D/'sentinel'/scene_id/'indices.npz'
+    directory = source.get('observation_directory')
+    path = (Path(directory) if directory else D)/'sentinel'/scene_id/'indices.npz'
     if sha(path) != source['crop_sha256']['indices.npz']:
         raise ValueError('Растр не прошёл проверку целостности')
     with np.load(path, allow_pickle=False) as a:
@@ -81,12 +85,19 @@ def raster(scene_id):
 
 def overview():
     p, s, geo, scenes = archive()
+    from .farm_workspace import catalog
+    default_period = next((v['id'] for v in reversed(p['periods']) if catalog(v['id'])['default']), 'recent2026')
     items = []
     for fid, v in s['features'].items():
         items.append({'id': fid, 'working_band_m': geo[fid]['properties']['working_band_m'],
                       'core_supported': max((r.get('core_cells',0) for r in v['history']),default=0)>=10,
-                      'core_area_ha': v['core_area_ha'], 'availability': v['availability']})
-    return {'items': items, 'periods': p['periods'], 'snapshot_at': p['created_at_utc'],
+                      'core_area_ha': v['core_area_ha'], 'availability': v['availability'],
+                      'latest_usable_acquisition_utc': max((r['acquired_at_utc'] for r in v['history']
+                          if r.get('ndvi') and r['ndvi']['base'] is not None and r['ndmi']['base'] is not None), default=None)})
+    return {'items': items, 'periods': p['periods'],
+            'snapshot_at': max(v['acquired_at_utc'] for v in scenes.values() if v['status']=='ready'),
+            'archive_updated_at': p['created_at_utc'],
+            'default_period': default_period,
             'confirmed_boundaries': False, 'automatic_diagnoses': False,
             'model_training_enabled': False, 'version': s['_scouting_version']}
 

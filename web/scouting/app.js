@@ -110,10 +110,11 @@
     for(const [id,side]of [['common-before','before'],['common-after','after']]){
       const target=$(id);target.replaceChildren();for(const scene of c.scenes){const option=el('option',`${date(scene.at)} · ${scene.usable_areas}/27`,target);option.value=scene.id;option.disabled=scene.usable_areas===0;}
       if(c.pair)target.value=c.pair[side].id;
+      else {const usable=c.scenes.filter(v=>v.usable_areas>0);if(usable.length)target.value=(side==='before'?usable[0]:usable[usable.length-1]).id;}
     }
-    $('common-quality').textContent=c.pair?`Данные: ${c.available_areas} из ${c.total_areas} площадей · ${daySpan(c.pair.days)}`:'Нет общей пары';
+    $('common-quality').textContent=c.pair?`Данные: ${c.available_areas} из ${c.total_areas} площадей · ${daySpan(c.pair.days)}`:'Нет пары для автовыбора — выберите даты вручную';
     $('date-summary').textContent=c.pair?`${date(c.pair.before.at)} → ${date(c.pair.after.at)}`:'Выбрать даты';
-    $('atlas-availability').textContent=c.pair?`${c.available_areas} из ${c.total_areas} площадей · ${daySpan(c.pair.days)} между съёмками`:'Нет пригодной общей пары';
+    $('atlas-availability').textContent=c.pair?`${c.available_areas} из ${c.total_areas} площадей · ${daySpan(c.pair.days)} между съёмками`:'Наблюдения доступны по датам; общей пары для автовыбора нет';
     $('common-quality').title='Пригодные сравнения на одинаковых датах. Это полнота данных, не точность модели. Даты по умолчанию выбираются по покрытию, версии и интервалу, без подбора величины изменения.';
   }
   async function loadCommon(before,after,route=true){
@@ -200,7 +201,7 @@
     const run=++detailRun;++locationRun;S.locationPending=false;S.locationConfirmed=false;S.selectedLocation=null;S.explorer?.clearSite();S.detail=null;$('open-change').disabled=true;$('prepare-task').disabled=true;
     context();
     $('selected-area').textContent=S.fid;$('selected-dates').textContent='Проверяем архив…';$('selected-ndvi').textContent='—';$('selected-ndmi').textContent='—';$('selection-summary').textContent='';$('selection-quality').textContent='';
-    const pair=S.comparison?.pair;if(!pair){context();return;}
+    const pair=S.comparison?.pair;if(!pair){$('selected-dates').textContent='Выберите две даты';$('selection-summary').textContent='Автовыбор требует достаточного покрытия хозяйства и совместимой обработки. Выберите даты вручную: качество будет проверено отдельно для каждой площади.';$('date-picker').open=true;renderPublicContext();highlightMap();context();return;}
     const query=new URLSearchParams({fid:S.fid,period:$('period').value,before:pair.before.id,after:pair.after.id});
     try{
       const d=await api('/api/scouting/area?'+query);if(run!==detailRun)return;S.detail=d;S.placeComparison=d.default_place_comparison;renderPublicContext();highlightMap();
@@ -427,6 +428,6 @@
     const[data,publicData]=await Promise.all([api('/api/scouting/state'),api('/scouting/assets/public-context.json')]);S.data=data;S.public=publicData;
     $('snapshot-date').textContent=date(data.snapshot_at);$('area-count').textContent=String(data.items.length);
     for(const period of data.periods)for(const id of ['period','period-mobile','history-period']){const option=el('option',period.id==='recent2026'?'Июль–октябрь 2026':period.label,$(id));option.value=period.id;}
-    $('period').value='recent2026';$('history-period').value='recent2026';S.planner=window.ScoutingPlans.create({api,getData:()=>S.data,onChange:context,onNotice:message,onRefresh:data=>{S.data=data;},onOpenTask:task=>{const p=task.payload;history.pushState(null,'','#history?'+new URLSearchParams({area:p.place.fragment,period:p.period,metric:p.metric,task:task.id,before:p.evidence.before.id,after:p.evidence.after.id}));applyRoute();}});renderMap();$('workspace').hidden=false;$('loading').hidden=true;await applyRoute();
+    $('period').value=data.default_period||'recent2026';$('history-period').value=$('period').value;S.planner=window.ScoutingPlans.create({api,getData:()=>S.data,onChange:context,onNotice:message,onRefresh:data=>{S.data=data;},onOpenTask:task=>{const p=task.payload;history.pushState(null,'','#history?'+new URLSearchParams({area:p.place.fragment,period:p.period,metric:p.metric,task:task.id,before:p.evidence.before.id,after:p.evidence.after.id}));applyRoute();}});renderMap();$('workspace').hidden=false;$('loading').hidden=true;await applyRoute();
   }catch(e){$('loading').textContent='Не удалось открыть рабочее пространство. '+e.message;message('Архив или журнал недоступен. Демонстрационные данные не подставлены.',true);}
 })();
