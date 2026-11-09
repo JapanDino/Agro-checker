@@ -57,6 +57,23 @@ class RefreshTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             self.assertEqual(s.extend_archive(p,summ,scenes,Path(directory)),(p,summ,scenes))
 
+    def test_same_item_and_grid_reuse_immutable_cache_without_remote_reads(self):
+        old=s.DIRECTORY/'versions/2026-11-09'
+        if not (old/'summary.json').exists():self.skipTest('Optional native cache absent')
+        scenes=s.read(old/'satellite.json')['scenes']
+        ready=next(v for v in scenes if v['status']=='ready')
+        folder=old/'sentinel'/ready['id']
+        if not (folder/'scl.tif').exists():self.skipTest('Native TIFF cache not needed in a fresh clone')
+        outside=next(v for v in scenes if v['status']=='outside_full_grid')
+        cat=s.read(old/'catalogue.json')
+        subset={**cat,'items':[v for v in cat['items'] if v['item']['id'] in {ready['id'],outside['id']}]}
+        before=s.sha(folder/'indices.npz')
+        with tempfile.TemporaryDirectory() as directory,patch.object(s,'object_head',side_effect=AssertionError('No remote read for unchanged cache')):
+            result=s.collect(s.read(old/'protocol.json')['periods'][0]['end'],Path(directory),prepared_catalogue=subset,cache_from=old)
+            self.assertEqual(result['counts'],dict(ready=1,outside_full_grid=1,extraction_error=0))
+            self.assertEqual(s.sha(Path(directory)/'sentinel'/ready['id']/'indices.npz'),before)
+        self.assertEqual(s.sha(folder/'indices.npz'),before)
+
     def test_pointer_cannot_escape_version_directory(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory);s.dump(root/'current.json',dict(directory='../outside'))

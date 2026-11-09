@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import shutil
 from urllib.parse import urlencode, urlparse
 
 from .pipeline import ROOT
@@ -122,7 +123,7 @@ def initialise(through, directory):
         raise ValueError('Cannot collect future observations')
     base = read(BASE/'protocol.json')
     p = {**base,'created_at_utc':datetime.now(timezone.utc).isoformat(),
-         'periods':[dict(id=PERIOD,label='Октябрь–ноябрь 2026',start='2026-10-20T00:00:00Z',end=end.isoformat())],
+         'periods':[dict(id=PERIOD,label='Октябрь–декабрь 2026' if end.month==12 else 'Октябрь–ноябрь 2026',start='2026-10-20T00:00:00Z',end=end.isoformat())],
          'base_protocol_sha256':sha(BASE/'protocol.json'), 'training_selection_years':[2024],
          'policy':'Observations only. Frozen base unchanged. No tuning on2025/2026, no operational writes.'}
     if end < instant(p['periods'][0]['start']):
@@ -138,18 +139,40 @@ def initialise(through, directory):
     return p
 
 
-def collect(through, directory, workers=2):
+def collect(through, directory, workers=2, prepared_catalogue=None, cache_from=None):
     """Reuse the frozen spectral algorithm in an isolated collector process."""
     from . import farm_context_data as source
     directory = Path(directory).resolve()
     p = initialise(through,directory)
-    cat = catalogue(p,directory)
+    cat = prepared_catalogue if prepared_catalogue is not None else catalogue(p,directory)
+    cached_outside={}
+    if cache_from is not None:
+        cache_from=Path(cache_from)
+        old_p=read(cache_from/'protocol.json')
+        if any(old_p[key]!=p[key] for key in ('bounds_utm','contours_sha256','collection')):
+            raise ValueError('Cached archive uses another grid/geometry/collection')
+        old_items={r['item']['id']:r['item'] for r in read(cache_from/'catalogue.json')['items']}
+        old_scenes={r['id']:r for r in read(cache_from/'satellite.json')['scenes']}
+        for entry in cat['items']:
+            sid=entry['item']['id'];scene=old_scenes.get(sid)
+            if not scene or old_items.get(sid)!=entry['item']:continue
+            if scene['status']=='outside_full_grid':
+                cached_outside[sid]=scene
+            elif scene['status']=='ready':
+                folder=cache_from/'sentinel'/sid
+                if not all((folder/name).is_file() and sha(folder/name)==value for name,value in scene['crop_sha256'].items()):
+                    continue  # Missing optional native cache after clone: download instead.
+                target=directory/'sentinel'/sid;target.mkdir(parents=True,exist_ok=True)
+                for name in [*scene['crop_sha256'],'manifest.json']:
+                    if (target/name).exists():raise ValueError('Cache target is not a new version')
+                    try:os.link(folder/name,target/name)
+                    except OSError:shutil.copy2(folder/name,target/name)
     previous_directory, previous_head = source.D, source.head
     source.D, source.head = directory, object_head
     try:
         def one(entry):
             try:
-                result = source.scene(entry)
+                result = cached_outside.get(entry['item']['id']) or source.scene(entry)
             except Exception as error:
                 result = dict(id=entry['item']['id'],period=PERIOD,status='extraction_error',
                               acquired_at_utc=entry['item']['properties']['datetime'],reason=f'{type(error).__name__}: {error}')
