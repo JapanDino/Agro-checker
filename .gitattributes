@@ -1,5 +1,6 @@
 # Frozen scientific evidence is verified by byte hashes. Never rewrite newlines.
-data/** -text
+# CRLF is valid in byte-preserved Windows JSON/CSV; still check actual trailing spaces.
+data/** -text whitespace=cr-at-eol
 models/** -text
 *.json -text
 *.geojson -text
