@@ -19,7 +19,7 @@ def make_server(directory, port=8771):
     static={'/':('index.html','text/html; charset=utf-8'),
             '/scouting':('index.html','text/html; charset=utf-8'),
             '/scouting/about':('about.html','text/html; charset=utf-8')}
-    for f in ['app.js','map.js','plans.js','styles.css','workspace.css','theme.css','interior.css','experience.css','experience-interior.css','drafts.js','hightech.css','design.js','design-controls.css']:
+    for f in ['app.js','map.js','plans.js','styles.css','workspace.css','theme.css','interior.css','experience.css','experience-interior.css','drafts.js','hightech.css','design.js','design-controls.css','review-card.js','review-card.css']:
         static['/scouting/'+f]=(f,'text/javascript; charset=utf-8' if f.endswith('.js') else 'text/css; charset=utf-8')
     for f,mime in [('leaflet.js','text/javascript'),('leaflet.css','text/css'),('LEAFLET-LICENSE.txt','text/plain'),
                    ('public-context.json','application/json'),('basemap.jpg','image/jpeg'),('wide-basemap.jpg','image/jpeg'),
@@ -66,6 +66,9 @@ def make_server(directory, port=8771):
                     return self.reply(200,workspace.comparison(**query(['period']+(['before','after'] if 'before' in q or 'after' in q else []))))
                 if path=='/api/scouting/area':
                     return self.reply(200,workspace.area_detail(**query(['fid','period','before','after'])))
+                if path=='/api/scouting/review':
+                    from .scouting_review import review
+                    return self.reply(200,review(**query(['fid','period','before','after','place_id'])))
                 if path=='/api/scouting/detail':
                     return self.reply(200,scout.detail(**query(['fid','period']+(['before','after'] if 'before' in q or 'after' in q else []))))
                 if path=='/api/scouting/map':

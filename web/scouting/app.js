@@ -3,6 +3,7 @@
   const $ = id => document.getElementById(id), NS = 'http://www.w3.org/2000/svg';
   const S = {step:1, fid:'R11', metric:'ndmi', detail:null, data:null, geometry:null, relative:null, selectedLocation:null, placeComparison:null, task:null, series:null, busy:false, locationPending:false, visitPreview:false, comparison:null, commonBusy:false,locationConfirmed:false,compareView:"pair"};
   const drafts = new Map();let detailRun = 0, historyRun = 0, locationRun = 0, routeRun = 0, draftKey = '', taskRequest = '', visitRequest = '', commonRun = 0;
+  let reviewRun=0,reviewKey='',reviewData=null;
   const date = v => new Date(v).toLocaleDateString('ru-RU',{timeZone:'Europe/Moscow'});
   const datetime = v => new Date(v).toLocaleString('ru-RU',{timeZone:'Europe/Moscow',dateStyle:'medium',timeStyle:'short'});
   const num = (v,d=3) => typeof v === 'number' && Number.isFinite(v) ? v.toFixed(d).replace('.',',') : '—';
@@ -122,13 +123,14 @@
     const run=++commonRun;++detailRun;++locationRun;S.commonBusy=true;S.locationConfirmed=false;S.detail=null;S.relative=null;S.task=null;S.series=null;
     $('apply-common').disabled=true;$('open-change').disabled=true;$('prepare-task').disabled=true;$('selected-dates').textContent='Проверяем общие даты…';$('selected-ndvi').textContent='—';$('selected-ndmi').textContent='—';$('selection-summary').textContent='';$('selection-quality').textContent='';$('common-quality').textContent='Проверяем…';context();
     S.explorer?.setComparison({rows:[]});
+    requestReview();
     try{
       const q=new URLSearchParams({period:$('period').value});if(before&&after){q.set('before',before);q.set('after',after);}
       const data=await api('/api/scouting/workspace?'+q);if(run!==commonRun)return;
       S.comparison=data;commonControls();$('date-picker').open=false;$('comparison-dates').open=false;S.explorer?.setComparison(data);renderAreaList();
       await loadDetail();if(run!==commonRun)return;if(route)writeRoute(true);
     }catch(error){if(run!==commonRun)return;S.comparison=null;renderAreaList();if(S.step===2||S.step===3)go(1,false);message(error.message,true);$('common-quality').textContent='Сравнение недоступно';$('selected-dates').textContent='Нет сравнения';}
-    finally{if(run===commonRun){S.commonBusy=false;$('apply-common').disabled=false;context();}}
+    finally{if(run===commonRun){S.commonBusy=false;$('apply-common').disabled=false;context();requestReview();}}
   }
   $('apply-common').addEventListener('click',()=>loadCommon($('common-before').value,$('common-after').value));
   function expandInspector(){document.querySelector('.selection-card').classList.remove('mobile-collapsed');document.body.classList.add('inspector-open');$('toggle-details').setAttribute('aria-expanded','true');$('toggle-details').textContent='Свернуть ↓';}
@@ -199,7 +201,7 @@
   $('period-mobile').addEventListener('change',()=>{$('period').value=$('period-mobile').value;saveDraft();loadCommon();});
   async function loadDetail(before,after){
     const run=++detailRun;++locationRun;S.locationPending=false;S.locationConfirmed=false;S.selectedLocation=null;S.explorer?.clearSite();S.detail=null;$('open-change').disabled=true;$('prepare-task').disabled=true;
-    context();
+    requestReview();context();
     $('selected-area').textContent=S.fid;$('selected-dates').textContent='Проверяем архив…';$('selected-ndvi').textContent='—';$('selected-ndmi').textContent='—';$('selection-summary').textContent='';$('selection-quality').textContent='';
     const pair=S.comparison?.pair;if(!pair){$('selected-dates').textContent='Выберите две даты';$('selection-summary').textContent='Автовыбор требует достаточного покрытия хозяйства и совместимой обработки. Выберите даты вручную: качество будет проверено отдельно для каждой площади.';$('date-picker').open=true;renderPublicContext();highlightMap();context();return;}
     const query=new URLSearchParams({fid:S.fid,period:$('period').value,before:pair.before.id,after:pair.after.id});
@@ -251,6 +253,32 @@
     const x=crop.west+S.relative[0]*crop.width*20,y=crop.north-S.relative[1]*crop.height*20;
     return {utm_x:x,utm_y:y};
   }
+  function reviewContext(){
+    const d=S.detail,p=d?.pair,place=S.selectedLocation||d?.default_location;
+    if(!p||!place?.id||d.fragment!==S.fid)return null;
+    const query={fid:d.fragment,period:d.period,before:p.before.id,after:p.after.id,place_id:place.id};
+    return {query,key:JSON.stringify([query,p.version])};
+  }
+  function renderReview(){
+    const root=$('inspection-review');if(!root||!reviewData)return;
+    window.ScoutingReviewCard.render(root,reviewData,{confirmed:S.locationConfirmed&&!S.locationPending&&!S.commonBusy,onQuestion:question=>{
+      if(!S.locationConfirmed||S.locationPending||S.commonBusy)return;
+      go(3);const field=$('task-objective');
+      if(!field.value.trim())field.value=question;
+      else if(!field.value.includes(question)){if(field.value.length+question.length+2>2000){message('Вопрос не добавлен: сократите существующий текст задачи.',true);return;}field.value+='\n\n'+question;}
+      field.dispatchEvent(new Event('input',{bubbles:true}));field.focus();
+    }});
+  }
+  async function requestReview(){
+    const root=$('inspection-review'),c=reviewContext();if(!root)return;
+    if(!c){++reviewRun;reviewKey='';reviewData=null;root.replaceChildren();return;}
+    if(c.key===reviewKey){renderReview();return;}
+    const run=++reviewRun;reviewKey=c.key;reviewData=null;root.textContent='Проверяем основание выбранного места…';
+    try{
+      const data=await api('/api/scouting/review?'+new URLSearchParams(c.query));
+      if(run!==reviewRun||reviewContext()?.key!==c.key)return;reviewData=data;renderReview();
+    }catch(error){if(run===reviewRun){reviewKey='';root.textContent='Карточка недоступна. Повторите выбор места; прогноз не подставлен.';}}
+  }
   function renderLocation(){
     const loc=currentLocation(),crop=S.detail?.pair?.crop;if(!loc||!crop)return;
     const relative=S.relative||[(loc.utm_x-crop.west)/(crop.width*20),(crop.north-loc.utm_y)/(crop.height*20)];
@@ -264,13 +292,14 @@
     $('location-source').textContent=S.relative?'Фиксируем окно 60 м внутри обводки; не GPS датчика':'Опорная точка внутри обводки; не измеренный GPS';
     const m=S.placeComparison;
     $('location-indices').textContent=m?`В выбранном окне: ΔNDVI ${signed(m.ndvi)} · ΔNDMI ${signed(m.ndmi)}. Общие ячейки: ${m.paired_cells}/${m.total_cells}.${m.ndvi===null?' Недостаточно данных; сводка не вычислена.':''}`:'Сводка выбранного окна недоступна.';
+    requestReview();
   }
   async function chooseLocation(relative){
     const d=S.detail,run=++locationRun;
     if(!d?.pair)return;S.locationPending=true;$('prepare-task').disabled=true;context();
     const q=new URLSearchParams({fid:d.fragment,period:d.period,before:d.pair.before.id,after:d.pair.after.id,relative:JSON.stringify(relative)});
     try{const result=await api('/api/scouting/location?'+q);if(run!==locationRun)return false;const loc=result.location,c=d.pair.crop;S.selectedLocation=loc;S.locationConfirmed=true;S.placeComparison=result.comparison;S.relative=[(loc.utm_x-c.west)/(c.width*20),(c.north-loc.utm_y)/(c.height*20)];renderLocation();S.explorer?.showSite(loc);message('Место выбрано внутри обводки. Повторные посещения будут связаны с этим же окном 60 м.');return true;}
-    catch(error){if(run===locationRun)message(error.message,true);return false;}finally{if(run===locationRun){S.locationPending=false;$('prepare-task').disabled=!S.locationConfirmed;context();writeRoute(true);}}
+    catch(error){if(run===locationRun)message(error.message,true);return false;}finally{if(run===locationRun){S.locationPending=false;$('prepare-task').disabled=!S.locationConfirmed;context();requestReview();writeRoute(true);}}
   }
   for(const side of ['before','after'])$(side+'-image').addEventListener('click',e=>{const rect=e.currentTarget.getBoundingClientRect();chooseLocation([(e.clientX-rect.left)/rect.width,(e.clientY-rect.top)/rect.height]);});
   $('reset-location').addEventListener('click',()=>{++locationRun;S.locationPending=false;S.locationConfirmed=false;$('prepare-task').disabled=true;S.relative=null;S.selectedLocation=null;S.placeComparison=S.detail.default_place_comparison;renderLocation();context();writeRoute(true);});

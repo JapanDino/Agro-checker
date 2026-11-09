@@ -1,0 +1,41 @@
+{
+  "created_at_utc": "2026-11-09T14:09:04.499653+00:00",
+  "selection_years": [
+    2024
+  ],
+  "bounds_utm": [
+    413020,
+    4979900,
+    422620,
+    4997140
+  ],
+  "bbox_wgs84": [
+    37.894050149650965,
+    44.967214109430984,
+    38.018751513961206,
+    45.123493969362215
+  ],
+  "collection": "sentinel-2-c1-l2a",
+  "periods": [
+    {
+      "id": "audit2024",
+      "start": "2024-06-07T00:00:00Z",
+      "end": "2024-11-03T23:59:59Z"
+    }
+  ],
+  "inputs": {
+    "data/farm-research/spectral-triage/meta-oof.json": "db99f14d6995f59527360fc2b76b326a60afe953d618a21fd13fcd6175fe73b1",
+    "data/farm-research/spectral-triage/pool-2024.json": "e67e28ac79c969bf96a98a3b29dea1649c1b51a9559d898047a9566783c07a79",
+    "data/farm-research/triage-outcomes-2024/catalogue.json": "3c8dadf0aa0422ecc2de23a99a54d51fdf97057a91b8795b7074accde4a35578",
+    "data/farm-research/triage-outcomes-2024/satellite.json": "483e2b25a4ee2b24176d331caf6088d5b6607b048f4a9a8dce2342000b80ca0b",
+    "data/farm-research/triage-outcomes-2024/recovery-ledger.json": "cb4b2faceb7316b96dc73340a4d6c28a3444a4c29a37a88d7f5d9c7a91b691eb",
+    "data/farm-research/consensus-ndmi-guard-2024/protocol.json": "491f36104b50ef953f6b16e7a9e8d8e8d7f6cff446245d5647981189d7fef33e",
+    "data/farm-research/consensus-ndmi-guard-2024/report.json": "df13273be841544092a13373a5af6b8808ee0c1ddec4a50a86c8752cb0056535"
+  },
+  "policy": "368 known targets unchanged.331 conservative unknowns individually explained. No threshold/mask/window/model/ranking change. Fresh catalogue2024 only; only new/changed relevant same-baseline sources may be read. No2025/2026 outcome access.",
+  "recovery": "Evaluation only. New original T37TDK targets require unchanged core>=10/.8, PB, SCL/solar/reflectance QC. New adjacent-tile targets additionally require common valid core>=.8 and>=10 with contemporaneous original-tile source and median absolute NDVI/NDMI differences<=.05 (old geometric tolerance). Conflicting old3 remain unknown unless a new original-tile usable target independently resolves them.",
+  "guards": "No interpolation, no5-10day widening, no cross-baseline mixing, no SCL relaxation, no proxy human labels. Recovered labels never enter currently frozen training/selection or prospective study.",
+  "model_refit_performed": false,
+  "production_promoted": false,
+  "human_visits_created": 0
+}

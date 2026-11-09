@@ -59,6 +59,9 @@ def make_server(directory, port=8770):
                     if path == '/api/scouting/area':
                         from .farm_workspace import area_detail
                         return self.reply(200, area_detail(**query(['fid','period','before','after'])))
+                    if path == '/api/scouting/review':
+                        from .scouting_review import review
+                        return self.reply(200,review(**query(['fid','period','before','after','place_id'])))
                     if path == '/api/scouting/plans/export':
                         from .farm_workspace import plan_export
                         return self.reply(200,plan_export(store,query(['id'])['id']))
@@ -178,6 +181,8 @@ def make_server(directory, port=8770):
                          "/scouting/hightech.css": (ROOT/"web/scouting/hightech.css", "text/css; charset=utf-8"),
                          "/scouting/design-controls.css": (ROOT/"web/scouting/design-controls.css", "text/css; charset=utf-8"),
                          "/scouting/design.js": (ROOT/"web/scouting/design.js", "text/javascript; charset=utf-8"),
+                         "/scouting/review-card.js": (ROOT/"web/scouting/review-card.js", "text/javascript; charset=utf-8"),
+                         "/scouting/review-card.css": (ROOT/"web/scouting/review-card.css", "text/css; charset=utf-8"),
                          "/scouting/drafts.js": (ROOT/"web/scouting/drafts.js", "text/javascript; charset=utf-8"),
                          "/scouting/workspace.css": (ROOT/"web/scouting/workspace.css", "text/css; charset=utf-8"),
                          "/scouting/map.js": (ROOT/"web/scouting/map.js", "text/javascript; charset=utf-8"),
