@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "as_of_moscow": "2026-11-09",
+  "cutoff_utc": "2026-11-08T21:00:00+00:00",
+  "purpose": "Data readiness only; no forecast, model selection or agronomic labels",
+  "geometry": {
+    "fragments": 27,
+    "confirmed_boundaries": false,
+    "confirmed_field_ids": null,
+    "crop_labels_from_agromon": null,
+    "sha256": "6fcf4a180f2a8860ed8f09456389943296f2947b1b95b98a81d63cb2c75ae521",
+    "bbox_wgs84": [
+      37.894050149650965,
+      44.967214109430984,
+      38.018751513961206,
+      45.123493969362215
+    ]
+  },
+  "archive": {
+    "manifest_entries": 184,
+    "statuses": {
+      "outside_full_grid": 92,
+      "ready": 92
+    },
+    "ready_before_cutoff": 92,
+    "index_files_present": 92,
+    "latest_ready_acquisition_utc": "2026-10-19T08:37:38.163000+00:00",
+    "age_days_at_cutoff": 20.52,
+    "per_fragment_usable_dates_not_recomputed": true,
+    "periods": [
+      {
+        "id": "spring2024",
+        "label": "Весна 2024",
+        "start": "2024-03-01T00:00:00Z",
+        "end": "2024-05-31T23:59:59Z"
+      },
+      {
+        "id": "recent2026",
+        "label": "Последние 90 дней 2026",
+        "start": "2026-07-21T17:43:13.420372+00:00",
+        "end": "2026-10-19T17:43:13.420372+00:00"
+      }
+    ],
+    "manifest_sha256": "f7f06d926213b04dff8126f8bde482ad4ae221f4b8dbd46e1374b71444244118"
+  },
+  "agromon": {
+    "access_status": "not_available_user_confirmed_2026-11-09",
+    "farm_data_acquired": false,
+    "official_api": "https://agromon.ru/agreementapi",
+    "official_export_guidance": "https://agromon.ru/education"
+  },
+  "journal": {
+    "status": "inspected_read_only",
+    "tasks": 0,
+    "visits": 0,
+    "plans": 0,
+    "sha256_before": "6f862581ec12e7958f5573960bfdeb785572843fbf0094ad59e00c3cad7b5f6e",
+    "sha256_after": "6f862581ec12e7958f5573960bfdeb785572843fbf0094ad59e00c3cad7b5f6e",
+    "validated_training_labels": null
+  },
+  "training": {
+    "selection_years": [
+      2024
+    ],
+    "do_not_tune_years": [
+      2025,
+      2026
+    ],
+    "new_fit_performed": false,
+    "production_model_replaced": false,
+    "historical_control_already_seen": true
+  },
+  "local_sources": {
+    "data/farm-research/area-context/protocol.json": "3ec27d530188004a78dc369c8f16ee73facfc7204baa5844e06350e0e131a65f",
+    "data/farm-research/area-context/summary.json": "5c6efb4b2255afb77d4c77c3c933cb2194248b9b6bc30ae6e5d70c4b6b878bf5",
+    "data/farm-research/area-context/satellite.json": "f7f06d926213b04dff8126f8bde482ad4ae221f4b8dbd46e1374b71444244118",
+    "data/farm-research/reconstruction/approximate-areas.geojson": "6fcf4a180f2a8860ed8f09456389943296f2947b1b95b98a81d63cb2c75ae521"
+  },
+  "new_catalogue": {
+    "collection": "sentinel-2-c1-l2a",
+    "transport": "curl",
+    "from_utc": "2026-10-20T00:00:00+00:00",
+    "through_utc": "2026-11-08T20:59:59+00:00",
+    "catalogue_complete": true,
+    "pages": [
+      {
+        "url": "https://earth-search.aws.element84.com/v1/search?collections=sentinel-2-c1-l2a&bbox=37.894050149650965%2C44.967214109430984%2C38.018751513961206%2C45.123493969362215&datetime=2026-10-20T00%3A00%3A00%2B00%3A00%2F2026-11-08T20%3A59%3A59%2B00%3A00&limit=100",
+        "file": "stac-page-01.json",
+        "sha256": "a9b8ac6ea16e14d5fdd2fa10b00c20f1a0e41cfd6dd4012fa921374872595ea0",
+        "fetched_at_utc": "2026-11-09T10:37:37.410999+00:00"
+      },
+      {
+        "url": "https://earth-search.aws.element84.com/v1/search?datetime=2026-10-20T00%3A00%3A00%2B00%3A00%2F2026-11-08T20%3A59%3A59%2B00%3A00&collections=sentinel-2-c1-l2a&bbox=37.894050149650965%2C44.967214109430984%2C38.018751513961206%2C45.123493969362215&limit=100&next=2026-10-21T08%3A27%3A28.042000Z%2CS2C_T37TDL_20261021T081955_L2A%2Csentinel-2-c1-l2a",
+        "file": "stac-page-02.json",
+        "sha256": "416dcbe94510212c3ef9efb6adce7c9c6912ada712d5df186a90ebc8074df859",
+        "fetched_at_utc": "2026-11-09T10:37:38.071608+00:00"
+      }
+    ],
+    "items": [
+      {
+        "id": "S2C_T37TDL_20261021T081955_L2A",
+        "acquired_at_utc": "2026-10-21T08:27:28.042000Z",
+        "tile_cloud_cover_percent": 44.598982,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-21T13:22:50.537Z",
+        "provider_updated_at": "2026-10-21T13:22:50.537Z"
+      },
+      {
+        "id": "S2C_T37TDK_20261021T081955_L2A",
+        "acquired_at_utc": "2026-10-21T08:27:42.520000Z",
+        "tile_cloud_cover_percent": 5.204956,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-21T13:26:11.746Z",
+        "provider_updated_at": "2026-10-21T13:26:11.746Z"
+      },
+      {
+        "id": "S2A_T37TDL_20261023T082014_L2A",
+        "acquired_at_utc": "2026-10-23T08:27:36.335000Z",
+        "tile_cloud_cover_percent": 96.069884,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-23T13:38:18.373Z",
+        "provider_updated_at": "2026-10-23T13:38:18.373Z"
+      },
+      {
+        "id": "S2A_T37TDK_20261023T082014_L2A",
+        "acquired_at_utc": "2026-10-23T08:27:50.812000Z",
+        "tile_cloud_cover_percent": 28.449082,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-23T13:42:30.467Z",
+        "provider_updated_at": "2026-10-23T13:42:30.467Z"
+      },
+      {
+        "id": "S2C_T37TDL_20261024T083018_L2A",
+        "acquired_at_utc": "2026-10-24T08:37:23.484000Z",
+        "tile_cloud_cover_percent": 83.740145,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-24T13:06:31.807Z",
+        "provider_updated_at": "2026-10-24T13:06:31.807Z"
+      },
+      {
+        "id": "S2C_T37TDK_20261024T083018_L2A",
+        "acquired_at_utc": "2026-10-24T08:37:38.032000Z",
+        "tile_cloud_cover_percent": 52.585745,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-24T12:59:33.228Z",
+        "provider_updated_at": "2026-10-24T12:59:33.228Z"
+      },
+      {
+        "id": "S2B_T37TDL_20261026T082222_L2A",
+        "acquired_at_utc": "2026-10-26T08:27:28.476000Z",
+        "tile_cloud_cover_percent": 2.247385,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-26T15:21:35.266Z",
+        "provider_updated_at": "2026-10-26T15:21:35.266Z"
+      },
+      {
+        "id": "S2B_T37TDK_20261026T082222_L2A",
+        "acquired_at_utc": "2026-10-26T08:27:42.943000Z",
+        "tile_cloud_cover_percent": 8.682373,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-26T15:41:23.155Z",
+        "provider_updated_at": "2026-10-26T15:41:23.155Z"
+      },
+      {
+        "id": "S2A_T37TDL_20261026T083641_L2A",
+        "acquired_at_utc": "2026-10-26T08:37:31.244000Z",
+        "tile_cloud_cover_percent": 2.348732,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-26T14:48:19.311Z",
+        "provider_updated_at": "2026-10-26T14:48:19.311Z"
+      },
+      {
+        "id": "S2A_T37TDK_20261026T083641_L2A",
+        "acquired_at_utc": "2026-10-26T08:37:45.790000Z",
+        "tile_cloud_cover_percent": 13.117185,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-26T14:46:14.869Z",
+        "provider_updated_at": "2026-10-26T14:46:14.869Z"
+      },
+      {
+        "id": "S2B_T37TDL_20261029T083114_L2A",
+        "acquired_at_utc": "2026-10-29T08:37:24.899000Z",
+        "tile_cloud_cover_percent": 68.805432,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-29T15:35:23.416Z",
+        "provider_updated_at": "2026-10-29T15:35:23.416Z"
+      },
+      {
+        "id": "S2B_T37TDK_20261029T083114_L2A",
+        "acquired_at_utc": "2026-10-29T08:37:39.448000Z",
+        "tile_cloud_cover_percent": 81.416774,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-29T15:33:17.313Z",
+        "provider_updated_at": "2026-10-29T15:33:17.313Z"
+      },
+      {
+        "id": "S2C_T37TDL_20261031T082411_L2A",
+        "acquired_at_utc": "2026-10-31T08:27:25.142000Z",
+        "tile_cloud_cover_percent": 99.80998,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-31T13:20:56.424Z",
+        "provider_updated_at": "2026-10-31T13:20:56.424Z"
+      },
+      {
+        "id": "S2C_T37TDK_20261031T082411_L2A",
+        "acquired_at_utc": "2026-10-31T08:27:39.615000Z",
+        "tile_cloud_cover_percent": 99.412888,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-10-31T13:19:46.612Z",
+        "provider_updated_at": "2026-10-31T13:19:46.612Z"
+      },
+      {
+        "id": "S2A_T37TDL_20261102T082548_L2A",
+        "acquired_at_utc": "2026-11-02T08:27:34.034000Z",
+        "tile_cloud_cover_percent": 80.966902,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-11-02T12:50:37.905Z",
+        "provider_updated_at": "2026-11-02T12:50:37.905Z"
+      },
+      {
+        "id": "S2A_T37TDK_20261102T082548_L2A",
+        "acquired_at_utc": "2026-11-02T08:27:47.397000Z",
+        "tile_cloud_cover_percent": 61.926019,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-11-02T12:49:36.134Z",
+        "provider_updated_at": "2026-11-02T12:49:36.134Z"
+      },
+      {
+        "id": "S2C_T37TDL_20261103T083659_L2A",
+        "acquired_at_utc": "2026-11-03T08:37:20.179000Z",
+        "tile_cloud_cover_percent": 78.773206,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-11-03T13:31:41.244Z",
+        "provider_updated_at": "2026-11-03T13:31:41.244Z"
+      },
+      {
+        "id": "S2C_T37TDK_20261103T083659_L2A",
+        "acquired_at_utc": "2026-11-03T08:37:34.721000Z",
+        "tile_cloud_cover_percent": 93.495739,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-11-03T13:30:58.416Z",
+        "provider_updated_at": "2026-11-03T13:30:58.416Z"
+      },
+      {
+        "id": "S2B_T37TDL_20261105T082407_L2A",
+        "acquired_at_utc": "2026-11-05T08:27:28.800000Z",
+        "tile_cloud_cover_percent": 49.309248,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-11-05T13:38:04.452Z",
+        "provider_updated_at": "2026-11-05T13:38:04.452Z"
+      },
+      {
+        "id": "S2B_T37TDK_20261105T082407_L2A",
+        "acquired_at_utc": "2026-11-05T08:27:43.270000Z",
+        "tile_cloud_cover_percent": 25.336501,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-11-05T13:42:53.041Z",
+        "provider_updated_at": "2026-11-05T13:42:53.041Z"
+      },
+      {
+        "id": "S2A_T37TDL_20261105T083040_L2A",
+        "acquired_at_utc": "2026-11-05T08:37:30.131000Z",
+        "tile_cloud_cover_percent": 55.735213,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-11-05T13:36:19.332Z",
+        "provider_updated_at": "2026-11-05T13:36:19.332Z"
+      },
+      {
+        "id": "S2A_T37TDK_20261105T083040_L2A",
+        "acquired_at_utc": "2026-11-05T08:37:44.680000Z",
+        "tile_cloud_cover_percent": 31.341758,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-11-05T13:16:31.136Z",
+        "provider_updated_at": "2026-11-05T13:16:31.136Z"
+      },
+      {
+        "id": "S2B_T37TDL_20261108T083052_L2A",
+        "acquired_at_utc": "2026-11-08T08:37:24.812000Z",
+        "tile_cloud_cover_percent": 11.80814,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-11-08T13:31:38.224Z",
+        "provider_updated_at": "2026-11-08T13:31:38.224Z"
+      },
+      {
+        "id": "S2B_T37TDK_20261108T083052_L2A",
+        "acquired_at_utc": "2026-11-08T08:37:39.357000Z",
+        "tile_cloud_cover_percent": 20.1139,
+        "processing_baseline": "05.13",
+        "provider_created_at": "2026-11-08T13:26:05.256Z",
+        "provider_updated_at": "2026-11-08T13:26:05.256Z"
+      }
+    ],
+    "spectral_assets_downloaded": 0,
+    "field_cloud_quality_evaluated": false,
+    "usable_new_images": null,
+    "error": null,
+    "catalogue_items_received": 24,
+    "notice": "Metadata only. Tile cloud percentage does not establish field suitability. Catalogue created/updated is not proven first availability."
+  }
+}

@@ -1,0 +1,857 @@
+
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Sentinel-1 MPC  | Quality Disclaimers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/static/css/bootstrap.4.6.1.css" rel="stylesheet">
+  <link href="/static/css/fontawesome.5.6.3.css" rel="stylesheet">
+  <link href="/static/css/sarmpc.css" rel="stylesheet">
+  <style>
+    html {
+      /* default font-size is 16px - this is set in the default browser stylesheet */
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    footer {
+        margin-top: 2rem;
+        text-align: center;
+        font-size: 70%;
+        color: #777;
+        line-height: 1.3;
+    }
+    .footer .container {
+        border-top: 1px solid #0056b3;
+        padding: 1rem;
+    }
+    .footer img {
+        height: 64px;
+        margin:0 20px
+    }
+    .footer a {
+        opacity: .3;
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+        -webkit-transition-property: opacity, -webkit-filter;
+        transition-property: opacity, filter;
+        transition-property: opacity, filter, -webkit-filter;
+        -webkit-transition-duration: .8s;
+        transition-duration:.8s
+    }
+    .footer a:hover {
+        opacity: 1;
+        -webkit-filter: grayscale(0);
+        filter:grayscale(0)
+    }
+
+    .choice_label {
+      display: inline-block;
+      width: 100px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    table.compact {
+      font-size: 85%;
+      /* same as bootstrap .small */
+      width: inherit;
+    }
+
+    table.compact td {
+      padding: 2px 4px !important;
+    }
+  </style>
+  
+  
+
+</head>
+
+<body>
+  
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          
+
+          
+          
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/">Sentinel-1 MPC</a>
+    
+</li>
+
+
+<li class="nav-item 
+         active
+        ">
+    
+    <a class="nav-link" href="/disclaimers/">Quality Disclaimers</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+         dropdown">
+    
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Auxiliary Data
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/adf/aux_pp1/">L1 Processor Parameters [AUX_PP1]</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/adf/aux_cal/">Calibration Auxiliary Data [AUX_CAL]</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/adf/aux_ins/">Instrument Auxiliary Data [AUX_INS]</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/adf/aux_pp2/">L2 Processor Parameters [AUX_PP2]</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/adf/aux_scs/">Simulated Cross Spectra [AUX_SCS]</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/adf/aux_ml2/">Machine Learning Models for L2 [AUX_ML2]</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/adf/aux_scf/">SETAP Configuration File [AUX_SCF]</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/adf/aux_itc/">Instrument Timing Calibration [AUX_ITC]</a>
+    
+</li>
+
+
+
+    </ul>
+    
+</li>
+
+
+<li class="nav-item 
+        
+         dropdown">
+    
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Processors Versions
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/processor/ipf/">IPF</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/processor/setap/">SETAP</a>
+    
+</li>
+
+
+
+    </ul>
+    
+</li>
+
+
+<li class="nav-item 
+        
+         dropdown">
+    
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Documentation
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/product-performances/">Product performances</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/roadmaps/">Roadmaps</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/technical-documentation/">Technical documentation</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/sar-mpc-products/">SAR-MPC products</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/test-data-sets/">Test data sets</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/doc/api/">Web API</a>
+    
+</li>
+
+
+
+    </ul>
+    
+</li>
+
+
+<li class="nav-item 
+        
+         dropdown">
+    
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        About
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/about/news/">News</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/about/activities-and-team/">Activities and Team</a>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/about/faq/">FAQ</a>
+    
+</li>
+
+
+
+    </ul>
+    
+</li>
+
+
+<li class="nav-item 
+        
+        ">
+    
+    <a class="nav-link" href="/sso/">Login</a>
+    
+</li>
+
+
+
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-2 d-none d-xl-block" width="150px">
+        <img src="/static/img/mpc.png" srcset="/static/img/mpc-2x.png 2x" class="center-in-span"
+          style="margin-bottom: 40px;">
+
+        
+        
+
+      </div>
+      <div class="col-md-12 col-lg-10">
+        
+<h3>Quality Disclaimers</h3>
+
+
+<p>A description of the rationale of quality disclaimers can be found in the <a href="/product-performances/">Product performances documentation</a>.</p>
+
+
+<div class="row">
+  
+  <div class="col-lg-12">
+  
+    
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr>
+          
+  <th>id</th>
+  <th>mission</th>
+  <th>quality status</th>
+  <th>last modified</th>
+  <th>validity start</th>
+  <th>validity stop</th>
+  <th>description</th>
+
+          </tr>
+        </thead>
+        <tbody>
+        
+          <tr>
+          
+  <td><a href="48">#48</a></td>
+  <td>S1B</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2019-08-28 08:53:07</td>
+  <td>2019-07-18 21:58:36</td>
+  <td>2019-07-18 22:45:51</td>
+  <td>S-1B Products generated without AUX_RESORB on 19th July
+2019</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="47">#47</a></td>
+  <td>S1A</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2019-08-28 08:50:41</td>
+  <td>2019-07-18 22:52:54</td>
+  <td>2019-07-18 23:55:52</td>
+  <td>S-1A Products generated without AUX_RESORB on 19th July
+2019</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="46">#46</a></td>
+  <td>S1B</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2019-08-27 15:37:17</td>
+  <td>2019-08-20 05:33:56</td>
+  <td>2019-08-20 13:42:08</td>
+  <td>Products have been wrongly generated as S1B instead of S1A on 20th August 2019</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="45">#45</a></td>
+  <td>S1B</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2023-09-12 07:54:20</td>
+  <td>2019-05-14 09:15:57</td>
+  <td>2019-05-28 08:32:37</td>
+  <td>Test of the new S-1B antenna configuration, aiming improvement of WV2 performances</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="44">#44</a></td>
+  <td>S1B</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2019-04-18 15:22:23</td>
+  <td>2019-04-10 11:41:33</td>
+  <td>2019-04-11 05:26:00</td>
+  <td>S-1B Products generated without AUX_RESORB between 10 April 14:00 UTC to 11 April 07:00 UTC 2019</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="43">#43</a></td>
+  <td>S1A</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2019-04-18 15:20:30</td>
+  <td>2019-04-10 12:37:43</td>
+  <td>2019-04-10 20:05:28</td>
+  <td>S-1A Products generated without AUX_RESORB between 10 April 14:00 UTC to 11 April 07:00 UTC 2019</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="42">#42</a></td>
+  <td>S1A</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2023-09-12 07:52:07</td>
+  <td>2019-02-28 09:42:51</td>
+  <td>2019-03-11 09:12:44</td>
+  <td>Test of the new S-1A antenna configuration, aiming improvement of WV2 performances</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="41">#41</a></td>
+  <td>S1B</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-09-24 09:24:04</td>
+  <td>2018-09-20 10:47:10</td>
+  <td>2018-09-20 16:05:58</td>
+  <td>S-1B products processed without Restituted Orbit Files (AUX_RESORB) on 2018-09-20</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="40">#40</a></td>
+  <td>S1A</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-09-24 09:22:28</td>
+  <td>2018-09-20 10:41:03</td>
+  <td>2018-09-20 16:15:34</td>
+  <td>S-1A products processed without Restituted Orbit Files (AUX_RESORB) on 2018-09-20</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="39">#39</a></td>
+  <td>S1B</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-07-12 13:18:17</td>
+  <td>2018-07-07 11:26:13</td>
+  <td>2018-07-09 06:03:52</td>
+  <td>S-1B products processed without Restituted Orbit Files (AUX_RESORB) between 2018-07-07 and 2018-07-09</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="38">#38</a></td>
+  <td>S1A</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-07-12 13:16:17</td>
+  <td>2018-07-07 11:49:47</td>
+  <td>2018-07-09 03:34:48</td>
+  <td>S-1A products processed without Restituted Orbit Files (AUX_RESORB) between 2018-07-07 and 2018-07-09</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="37">#37</a></td>
+  <td>S1A</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-06-25 08:46:19</td>
+  <td>2018-03-13 11:54:53</td>
+  <td>2018-06-21 18:53:32</td>
+  <td>S1A denoising vectors for Strip Map products were not properly calibrated after IPF 2.90 deployment</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="36">#36</a></td>
+  <td>S1B</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-05-04 09:29:45</td>
+  <td>2018-04-09 07:25:04</td>
+  <td>2018-04-11 05:06:24</td>
+  <td>S-1B products processed without Restituted Orbit Files (AUX_RESORB) between 2018-04-09 and 2018-
+04-11</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="35">#35</a></td>
+  <td>S1A</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-05-04 09:29:25</td>
+  <td>2018-04-08 18:58:39</td>
+  <td>2018-04-11 16:20:49</td>
+  <td>S-1A products processed without Restituted Orbit Files (AUX_RESORB) between 2018-04-08 and 2018-
+04-11</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="34">#34</a></td>
+  <td>S1B</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-05-04 09:28:54</td>
+  <td>2018-03-21 20:52:26</td>
+  <td>2018-03-22 07:51:34</td>
+  <td>S-1B products processed without Restituted Orbit Files (AUX_RESORB) between 2018-03-21 and 2018-
+03-22</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="33">#33</a></td>
+  <td>S1A</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-05-04 09:28:37</td>
+  <td>2018-03-21 21:42:52</td>
+  <td>2018-03-22 07:33:09</td>
+  <td>S-1A products processed without Restituted Orbit Files (AUX_RESORB) between 2018-03-21 and 2018-
+03-22</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="32">#32</a></td>
+  <td>S1A</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-04-06 08:27:19</td>
+  <td>2015-05-17 00:03:40</td>
+  <td>2015-05-18 23:14:45</td>
+  <td>S-1A mis synchronisation with impact on azimuth bandwidth synchronisation for InSAR applications</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="31">#31</a></td>
+  <td>S1B</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-03-26 10:14:59</td>
+  <td>2018-03-13 02:43:05</td>
+  <td>2018-03-15 15:19:30</td>
+  <td>Issue on the noise vector annotation of S-1B products generated from L0N with updated content</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="30">#30</a></td>
+  <td>S1A</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2018-03-26 10:14:00</td>
+  <td>2018-03-13 01:00:42</td>
+  <td>2018-03-15 14:01:26</td>
+  <td>Issue on the noise vector annotation of S-1A products generated from L0N with updated content</td>
+
+          </tr>
+          
+        
+          <tr>
+          
+  <td><a href="29">#29</a></td>
+  <td>S1B</td>
+  <td class="text-danger">DEGRADED</td>
+  <td>2023-06-02 16:15:45</td>
+  <td>2016-09-26 00:00:00</td>
+  <td>2018-03-13 03:21:48</td>
+  <td>S-1B L2 OCN products provide reverse OSW wind direction respect to the specification</td>
+
+          </tr>
+          
+        
+        </tbody>
+      </table>
+
+      
+      <nav aria-label="Product navigation"></nav>
+        <ul class="pagination pagination-centered">
+        
+          <li class="page-item">
+            <a class="page-link" href="?page=19" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+        
+
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <li class="page-item">
+            <a class="page-link" href="?page=15">
+              15
+            </a>
+          </li>
+          
+        
+          
+          <li class="page-item">
+            <a class="page-link" href="?page=16">
+              16
+            </a>
+          </li>
+          
+        
+          
+          <li class="page-item">
+            <a class="page-link" href="?page=17">
+              17
+            </a>
+          </li>
+          
+        
+          
+          <li class="page-item">
+            <a class="page-link" href="?page=18">
+              18
+            </a>
+          </li>
+          
+        
+          
+          <li class="page-item">
+            <a class="page-link" href="?page=19">
+              19
+            </a>
+          </li>
+          
+        
+          
+          <li class="page-item active">
+            <a class="page-link">20</a>
+          </li>
+          
+        
+          
+          <li class="page-item">
+            <a class="page-link" href="?page=21">
+              21
+            </a>
+          </li>
+          
+        
+          
+          <li class="page-item">
+            <a class="page-link" href="?page=22">
+              22
+            </a>
+          </li>
+          
+        
+
+        
+          <li class="page-item">
+            <a class="page-link" href="?page=21" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        
+        </ul>
+      </nav>
+      
+    
+
+    
+  </div>
+
+  
+</div>
+
+
+      </div>
+    </div>
+  </div>
+  
+  <script src="/static/js/jquery.3.5.1.js" type="text/javascript"></script>
+  <script src="/static/js/bootstrap.4.6.1.bundle.min.js" type="text/javascript"></script>
+  
+<script>
+
+$(function(){
+
+function toggleNotes(rowEl, text) {
+  let notesEl = rowEl.find('div');
+  notesEl.html(text);
+  rowEl.toggle(200); // slideToggle doesn't work on 'tr' elements
+  notesEl.slideToggle(200);
+};
+$('.expandable-notes').each(function(){
+  toggleNotes($(this));
+});
+$('.notes-expander').click(function() {
+  let rowEl = $(this).closest('tr').nextAll('.expandable-notes').first();
+  toggleNotes(rowEl, $(this).attr('data-notes'));
+});
+
+});
+</script>
+
+  
+
+
+  <footer class="footer has-text-centered">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <p>
+            <a href="http://ec.europa.eu/index_en.htm">
+              <img src="/static/img/ec-logo.png" alt="european commission">
+            </a>
+            <a href="http://www.copernicus.eu/">
+              <img src="/static/img/copernicus-logo.png" alt="copernicus">
+            </a>
+            <a href="https://www.esa.int/">
+              <img src="/static/img/esa-logo.png" alt="esa">
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <p>The SAR Mission Performance Cluster (MPC) Service is financed by the European Union, through the Copernicus Programme implemented by ESA.</p>
+          <p>Views and opinion expressed are however those of the author(s) only and the European Commission and/or ESA cannot be held responsible for any use which may be made of the information contained therein.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

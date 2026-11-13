@@ -67,6 +67,29 @@ class WorkspaceTests(unittest.TestCase):
         self.assertEqual(len(w.plans(self.store)),1)
         with self.assertRaises(ValueError):w.save_plan(self.store,{**raw,'title':'conflicting retry'})
 
+    def test_manual_task_can_be_saved_retried_and_exported_without_a_satellite_pair(self):
+        raw={'request_id':uuid4().hex,'source':'manual','fragment':'R11','coordinates':None,
+             'actor':'TEST fixture','planned_date':'2026-11-13','objective':'TEST manual inspection'}
+        with patch.object(scout,'detail',side_effect=AssertionError('Unexpected satellite comparison')):
+            task=scout.save_task(self.store,raw)
+            self.assertEqual(task,scout.save_task(self.store,raw))
+            place=scout.reference_location('R11')
+            self.assertEqual(task['payload']['place'],place)
+            self.assertIsNone(task['payload']['evidence'])
+            longitude,latitude=scout.TO_GEO.transform(place['utm_x']+1,place['utm_y'])
+            custom=scout.save_task(self.store,{**raw,'request_id':uuid4().hex,
+                                              'coordinates':[longitude,latitude]})
+            self.assertEqual(custom['payload']['place']['id'],place['id'])
+            self.assertEqual(custom['payload']['place']['longitude'],longitude)
+            self.assertEqual(custom['payload']['place']['latitude'],latitude)
+            self.assertIsNone(custom['payload']['evidence'])
+            with self.assertRaises(ValueError):
+                scout.save_task(self.store,{**raw,'request_id':uuid4().hex,'coordinates':[0,0]})
+        plan=w.save_plan(self.store,{'request_id':uuid4().hex,'title':'TEST manual plan',
+                                    'task_ids':[custom['id']],'purpose':'inspection'})
+        self.assertEqual(w.plan_export(self.store,plan['id'])['tasks'],[custom])
+        self.assertEqual(scout.listing(self.store)['visits'],[])
+
     def test_invalid_unknown_duplicate_overfull_and_repeated_place_plans_do_not_write(self):
         t=self.task();repeat=self.task();other=[self.task(fid) for fid in ['R08','R09','R10']]
         raw={'request_id':uuid4().hex,'title':'TEST','task_ids':[t['id']],'purpose':'inspection'}
@@ -83,8 +106,10 @@ class WorkspaceTests(unittest.TestCase):
         def get(path):return json.load(urlopen(base+path))
         state=get('/api/scouting/state');self.assertEqual(state['tasks'],[]);self.assertEqual(state['plans'],[])
         self.assertEqual(server.scouting_store.records(),[])
-        for path in ['/','/scouting/about','/scouting/plans.js','/scouting/assets/leaflet.js']:
+        for path in ['/','/scouting/about','/scouting/plans.js','/scouting/visit-drafts.js','/scouting/assets/leaflet.js']:
             with urlopen(base+path) as r:self.assertEqual(r.status,200)
+        with urlopen(base+'/scouting/offline.js') as r:
+            self.assertEqual(r.headers['Service-Worker-Allowed'],'/')
         with self.assertRaises(HTTPError):urlopen(base+'/scouting/../../.env')
         c=get('/api/scouting/workspace?period=recent2026');self.assertEqual(c['available_areas'],27)
         raw={'request_id':uuid4().hex,'fragment':'R11','period':'recent2026','before':c['pair']['before']['id'],

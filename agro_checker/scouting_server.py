@@ -11,17 +11,18 @@ from . import farm_scouting as scout
 from . import farm_workspace as workspace
 from . import field_risk as risk
 from . import sensor_siting as siting
+from .scouting_field_context import DEFAULT_DIRECTORY, field_context, operation_image
 from .field_store import FieldStore, encoded
 from .pipeline import ROOT
 
 
-def make_server(directory, port=8771):
+def make_server(directory, port=8771, field_context_directory=DEFAULT_DIRECTORY):
     store=FieldStore(directory)  # No legacy profile, forecasts or observations are seeded.
     token=secrets.token_urlsafe(32)
     static={'/':('index.html','text/html; charset=utf-8'),
             '/scouting':('index.html','text/html; charset=utf-8'),
             '/scouting/about':('about.html','text/html; charset=utf-8')}
-    for f in ['app.js','map.js','plans.js','styles.css','workspace.css','theme.css','interior.css','experience.css','experience-interior.css','drafts.js','hightech.css','design.js','design-controls.css','pulse.css','pulse-screens.css','pulse.js','showcase.js','today.js']:
+    for f in ['app.js', 'map.js', 'plans.js', 'styles.css', 'workspace.css', 'theme.css', 'interior.css', 'experience.css', 'experience-interior.css', 'drafts.js', 'hightech.css', 'design.js', 'design-controls.css', 'pulse.css', 'pulse-screens.css', 'pulse.js', 'showcase.js', 'today.js', 'visit-drafts.js', 'offline.js', 'review-card.js', 'review-card.css', 'today.css']:
         static['/scouting/'+f]=(f,'text/javascript; charset=utf-8' if f.endswith('.js') else 'text/css; charset=utf-8')
     for f,mime in [('leaflet.js','text/javascript'),('leaflet.css','text/css'),('LEAFLET-LICENSE.txt','text/plain'),
                    ('public-context.json','application/json'),('basemap.jpg','image/jpeg'),('wide-basemap.jpg','image/jpeg'),
@@ -37,6 +38,8 @@ def make_server(directory, port=8771):
             for name,value in [('Content-Type',mime),('Content-Length',str(len(raw))),('Cache-Control','no-store'),
                                ('X-Content-Type-Options','nosniff'),('Cross-Origin-Resource-Policy','same-origin'),
                                ('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'")]:self.send_header(name,value)
+            if urlparse(self.path).path=='/scouting/offline.js':
+                self.send_header('Service-Worker-Allowed','/')
             self.end_headers();self.wfile.write(raw)
 
         def allowed(self,write=False):
@@ -64,10 +67,20 @@ def make_server(directory, port=8771):
                     query([]);return self.reply(200,{**scout.overview(),**scout.listing(store),'plans':workspace.plans(store),'token':token})
                 if path=='/api/scouting/export':
                     query([]);return self.reply(200,scout.listing(store))
+                if path=='/api/scouting/today':
+                    from .scouting_review import today
+                    query([]);return self.reply(200,today())
                 if path=='/api/scouting/workspace':
                     return self.reply(200,workspace.comparison(**query(['period']+(['before','after'] if 'before' in q or 'after' in q else []))))
                 if path=='/api/scouting/area':
                     return self.reply(200,workspace.area_detail(**query(['fid','period','before','after'])))
+                if path=='/api/scouting/field-context':
+                    return self.reply(200,field_context(field_context_directory,query(['fid'])['fid']))
+                if path=='/api/scouting/operation-image':
+                    return self.reply(200,operation_image(field_context_directory,**query(['fid','event','scene'])),'image/png')
+                if path=='/api/scouting/review':
+                    from .scouting_review import review
+                    return self.reply(200,review(**query(['fid','period','before','after','place_id'])))
                 if path=='/api/scouting/detail':
                     return self.reply(200,scout.detail(**query(['fid','period']+(['before','after'] if 'before' in q or 'after' in q else []))))
                 if path=='/api/scouting/map':
