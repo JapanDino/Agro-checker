@@ -141,10 +141,16 @@ const S={
 };
 function persist(){try{localStorage.setItem(KEY,JSON.stringify({marks:S.marks,trip:S.trip,done:S.done,overrides:S.overrides,autos:S.autos,collapsed:S.collapsed,minPerField:S.minPerField,tasks:S.tasks,tlCompact:S.tlCompact}));}catch(e){}}
 const fieldById=id=>FIELDS.find(f=>f.id===id);
-function applyOverrides(){Object.keys(S.overrides).forEach(id=>{const f=fieldById(id),o=S.overrides[id];if(!f)return;
+const originalFields=new Map(FIELDS.map(f=>[f.id,{phases:f.phases.slice(),treat:f.treat.slice()}]));
+const originalFoci=FOCI.slice();
+function applyOverrides(){
+  for(const f of FIELDS){const original=originalFields.get(f.id);f.phases=original.phases.slice();f.treat=original.treat.slice();}
+  FOCI.splice(0,FOCI.length,...originalFoci);
+  Object.keys(S.overrides).forEach(id=>{const f=fieldById(id),o=S.overrides[id];if(!f)return;
   (o.phases||[]).forEach(([p,i])=>{if(!f.phases.some(x=>x[0]===p&&x[1]===i))f.phases.push([p,i]);});f.phases.sort((a,b)=>a[1]-b[1]);
   (o.treat||[]).forEach(i=>{if(!f.treat.includes(i))f.treat.push(i);});f.treat.sort((a,b)=>a-b);
-  (o.foci||[]).forEach(x=>{if(!FOCI.some(y=>y.fid===id&&y.i===x.i))FOCI.push(Object.assign({fid:id,src:'учёт'},x));});});}
+  (o.foci||[]).forEach(x=>{if(!FOCI.some(y=>y.fid===id&&y.i===x.i))FOCI.push(Object.assign({fid:id,src:'учёт'},x));});});
+}
 applyOverrides();
 document.getElementById('farm-sub').textContent='27 полей · '+FIELDS.reduce((a,f)=>a+f.ha,0).toLocaleString('ru-RU')+' га';
 
@@ -305,6 +311,22 @@ const icon=n=>'<svg class="i" viewBox="0 0 24 24" aria-hidden="true">'+IC[n]+'</
 /* ═════════ Shell ═════════ */
 const VIEWS=[{id:'today',label:'Сегодня'},{id:'map',label:'Карта'},{id:'season',label:'Сезон'},{id:'trips',label:'Выезд'},{id:'journal',label:'Журнал'},{id:'data',label:'Данные'}];
 const $main=document.getElementById('main');
+const fieldJournal=document.getElementById('field-journal');
+const fieldJournalFrame=document.getElementById('field-journal-frame');
+function openFieldJournal(fid){
+  if(location.protocol==='file:')return;
+  const url='/scouting/inspections'+(fid?'?field='+encodeURIComponent(fid):'');
+  fieldJournal.showModal();
+  if(fieldJournalFrame.getAttribute('src')!==url)fieldJournalFrame.src=url;
+  else fieldJournalFrame.contentWindow?.dispatchEvent(new Event('focus'));
+}
+if(location.protocol!=='file:'){
+  fieldJournalFrame.src='/scouting/inspections';
+}
+function fieldJournalLink(fid){
+  if(location.protocol==='file:')return '';
+  return '<button type="button" class="btn btn-primary" data-act="field-journal"'+(fid?' data-field="'+esc(fid)+'"':'')+'>Задачи и осмотры хозяйства</button>';
+}
 function renderRail(){
   const c=counts(S.D);
   document.getElementById('rail').innerHTML=VIEWS.map(v=>{let b='';
@@ -440,7 +462,7 @@ function viewToday(){
   if(up.length)dig+='<span class="lbl" data-style="margin-left:8px">Скоро</span>'+up.slice(0,3).map(x=>'<button type="button" '+(x.id?'data-act="select" data-field="'+x.id+'"':'data-act="noop"')+'><b>'+fmtS(x.i)+'</b> '+esc(x.t)+'</button>').join('');
   return '<section class="view fit" aria-labelledby="h-today">'+timelineCard()+
     '<div class="head"><h1 id="h-today">Очередь осмотра</h1><div class="filters" role="group" aria-label="Фильтр по статусу">'+chip('all','Все')+chip('risk','Риск')+chip('check','Проверить')+chip('normal','Норма')+chip('none','Нет правил')+'</div>'+
-      '<div class="acts"><button type="button" class="btn btn-sm btn-secondary" data-act="brief">'+icon('brief')+'Сводка</button><button type="button" class="btn btn-sm btn-soft" data-act="trip-auto">'+icon('bolt')+'Собрать выезд</button></div>'+
+      '<div class="acts">'+fieldJournalLink()+'<button type="button" class="btn btn-sm btn-secondary" data-act="brief">'+icon('brief')+'Сводка</button><button type="button" class="btn btn-sm btn-soft" data-act="trip-auto">'+icon('bolt')+'Собрать выезд</button></div>'+
       '<div class="digest">'+dig+'</div></div>'+
     '<div class="panes"><div class="pane queue" id="qpane" aria-label="Поля по очереди">'+queueHTML()+'</div><div class="pane" id="fpane">'+fieldHTML(S.sel)+'</div></div>'+
   '</section>';
@@ -483,7 +505,7 @@ function fieldHTML(id,compact){
       '<div class="f-meta"><span class="chip '+e.status+'">'+LABEL[e.status]+'</span><b>'+cap(f.crop)+' · '+(ph||'фаза не указана')+'</b></div>'+
       '<div class="f-when '+e.status+'"><span>'+w.lbl+'</span><strong>'+w.main+'</strong>'+(w.sub?'<small>'+w.sub+'</small>':'')+'</div>'+
       '<div class="f-sub">'+f.ha+' га · '+(f.sensor?'узел на поле + ERA5':'погода ERA5, ячейка 0,25°')+'</div></div>'+
-      '<div class="f-acts">'+(e.status!=='none'?'<button type="button" class="btn btn-primary" data-act="inspect">'+icon('check')+'Отметить осмотр<kbd>I</kbd></button>':'')+
+      '<div class="f-acts">'+fieldJournalLink(f.id)+(e.status!=='none'?'<button type="button" class="btn btn-secondary" data-act="inspect">'+icon('check')+'Демо-осмотр<kbd>I</kbd></button>':'')+
         (e.status!=='none'?(()=>{const pl=plannedFor(id)[0];return pl?'<button type="button" class="btn btn-soft" data-act="goto-tasks">'+icon('spray')+'Обработка '+fmtS(pl.plan)+'</button>':'<button type="button" class="btn btn-secondary" data-act="plan" data-field="'+id+'">'+icon('spray')+'Обработка</button>';})():'')+
         '<button type="button" class="btn '+(inTrip?'btn-soft':'btn-secondary')+'" data-act="toggle-trip" data-field="'+id+'">'+icon(inTrip?'check':'plus')+(inTrip?'В выезде':'В выезд')+'</button>'+
         (compact?'<button type="button" class="btn btn-ghost" data-act="open-today" data-field="'+id+'">В очереди →</button>':'<button type="button" class="btn btn-ghost" data-act="open-map" data-field="'+id+'">'+icon('pin')+'На карте</button>')+'</div>'+
@@ -669,7 +691,7 @@ function viewTrips(){
     '<div class="acts"><button type="button" class="icon-btn" data-move="'+id+'" data-dir="-1" aria-label="Поднять '+id+'"'+(i===0?' disabled':'')+'>'+icon('up')+'</button><button type="button" class="icon-btn" data-move="'+id+'" data-dir="1" aria-label="Опустить '+id+'"'+(i===ids.length-1?' disabled':'')+'>'+icon('down')+'</button>'+
     '<button type="button" class="btn btn-sm '+(done?'btn-soft':'btn-secondary')+'" data-act="inspect" data-field="'+id+'">'+(done?'Осмотрено':'Осмотр')+'</button><button type="button" class="icon-btn" data-remove="'+id+'" aria-label="Убрать '+id+' из выезда">'+icon('x')+'</button></div></li>';}).join('')+'</ol>':'<div class="empty">В выезде пока нет полей. Нажмите «Собрать автоматически».</div>';
   return '<section class="view" aria-labelledby="h-t"><div class="head"><div><div class="eyebrow">План на '+fmt(S.D)+'</div><h1 id="h-t">Выезд</h1><p class="lede">Сначала «Риск» по сроку, затем ближайшие. «Проверить» добавляется, если крюк не больше 3 км. В Яндекс Картах маршрут начнётся от вашего местоположения.</p></div>'+
-    '<div class="acts"><button type="button" class="btn btn-secondary" data-act="trip-auto">'+icon('bolt')+'Собрать автоматически</button><button type="button" class="btn btn-secondary" data-act="copy-route"'+(ids.length?'':' disabled')+'>'+icon('copy')+'Маршрутный лист</button>'+(ids.length?'<a class="btn btn-primary" href="'+yandexLink(ids)+'" target="_blank" rel="noopener">'+icon('ext')+'Открыть в Яндекс Картах</a>':'')+'</div></div>'+
+    '<div class="acts">'+fieldJournalLink()+'<button type="button" class="btn btn-secondary" data-act="trip-auto">'+icon('bolt')+'Собрать автоматически</button><button type="button" class="btn btn-secondary" data-act="copy-route"'+(ids.length?'':' disabled')+'>'+icon('copy')+'Маршрутный лист</button>'+(ids.length?'<a class="btn btn-primary" href="'+yandexLink(ids)+'" target="_blank" rel="noopener">'+icon('ext')+'Открыть в Яндекс Картах</a>':'')+'</div></div>'+
     '<div class="two"><div data-style="display:grid;gap:16px;min-width:0"><div class="card block">'+
       '<div class="stats"><div class="stat"><span>Полей</span><strong>'+ids.length+'</strong><small>'+ids.reduce((a,id)=>a+fieldById(id).ha,0)+' га</small></div><div class="stat"><span>Путь, примерно</span><strong>'+num(r.km,1)+' км</strong><small>между полями, ×1,3 на дороги</small></div><div class="stat"><span>Время</span><strong>'+(ids.length?(h?h+' ч ':'')+m+' мин':'—')+'</strong><small>30 км/ч + осмотр</small></div></div>'+
       '<label class="fld" for="mpf">Минут на осмотр поля — обход конвертом, 5–10 точек<span class="range-row"><input id="mpf" type="range" min="20" max="90" step="5" value="'+S.minPerField+'"><span id="mpf-v">'+S.minPerField+' мин</span></span></label>'+stops+'</div>'+
@@ -696,7 +718,7 @@ function viewJournal(){
   const flt=m=>S.jf==='all'||(S.jf==='alarm'?alarming(m):m.result===S.jf);
   const list=S.marks.slice().sort((a,b)=>b.i-a.i).filter(flt),foc=S.marks.filter(m=>m.result==='focus').length,al=S.marks.filter(alarming).length;
   const sig=FIELDS.filter(f=>['risk','check'].includes(st(f.id))),marked=sig.filter(f=>S.marks.some(m=>m.fid===f.id&&S.D-m.i<=14&&m.i<=S.D));
-  return '<section class="view" aria-labelledby="h-j"><div class="head"><div><div class="eyebrow">История</div><h1 id="h-j">Журнал осмотров</h1><p class="lede">Тревожные — очаг с решением «обработать», развитие болезни от 10 % или плохое состояние посева. Осмотры пока не дообучают модель.</p></div>'+
+  return '<section class="view" aria-labelledby="h-j"><div class="head"><div><div class="eyebrow">История примера</div><h1 id="h-j">Журнал осмотров</h1><p class="lede">Тревожные — очаг с решением «обработать», развитие болезни от 10 % или плохое состояние посева. Осмотры пока не дообучают модель.</p></div>'+fieldJournalLink()+
     '<div class="acts"><div class="seg" role="group" aria-label="Фильтр журнала"><button type="button" data-jf="all" aria-pressed="'+(S.jf==='all')+'">Все · '+S.marks.length+'</button><button type="button" data-jf="alarm" aria-pressed="'+(S.jf==='alarm')+'">Тревожные · '+al+'</button><button type="button" data-jf="focus" aria-pressed="'+(S.jf==='focus')+'">Очаги · '+foc+'</button><button type="button" data-jf="clean" aria-pressed="'+(S.jf==='clean')+'">Чисто · '+(S.marks.length-foc)+'</button></div></div></div>'+
     '<div class="stats" data-style="max-width:820px"><div class="stat"><span>Сигналов на '+fmtS(S.D)+'</span><strong>'+sig.length+'</strong><small>риск и проверить</small></div><div class="stat"><span>С отметкой за 14 дней</span><strong>'+marked.length+'</strong><small>'+(sig.length?Math.round(marked.length/sig.length*100):0)+' % — метрика пилота</small></div><div class="stat"><span>Без отметки</span><strong>'+(sig.length-marked.length)+'</strong><small>'+(sig.filter(f=>!marked.includes(f)).map(f=>f.id).join(', ')||'—')+'</small></div></div>'+
     '<div class="card">'+(list.length?'<div class="table-wrap"><table class="t"><thead><tr><th>Дата</th><th>Поле</th><th>Итог</th><th>Фаза · состояние</th><th>Ярус · распр. · развитие</th><th>Решение</th><th>Комментарий</th><th>Статус на '+fmtS(S.D)+'</th></tr></thead><tbody>'+
@@ -719,8 +741,10 @@ function validate(text){
     if(!fieldById(fid))return res.errors.push({row,msg:'Обводки '+esc(fid)+' нет в хозяйстве (есть R01–R27).'});
     const dc=kind==='поле'?'дата_фазы':'дата';
     if(!okDate(v[c(dc)]))return res.errors.push({row,msg:'Дата «'+esc(v[c(dc)])+'» в колонке '+dc+' не существует. Формат ГГГГ-ММ-ДД.'});
-    const crop=v[c('культура')],ph=v[c('фаза')];
-    if(kind==='поле'&&RULES.crops.includes(crop)&&!RULES.phases.includes(ph))return res.errors.push({row,msg:'Фаза «'+esc(ph)+'» не из списка: '+RULES.phases.join(', ')+'.'});
+    if(ixISO(v[c(dc)])>TODAY)return res.errors.push({row,msg:'Дата позже '+fmtS(TODAY)+' 2024. Для текущего сезона загрузите данные через «Очередь полей по риску и данные учёта» в /scouting.'});
+    const ph=v[c('фаза')];
+    if(kind==='поле'&&!RULES.phases.includes(ph))return res.errors.push({row,msg:'Фаза «'+esc(ph)+'» не из списка: '+RULES.phases.join(', ')+'.'});
+    if(kind==='обработка'&&!/фунгицид/i.test(v[c('вид')]))return res.errors.push({row,msg:'В расчёт примера входят только обработки фунгицидом.'});
     if(kind==='очаг'&&!v[c('болезнь')])return res.errors.push({row,msg:'Для очага укажите болезнь.'});
     res.ok++;res.kinds[kind]=(res.kinds[kind]||0)+1;res.rows.push({kind,fid,phase:ph,date:v[c(dc)],what:v[c('вид')],disease:v[c('болезнь')]});});
   return res;
@@ -789,7 +813,7 @@ function inspectHTML(id){
      d.result==='clean'?seg('ctier',['флаговый','флаговый и F-1','до F-2'],'Осмотрены ярусы'):'')+
     '<label class="fld" for="mdate">Дата осмотра<input id="mdate" type="date" min="'+iso(MIN_D)+'" max="'+iso(TODAY)+'" value="'+iso(d.date)+'" data-d="date"></label>'+
     '<label class="fld" for="cm">Комментарий<textarea id="cm" data-d="text" placeholder="Где нашли, точки обхода, что с соседними участками">'+esc(d.text)+'</textarea></label>'+
-    '<div class="fld">Фото<label class="btn btn-secondary btn-sm" for="ph" data-style="justify-self:start;cursor:pointer">'+icon('upload')+'Добавить фото</label><input id="ph" class="sr" type="file" accept="image/*" multiple data-d="photos"><span class="hint" id="ph-n">'+(d.photos?d.photos+' фото прикреплено':'В рабочей версии фото получат координаты и время съёмки.')+'</span></div>'+
+    '<div class="fld">Фото и фактические наблюдения'+fieldJournalLink(id)+'</div>'+
     (e.from&&S.D<e.from?'<div class="warn">'+icon('info')+'<span>Симптомы после влажной ночи ожидаются не раньше '+fmt(e.from)+'. «Чисто» до этой даты ещё не значит, что заражения нет.</span></div>':'')+
   '</div>'+
   '<div class="dr-foot">'+(d.result?'<button type="button" class="btn btn-primary" data-act="save-mark" data-field="'+id+'">'+(d.decision==='обработать'&&d.result==='focus'?'Сохранить и запланировать':'Сохранить и к следующему')+'</button>':'<span class="hint" data-style="flex:1">Выберите итог осмотра, чтобы сохранить.</span>')+'<button type="button" class="btn btn-ghost" data-act="close">Отмена</button></div>';
@@ -809,7 +833,7 @@ function planHTML(id){
     '<p class="hint">После внесения отметьте задачу выполненной в разделе «Выезд» — защита на 14 дней появится в расчёте сама.</p></div>'+
   '<div class="dr-foot"><button type="button" class="btn btn-primary" data-act="save-plan" data-field="'+id+'">'+icon('spray')+'Запланировать</button><button type="button" class="btn btn-ghost" data-act="close">Отмена</button></div>';
 }
-function newDraft(id){const f=fieldById(id),w=sprayWindows()[0];return {result:null,obj:(OBJECTS[f.crop]||OBJECTS['озимая пшеница'])[0],tier:'флаговый',ctier:'флаговый и F-1',inc:10,sev:5,decision:'наблюдать',product:PRODUCTS[0],rate:'0,5 л/га',plan:w?w.i:TODAY+1,phaseObs:phaseAt(f,Math.min(S.D,TODAY))||'кущение',cond:'хорошее',text:'',photos:0,date:Math.min(S.D,TODAY)};}
+function newDraft(id){const f=fieldById(id),w=sprayWindows()[0];return {result:null,obj:(OBJECTS[f.crop]||OBJECTS['озимая пшеница'])[0],tier:'флаговый',ctier:'флаговый и F-1',inc:10,sev:5,decision:'наблюдать',product:PRODUCTS[0],rate:'0,5 л/га',plan:w?w.i:TODAY+1,phaseObs:phaseAt(f,Math.min(S.D,TODAY))||'кущение',cond:'хорошее',text:'',date:Math.min(S.D,TODAY)};}
 function openPlan(id){if(!fieldById(id)||st(id)==='none')return;S.sel=id;if(S.view==='today'||S.view==='map')render({resetField:true});if(!S.draft[id])S.draft[id]=newDraft(id);openDrawer(planHTML(id),'plan:'+id);}
 function addTask(id,d,src){const t={id:Date.now()+Math.floor(Math.random()*1000),fid:id,product:d.product,rate:d.rate,plan:d.plan,status:'plan',src};S.tasks.push(t);return t;}
 function openInspect(id,preset){
@@ -909,7 +933,11 @@ function saveMark(id){
   const f=fieldById(id),before=st(id,TODAY);
   const m={fid:id,i:d.date,result:d.result,tier:d.result==='focus'?d.tier:d.ctier,text:(d.text||'').trim(),phaseObs:d.phaseObs,cond:d.cond};
   if(d.result==='focus'){m.disease=d.obj;m.inc=+d.inc;m.sev=+d.sev;m.decision=d.decision;}
-  if(d.phaseObs&&d.phaseObs!==phaseAt(f,d.date)){const o=S.overrides[id]=S.overrides[id]||{};o.phases=o.phases||[];o.phases.push([d.phaseObs,d.date]);applyOverrides();}
+  let phaseChange;
+  if(d.phaseObs&&d.phaseObs!==phaseAt(f,d.date)){
+    const o=S.overrides[id]=S.overrides[id]||{};
+    o.phases=o.phases||[];phaseChange=[d.phaseObs,d.date];o.phases.push(phaseChange);applyOverrides();
+  }
   let task=null;if(d.result==='focus'&&d.decision==='обработать')task=addTask(id,d,'осмотр '+fmtS(d.date));
   S.marks.push(m);const wasDone=S.done.includes(id);if(S.trip.includes(id)&&!wasDone)S.done.push(id);
   delete S.draft[id];bump();persist();closeDrawer();
@@ -917,14 +945,40 @@ function saveMark(id){
   const next=S.view==='today'?sortedIds(S.D).find(x=>x!==id&&['risk','check'].includes(st(x))&&!S.marks.some(k=>k.fid===x&&S.D-k.i<=7&&k.i<=S.D)):null;
   if(next)S.sel=next;
   render({flip:true,resetField:true,reveal:true});
-  toast('Отметка '+id+' сохранена'+(task?' · обработка '+fmtS(task.plan):'')+(after!==before?' · статус: '+LABEL[after]:'')+(next?' · дальше '+next:'')+'.',()=>{S.marks.splice(S.marks.indexOf(m),1);if(task)S.tasks=S.tasks.filter(t=>t!==task);if(!wasDone)S.done=S.done.filter(x=>x!==id);S.sel=id;bump();persist();render();});
+  toast('Отметка '+id+' сохранена'+(task?' · обработка '+fmtS(task.plan):'')+(after!==before?' · статус: '+LABEL[after]:'')+(next?' · дальше '+next:'')+'.',()=>{
+    S.marks=S.marks.filter(mark=>mark!==m);
+    if(task)S.tasks=S.tasks.filter(t=>t!==task);
+    if(phaseChange){
+      const o=S.overrides[id];o.phases=o.phases.filter(change=>change!==phaseChange);
+      if(!o.phases.length)delete o.phases;
+      if(!Object.keys(o).length)delete S.overrides[id];
+      applyOverrides();
+    }
+    if(!wasDone)S.done=S.done.filter(x=>x!==id);
+    S.sel=id;bump();persist();render();
+  });
 }
 function savePlan(id){const d=S.draft[id];if(!d)return;const t=addTask(id,d,'план');persist();closeDrawer();bump();render();toast('Обработка '+id+' запланирована на '+fmt(t.plan)+'.',()=>{S.tasks=S.tasks.filter(x=>x!==t);persist();bump();render();});}
-function taskDone(tid){const t=S.tasks.find(x=>x.id===tid);if(!t)return;const day=Math.min(t.plan,TODAY);t.status='done';t.done=day;const o=S.overrides[t.fid]=S.overrides[t.fid]||{};o.treat=o.treat||[];o.treat.push(day);applyOverrides();bump();persist();render();
+function confirmTreatment(tid){
+  const task=S.tasks.find(t=>t.id===tid&&t.status==='plan');if(!task)return;
+  const planned=iso(task.plan);
+  openDrawer('<div class="dr-head"><h2 id="dr-title">Фактическое внесение · '+task.fid+'</h2></div>'+
+    '<div class="dr-body"><p>Плановая дата '+fmt(task.plan)+'. Укажите день, когда обработку выполнили.</p>'+
+    '<label class="fld" for="actual-treatment-date">Дата внесения<input id="actual-treatment-date" type="date" required min="'+iso(0)+'" max="'+iso(TODAY+14)+'"></label>'+
+    '<p class="hint">Демонстрационный сезон 2024. Расчёт учитывает внесение начиная с указанной даты. Архив погоды доступен по '+fmt(TODAY)+'.</p></div>'+
+    '<div class="dr-foot"><button type="button" class="btn btn-primary" data-act="confirm-task-done" data-field="'+tid+'">Подтвердить внесение</button>'+
+    '<button type="button" class="btn btn-ghost" data-act="close">Отмена</button></div>','treatment');
+}
+function taskDone(tid){
+  const input=document.getElementById('actual-treatment-date');
+  const t=S.tasks.find(x=>x.id===tid&&x.status==='plan');if(!t||!input?.reportValidity())return;
+  const day=ixISO(input.value);if(!Number.isInteger(day)||day<0||day>TODAY+14)return;
+  t.status='done';t.done=day;const o=S.overrides[t.fid]=S.overrides[t.fid]||{};o.treat=o.treat||[];o.treat.push(day);
+  applyOverrides();bump();persist();closeDrawer();render();
   const p=protections(fieldById(t.fid),TODAY).find(x=>x.t===day);toast('Внесение на '+t.fid+' отмечено '+fmt(day)+(p?' · защита до '+fmt(p.until):'')+'.');}
 function commitImport(){
   const rows=S.imported.res.rows,before={};FIELDS.forEach(f=>before[f.id]=st(f.id,TODAY));
-  rows.forEach(r=>{const i=ixISO(r.date);if(i>TODAY)return;const o=S.overrides[r.fid]=S.overrides[r.fid]||{};
+  rows.forEach(r=>{const i=ixISO(r.date);const o=S.overrides[r.fid]=S.overrides[r.fid]||{};
     if(r.kind==='поле'&&RULES.phases.includes(r.phase)){o.phases=o.phases||[];o.phases.push([r.phase,i]);}
     if(r.kind==='обработка'&&/фунгицид/i.test(r.what)){o.treat=o.treat||[];o.treat.push(i);}
     if(r.kind==='очаг'){o.foci=o.foci||[];o.foci.push({i,disease:r.disease});}});
@@ -960,6 +1014,7 @@ document.addEventListener('click',e=>{
     case 'today':stopPlay();setDate(TODAY);break;
     case 'play':togglePlay();break;
     case 'inspect':openInspect(ds.field||S.sel);break;
+    case 'field-journal':openFieldJournal(ds.field);break;
     case 'toggle-trip':toggleTrip(ds.field);break;
     case 'open-map':S.sel=ds.field;go('map');break;
     case 'open-today':S.filter='all';go('today');selectField(ds.field,true);break;
@@ -973,7 +1028,8 @@ document.addEventListener('click',e=>{
     case 'save-mark':saveMark(ds.field);break;
     case 'plan':openPlan(ds.field);break;
     case 'save-plan':savePlan(ds.field);break;
-    case 'task-done':taskDone(+ds.field);break;
+    case 'task-done':confirmTreatment(+ds.field);break;
+    case 'confirm-task-done':taskDone(+ds.field);break;
     case 'task-cancel':{const t=S.tasks.find(x=>x.id===+ds.field);S.tasks=S.tasks.filter(x=>x!==t);persist();bump();render();toast('Обработка '+t.fid+' отменена.',()=>{S.tasks.push(t);persist();bump();render();});break;}
     case 'goto-tasks':go('trips');setTimeout(()=>{const c=document.getElementById('tasks');if(c)c.scrollIntoView({block:'start',behavior:'smooth'});},30);break;
     case 'tl-toggle':S.tlCompact=!S.tlCompact;persist();render();break;
@@ -991,7 +1047,6 @@ document.addEventListener('input',e=>{
   if(k==='sev'||k==='inc'){d[k]=+el.value;const v=document.getElementById(k+'-v');if(v)v.textContent=el.value+' %';}
   else if(k==='plan'){const i=ixISO(el.value);if(!isNaN(i))d.plan=Math.max(TODAY,Math.min(TODAY+14,i));}
   else if(k==='date'){const i=ixISO(el.value);if(!isNaN(i))d.date=Math.max(MIN_D,Math.min(TODAY,i));}
-  else if(k==='photos'){d.photos=el.files.length;const h=document.getElementById('ph-n');if(h)h.textContent=d.photos+' фото прикреплено';}
   else d[k]=el.value;
 });
 document.addEventListener('change',e=>{const el=e.target;if(el.id==='mpf'){render();return;}if(el.dataset&&el.dataset.tdate){const t=S.tasks.find(x=>x.id===+el.dataset.tdate),i=ixISO(el.value);if(t&&!isNaN(i)){t.plan=Math.max(TODAY,Math.min(TODAY+14,i));persist();bump();render();toast('Обработка '+t.fid+' перенесена на '+fmt(t.plan)+'.');}return;}const id=drawerField();if(!id||!el.dataset)return;const k=el.dataset.d;if(k==='obj'||k==='product'){S.draft[id][k]=el.value;}else if(k==='phaseObs'||k==='date'){if(k==='phaseObs')S.draft[id].phaseObs=el.value;refreshDrawer('#'+el.id);}});

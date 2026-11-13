@@ -1,8 +1,9 @@
 'use strict';
 
 const prefix = 'agropulse-scouting-';
-const cacheName = prefix + '2';
+const cacheName = prefix + '3';
 const shell = '/scouting';
+const pages = [shell, '/scouting/inspections', '/workstation/'];
 const assets = [
   'app.js', 'map.js', 'plans.js', 'drafts.js', 'visit-drafts.js', 'review-card.js', 'design.js',
   'pulse.js', 'showcase.js', 'today.js', 'pulse.css', 'pulse-screens.css',
@@ -11,10 +12,12 @@ const assets = [
   'experience-interior.css', 'hightech.css', 'design-controls.css', 'review-card.css', 'today.css',
   'assets/leaflet.js', 'assets/leaflet.css', 'assets/public-context.json', 'assets/basemap.jpg',
   'assets/wide-basemap.jpg', 'assets/terrain.png', 'assets/clay.png', 'assets/ph.png'
-].map(path => shell + '/' + path);
+].map(path => shell + '/' + path).concat([
+  '/workstation/workstation.js', '/workstation/workstation.css', '/workstation/farm-basemap.jpg'
+]);
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(cacheName).then(cache => cache.addAll([shell, ...assets])));
+  event.waitUntil(caches.open(cacheName).then(cache => cache.addAll([...pages, ...assets])));
 });
 
 self.addEventListener('activate', event => {
@@ -30,13 +33,13 @@ self.addEventListener('fetch', event => {
   const {request} = event;
   const url = new URL(request.url);
   if (request.method !== 'GET' || url.origin !== self.location.origin) return;
-  const page = request.mode === 'navigate' && (url.pathname === '/' || url.pathname === shell);
+  const page = request.mode === 'navigate' && (url.pathname === '/' || pages.includes(url.pathname));
   if (!page && !assets.includes(url.pathname)) return;
 
   // Only public shell assets are cached here. Journal requests go straight to the server.
   event.respondWith((async () => {
     const cache = await caches.open(cacheName);
-    const key = page ? shell : url.pathname;
+    const key = url.pathname === '/' ? shell : url.pathname;
     try {
       const response = await fetch(request);
       if (response.ok) await cache.put(key, response.clone()).catch(() => {});
