@@ -15,6 +15,11 @@
   const svgEl = (tag,attrs,parent,text) => {const n=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);if(text!==undefined)n.textContent=text;if(parent)parent.appendChild(n);return n;};
   const message = (text,error=false) => {$('message').textContent=text;$('message').classList.toggle('error',error);$('message').setAttribute('role',error?'alert':'status');$('message').hidden=!text;};
   const routes=['','map','changes','task','history','plan','today'];
+  const inspectionsOnly=location.pathname==='/scouting/inspections';
+  const requestedArea=new URLSearchParams(location.search).get('field');
+  const fieldFilter=inspectionsOnly&&/^R\d{2}$/.test(requestedArea||'')?requestedArea:null;
+  if(inspectionsOnly)document.body.classList.add('scouting-inspections');
+  $('back-to-inspections').addEventListener('click',()=>go(6));
   function writeRoute(replace=false){
     if(!S.data)return;
     const query=new URLSearchParams({area:S.fid,period:$('period').value,metric:S.metric});
@@ -62,7 +67,7 @@
       }
     }
     const local=new Map(drafts.filter(draft=>!savedRequests.has(draft.request)).map(draft=>[draft.taskId,draft]));
-    const day=localDay(new Date()),tasks=[...S.data.tasks].sort((a,b)=>
+    const day=localDay(new Date()),tasks=S.data.tasks.filter(task=>!fieldFilter||task.payload.place.fragment===fieldFilter).sort((a,b)=>
       (a.payload.planned_date||day).localeCompare(b.payload.planned_date||day)||a.recorded_at_utc.localeCompare(b.recorded_at_utc));
     let needsVisit=0,awaitingUpload=0,done=0;
     const pending=[],localCards=[];
@@ -72,8 +77,8 @@
       const needsCheck=!visit||visit.outcome==='not_checked';
       const finished=!draft&&!needsCheck;
       const activity=visit&&localDay(new Date(visit.observed_at_utc));
-      if(finished&&planned!==day&&activity!==day)continue;
-      if(!draft&&needsCheck&&planned>day&&visit?.outcome!=='not_checked')continue;
+      if(!inspectionsOnly&&finished&&planned!==day&&activity!==day)continue;
+      if(!inspectionsOnly&&!draft&&needsCheck&&planned>day&&visit?.outcome!=='not_checked')continue;
       if(draft)awaitingUpload++;
       else if(needsCheck)needsVisit++;
       else done++;
@@ -95,8 +100,9 @@
     }
     openList.append(...pending,...localCards);
     $('today-completed').hidden=!done;
-    $('today-completed-label').textContent=`Сохранённые осмотры сегодня · ${done}`;
-    const summary=needsVisit||awaitingUpload?`Требуют осмотра: ${needsVisit} · Черновики и очередь: ${awaitingUpload}`:'На сегодня и раньше нет осмотров без результата.';
+    $('today-completed-label').textContent=`${inspectionsOnly?'Сохранённые осмотры':'Сохранённые осмотры сегодня'} · ${done}`;
+    const summary=needsVisit||awaitingUpload?`Требуют осмотра: ${needsVisit} · Черновики и очередь: ${awaitingUpload}`:
+      inspectionsOnly?'Нет открытых назначений.':'На сегодня и раньше нет осмотров без результата.';
     $('today-inspections-status').textContent=summary+
       (offlineCached&&!S.data.visitStatuses?' Сведения о журнале появятся после подключения.':'');
   }
@@ -157,7 +163,7 @@
     manualPicker.showArea(fid);
     setManualPoint(place);
   }
-  $('open-manual-task').addEventListener('click',()=>openManualTask());
+  $('open-manual-task').addEventListener('click',()=>openManualTask(fieldFilter||S.fid));
   $('open-area-manual-task').addEventListener('click',()=>openManualTask());
   $('manual-task-area').addEventListener('change',()=>{
     manualPicker.showArea($('manual-task-area').value);
@@ -208,6 +214,7 @@
     saveDraft();
     if(step===3){prepareTask();taskReadiness();$('draft-status').textContent='Черновик в этой вкладке. Задача ещё не создана.';}
     S.step=step;
+    $('back-to-inspections').hidden=!inspectionsOnly||step===6;
     document.body.dataset.stage=String(step);
     for(const n of document.querySelectorAll('[data-panel]'))n.hidden=Number(n.dataset.panel)!==step;
     for(const n of document.querySelectorAll('[data-step]')){if(Number(n.dataset.step)===step)n.setAttribute('aria-current','step');else n.removeAttribute('aria-current');}
@@ -223,7 +230,10 @@
       else if(S.comparison&&!S.detail&&!S.commonBusy)loadDetail();
     }
     if(step===4)renderHistory();if(step===5)S.planner?.render();
-    if(step===6){loadToday();if(navigator.onLine)S.today.render();}
+    if(step===6){
+      if(inspectionsOnly)$('today-display-date').textContent=fieldFilter?'Площадь '+fieldFilter:'Задачи и журнал хозяйства';
+      else{loadToday();if(navigator.onLine)S.today.render();}
+    }
     renderFieldDrafts();
     $('page-title').textContent=['','Карта хозяйства','Сравнение снимков','Задача на осмотр','История места','План обследования','Сегодня'][step];
     document.title=`${S.fid} · ${$('page-title').textContent} · AgroPulse`;
@@ -943,11 +953,11 @@
     syncing=true;
     try{
       const queue=(await visitStorage.list()).filter(draft=>draft.queued);
-      if(!queue.length&&!offlineCached)return;
+      if(!queue.length&&!offlineCached&&!inspectionsOnly)return;
       if(queue.length){syncNote='Отправляем осмотры в журнал…';renderFieldDrafts();}
       const state=await api('/api/scouting/state');
       S.data=state;offlineCached=false;
-      if(!queue.length){syncNote='Связь с журналом восстановлена.';return;}
+      if(!queue.length){syncNote='';return;}
       let needsCorrection=false;
       for(const draft of queue){
         const alreadySaved=state.visits.find(visit=>visit.payload.request_id===draft.request&&visit.payload.task_id===draft.taskId);

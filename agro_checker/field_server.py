@@ -25,7 +25,8 @@ def make_server(directory, port=8770):
             self.send_response(code); self.send_header("Content-Type", mime); self.send_header("Content-Length", str(len(data)))
             self.send_header("Cache-Control", "no-store"); self.send_header("X-Content-Type-Options", "nosniff")
             self.send_header("Cross-Origin-Resource-Policy", "same-origin")
-            self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'")
+            ancestors = "'self'" if urlparse(self.path).path == '/scouting/inspections' else "'none'"
+            self.send_header("Content-Security-Policy", f"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors {ancestors}")
             if urlparse(self.path).path == '/scouting/offline.js':
                 self.send_header('Service-Worker-Allowed', '/')
             self.end_headers(); self.wfile.write(data)
@@ -42,6 +43,18 @@ def make_server(directory, port=8770):
             if not self.allowed(): return
             path = urlparse(self.path).path
             try:
+                if path == '/workstation' and not urlparse(self.path).query:
+                    self.send_response(308)
+                    self.send_header('Location','/workstation/')
+                    self.send_header('Content-Length','0')
+                    self.end_headers()
+                    return
+                if path.startswith('/workstation/'):
+                    from .scouting_server import WORKSTATION_FILES
+                    if path in WORKSTATION_FILES:
+                        if urlparse(self.path).query:raise ValueError('Неизвестные параметры страницы')
+                        file, mime = WORKSTATION_FILES[path]
+                        return self.reply(200, (ROOT/'web/workstation'/file).read_bytes(), mime)
                 if path.startswith('/api/scouting/'):
                     try:from . import farm_scouting as scout
                     except ImportError:return self.reply(503,{'error':'Модуль архивных карт недоступен. Проверьте зависимости requirements-scouting.txt; данные не подменены.'})
@@ -192,6 +205,7 @@ def make_server(directory, port=8770):
                 files = {"/scouting/about": (ROOT/"web/scouting/about.html", "text/html; charset=utf-8"),
                          "/farm-reconstruction": (ROOT/"web/farm-reconstruction/index.html", "text/html; charset=utf-8"),
                          "/scouting": (ROOT/"web/scouting/index.html", "text/html; charset=utf-8"),
+                         "/scouting/inspections": (ROOT/"web/scouting/index.html", "text/html; charset=utf-8"),
                          "/scouting/app.js": (ROOT/"web/scouting/app.js", "text/javascript; charset=utf-8"),
                          "/scouting/plans.js": (ROOT/"web/scouting/plans.js", "text/javascript; charset=utf-8"),
                          "/scouting/styles.css": (ROOT/"web/scouting/styles.css", "text/css; charset=utf-8"),

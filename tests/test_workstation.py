@@ -72,6 +72,11 @@ class WorkstationTest(unittest.TestCase):
             self.assertEqual((error.code, error.headers['Location']), (308, '/workstation/'))
         self.assertEqual(self.get('/workstation/?design=pulse')[0], 400)
         self.assertEqual(self.get('/workstation/../config/field_risk_rules.json')[0], 404)
+        status, _, headers = self.get('/scouting/inspections?field=R11')
+        self.assertEqual(status, 200)
+        self.assertIn("frame-ancestors 'self'", headers['Content-Security-Policy'])
+        self.assertEqual(self.get('/scouting/inspections?field=R28')[0], 400)
+        self.assertIn("frame-ancestors 'none'", self.get('/scouting')[2]['Content-Security-Policy'])
 
     def test_page_has_nothing_the_csp_blocks(self):
         page = _Inline();page.feed((DESK/'index.html').read_text(encoding='utf-8'))

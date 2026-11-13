@@ -25,7 +25,10 @@ await p.click('[data-act="save-mark"]');await p.waitForTimeout(300);log('mark to
 // tasks on trips
 await p.click('[data-nav="trips"]');await p.waitForTimeout(300);log('tasks:',(await p.textContent('#tasks')).replace(/\s+/g,' ').slice(0,300));
 await p.evaluate(()=>document.getElementById('tasks').scrollIntoView());
-await p.click('#tasks [data-act="task-done"]');await p.waitForTimeout(200);log('done toast:',await p.textContent('#toast'));
+const actual=await p.inputValue('#tasks [data-tdate]');
+await p.click('#tasks [data-act="task-done"]');
+await p.fill('#actual-treatment-date',actual);
+await p.click('[data-act="confirm-task-done"]');await p.waitForTimeout(200);log('done toast:',await p.textContent('#toast'));
 // journal alarm
 await p.click('[data-nav="journal"]');await p.click('[data-jf="alarm"]');await p.waitForTimeout(200);log('alarm rows:',await p.$$eval('table.t tbody tr',r=>r.length));
 

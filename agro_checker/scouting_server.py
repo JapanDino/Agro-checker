@@ -15,32 +15,38 @@ from .scouting_field_context import DEFAULT_DIRECTORY, field_context, operation_
 from .field_store import FieldStore, encoded
 from .pipeline import ROOT
 
+WORKSTATION_FILES = {
+    '/workstation/': ('index.html', 'text/html; charset=utf-8'),
+    '/workstation/workstation.css': ('workstation.css', 'text/css; charset=utf-8'),
+    '/workstation/workstation.js': ('workstation.js', 'text/javascript; charset=utf-8'),
+    '/workstation/farm-basemap.jpg': ('farm-basemap.jpg', 'image/jpeg'),
+}
+
 
 def make_server(directory, port=8771, field_context_directory=DEFAULT_DIRECTORY):
     store=FieldStore(directory)  # No legacy profile, forecasts or observations are seeded.
     token=secrets.token_urlsafe(32)
     static={'/':('index.html','text/html; charset=utf-8'),
             '/scouting':('index.html','text/html; charset=utf-8'),
-            '/scouting/about':('about.html','text/html; charset=utf-8')}
+            '/scouting/about':('about.html','text/html; charset=utf-8'),
+            '/scouting/inspections':('index.html','text/html; charset=utf-8')}
     for f in ['app.js', 'map.js', 'plans.js', 'styles.css', 'workspace.css', 'theme.css', 'interior.css', 'experience.css', 'experience-interior.css', 'drafts.js', 'hightech.css', 'design.js', 'design-controls.css', 'pulse.css', 'pulse-screens.css', 'pulse.js', 'showcase.js', 'today.js', 'visit-drafts.js', 'offline.js', 'review-card.js', 'review-card.css', 'today.css']:
         static['/scouting/'+f]=(f,'text/javascript; charset=utf-8' if f.endswith('.js') else 'text/css; charset=utf-8')
     for f,mime in [('leaflet.js','text/javascript'),('leaflet.css','text/css'),('LEAFLET-LICENSE.txt','text/plain'),
                    ('public-context.json','application/json'),('basemap.jpg','image/jpeg'),('wide-basemap.jpg','image/jpeg'),
                    ('terrain.png','image/png'),('clay.png','image/png'),('ph.png','image/png')]+[('fonts/'+f,'font/woff2') for f in ['manrope-cyrillic-wght-normal.woff2', 'manrope-latin-wght-normal.woff2']]+[('fonts/'+f,'text/plain') for f in ['manrope-OFL.txt']]:
         static['/scouting/assets/'+f]=('assets/'+f,mime)
-    # Agronomist workstation (web/workstation): same CSP as the rest of the product, no inline scripts or styles.
-    desk={'/workstation/':('index.html','text/html; charset=utf-8'),'/workstation/workstation.css':('workstation.css','text/css; charset=utf-8'),
-          '/workstation/workstation.js':('workstation.js','text/javascript; charset=utf-8'),'/workstation/farm-basemap.jpg':('farm-basemap.jpg','image/jpeg')}
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self,*args):pass
 
         def reply(self,code,body,mime='application/json; charset=utf-8'):
             raw=encoded(body).encode('utf-8') if isinstance(body,(dict,list)) else body
+            ancestors = "'self'" if urlparse(self.path).path == '/scouting/inspections' else "'none'"
             self.send_response(code)
             for name,value in [('Content-Type',mime),('Content-Length',str(len(raw))),('Cache-Control','no-store'),
                                ('X-Content-Type-Options','nosniff'),('Cross-Origin-Resource-Policy','same-origin'),
-                               ('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'")]:self.send_header(name,value)
+                               ('Content-Security-Policy',f"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors {ancestors}")]:self.send_header(name,value)
             if urlparse(self.path).path=='/scouting/offline.js':
                 self.send_header('Service-Worker-Allowed','/')
             self.end_headers();self.wfile.write(raw)
@@ -64,10 +70,13 @@ def make_server(directory, port=8771, field_context_directory=DEFAULT_DIRECTORY)
                 if path=='/workstation':
                     query([]);self.send_response(308);self.send_header('Location','/workstation/');self.send_header('Content-Length','0')
                     self.send_header('Cache-Control','no-store');self.end_headers();return
-                if path in desk:
-                    query([]);f,mime=desk[path];return self.reply(200,(ROOT/'web/workstation'/f).read_bytes(),mime)
+                if path in WORKSTATION_FILES:
+                    query([]);f,mime=WORKSTATION_FILES[path];return self.reply(200,(ROOT/'web/workstation'/f).read_bytes(),mime)
                 if path in static:
-                    if q and path in ('/','/scouting','/scouting/about'):
+                    if q and path == '/scouting/inspections':
+                        if not re.fullmatch(r'R(?:0[1-9]|1[0-9]|2[0-7])',query(['field'])['field']):
+                            raise ValueError('Неизвестная площадь')
+                    elif q and path in ('/','/scouting','/scouting/about'):
                         if query(['design'])['design'] not in ('pulse','atlas','hightech'):raise ValueError('Неизвестный дизайн')
                     else:query([])
                     f,mime=static[path];return self.reply(200,(ROOT/'web/scouting'/f).read_bytes(),mime)

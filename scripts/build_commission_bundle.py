@@ -11,6 +11,7 @@ import zipfile
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from agro_checker import farm_scouting as scout, farm_workspace as workspace
+from agro_checker.scouting_server import WORKSTATION_FILES
 
 OUT=ROOT/'outputs/agropulse-review-2026-11-06'
 WHEELS=ROOT/'tmp/product-sprint-2026-10-25/wheels'
@@ -60,7 +61,9 @@ def main():
     for m in modules(['scouting_server','farm_workspace','farm_scouting']):copy('agro_checker/'+m+'.py')
     copy('agro_checker/__init__.py')
     for p in (ROOT/'web/scouting').rglob('*'):
-        if p.is_file() and p.suffix in {'.html','.js','.css','.jpg','.png','.txt','.json'}:copy(p)
+        if p.is_file() and p.suffix in {'.html','.js','.css','.jpg','.png','.txt','.json','.woff2'}:copy(p)
+    for filename, _ in WORKSTATION_FILES.values():
+        copy('web/workstation/'+filename)
     for name in ['protocol.json','summary.json','satellite.json']:copy('data/farm-research/area-context/'+name)
     copy('data/farm-research/reconstruction/approximate-areas.geojson')
     for p in (ROOT/'data/farm-research/scouting-workspace-2026-10-22').glob('era5-*.json'):copy(p)

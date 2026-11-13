@@ -66,6 +66,26 @@ kbd{font:700 11px/1 var(--sans);padding:3px 6px;border-radius:6px;background:var
 
 main{min-width:0;min-height:0;overflow:auto;position:relative}
 .view{padding:24px 24px 40px;max-width:1600px;margin:0 auto;display:grid;gap:16px;align-content:start}
+
+.field-journal {
+  width: min(1080px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.field-journal::backdrop { background: #17231db3; }
+.field-journal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+}
+.field-journal-header h2 { margin: 0; font-size: 18px; }
+.field-journal iframe { display: block; width: 100%; height: min(76dvh, 800px); border: 0; }
 .view>*,.panes>*,.two>*,.map-wrap>*{min-width:0}
 .view.fit{padding-bottom:32px}
 .eyebrow{font:700 12px/1.4 var(--sans);letter-spacing:.02em;color:var(--green-hover)}
