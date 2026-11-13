@@ -1,5 +1,6 @@
 # Frozen scientific evidence is verified by byte hashes. Never rewrite newlines.
-data/** -text
+# CRLF is valid in byte-preserved Windows JSON/CSV; still check actual trailing spaces.
+data/** -text whitespace=cr-at-eol
 models/** -text
 *.json -text
 *.geojson -text
@@ -7,3 +8,32 @@ models/** -text
 *.npz -text
 *.tif -text
 *.cbm -text
+# Keep the exact source bytes referenced by frozen consensus experiments.
+scripts/experiment_consensus_priority.py -text
+scripts/experiment_consensus_ndmi_guard.py -text
+agro_checker/ndmi_turn_guard.py -text
+agro_checker/spectral_triage.py -text
+agro_checker/triage_outcomes.py -text
+# Prospective model registration verifies these exact scoring/source bytes.
+agro_checker/prospective_scouting.py -text
+agro_checker/field_decline_experiment.py -text
+agro_checker/field_index_experiment.py -text
+agro_checker/farm_context_analysis.py -text
+agro_checker/open_land_data.py -text
+agro_checker/farm_context_data.py -text
+agro_checker/sector_refresh.py -text
+scripts/prospective_scouting.py -text
+# Source bytes referenced by the immutable 2024 outcome audit manifest.
+scripts/audit_unknown_outcomes_2024.py -text
+scripts/report_unknown_outcomes_2024.py -text
+# Byte-pinned separate radar extraction and development experiment.
+agro_checker/radar_data.py -text
+agro_checker/radar_experiment.py -text
+scripts/audit_sector_radar.py -text
+scripts/experiment_radar_priority.py -text
+scripts/audit_radar_disclaimers.py -text
+scripts/resolve_radar_quality.py -text
+scripts/match_radar_quality.py -text
+scripts/report_radar_priority.py -text
+# Vendor HTML is byte-preserved scientific source evidence, including its original whitespace.
+data/farm-research/sentinel1-2024/quality/*.html -text -whitespace

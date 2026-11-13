@@ -1,0 +1,57 @@
+{
+  "created_at_utc": "2026-11-09T11:24:07.005542+00:00",
+  "selection_years": [
+    2024
+  ],
+  "prohibited_tuning_years": [
+    2025,
+    2026
+  ],
+  "inputs": {
+    "data/farm-research/spectral-triage/meta-oof.json": "db99f14d6995f59527360fc2b76b326a60afe953d618a21fd13fcd6175fe73b1",
+    "data/farm-research/spectral-triage/pool-2024.json": "e67e28ac79c969bf96a98a3b29dea1649c1b51a9559d898047a9566783c07a79",
+    "data/farm-research/spectral-triage/protocol.json": "e058523da1fd8077859246e76d531645b6624e2bdadb516d2be5b2046d826478",
+    "data/farm-research/triage-outcomes-2024/frozen-evaluation.json": "f51f8344fcefb4de6ce54d334f5562e90910a0ce0364a216ec63761d2755a90a",
+    "data/farm-research/ndmi-turn-guard-2024/protocol.json": "d9dd5f9bf4a22709b04325aa849bc29dec2194b2335505dce33bb5d764603ee1",
+    "agro_checker/spectral_triage.py": "fa830e70eed21da8ae93f3ad85eabe7b60ac3da5d67b4a5677123485f8d40dc6",
+    "agro_checker/triage_outcomes.py": "391197a9a6c4179441eb4ccac0c4736d1d587898bac12bc456927a4e461dd011",
+    "agro_checker/ndmi_turn_guard.py": "896d0d00c6a2dd14ecdeb93ae702ac03869962add1c9d209560b13474e1484b1"
+  },
+  "candidates": [
+    {
+      "id": "baseline"
+    },
+    {
+      "id": "consensus_protect_0.1_margin_0",
+      "protect": 0.1,
+      "margin": 0.0
+    },
+    {
+      "id": "consensus_protect_0.1_margin_0.1",
+      "protect": 0.1,
+      "margin": 0.1
+    },
+    {
+      "id": "consensus_protect_0.2_margin_0",
+      "protect": 0.2,
+      "margin": 0.0
+    },
+    {
+      "id": "consensus_protect_0.2_margin_0.1",
+      "protect": 0.2,
+      "margin": 0.1
+    }
+  ],
+  "budget_k": 3,
+  "fixed_parameters": {
+    "seed": 20241021
+  },
+  "rule": "Start recent-drop top3. At most one replacement per date. Both input-only OOF Logistic and ExtraTrees percentile gains must exceed margin. Preserve baseline anchors>=protect; candidate must have all boundary inputs supported. Hash ties. No labels, target QC or target dates in chooser.",
+  "outcomes": "368 known/331 unknown2024 outcomes: original plus month-boundary recovery; exclude3 disputed additional-tile targets. Same699-candidate pool and6-8day/-.10 target.",
+  "acceptance": "Every known baseline event retained; known FP not increased; paired worst-case negative growth<=0; strictly positive worst-case paired precision gain. Unknowns stay in denominator.",
+  "forward": "Monthly Jun-Oct2024 settings selected only using prior completed targets. Fallback baseline when no eligible option.",
+  "caveat": "Repeated development on already studied2024; historical acquisition order is not proven first availability. Not independent validation or inspection usefulness.",
+  "existing_models_refitted": false,
+  "production_promoted": false,
+  "human_visits_created": 0
+}

@@ -1,11 +1,15 @@
 'use strict';
-window.ScoutingMap={create({bundle,onSelect,onSite,onLayer}){
-  const map=L.map('geo-map',{zoomControl:false,attributionControl:true,minZoom:10,maxZoom:18,zoomSnap:.25});
-  map.attributionControl.setPrefix(false);
+function scoutingBasemap(map,bundle){
   map.createPane('baseImages');map.getPane('baseImages').style.zIndex='200';map.createPane('thematicImages');map.getPane('thematicImages').style.zIndex='300';
   map.createPane('wideImages');map.getPane('wideImages').style.zIndex='190';
   if(bundle.wide_basemap)L.imageOverlay('/scouting/assets/wide-basemap.jpg',bundle.wide_basemap.bounds,{pane:'wideImages'}).addTo(map);
   L.imageOverlay('/scouting/assets/basemap.jpg',bundle.basemap.bounds,{pane:'baseImages',attribution:'Esri, Vantor, Earthstar Geographics, GIS User Community. Дата мозаики неизвестна.'}).addTo(map);
+}
+
+window.ScoutingMap={create({bundle,onSelect,onSite,onLayer}){
+  const map=L.map('geo-map',{zoomControl:false,attributionControl:true,minZoom:10,maxZoom:18,zoomSnap:.25});
+  map.attributionControl.setPrefix(false);
+  scoutingBasemap(map,bundle);
   L.control.scale({imperial:false,position:'topright',maxWidth:110}).addTo(map);
   const shapes=new Map(),sites=L.layerGroup().addTo(map);let selected='R11',period='recent2026',layer='ndmi',raster=null,pin=null,focused=false,comparison={rows:[]},initialized=false,viewportWidth=window.innerWidth;
   const geo=L.geoJSON(bundle.geometry,{style:()=>({color:'#fff',weight:1.2,fillOpacity:.08}),onEachFeature(feature,node){
@@ -69,4 +73,23 @@ window.ScoutingMap={create({bundle,onSelect,onSite,onLayer}){
     showSite(site){if(pin)map.removeLayer(pin);pin=L.circleMarker([site.latitude,site.longitude],{radius:10,color:'#fff',weight:3,fillColor:'#1e5140',fillOpacity:1}).addTo(map);},
     setLayer(value){document.getElementById('map-layer').value=value;setLayer(value);},
     showAll(){fitAll();}};
+},pointPicker({container,bundle,onPick,onOutside}){
+  const map=L.map(container,{minZoom:10,maxZoom:18,zoomSnap:.25,scrollWheelZoom:false});
+  map.attributionControl.setPrefix(false);
+  scoutingBasemap(map,bundle);
+  const outline=L.geoJSON(null,{style:{color:'#ffe18a',weight:3,fillColor:'#ffe18a',fillOpacity:.12},
+    bubblingMouseEvents:false}).addTo(map);
+  const pin=L.circleMarker([0,0],{radius:7,color:'#fff',weight:2,fillColor:'#176b47',fillOpacity:1,
+    interactive:false});
+  outline.on('click',event=>onPick(event.latlng));
+  map.on('click',onOutside);
+  return {
+    showArea(id){
+      outline.clearLayers();
+      outline.addData(bundle.geometry.features.find(feature=>feature.properties.id===id));
+      map.invalidateSize({pan:false});
+      map.fitBounds(outline.getBounds(),{padding:[24,24],maxZoom:17,animate:false});
+    },
+    showPoint(latitude,longitude){pin.setLatLng([latitude,longitude]).addTo(map);}
+  };
 }};
