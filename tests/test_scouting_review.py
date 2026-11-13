@@ -32,7 +32,8 @@ class ReviewTest(unittest.TestCase):
         self.assertIsNone(value['observation']['window']['ndmi'])
         self.assertIn('недостаточно',value['question'])
         self.assertEqual(value['latest_usable_place_now']['at'][:10],'2026-11-05')
-        self.assertEqual(value['archive_end_exclusive_utc'][:10],'2026-11-09')
+        self.assertEqual(r.instant(value['archive_end_exclusive_utc']),
+                         max(r.instant(period['end']) for period in scout.archive()[0]['periods']))
         self.assertFalse(value['priority_usefulness_validated']);self.assertIsNone(value['automatic_diagnosis'])
 
     def test_reject_wrong_fragment_place(self):
@@ -58,6 +59,20 @@ class ReviewTest(unittest.TestCase):
             (folder/'2026-11-08.json').write_text('{"payload":{},"sha256":"bad"}')
             self.assertEqual(r.forecast('R20',NOW,Path(directory))['status'],'unavailable')
 
+    def test_today_uses_only_active_baseline_places_with_observed_decline(self):
+        today = r.today(datetime(2026,11,13,8,tzinfo=timezone.utc))
+        self.assertEqual(today['status'],'ready')
+        self.assertEqual({row['place']['fragment'] for row in today['suggestions']},{'R20','R27'})
+        for row in today['suggestions']:
+            self.assertEqual(row['place'],scout.reference_location(row['place']['fragment']))
+            self.assertEqual(row['acquired_at_utc'][:10],'2026-11-08')
+            self.assertEqual(row['target_window']['end_exclusive_utc'][:10],'2026-11-17')
+            self.assertIn('снизился',row['reason'])
+        expired = r.today(datetime(2026,11,17,tzinfo=timezone.utc))
+        self.assertEqual(expired['suggestions'],[])
+        with TemporaryDirectory() as directory:
+            self.assertEqual(r.today(NOW,Path(directory))['status'],'no_current_signals')
+
     def test_endpoint_and_assets_are_readonly_and_strict(self):
         with TemporaryDirectory() as directory:
             server=make_server(Path(directory),0);thread=Thread(target=server.serve_forever,daemon=True);thread.start()
@@ -68,7 +83,9 @@ class ReviewTest(unittest.TestCase):
                     self.assertEqual(json.load(response)['status'],'window_comparison_missing')
                 with self.assertRaises(HTTPError) as error:urlopen(root+'/api/scouting/review?'+query+'&unexpected=1')
                 self.assertEqual(error.exception.code,400)
-                for name in ('review-card.js','review-card.css'):
+                with urlopen(root+'/api/scouting/today') as response:
+                    self.assertLessEqual(len(json.load(response)['suggestions']),3)
+                for name in ('review-card.js','review-card.css','today.css'):
                     with urlopen(root+'/scouting/'+name) as response:self.assertEqual(response.status,200)
                 self.assertEqual(scout.listing(server.scouting_store)['tasks'],[])
                 self.assertEqual(scout.listing(server.scouting_store)['visits'],[])

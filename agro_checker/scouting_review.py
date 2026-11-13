@@ -1,5 +1,5 @@
 """Read-only inspection evidence: observed window, uncertain outline, separate shadow forecast."""
-from datetime import datetime,timezone
+from datetime import datetime,timedelta,timezone
 import hashlib
 import json
 import math
@@ -9,6 +9,7 @@ from .pipeline import ROOT
 from . import farm_scouting as scout,farm_workspace as workspace
 
 STUDY=ROOT/'data/prospective-scouting'
+MOSCOW=timezone(timedelta(hours=3))
 
 
 def instant(value):
@@ -24,19 +25,69 @@ def checked(path):
     return value
 
 
+def latest_release(as_of,directory):
+    directory=Path(directory)
+    paths=sorted((directory/'releases').glob('????-??-??.json'))
+    if not paths:
+        return None
+    envelope=checked(paths[-1]);release=envelope['payload'];protocol=checked(directory/'frozen/protocol.json')
+    if release['protocol_sha256']!=protocol['sha256'] or release['kind']!='prospective_satellite_comparison':
+        raise ValueError('Wrong forecast protocol')
+    if protocol['payload']['geometry_sha256']!=scout.archive()[0]['contours_sha256']:
+        raise ValueError('Different forecast geometry')
+    if instant(release['issued_at_utc'])>as_of:
+        return None
+    pool={v['fid'] for v in release['candidates']}
+    if (set(release['selected'])!={'baseline','candidate'} or
+        any(len(v)!=release['slots_each'] or len(set(v))!=len(v) or not set(v)<=pool for v in release['selected'].values())):
+        raise ValueError('Invalid frozen forecast lists')
+    return envelope,protocol,pool
+
+
+def today(as_of=None,directory=STUDY):
+    """Expose the active reference shortlist. The candidate remains in shadow evaluation."""
+    as_of=as_of or datetime.now(timezone.utc)
+    result={'date':as_of.astimezone(MOSCOW).date().isoformat(),'as_of_utc':as_of.isoformat(),
+            'status':'no_current_signals','suggestions':[]}
+    try:
+        saved=latest_release(as_of,directory)
+        if not saved:
+            return result
+        release=saved[0]['payload']
+        window=release['target_window']
+        if as_of>=instant(window['end_exclusive_utc']):
+            return result
+        candidates={row['fid']:row for row in release['candidates']}
+        scenes={scene['id']:scene for scene in release['source_scenes']}
+        suggestions=[]
+        for fid in release['selected']['baseline']:
+            row=candidates[fid]
+            scene=scenes[row['issue_scene']]
+            acquired=instant(scene['acquired_at_utc'])
+            if acquired>instant(release['issued_at_utc']):
+                raise ValueError('Input acquisition after release')
+            ndvi,ndmi=row['x'][2:4]
+            if not finite(ndvi) or not finite(ndmi):
+                raise ValueError('Invalid input slopes')
+            if min(ndvi,ndmi)>=0:
+                continue
+            index='NDVI' if ndvi<=ndmi else 'NDMI'
+            suggestions.append({'place':scout.reference_location(fid),
+                'reason':f'{index} снизился в ядре площади между двумя пригодными съёмками. Проверьте состояние растений на месте.',
+                'acquired_at_utc':acquired.isoformat(),'target_window':window})
+        result.update(status='ready' if suggestions else 'no_supported_places',suggestions=suggestions[:3])
+    except (OSError,ValueError,KeyError,TypeError):
+        result['status']='unavailable'
+    return result
+
+
 def forecast(fid,as_of,directory=STUDY):
     """JSON only: archive-only UI must not require sklearn/joblib or fit/load a model."""
     directory=Path(directory)
-    paths=sorted((directory/'releases').glob('????-??-??.json'))
-    if not paths:return dict(status='not_available',reason='Нет сохранённого будущего выпуска')
     try:
-        envelope=checked(paths[-1]);r=envelope['payload'];p=checked(directory/'frozen/protocol.json')
-        if r['protocol_sha256']!=p['sha256'] or r['kind']!='prospective_satellite_comparison':raise ValueError('Wrong forecast protocol')
-        if p['payload']['geometry_sha256']!=scout.archive()[0]['contours_sha256']:raise ValueError('Different forecast geometry')
-        if instant(r['issued_at_utc'])>as_of:return dict(status='not_available',reason='Выпуск позднее времени просмотра')
-        pool={v['fid'] for v in r['candidates']}
-        if any(len(v)!=r['slots_each'] or len(set(v))!=len(v) or not set(v)<=pool for v in r['selected'].values()):
-            raise ValueError('Invalid frozen forecast lists')
+        saved=latest_release(as_of,directory)
+        if not saved:return dict(status='not_available',reason='Нет доступного на момент просмотра выпуска')
+        envelope,p,pool=saved;r=envelope['payload']
         result=dict(status='pending',issued_at_utc=r['issued_at_utc'],
             target_window=r['target_window'],input_acquisition_date=r['anchor_acquisition_date'],
             scope='fragment_core_not_selected_60m_window',release_sha256=envelope['sha256'],

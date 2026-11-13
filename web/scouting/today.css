@@ -1,0 +1,194 @@
+body[data-stage="6"] .steps,
+body[data-stage="6"] .context-bar,
+body[data-stage="6"] .snapshot {
+  display: none;
+}
+
+.today-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 12px;
+}
+
+.today-toolbar h2,
+.today-toolbar p,
+.today-place h3 {
+  margin: 0;
+}
+
+#today-status,
+#today-inspections-status {
+  margin: 0 0 18px;
+  color: var(--muted);
+}
+
+.today-suggestions-heading {
+  margin: 28px 0 8px;
+}
+
+#today-completed {
+  margin-top: 16px;
+}
+
+#today-completed summary {
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.today-inspection-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 12px;
+  width: 100%;
+}
+
+.today-inspection-badge {
+  max-width: 100%;
+  white-space: normal;
+}
+
+.today-inspection-badge[data-status="assigned"] {
+  border: 1px solid currentColor;
+}
+
+.today-inspection-badge[data-status="draft"],
+.today-inspection-badge[data-status="queued"] {
+  background: #fff1cd;
+  color: #60470c;
+}
+
+.today-inspection-badge[data-status="saved"] {
+  background: #d8efdf;
+  color: #174c30;
+}
+
+.today-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+  align-items: stretch;
+  gap: 16px;
+}
+
+.today-place {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: clamp(18px, 2.5vw, 28px);
+}
+
+.today-place p,
+.today-place dl,
+.today-place dd {
+  margin: 0;
+}
+
+.today-place dl {
+  width: 100%;
+  padding-block: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.today-place dt {
+  color: var(--muted);
+  font-size: .82em;
+}
+
+.today-place dd + dt {
+  margin-top: 8px;
+}
+
+.today-place button {
+  margin-top: auto;
+}
+
+#manual-task-dialog form {
+  display: grid;
+  gap: 14px;
+}
+
+#manual-task-dialog label {
+  display: grid;
+  gap: 4px;
+}
+
+#manual-task-dialog p {
+  margin: 0;
+}
+
+#manual-task-dialog {
+  width: min(680px, calc(100vw - 24px));
+}
+
+.manual-map-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+
+#manual-task-map {
+  height: clamp(185px, 32dvh, 310px);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #304536;
+  cursor: crosshair;
+}
+
+#manual-task-map .leaflet-interactive {
+  cursor: crosshair;
+}
+
+#manual-task-status:empty {
+  display: none;
+}
+
+.field-offline {
+  margin-block: 0 16px;
+  padding: 10px 14px;
+}
+
+.field-offline p {
+  margin: 0 0 4px;
+  color: var(--muted);
+}
+
+.field-draft-row + .field-draft-row {
+  border-top: 1px solid var(--line);
+}
+
+.field-draft-row button {
+  max-width: 100%;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.visit-save-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.visit-save-actions button {
+  flex: 1 1 180px;
+}
+
+@media (max-width: 760px) {
+  .today-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .today-toolbar button {
+    width: 100%;
+  }
+
+  .topbar .primary-nav button {
+    min-width: 0;
+  }
+}

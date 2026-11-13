@@ -92,6 +92,7 @@ def overview():
         items.append({'id': fid, 'working_band_m': geo[fid]['properties']['working_band_m'],
                       'core_supported': max((r.get('core_cells',0) for r in v['history']),default=0)>=10,
                       'core_area_ha': v['core_area_ha'], 'availability': v['availability'],
+                      'reference': reference_location(fid),
                       'latest_usable_acquisition_utc': max((r['acquired_at_utc'] for r in v['history']
                           if r.get('ndvi') and r['ndvi']['base'] is not None and r['ndmi']['base'] is not None), default=None)})
     return {'items': items, 'periods': p['periods'],
@@ -156,11 +157,16 @@ def detail(fid, period, before=None, after=None):
                                         'after_indices':archive()[3][after]['crop_sha256']['indices.npz'],
                                         'comparison_code':sha(ROOT/'agro_checker/farm_scouting.py')},
                       'selection': 'Date pair pinned by before/after scene IDs; archive comparison, not forecast. Shared overview date-selection policy is supplied separately.'}
-    core = poly.buffer(-geo['properties']['working_band_m'])
-    pt = (core if not core.is_empty else poly).representative_point()
-    result['default_location'] = location(fid, pt.x, pt.y)
+    result['default_location'] = reference_location(fid)
     result['default_place_comparison'] = window_comparison(result['default_location']['id'],before,after)
     return result
+
+
+def reference_location(fid):
+    _, _, geo, poly = fragment(fid)
+    core = poly.buffer(-geo['properties']['working_band_m'])
+    point = (core if not core.is_empty else poly).representative_point()
+    return location(fid, point.x, point.y)
 
 
 def location(fid, x=None, y=None, relative=None, crop=None):
@@ -189,6 +195,10 @@ def map_png(fid, period, before, after, key, side):
     aa,bb = raster(before),raster(after)
     valid = (aa['valid'] & bb['valid'])[sl] if side == 'delta' else (aa if side == 'before' else bb)['valid'][sl]
     vals = (bb[key]-aa[key])[sl] if side == 'delta' else (aa if side == 'before' else bb)[key][sl]
+    return index_png(vals,valid,key,side,crop,fragment(fid)[3])
+
+
+def index_png(vals,valid,key,side,crop,poly):
     val = np.nan_to_num(vals)
     colours = np.array([[169,74,58],[242,236,208],[50,125,90]],dtype=float) if side == 'delta' else np.array([[163,122,79],[231,217,153],[40,113,78]],dtype=float) if key == 'ndvi' else np.array([[182,145,103],[223,224,198],[42,121,139]],dtype=float)
     t = np.clip((val+.3)/.6,0,1) if side == 'delta' else np.clip((val+1)/2,0,1)
@@ -197,7 +207,7 @@ def map_png(fid, period, before, after, key, side):
     rgb[~valid] = np.stack([shade]*3,axis=-1)[~valid]
     scale = max(1,min(5,720//max(crop['width'],crop['height'])))
     image = Image.fromarray(rgb).resize((crop['width']*scale,crop['height']*scale),Image.Resampling.NEAREST)
-    poly = fragment(fid)[3];draw = ImageDraw.Draw(image)
+    draw = ImageDraw.Draw(image)
     ring = [((x-crop['west'])/20*scale,(crop['north']-y)/20*scale) for x,y in poly.exterior.coords]
     draw.line(ring,fill='white',width=max(3,scale+2));draw.line(ring,fill='#213d2e',width=max(1,scale))
     out = io.BytesIO();image.save(out,format='PNG');return out.getvalue()
@@ -231,14 +241,35 @@ def _append(store, kind, raw, payload, now, blobs=()):
 
 def save_task(store, raw, now=None):
     now = now or datetime.now(timezone.utc)
-    if not isinstance(raw,dict) or set(raw) != {'request_id','fragment','period','before','after','version','relative','actor','planned_date','objective','metric'}:
-        raise ValueError('Нужны место, архивная пара и описание задачи')
+    common = {'request_id', 'fragment', 'actor', 'planned_date', 'objective'}
+    manual = isinstance(raw, dict) and raw.get('source') == 'manual'
+    fields = {'source', 'coordinates'} if manual else {'period', 'before', 'after', 'version', 'relative', 'metric'}
+    if not isinstance(raw, dict) or set(raw) != common | fields:
+        raise ValueError('Проверьте место, основание и описание задачи')
     actor = _text(raw['actor'],120,'Укажите ответственного')
     objective = _text(raw['objective'],2000,'Опишите цель осмотра, до 2000 символов')
     planned = raw['planned_date']
     if planned:
         if not isinstance(planned,str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}',planned) or date.fromisoformat(planned).year < 2000:raise ValueError('Некорректная дата задачи')
     elif planned != '':raise ValueError('Некорректная дата задачи')
+    if manual:
+        coordinates = raw['coordinates']
+        if coordinates is None:
+            loc = reference_location(raw['fragment'])
+        else:
+            if (not isinstance(coordinates, list) or len(coordinates) != 2 or
+                any(type(v) not in (int, float) or not -limit <= v <= limit
+                    for v, limit in zip(coordinates, (180, 90)))):
+                raise ValueError('Укажите долготу и широту в градусах')
+            longitude, latitude = coordinates
+            x, y = TO_UTM.transform(longitude, latitude)
+            loc = location(raw['fragment'], x, y)
+            loc.update(latitude=latitude, longitude=longitude, utm_x=x, utm_y=y,
+                       source='manual_point_not_measured_gps')
+        payload = {'place': loc, 'actor': actor, 'planned_date': planned, 'objective': objective,
+                   'evidence': None, 'period': None, 'metric': None, 'place_evidence': None,
+                   'purpose': 'human_task_without_satellite_basis', 'confirmed_boundary': False}
+        return _append(store, TASK, raw, payload, now)
     if raw['metric'] not in ['ndvi','ndmi']:raise ValueError('Выберите индекс')
     d = detail(raw['fragment'],raw['period'],raw['before'],raw['after'])
     if not d['pair'] or raw['version'] != d['pair']['version']:raise ValueError('Архив обновлён. Повторите выбор места')
