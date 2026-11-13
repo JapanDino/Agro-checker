@@ -123,5 +123,6 @@ class RefreshTest(unittest.TestCase):
         for fid,feature in summ['features'].items():
             self.assertEqual(extended[1]['features'][fid]['history'][:len(feature['history'])],feature['history'])
         overview=scout.overview()
-        self.assertEqual(overview['snapshot_at'][:10],'2026-11-08')
+        latest_ready = max(scene['acquired_at_utc'] for scene in extended[2].values() if scene['status']=='ready')
+        self.assertEqual(overview['snapshot_at'],latest_ready)
         self.assertFalse(overview['model_training_enabled'])
