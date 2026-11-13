@@ -1,0 +1,33 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>AgroPulse — cover</title>
+<style>
+  html,body{margin:0;background:var(--bg)}
+  .cover{position:relative;width:960px;height:288px;overflow:hidden;background:var(--bg);font-family:var(--font-sans)}
+  .art{position:absolute;left:480px;top:0}
+  .green{fill:var(--green)} .deep{fill:var(--green-deep)} .soft{fill:var(--green-soft)} .amber{fill:var(--amber)}
+  .leaf{fill:var(--green-soft)} .leaf-deep{fill:var(--green)}
+  .tile{rx:var(--radius-md)}
+  .name{position:absolute;left:40px;bottom:72px;margin:0;max-width:440px;font:800 80px/.95 var(--font-sans);letter-spacing:-.04em;color:var(--ink)}
+  .tag{position:absolute;left:40px;bottom:36px;margin:0;max-width:440px;font:600 13px/1.4 var(--font-sans);color:var(--ink-2)}
+</style></head>
+<body>
+<div class="cover">
+  <h1 class="name">AgroPulse</h1>
+  <p class="tag">Какое поле осмотреть первым — и почему.</p>
+  <svg class="art" viewBox="0 0 480 288" width="480" height="288" aria-hidden="true">
+<!-- blocks: green 216×288 (slab), green-deep 240×168, green-soft 240×120, amber 48×48 (radius-md) — identity green leads, amber is the one signal
+     arrangement: one tall slab bleeding top and bottom with two stacked satellites bleeding right
+     pattern: literal motif — the leaf of the three-sprout mark, because AgroPulse is about the crop itself; leaves cut from two radius quarter-arcs
+     scales: pitch 48 (space-6 × 2), row 56, leaf 24 (radius), gaps 24 (space-6), tile radius-md 16 -->
+<rect class="green" x="24" y="0" width="216" height="288"/>
+<g transform="translate(24 0)"><path class="leaf" transform="translate(24 12)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(72 12)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(120 12)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(168 12)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(48 68)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(96 68)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(144 68)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(24 124)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(72 124)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(120 124)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(168 124)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(48 180)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(96 180)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(144 180)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(24 236)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(72 236)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(120 236)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf" transform="translate(168 236)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/></g>
+<rect class="deep" x="240" y="0" width="240" height="168"/>
+<g><path class="leaf-deep" transform="translate(264 96)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf-deep" transform="translate(312 96)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf-deep" transform="translate(360 96)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/><path class="leaf-deep" transform="translate(408 96)" d="M0 24A24 24 0 0 1 24 0A24 24 0 0 1 0 24Z"/></g>
+<rect class="soft" x="240" y="168" width="240" height="120"/>
+<rect class="amber tile" x="288" y="204" width="48" height="48"/>
+</svg>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!-- @dsCard group="Статусы" height=64 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>StatusChip — preview</title></head>
+<body>
+<div id="root" class="ap-root"></div>
+<script>
+  var A = window.AgroPulse, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'ap-row'},
+    h(A.StatusChip, {status:'risk'}), h(A.StatusChip, {status:'check'}),
+    h(A.StatusChip, {status:'normal'}), h(A.StatusChip, {status:'none'})));
+</script>
+</body>
+</html>

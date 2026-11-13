@@ -1,0 +1,19 @@
+<!-- @dsCard group="Данные" height=470 subtitle="Карточка поля в очереди «Сегодня»" -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>FieldRow — preview</title></head>
+<body>
+<div id="root" class="ap-root"></div>
+<script>
+  var A = window.AgroPulse, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'ap-stack'},
+    h(A.FieldRow, {id:'R11', status:'risk', crop:'Озимая пшеница · выход в трубку', detail:'Бурая ржавчина · защиты нет 21 день', due:'21 мая',
+      reasons:['Влажный лист 31 ч при 12–22 °C за пять суток', 'Последний фунгицид 29 апреля — защита истекла'],
+      source:'Погода: ERA5, сектор 0,25°',
+      actions:[h(A.Button, {key:1, variant:'secondary', size:'sm'}, 'На карте'), h(A.Button, {key:2, size:'sm'}, 'Отметить осмотр')]}),
+    h(A.FieldRow, {id:'R02', status:'check', crop:'Озимая пшеница · кущение', detail:'Условия на границе порога', due:'24 мая',
+      reasons:['Влажный лист 18 ч — порог 24 ч'], source:'Узел на поле · 14 суток данных', sensor:true, mark:'clean',
+      actions:[h(A.Button, {key:1, variant:'secondary', size:'sm'}, 'На карте')]})));
+</script>
+</body>
+</html>

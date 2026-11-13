@@ -1,0 +1,22 @@
+<!-- @dsCard group="Действия" height=150 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Button — preview</title></head>
+<body>
+<div id="root" class="ap-root"></div>
+<script>
+  var A = window.AgroPulse, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'ap-stack'},
+    h('div', {className:'ap-row', style:{padding:0}},
+      h(A.Button, {icon:'analysis'}, 'Сравнить снимки'),
+      h(A.Button, {variant:'secondary'}, 'На карте'),
+      h(A.Button, {variant:'soft'}, 'Архивный пример'),
+      h(A.Button, {variant:'text'}, 'История этой площади →')),
+    h('div', {className:'ap-row', style:{padding:0}},
+      h(A.Button, {size:'lg'}, 'Сохранить отметку'),
+      h(A.Button, {size:'sm'}, 'Отметить осмотр'),
+      h(A.Button, {size:'sm', variant:'secondary'}, 'На карте'),
+      h(A.Button, {disabled:true}, 'Выберите итог осмотра'))));
+</script>
+</body>
+</html>

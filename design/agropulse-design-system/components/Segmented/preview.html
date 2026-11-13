@@ -1,0 +1,14 @@
+<!-- @dsCard group="Ввод" height=120 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Segmented — preview</title></head>
+<body>
+<div id="root" class="ap-root"></div>
+<script>
+  var A = window.AgroPulse, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'ap-stack'},
+    h('div', null, h(A.Segmented, {label:'Показать', options:[{value:'all',label:'Все'},{value:'risk',label:'Риск'},{value:'check',label:'Проверить'},{value:'normal',label:'Норма'}]})),
+    h('div', {style:{maxWidth:340}}, h(A.Segmented, {wide:true, label:'Сведения о площади', options:[{value:'img',label:'Снимки'},{value:'ctx',label:'Условия'},{value:'sens',label:'Датчики'}]}))));
+</script>
+</body>
+</html>

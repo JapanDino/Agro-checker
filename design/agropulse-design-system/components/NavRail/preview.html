@@ -1,0 +1,15 @@
+<!-- @dsCard group="Навигация" height=520 subtitle="Слева — компьютер, справа — телефон" -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>NavRail — preview</title></head>
+<body>
+<div id="root" class="ap-root"></div>
+<script>
+  var A = window.AgroPulse, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {style:{display:'flex', gap:24, alignItems:'flex-start', padding:16, flexWrap:'wrap'}},
+    h(A.NavRail, {defaultActive:'today', items:[{id:'map',label:'Карта'},{id:'today',label:'Сегодня',badge:2},{id:'trips',label:'Выезды'},{id:'analysis',label:'Анализ'},{id:'task',label:'Задача'},{id:'history',label:'История'}]}),
+    h('div', {style:{flex:'1 1 320px', maxWidth:420, background:'var(--paper)', borderRadius:16, boxShadow:'var(--shadow)'}},
+      h(A.NavRail, {horizontal:true, defaultActive:'map', items:[{id:'map',label:'Карта'},{id:'today',label:'Сегодня',badge:2},{id:'trips',label:'Выезды'},{id:'history',label:'История'}]}))));
+</script>
+</body>
+</html>
