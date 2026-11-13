@@ -28,6 +28,9 @@ def make_server(directory, port=8771, field_context_directory=DEFAULT_DIRECTORY)
                    ('public-context.json','application/json'),('basemap.jpg','image/jpeg'),('wide-basemap.jpg','image/jpeg'),
                    ('terrain.png','image/png'),('clay.png','image/png'),('ph.png','image/png')]+[('fonts/'+f,'font/woff2') for f in ['manrope-cyrillic-wght-normal.woff2', 'manrope-latin-wght-normal.woff2']]+[('fonts/'+f,'text/plain') for f in ['manrope-OFL.txt']]:
         static['/scouting/assets/'+f]=('assets/'+f,mime)
+    # Agronomist workstation (web/workstation): same CSP as the rest of the product, no inline scripts or styles.
+    desk={'/workstation/':('index.html','text/html; charset=utf-8'),'/workstation/workstation.css':('workstation.css','text/css; charset=utf-8'),
+          '/workstation/workstation.js':('workstation.js','text/javascript; charset=utf-8'),'/workstation/farm-basemap.jpg':('farm-basemap.jpg','image/jpeg')}
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self,*args):pass
@@ -58,6 +61,11 @@ def make_server(directory, port=8771, field_context_directory=DEFAULT_DIRECTORY)
                 def query(keys):
                     if set(q)!=set(keys) or any(len(v)!=1 or len(v[0])>120 for v in q.values()):raise ValueError('Некорректный запрос')
                     return {k:v[0] for k,v in q.items()}
+                if path=='/workstation':
+                    query([]);self.send_response(308);self.send_header('Location','/workstation/');self.send_header('Content-Length','0')
+                    self.send_header('Cache-Control','no-store');self.end_headers();return
+                if path in desk:
+                    query([]);f,mime=desk[path];return self.reply(200,(ROOT/'web/workstation'/f).read_bytes(),mime)
                 if path in static:
                     if q and path in ('/','/scouting','/scouting/about'):
                         if query(['design'])['design'] not in ('pulse','atlas','hightech'):raise ValueError('Неизвестный дизайн')
@@ -137,6 +145,7 @@ def main():
     args=parser.parse_args()
     with make_server(args.directory,args.port) as server:
         print(f'AgroPulse: http://127.0.0.1:{server.server_port}/scouting',flush=True)
+        print(f'Рабочее место агронома: http://127.0.0.1:{server.server_port}/workstation/',flush=True)
         print(f'Пустой отдельный журнал: {args.directory.resolve()}',flush=True)
         try:server.serve_forever()
         except KeyboardInterrupt:pass

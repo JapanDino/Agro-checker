@@ -124,6 +124,32 @@ class FieldRiskTest(unittest.TestCase):
             v = {x['id']: x for x in r.risk_view(self.store, '2027-05-20', 'journal')['fields']}
         self.assertEqual(v['R02']['status'], 'check');self.assertIn('близки к порогу', v['R02']['reasons'][0])
 
+    def test_longest_protection_and_renewal(self):
+        field = 'поле;{0};П;озимая пшеница;2026-10-12;флаговый лист;2027-05-01;;;;;;'
+        rows = [field.format(x) for x in ['R01', 'R02', 'R03']] + [
+            'обработка;R01;;;;;;2027-05-08;Ф;фунгицид;;;', 'обработка;R01;;;;;;2027-05-12;Ф;фунгицид;;;',  # both cover 12.05
+            'обработка;R02;;;;;;2027-05-08;Ф;фунгицид;;;', 'обработка;R02;;;;;;2027-05-19;Ф;фунгицид;;;',  # renewed after the event
+            'обработка;R03;;;;;;2027-05-08;Ф;фунгицид;;;']
+        f = self.scenario(rows, '2027-05-20', {date(2027, 5, 12): 14})
+        rust = lambda fid: next(d for d in f[fid]['diseases'] if d['id'] == 'brown_rust')
+        self.assertEqual(rust('R01')['events'][0]['protected_by'], '2027-05-12')  # protects until 25.05, not 21.05
+        self.assertEqual(f['R01']['status'], 'normal')
+        self.assertEqual(rust('R02')['events'][0]['protected_by'], '2027-05-08')
+        self.assertEqual(f['R02']['status'], 'normal')  # 19.05 treatment extends protection past 21.05
+        self.assertEqual(f['R03']['status'], 'check');self.assertEqual(f['R03']['inspect_by'], '2027-05-21')
+
+    def test_inspection_window_starts_after_latent_period(self):
+        rows = ['поле;R01;П;озимая пшеница;2026-10-12;флаговый лист;2027-05-01;;;;;;']
+        f = self.scenario(rows, '2027-05-20', {date(2027, 5, 12): 14})
+        self.assertEqual((f['R01']['inspect_from'], f['R01']['inspect_by']), ('2027-05-19', '2027-05-22'))
+        with mock.patch.object(r, 'weather', return_value=synthetic_days({date(2027, 5, 15): 4})):
+            v = {x['id']: x for x in r.risk_view(self.store, '2027-05-20', 'journal')['fields']}
+        self.assertEqual(v['R01']['status'], 'check')
+        self.assertEqual((v['R01']['inspect_from'], v['R01']['inspect_by']), ('2027-05-22', '2027-05-25'))
+        with mock.patch.object(r, 'weather', return_value=synthetic_days({})):
+            v = {x['id']: x for x in r.risk_view(self.store, '2027-05-20', 'journal')['fields']}
+        self.assertEqual(v['R01']['status'], 'normal');self.assertIsNone(v['R01']['inspect_from'])
+
     def test_temperature_outside_range_is_not_a_condition(self):
         rows = ['поле;R01;П;озимая пшеница;2026-10-12;флаговый лист;2027-05-01;;;;;;']
         f = self.scenario(rows, '2027-05-20', {date(2027, 5, 12): 20}, temp=5.0)

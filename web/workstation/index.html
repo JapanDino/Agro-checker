@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Рабочее место AgroPulse</title>
+<link rel="stylesheet" href="workstation.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 25V15M16 25V10M25 25V16"/><path d="M7 15C2 14 3 7 3 7s7 0 7 5c0 2-3 3-3 3ZM16 10c-1-6 6-8 6-8s3 7-3 9M25 16c-4-3-2-8-2-8s7 2 6 6c-1 2-4 2-4 2Z"/><path d="M4 28h24"/></svg></span>
+      <span><b>AgroPulse</b><small>ONLYFARMS</small></span>
+    </div>
+    <div class="farm"><strong>Хозяйство · пример</strong><span id="farm-sub">27 полей</span></div>
+    <div class="top-tools">
+      <span class="example" title="Поля, погода, снимки и отметки — демонстрационные">Данные-пример</span>
+      <span class="fresh" id="fresh"></span>
+      <button type="button" class="cmd" id="open-pal" aria-label="Поле, дата или команда (Ctrl+K)"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Поле, дата или команда</span><kbd>Ctrl K</kbd></button>
+    </div>
+  </header>
+  <nav class="rail" aria-label="Разделы" id="rail"></nav>
+  <main id="main" tabindex="-1"></main>
+</div>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dr-title" aria-hidden="true"></aside>
+<div class="pal" id="pal" role="dialog" aria-modal="true" aria-label="Команды">
+  <div class="pal-in"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <label class="sr" for="pal-q">Поле, дата или команда</label>
+    <input id="pal-q" autocomplete="off" placeholder="R11 · 12 мая · «R07 чисто» · «выезд»"></div>
+  <div class="pal-list" id="pal-list" role="listbox" aria-label="Результаты"></div>
+  <div class="pal-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> выбрать</span><span><kbd>Enter</kbd> выполнить</span><span><kbd>Esc</kbd> закрыть</span></div>
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="workstation.js"></script>
+</body>
+</html>

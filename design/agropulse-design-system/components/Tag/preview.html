@@ -1,0 +1,13 @@
+<!-- @dsCard group="Статусы" height=64 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Tag — preview</title></head>
+<body>
+<div id="root" class="ap-root"></div>
+<script>
+  var A = window.AgroPulse, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'ap-row'},
+    h(A.Tag, null, 'Узел на поле'), h(A.Tag, null, 'Sentinel-2 · 18 мая'), h(A.Tag, {tone:'neutral'}, 'ERA5 · 0,25°')));
+</script>
+</body>
+</html>
