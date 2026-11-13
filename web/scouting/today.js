@@ -62,7 +62,7 @@ window.ScoutingToday={create({api,getData,onNotice,onChange,onOpenArea}){
     const id=el('div',null,head,'today-id');el('strong',f.id,id);el('span',STATUS[f.status]||f.status_label,id,'today-chip is-'+f.status);
     const meta=el('div',null,head,'today-meta');el('b',[f.field_name,f.crop].filter(Boolean).join(' · ')||f.id,meta);
     el('span',[f.phase?'фаза: '+f.phase+(f.phase_date?' с '+day(f.phase_date):''):null,f.sowing_date?'сев '+fullDay(f.sowing_date):null].filter(Boolean).join(' · '),meta);
-    if(f.inspect_by&&f.status!=='normal'){const due=el('div',null,head,'today-due');el('span','Осмотреть до',due);el('strong',day(f.inspect_by),due);}
+    if(f.inspect_by&&f.status!=='normal'){const due=el('div',null,head,'today-due');if(f.inspect_from){el('span','Смотреть',due);el('strong',day(f.inspect_from)+' – '+day(f.inspect_by),due);}else{el('span','Осмотреть до',due);el('strong',day(f.inspect_by),due);}}
     const reasons=el('ul',null,card,'today-reasons');for(const r of f.reasons||[])el('li',r,reasons);
     const foot=el('div',null,card,'today-row-foot');
     el('span',f.data_source_label||'',foot,'today-source-label'+(String(f.data_source).startsWith('sensor:')?' is-sensor':''));

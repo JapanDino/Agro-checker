@@ -390,7 +390,7 @@ def evaluate(field, day, treatments, foci, marks, sensors):
     """Status for one recorded field on one local day."""
     r = rules();fid = field['id']
     base = {'id': fid, 'field_name': field.get('field_name', ''), 'crop': field['crop'], 'sowing_date': field['sowing_date'],
-            'phase': None, 'phase_date': None, 'inspect_by': None, 'diseases': [], 'reasons': [],
+            'phase': None, 'phase_date': None, 'inspect_by': None, 'inspect_from': None, 'diseases': [], 'reasons': [],
             'data_source': 'era5_sector', 'data_source_label': ERA5_LABEL, 'last_fungicide': None}
     phase = _phase_on(field, day)
     if phase:base.update(phase=phase['phase'], phase_date=phase['date'])
@@ -411,7 +411,8 @@ def evaluate(field, day, treatments, foci, marks, sensors):
         name = sensor[-1].split(':', 1)[1];n = sum(1 for d in hours if (fid, d) in sensors)
         base['data_source'] = sensor[-1]
         base['data_source_label'] = f'Узел «{name}»: {n} из {len(hours)} дней' + ('' if n == len(hours) else '; остальные дни — ERA5 по сектору')
-    statuses, inspect, reasons = [], [], []
+    statuses, inspect, reasons, starts = [], [], [], []
+    latent = r['inspect_window']['latent_days']
     for dz in r['diseases']:
         events = []
         for d in sorted(hours):
@@ -424,11 +425,12 @@ def evaluate(field, day, treatments, foci, marks, sensors):
             if not (full or partial):continue
             ph = _phase_on(field, d)
             susceptible = ph is not None and order[ph['phase']] >= order[dz['susceptible_from']]
-            cover = next((p for p in protections if not p['voided'] and p['date'] <= d.isoformat() <= p['protected_until']), None)
+            covers = [p for p in protections if not p['voided'] and p['date'] <= d.isoformat() <= p['protected_until']]
+            cover = max(covers, key=lambda p: p['protected_until']) if covers else None  # the treatment that protects longest
             events.append({'date': d.isoformat(), 'wet_hours': len(wet), 'temp_min': round(min(wet), 1), 'temp_max': round(max(wet), 1),
                            'full': full, 'susceptible': susceptible, 'phase_known': ph is not None,
                            'protected_by': cover['date'] if cover else None, '_temps': wet, '_day': d, '_cover': cover})
-        status, by, text = 'normal', None, None
+        status, by, text, start = 'normal', None, None, None
         open_full = [e for e in events if e['full'] and e['susceptible'] and not e['protected_by']]
         covered = [e for e in events if e['full'] and e['susceptible'] and e['protected_by']]
         open_partial = [e for e in events if not e['full'] and e['susceptible'] and not e['protected_by']]
@@ -436,16 +438,18 @@ def evaluate(field, day, treatments, foci, marks, sensors):
         early = [e for e in events if e['full'] and e['phase_known'] and not e['susceptible']]
         if open_full:
             e = max(open_full, key=lambda e: e['wet_hours']);status = 'risk'
-            by = open_full[0]['_day']+timedelta(days=dz['inspect_after_days'])
+            by = open_full[0]['_day']+timedelta(days=dz['inspect_after_days']);start = open_full[0]['_day']+timedelta(days=latent)
             text = f'{dz["name"]}: лист влажный {e["wet_hours"]} ч при {_temp(e["_temps"])} {_fmt(e["_day"])} — условия заражения есть'
         else:
-            ending = [e for e in covered if 0 <= (date.fromisoformat(e['_cover']['protected_until'])-day).days <= r['protection']['ending_soon_days']]
+            renewed = lambda until: any(not p['voided'] and p['protected_until'] > until for p in protections)  # protections are already ≤ day
+            ending = [e for e in covered if 0 <= (date.fromisoformat(e['_cover']['protected_until'])-day).days <= r['protection']['ending_soon_days']
+                      and not renewed(e['_cover']['protected_until'])]
             if ending:
                 status = 'check';by = date.fromisoformat(ending[0]['_cover']['protected_until'])
                 text = f'{dz["name"]}: условия {_fmt(ending[0]["_day"])} под защитой фунгицида {_fmt(date.fromisoformat(ending[0]["protected_by"]))}, защита заканчивается {_fmt(by)}'
             elif open_partial:
                 e = max(open_partial, key=lambda e: e['wet_hours']);status = 'check'
-                by = open_partial[0]['_day']+timedelta(days=dz['inspect_after_days'])
+                by = open_partial[0]['_day']+timedelta(days=dz['inspect_after_days']);start = open_partial[0]['_day']+timedelta(days=latent)
                 text = f'{dz["name"]}: лист влажный {e["wet_hours"]} ч при {_temp(e["_temps"])} {_fmt(e["_day"])} — условия близки к порогу {dz["wet_hours"]} ч'
             elif unknown:
                 status = 'check';by = unknown[0]['_day']+timedelta(days=dz['inspect_after_days'])
@@ -456,9 +460,11 @@ def evaluate(field, day, treatments, foci, marks, sensors):
                 text = f'{dz["name"]}: условия ' + ', '.join(_fmt(e['_day']) for e in early) + f' — до фазы «{dz["susceptible_from"]}»'
         statuses.append(status)
         if by:inspect.append(by)
+        if start and by and start <= by:starts.append(start)
         if text and status != 'normal':reasons.append(text)
         elif text:base.setdefault('_notes', []).append(text)
         base['diseases'].append({'id': dz['id'], 'name': dz['name'], 'status': status, 'inspect_by': by.isoformat() if by else None,
+                                 'inspect_from': start.isoformat() if start and by and start <= by else None,
                                  'events': [{k: v for k, v in e.items() if not k.startswith('_')} for e in events]})
     limit = r['focus']['memory_days']
     recent = [f for f in foci if f['id'] == fid and 0 <= (day-date.fromisoformat(f['date'])).days <= limit]
@@ -483,6 +489,10 @@ def evaluate(field, day, treatments, foci, marks, sensors):
     if not hours:reasons.insert(0, 'Нет погодных данных за период расчёта')
     base.update(status=status, reasons=reasons + ['; '.join(tail).capitalize()],
                 inspect_by=min(inspect).isoformat() if status in ('risk', 'check') and inspect else None)
+    # Window start only when it belongs to the same deadline: earliest symptom date not later than inspect_by.
+    if base['inspect_by'] and starts:
+        first = min(starts)
+        if first.isoformat() <= base['inspect_by']:base['inspect_from'] = first.isoformat()
     return base
 
 
@@ -543,7 +553,8 @@ def risk_view(store, date, source):
         'date': day.isoformat(), 'source': meta,
         'rules': {'status': r['status'], 'version': r['version'], 'note': r['note'], 'lookback_days': r['lookback_days'],
                   'wet_hour': r['wet_hour']['era5']['label'],
-                  'protection': f'Фунгицид защищает {r["protection"]["days"]} дней; дождь ≥ {r["protection"]["washoff_rain_mm"]} мм за {r["protection"]["washoff_window_hours"]} ч после обработки отменяет защиту',
+                  'protection': f'Фунгицид защищает {r["protection"]["days"]} дней; дождь ≥ {r["protection"]["washoff_rain_mm"]} мм за {r["protection"]["washoff_window_hours"]} ч после обработки отменяет защиту; при нескольких обработках действует самая долгая',
+                  'inspect_window': r['inspect_window']['label'],
                   'diseases': [{k: d[k] for k in ['id', 'name', 'wet_hours', 'temp_min', 'temp_max', 'inspect_after_days', 'susceptible_from']} for d in r['diseases']]},
         'weather': {'label': ERA5_LABEL, 'coverage': coverage},
         'summary': {s: sum(f['status'] == s for f in fields) for s in STATUS_ORDER},

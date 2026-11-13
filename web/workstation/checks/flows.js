@@ -1,7 +1,8 @@
 /* Main flows: forecast, planning a treatment, inspection with «обработать», marking it applied, alarming journal, passport, brief.
    Run: node web/workstation/checks/flows.js — prints each step; exit code 1 on page errors. */
 const {chromium}=require('playwright');
-const path=require('path');const PAGE='file://'+path.resolve(__dirname,'../index.html');
+const path=require('path');/* WORKSTATION_URL=http://127.0.0.1:8770/workstation/ checks the served page under the server's CSP; default is the file. */
+const PAGE=process.env.WORKSTATION_URL||'file://'+path.resolve(__dirname,'../index.html');
 
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1440,height:900}});const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});
 const U=PAGE;const log=(...a)=>console.log(...a);

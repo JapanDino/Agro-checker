@@ -2,7 +2,7 @@
 
 Crops web/scouting/assets/basemap.jpg (Esri World Imagery, Web Mercator) to the farm,
 projects the 27 approximate field outlines from public-context.json into image pixels and
-writes both into web/workstation: farm-basemap.jpg and the MAPGEO constant in index.html.
+writes both into web/workstation: farm-basemap.jpg and the MAPGEO constant in workstation.js.
 
     python web/workstation/tools/build_farm_map.py
 """
@@ -68,11 +68,11 @@ def main():
                       'north': to_map(cl0, glat + .125)[1], 'grid': [glat, glon]},
            'kmpx': round((cl1 - cl0) * 111.32 * math.cos(math.radians((ca0 + ca1) / 2)) / out.size[0], 5),
            'attribution': ctx['basemap']['attribution']}
-    page = OUT / 'index.html'
+    page = OUT / 'workstation.js'
     html = page.read_text(encoding='utf-8')
     html, n = re.subn(r'const MAPGEO=\{.*?\};\n', lambda _: 'const MAPGEO=' + json.dumps(geo, ensure_ascii=False, separators=(',', ':')) + ';\n', html, count=1)
     if n != 1:
-        raise SystemExit('MAPGEO not found in index.html')
+        raise SystemExit('MAPGEO not found in workstation.js')
     page.write_text(html, encoding='utf-8')
     print(f'farm-basemap.jpg {out.size[0]}×{out.size[1]}, {len(fields)} fields, MAPGEO updated')
 
