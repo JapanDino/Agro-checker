@@ -1,0 +1,47 @@
+{
+  "created_at_utc": "2026-11-09T15:40:20.878043+00:00",
+  "selection_years": [
+    2024
+  ],
+  "start": "2024-01-01T00:00:00Z",
+  "end_exclusive": "2025-01-01T00:00:00Z",
+  "bbox_wgs84": [
+    37.894050149650965,
+    44.967214109430984,
+    38.018751513961206,
+    45.123493969362215
+  ],
+  "bounds_utm": [
+    413020,
+    4979900,
+    422620,
+    4997140
+  ],
+  "crs": "EPSG:32637",
+  "cell_m": 20,
+  "geometry_path": "data/farm-research/reconstruction/approximate-areas.geojson",
+  "geometry_sha256": "6fcf4a180f2a8860ed8f09456389943296f2947b1b95b98a81d63cb2c75ae521",
+  "sources": {
+    "pc_rtc": [
+      "https://planetarycomputer.microsoft.com/api/stac/v1",
+      "sentinel-1-rtc"
+    ],
+    "earth_grd": [
+      "https://earth-search.aws.element84.com/v1",
+      "sentinel-1-grd"
+    ]
+  },
+  "documentation": {
+    "rtc": "https://planetarycomputer.microsoft.com/api/stac/v1/collections/sentinel-1-rtc",
+    "anonymous_access": "https://planetarycomputer.microsoft.com/docs/concepts/sas/",
+    "interference": "https://land.copernicus.eu/en/production-updates/radio-frequency-interference-affecting-surface-soil-moisture-products",
+    "quality_disclaimers": "https://sar-mpc.eu/disclaimers/"
+  },
+  "acquisition_policy": "Exhaust public PC RTC2024 catalogue. Cross-check GRD catalogue separately; no assertion RTC includes all acquisitions. One platform+relative orbit+direction time series. No joining different tracks into a change pair.",
+  "extraction": "Actual raster georeference, not STAC transform. Read VV/VH linear gamma0 RTC. Average linear power to old20m optical grid. Both channels positive finite with>=.8 native support per cell. No speckle smoothing across dates.",
+  "quality": "Same27 approximate outlines and11 scenarios. >=10 cells and>=80% joint valid core. Source hashes, sparse20m crops, per-scenario coverage and medians. Broad high-power/row-jump diagnostics only, not validated RFI screening.",
+  "rfi": "Product-level ESA RFI clearance not provided by PC metadata. Record UNKNOWN for every scene; never treat absence of flag as absence of interference. Exploratory features allowed, production admission prohibited.",
+  "units": "Linear gamma0 power in raw crop; 10log10(median power) in summaries. VHminusVV in dB. Neither NDMI nor measured soil water.",
+  "preservation": "No optical target recovery, no changes to old models/detector, archived prospective registration/releases or human journal. No2025/2026 outcomes in training/selection.",
+  "code_sha256": "524bb2bb4691b8cd7b1a06a8ccd899a4012ad00f8fade01af40d911ee0957a92"
+}

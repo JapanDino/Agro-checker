@@ -126,4 +126,4 @@ def plan_export(store, plan_id):
     return {'schema':1, 'plan':plan, 'tasks':tasks,
             'visits':[v for v in store.records(scout.VISIT, scout.STREAM) if v['payload']['place']['id'] in {t['payload']['place']['id'] for t in tasks}],
             'automatic_diagnoses':False, 'model_training_enabled':False,
-            'notice':'Архивные наблюдения и план человека. Последовательность мест не является оптимальным дорожным маршрутом. Запись человека не подтверждает диагноз.'}
+            'notice':'План обследования составлен человеком. Места идут в порядке выбора. Полевые записи требуют отдельной проверки для постановки диагноза.'}

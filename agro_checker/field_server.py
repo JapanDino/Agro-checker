@@ -26,6 +26,8 @@ def make_server(directory, port=8770):
             self.send_header("Cache-Control", "no-store"); self.send_header("X-Content-Type-Options", "nosniff")
             self.send_header("Cross-Origin-Resource-Policy", "same-origin")
             self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'")
+            if urlparse(self.path).path == '/scouting/offline.js':
+                self.send_header('Service-Worker-Allowed', '/')
             self.end_headers(); self.wfile.write(data)
 
         def allowed(self, mutation=False):
@@ -52,6 +54,10 @@ def make_server(directory, port=8770):
                         query([])
                         from .farm_workspace import plans
                         return self.reply(200, {**scout.overview(), **scout.listing(store), 'plans':plans(store), 'token':token})
+                    if path == '/api/scouting/today':
+                        from .scouting_review import today
+                        query([])
+                        return self.reply(200, today())
                     if path == '/api/scouting/workspace':
                         from .farm_workspace import comparison
                         keys=['period']+(['before','after'] if 'before' in q or 'after' in q else [])
@@ -59,6 +65,15 @@ def make_server(directory, port=8770):
                     if path == '/api/scouting/area':
                         from .farm_workspace import area_detail
                         return self.reply(200, area_detail(**query(['fid','period','before','after'])))
+                    if path == '/api/scouting/field-context':
+                        from .scouting_field_context import DEFAULT_DIRECTORY, field_context
+                        return self.reply(200, field_context(DEFAULT_DIRECTORY, query(['fid'])['fid']))
+                    if path == '/api/scouting/operation-image':
+                        from .scouting_field_context import DEFAULT_DIRECTORY, operation_image
+                        return self.reply(200, operation_image(DEFAULT_DIRECTORY, **query(['fid','event','scene'])), 'image/png')
+                    if path == '/api/scouting/review':
+                        from .scouting_review import review
+                        return self.reply(200,review(**query(['fid','period','before','after','place_id'])))
                     if path == '/api/scouting/plans/export':
                         from .farm_workspace import plan_export
                         return self.reply(200,plan_export(store,query(['id'])['id']))
@@ -195,7 +210,12 @@ def make_server(directory, port=8770):
                          "/scouting/assets/fonts/manrope-cyrillic-wght-normal.woff2": (ROOT/"web/scouting/assets/fonts/manrope-cyrillic-wght-normal.woff2", "font/woff2"),
                          "/scouting/assets/fonts/manrope-latin-wght-normal.woff2": (ROOT/"web/scouting/assets/fonts/manrope-latin-wght-normal.woff2", "font/woff2"),
                          "/scouting/assets/fonts/manrope-OFL.txt": (ROOT/"web/scouting/assets/fonts/manrope-OFL.txt", "text/plain; charset=utf-8"),
+                         "/scouting/review-card.js": (ROOT/"web/scouting/review-card.js", "text/javascript; charset=utf-8"),
+                         "/scouting/review-card.css": (ROOT/"web/scouting/review-card.css", "text/css; charset=utf-8"),
+                         "/scouting/today.css": (ROOT/"web/scouting/today.css", "text/css; charset=utf-8"),
                          "/scouting/drafts.js": (ROOT/"web/scouting/drafts.js", "text/javascript; charset=utf-8"),
+                         "/scouting/visit-drafts.js": (ROOT/"web/scouting/visit-drafts.js", "text/javascript; charset=utf-8"),
+                         "/scouting/offline.js": (ROOT/"web/scouting/offline.js", "text/javascript; charset=utf-8"),
                          "/scouting/workspace.css": (ROOT/"web/scouting/workspace.css", "text/css; charset=utf-8"),
                          "/scouting/map.js": (ROOT/"web/scouting/map.js", "text/javascript; charset=utf-8"),
                          "/scouting/assets/leaflet.js": (ROOT/"web/scouting/assets/leaflet.js", "text/javascript; charset=utf-8"),
